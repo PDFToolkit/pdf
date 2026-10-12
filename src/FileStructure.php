@@ -4,38 +4,41 @@ declare(strict_types=1);
 
 namespace PDF;
 
+use PDF\Serialization\FileWriter;
 use PDF\Syntax\FileStructure\FileBody;
 use PDF\Syntax\FileStructure\FileHeader;
-use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
+use PDF\Syntax\FileStructure\CrossReferenceFormat;
+use PDF\Syntax\Object\DictionaryType;
+use PDF\Syntax\Object\IndirectReference;
 
-/**
- * A basic conforming PDF file shall be constructed of following four elements:
- * - A one-line header identifying the version of the PDF specification to which the file conforms
- * - A body containing the objects that make up the document contained in the file
- * - A cross-reference table containing information about the indirect objects in the file
- * - A trailer giving the location of the cross-reference table and of certain special objects within the body of the file
- *
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.2274524
- */
-class FileStructure implements StringClass
+/** The file's header, body, root and trailer additions (7.5). */
+final readonly class FileStructure implements \Stringable
 {
-    /** @var FileHeader */
-    private $header;
+    public function __construct(
+        public FileHeader $header,
+        public FileBody $body,
+        public ?IndirectReference $root = null,
+        public ?DictionaryType $trailerEntries = null,
+        public CrossReferenceFormat $crossReferenceFormat = CrossReferenceFormat::Table,
+    ) {
+    }
 
-    /** @var FileBody */
-    private $body;
-
-    public function __construct(FileHeader $header, FileBody $body)
+    public function toPdf(): string
     {
-        $this->header = $header;
-        $this->body = $body;
+        return (new FileWriter())->serialize($this);
+    }
+
+    public function writeTo(string $path): void
+    {
+        $bytes = $this->toPdf();
+        $written = file_put_contents($path, $bytes, LOCK_EX);
+        if ($written !== strlen($bytes)) {
+            throw new \RuntimeException('Unable to write the complete PDF: ' . $path);
+        }
     }
 
     public function __toString(): string
     {
-        return <<<PDF_FILE
-{$this->header}
-{$this->body}
-PDF_FILE;
+        return $this->toPdf();
     }
 }

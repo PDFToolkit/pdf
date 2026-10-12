@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\LexicalConvention\CharacterSet;
 
-/**
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1839343
- */
-abstract class Character
+/** An immutable character byte, independent of text encoding (7.2.2). */
+readonly class Character implements \Stringable
 {
-    public static function generate(int $bytevalue)
+    /** @var int<0, 255> */
+    public int $byteValue;
+
+    public function __construct(int $byteValue)
     {
-        return sprintf('%c', $bytevalue);
+        if ($byteValue < 0 || $byteValue > 255) {
+            throw new \InvalidArgumentException('A character byte must be in 0..255.');
+        }
+        $this->byteValue = $byteValue;
+    }
+
+    public function __toString(): string
+    {
+        return chr($this->byteValue);
     }
 }

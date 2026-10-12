@@ -4,31 +4,27 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\Object\IndirectObject;
 
-/**
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1638996
- */
-class ObjectNumber
+final readonly class ObjectNumber implements \Stringable
 {
-    /** @var int */
-    private $number;
-
-    public function __construct(int $number = 0)
+    public function __construct(public int $value = 1)
     {
-        $this->number = $number;
+        if ($value < 1 || $value > PHP_INT_MAX) {
+            throw new \InvalidArgumentException('Invalid ObjectNumber.');
+        }
     }
-
-    public function increment(): self
-    {
-        return new self(++$this->number);
-    }
-
     public function number(): int
     {
-        return $this->number;
+        return $this->value;
     }
-
+    public function increment(): self
+    {
+        if ($this->value === PHP_INT_MAX) {
+            throw new \OverflowException('ObjectNumber overflow.');
+        }
+        return new self($this->value + 1);
+    }
     public function __toString(): string
     {
-        return (string) $this->number;
+        return (string) $this->value;
     }
 }

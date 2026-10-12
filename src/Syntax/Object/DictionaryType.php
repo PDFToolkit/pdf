@@ -4,28 +4,85 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\Object;
 
-use PDF\ParentClass;
 use PDF\Syntax\FileStructure\BasicType;
-use PDF\Syntax\LexicalConvention\CharacterSet\Delimiter;
-use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
+use PDF\Serialization\SerializationContext;
+use PDF\Serialization\SerializesPdf;
+use PDF\Syntax\Object\DictionaryObject\Entry;
 
 /**
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1638921
+ * 7.3.7. Object-valued entries; with() returns a new dictionary.
+ * @implements \IteratorAggregate<string, Entry>
  */
-abstract class DictionaryType implements BasicType
+class DictionaryType implements BasicType, \Countable, \IteratorAggregate
 {
-    protected $string;
+    use SerializesPdf;
+    /** @var array<string, Entry> */
+    private array $storedEntries = [];
 
-    /** @var BasicType */
-    protected $parent;
-
-    public function parent(): ?BasicType
+    public function __construct(Entry ...$entries)
     {
-        return $this->parent;
+        foreach ($entries as $entry) {
+            if (isset($this->storedEntries[$entry->key->value])) {
+                throw new \InvalidArgumentException('Duplicate dictionary key: ' . $entry->key->value);
+            }
+            $this->storedEntries[$entry->key->value] = $entry;
+        }
     }
 
-    public function setParent(BasicType $parent): void
+    /** @return iterable<Entry> */
+    public function entries(): iterable
     {
-        $this->parent = $parent;
+        yield from $this->storedEntries;
+    }
+    public function get(NameType|string $key): ?BasicType
+    {
+        $key = $key instanceof NameType ? $key->value : $key;
+        foreach ($this->entries() as $entry) {
+            if ($entry->key->value === $key) {
+                return $entry->value;
+            }
+        }
+        return null;
+    }
+    public function has(NameType|string $key): bool
+    {
+        return $this->get($key) !== null;
+    }
+
+    #[\NoDiscard]
+    public function with(Entry $entry): static
+    {
+        $copy = clone $this;
+        $copy->storedEntries[$entry->key->value] = $entry;
+        return $copy;
+    }
+
+    #[\NoDiscard]
+    public function without(NameType|string $key): static
+    {
+        $copy = clone $this;
+        unset($copy->storedEntries[$key instanceof NameType ? $key->value : $key]);
+        return $copy;
+    }
+    public function count(): int
+    {
+        return iterator_count($this->getIterator());
+    }
+    public function getIterator(): \Traversable
+    {
+        yield from $this->entries();
+    }
+    public function toPdf(SerializationContext $context): string
+    {
+        $pairs = [];
+        $keys = [];
+        foreach ($this->entries() as $entry) {
+            if (isset($keys[$entry->key->value])) {
+                throw new \LogicException('Duplicate dictionary key: ' . $entry->key->value);
+            }
+            $keys[$entry->key->value] = true;
+            $pairs[] = $context->serialize($entry->key) . ' ' . $context->serialize($entry->value);
+        }
+        return '<<' . ($pairs === [] ? '' : ' ' . implode(' ', $pairs) . ' ') . '>>';
     }
 }

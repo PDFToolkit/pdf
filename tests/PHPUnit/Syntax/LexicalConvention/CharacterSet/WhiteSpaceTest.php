@@ -2,35 +2,21 @@
 
 declare(strict_types=1);
 
-namespace PHPUnit\Syntax\LexicalConvention\CharacterSet;
+namespace PDF\Tests\Syntax\LexicalConvention\CharacterSet;
 
 use PDF\Syntax\LexicalConvention\CharacterSet\WhiteSpace;
+use PDF\Syntax\LexicalConvention\CharacterSet\WhiteSpaceKind;
 use PHPUnit\Framework\TestCase;
 
-class WhiteSpaceTest extends TestCase
+final class WhiteSpaceTest extends TestCase
 {
-    /**
-     * @dataProvider tokenProvider
-     */
-    public function test_whitespace_characters($expected, $token)
+    public function testEachNormativeCharacterIsAnObject(): void
     {
-        $this->assertEquals($expected, $token);
-    }
-
-    public function tokenProvider()
-    {
-        return [
-            'HORIZONTAL TAB' => ["\t", WhiteSpace::HORIZONTAL_TAB()],
-            'HORIZONTAL TAB (HT)' => ["\t", WhiteSpace::HT()],
-            'LINE FEED' => ["\n", WhiteSpace::LINE_FEED()],
-            'LINE FEED (LF)' => ["\n", WhiteSpace::LINE_FEED()],
-            'FORM FEED' => [chr(12), WhiteSpace::FORM_FEED()],
-            'FORM FEED (FF)' => [chr(12), WhiteSpace::FF()],
-            'CARRIAGE RETURN' => ["\r", WhiteSpace::CARRIAGE_RETURN()],
-            'CARRIAGE RETURN (CR)' => ["\r", WhiteSpace::CR()],
-            'SPACE' => [' ', WhiteSpace::SPACE()],
-            'SPACE (SP)' => [' ', WhiteSpace::SP()],
-            'EOF' => ["\r\n", WhiteSpace::EOF()],
-        ];
+        $expected = [0, 9, 10, 12, 13, 32];
+        foreach (WhiteSpaceKind::cases() as $index => $kind) {
+            $character = new WhiteSpace($kind);
+            self::assertSame($expected[$index], $character->byteValue);
+            self::assertSame(chr($expected[$index]), (string) $character);
+        }
     }
 }

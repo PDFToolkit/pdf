@@ -4,29 +4,24 @@ declare(strict_types=1);
 
 namespace PDF\Text;
 
-class Font
+use PDF\Serialization\SerializationContext;
+use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NumericType;
+
+/** A font resource selection and size, not a font resource dictionary (9.3.1). */
+final readonly class Font implements \Stringable
 {
-    /** https://ddd.uab.cat/pub/butgroc/butgrocCAT/butgroc_a2004m5-6v17n3.info */
-    public const CFCJIL_HELVETICA_LIGHT = 'F9';
-    public const HELVETICA_BOLD = 'F11';
-    public const SYMBOL = 'F12';
-    public const HELVETICA = 'F13';
-    public const CFJJHF_GADGET_REGULAR = 'F14';
-
-    /** @var string */
-    private string $font;
-
-    /** @var int */
-    private int $size;
-
-    public function __construct(string $font, int $size)
+    public function __construct(public NameType $resourceName, public NumericType $size)
     {
-        $this->font = $font;
-        $this->size = $size;
+    }
+
+    public function toPdf(SerializationContext $context): string
+    {
+        return $context->serialize($this->resourceName) . ' ' . $context->serialize($this->size);
     }
 
     public function __toString(): string
     {
-        return sprintf('/%s %s', $this->font, $this->size);
+        return $this->toPdf(new SerializationContext());
     }
 }

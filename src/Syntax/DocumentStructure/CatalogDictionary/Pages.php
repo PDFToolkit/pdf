@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace PDF\Syntax\DocumentStructure\CatalogDictionary;
 
 use PDF\Syntax\DocumentStructure\PageTree\PageTreeNode;
+use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\NameType;
 
-class Pages implements Entry
+final class Pages extends Entry
 {
-    public function __invoke()
+    public function __construct(PageTreeNode|IndirectReference $pages)
     {
-        return new PageTreeNode();
+        $target = $pages instanceof IndirectReference ? $pages->target() : $pages;
+        if (!$target instanceof PageTreeNode || $target->parent() !== null) {
+            throw new \InvalidArgumentException('Catalog Pages must reference a root page-tree node.');
+        }
+        parent::__construct(new NameType('Pages'), $pages instanceof IndirectReference ? $pages : new IndirectReference($pages));
     }
 }

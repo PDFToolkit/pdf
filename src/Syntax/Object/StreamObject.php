@@ -4,35 +4,65 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\Object;
 
-use PDF\StringClass;
+use PDF\Serialization\SerializationContext;
+use PDF\Serialization\SerializesPdf;
 use PDF\Syntax\FileStructure\BasicType;
-use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
-use PDF\Text\TextObject;
+use PDF\Syntax\ContentStreamsResources\ContentStreams;
+use PDF\Syntax\Filters\Filter;
+use PDF\Syntax\Filters\EncodedData;
+use PDF\Syntax\Object\DictionaryObject\Entry;
+use PDF\Syntax\Object\StreamObject\StreamExtent;
 
-/**
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1840319
- */
-class StreamObject implements StringClass
+/** 7.3.8. Length describes encoded bytes, excluding the delimiter newline. */
+class StreamObject implements BasicType
 {
-    /** @var TextObject */
-    private TextObject $text;
+    use SerializesPdf;
+    /** @var list<Filter> */
+    public readonly array $filters;
+    private readonly DictionaryType $streamDictionary;
 
-    public function __construct(TextObject $text)
+    public function __construct(public readonly string|ContentStreams $data, ?DictionaryType $dictionary = null, Filter ...$filters)
     {
-        $this->text = $text;
+        $this->streamDictionary = $dictionary ?? new DictionaryType();
+        foreach (['Length', 'Filter', 'DecodeParms', 'F', 'FFilter', 'FDecodeParms'] as $key) {
+            if ($this->streamDictionary->has($key)) {
+                throw new \InvalidArgumentException('Managed or external stream entry: ' . $key);
+            }
+        }
+        foreach ($filters as $index => $filter) {
+            if ($filter instanceof EncodedData && ($index !== count($filters) - 1 || $data instanceof ContentStreams)) {
+                throw new \InvalidArgumentException('EncodedData must be the last decoding filter, on binary input.');
+            }
+        }
+        $this->filters = array_values($filters);
     }
 
-    public function __toString(): string
+    public function dictionary(): DictionaryType
     {
+        return $this->streamDictionary;
+    }
+    public function bytes(SerializationContext $context): string
+    {
+        $bytes = is_string($this->data) ? $this->data : $this->data->toPdf($context);
+        // Filter array is in decoding order, so encoders run in reverse.
+        foreach (array_reverse($this->filters) as $filter) {
+            $bytes = $filter->encode($bytes);
+        }
+        return $bytes;
+    }
 
-        return sprintf(
-            <<<PDF
-stream
-%s
-endstream
-PDF
-            ,
-            $this->text
-        );
+    public function toPdf(SerializationContext $context): string
+    {
+        $bytes = $this->bytes($context);
+        $dictionary = $this->dictionary()->with(new Entry(new NameType('Length'), new StreamExtent($bytes)));
+        if ($this->filters !== []) {
+            $names = array_map(static fn (Filter $filter): NameType => $filter->name(), $this->filters);
+            $dictionary = $dictionary->with(new Entry(new NameType('Filter'), count($names) === 1 ? $names[0] : new ArrayType(...$names)));
+            $parameters = array_map(static fn (Filter $filter): BasicType => $filter->parameters() ?? new NullType(), $this->filters);
+            if (array_filter($parameters, static fn (BasicType $value): bool => !$value instanceof NullType) !== []) {
+                $dictionary = $dictionary->with(new Entry(new NameType('DecodeParms'), count($parameters) === 1 ? $parameters[0] : new ArrayType(...$parameters)));
+            }
+        }
+        return $context->serialize($dictionary) . "\nstream\n" . $bytes . "\nendstream";
     }
 }

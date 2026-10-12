@@ -4,42 +4,38 @@ declare(strict_types=1);
 
 namespace PDF\Text;
 
-use PDF\Syntax\ContentStreamsResources\Operator;
-use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
+use PDF\Serialization\SerializationContext;
+use PDF\Syntax\ContentStreamsResources\ContentStreams;
+use PDF\Syntax\ContentStreamsResources\Operators\BeginTextObject;
+use PDF\Syntax\ContentStreamsResources\Operators\EndTextObject;
+use PDF\Syntax\ContentStreamsResources\Operators\SetTextFontAndSize;
+use PDF\Syntax\ContentStreamsResources\Operators\ShowText;
+use PDF\Syntax\Object\StringType;
 
-/**
- * https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1840319
- */
-class TextObject
+/** A composed BT/Tf/Tj/ET text object; all operands remain PDF objects (9.4). */
+final readonly class TextObject implements \Stringable
 {
-    /** @var string */
-    private string $text;
-
-    /** @var Font */
-    private Font $font;
-
-    public function __construct(string $text, Font $font)
+    public function __construct(public StringType $text, public Font $font)
     {
-        $this->text = $text;
-        $this->font = $font;
+    }
+
+    public function contentStream(): ContentStreams
+    {
+        return new ContentStreams(
+            new BeginTextObject(),
+            new SetTextFontAndSize($this->font->resourceName, $this->font->size),
+            new ShowText($this->text),
+            new EndTextObject(),
+        );
+    }
+
+    public function toPdf(SerializationContext $context): string
+    {
+        return $this->contentStream()->toPdf($context);
     }
 
     public function __toString(): string
     {
-
-        return sprintf(<<<PDF
-%s
-%s %s
-(%s) %s
-%s
-PDF
-            ,
-            Operator::BEGIN_TEXT_OBJECT,
-            $this->font,
-            Operator::SET_TEXT_FONT_AND_SIZE,
-            $this->text,
-            Operator::SHOW_TEXT,
-            Operator::END_TEXT_OBJECT
-        );
+        return $this->toPdf(new SerializationContext());
     }
 }

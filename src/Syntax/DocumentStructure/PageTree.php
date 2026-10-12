@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\DocumentStructure;
 
+use PDF\Syntax\DocumentStructure\PageTree\PageTreeNode;
 use PDF\Syntax\FileStructure\BasicType;
 
-/**
- * @see https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1639956
- */
+/** A page-tree node or leaf (ISO 32000-1, 7.7.3). */
 interface PageTree extends BasicType
 {
+    public function parent(): ?PageTreeNode;
+
+    /** @internal Attach through PageTreeNode::addKid(). */
+    public function attachTo(PageTreeNode $parent): void;
+
+    public function pageCount(): int;
 }

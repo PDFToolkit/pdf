@@ -4,18 +4,76 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\ContentStreamsResources;
 
-/**
- * https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/PDF32000_2008.pdf#G6.1840319
- */
-class Operator
+use PDF\Serialization\SerializationContext;
+use PDF\Syntax\FileStructure\BasicType;
+use PDF\Syntax\Object\ArrayType;
+use PDF\Syntax\Object\DictionaryType;
+use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\StreamObject;
+
+/** One instruction with direct, typed operands (ISO 32000-1, 7.8.2 and Annex A). */
+abstract readonly class Operator implements \Stringable
 {
-    public const BEGIN_TEXT_OBJECT = 'BT';
-    public const BEGIN_COMPATIBILITY_SECTION = 'BX';
-    public const END_TEXT_OBJECT = 'ET';
-    public const END_COMPATIBILITY_SECTION = 'EX';
-    public const MOVE_TEXT_POSITION = 'Td';
-    public const MOVE_TEXT_POSITION_SET_LEADING = 'TD';
-    public const SET_TEXT_FONT_AND_SIZE = 'Tf';
-    public const SHOW_TEXT = 'Tj';
-    public const SHOW_TEXT_ALLOWING_INDIVIDUAL_GLYPH_POSITIONING = 'TJ';
+    public const string SYMBOL = '';
+
+    /** @var list<BasicType> */
+    public array $operands;
+
+    protected function __construct(BasicType ...$operands)
+    {
+        $this->operands = array_values($operands);
+    }
+
+    public function symbol(): string
+    {
+        return static::SYMBOL;
+    }
+
+    /** @return list<BasicType> */
+    public function operands(): array
+    {
+        return $this->operands;
+    }
+
+    public function toPdf(SerializationContext $context): string
+    {
+        $tokens = [];
+        foreach ($this->operands as $operand) {
+            self::assertDirect($operand);
+            $tokens[] = $context->serialize($operand);
+        }
+        $tokens[] = $this->symbol();
+
+        return implode(' ', $tokens);
+    }
+
+    public function __toString(): string
+    {
+        return $this->toPdf(new SerializationContext());
+    }
+
+    /**
+     * Indirect references and streams are prohibited as content operands.
+     * @param array<int, true> $ancestors
+     */
+    protected static function assertDirect(BasicType $object, array $ancestors = []): void
+    {
+        if ($object instanceof IndirectReference || $object instanceof StreamObject) {
+            throw new \InvalidArgumentException('Content-stream operands must be direct objects, and cannot contain streams.');
+        }
+        $id = spl_object_id($object);
+        if (isset($ancestors[$id])) {
+            throw new \InvalidArgumentException('A content-stream operand cannot contain a cyclic array or dictionary.');
+        }
+        $ancestors[$id] = true;
+        if ($object instanceof ArrayType) {
+            foreach ($object->items as $item) {
+                self::assertDirect($item, $ancestors);
+            }
+        } elseif ($object instanceof DictionaryType) {
+            foreach ($object->entries() as $entry) {
+                self::assertDirect($entry->value, $ancestors);
+            }
+        }
+    }
 }
