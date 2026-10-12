@@ -1,12 +1,16 @@
 {
     "name": "roukmoute/pdf",
     "type": "library",
-    "description": "",
+    "description": "An explicit object model and writer for ISO 32000-1 PDF 1.7",
     "require": {
-        "php": "^7.4"
+        "php": "^8.5",
+        "ext-iconv": "*",
+        "ext-zlib": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpunit/phpunit": "^13.4",
+        "phpstan/phpstan": "^2.1"
     },
     "license": "MIT",
     "authors": [
@@ -29,13 +33,15 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "PHPUnit\\": "tests/PHPUnit",
-            "Spec\\": "tests/Spec"
+            "PDF\\Tests\\": "tests/"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
+    "scripts": {
+        "test": "phpunit",
+        "analyse": "phpstan analyse --no-progress",
+        "format": "php-cs-fixer fix",
+        "format:check": "php-cs-fixer fix --dry-run --diff",
+        "check": ["@test", "@analyse", "@format:check"],
+        "example": "@php examples/hello-world.php"
     }
 }

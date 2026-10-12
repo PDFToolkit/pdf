@@ -1,2 +1,4 @@
 /vendor/
-/composer.lock
+/.cache/
+/*.pdf.tmp
+/examples/*.pdf
