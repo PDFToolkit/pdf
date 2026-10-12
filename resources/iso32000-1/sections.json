@@ -1,0 +1,4940 @@
+[
+  {
+    "id": null,
+    "title": "Document management — Portable document format — Part 1: PDF 1.7",
+    "pdf_page": 1,
+    "depth": 0
+  },
+  {
+    "id": null,
+    "title": "Contents Page",
+    "pdf_page": 3,
+    "depth": 0
+  },
+  {
+    "id": null,
+    "title": "Foreword",
+    "pdf_page": 6,
+    "depth": 0
+  },
+  {
+    "id": null,
+    "title": "Introduction",
+    "pdf_page": 7,
+    "depth": 0
+  },
+  {
+    "id": "1",
+    "title": "Scope",
+    "pdf_page": 9,
+    "depth": 0
+  },
+  {
+    "id": "2",
+    "title": "Conformance",
+    "pdf_page": 9,
+    "depth": 0
+  },
+  {
+    "id": "2.1",
+    "title": "General",
+    "pdf_page": 9,
+    "depth": 1
+  },
+  {
+    "id": "2.2",
+    "title": "Conforming readers",
+    "pdf_page": 9,
+    "depth": 1
+  },
+  {
+    "id": "2.3",
+    "title": "Conforming writers",
+    "pdf_page": 9,
+    "depth": 1
+  },
+  {
+    "id": "2.4",
+    "title": "Conforming products",
+    "pdf_page": 10,
+    "depth": 1
+  },
+  {
+    "id": "3",
+    "title": "Normative references",
+    "pdf_page": 10,
+    "depth": 0
+  },
+  {
+    "id": "4",
+    "title": "Terms and definitions",
+    "pdf_page": 14,
+    "depth": 0
+  },
+  {
+    "id": "5",
+    "title": "Notation",
+    "pdf_page": 18,
+    "depth": 0
+  },
+  {
+    "id": "6",
+    "title": "Version Designations",
+    "pdf_page": 18,
+    "depth": 0
+  },
+  {
+    "id": "7",
+    "title": "Syntax",
+    "pdf_page": 19,
+    "depth": 0
+  },
+  {
+    "id": "7.1",
+    "title": "General",
+    "pdf_page": 19,
+    "depth": 1
+  },
+  {
+    "id": "7.2",
+    "title": "Lexical Conventions",
+    "pdf_page": 19,
+    "depth": 1
+  },
+  {
+    "id": "7.2.1",
+    "title": "General",
+    "pdf_page": 19,
+    "depth": 2
+  },
+  {
+    "id": "7.2.2",
+    "title": "Character Set",
+    "pdf_page": 20,
+    "depth": 2
+  },
+  {
+    "id": "7.2.3",
+    "title": "Comments",
+    "pdf_page": 21,
+    "depth": 2
+  },
+  {
+    "id": "7.3",
+    "title": "Objects",
+    "pdf_page": 21,
+    "depth": 1
+  },
+  {
+    "id": "7.3.1",
+    "title": "General",
+    "pdf_page": 21,
+    "depth": 2
+  },
+  {
+    "id": "7.3.2",
+    "title": "Boolean Objects",
+    "pdf_page": 22,
+    "depth": 2
+  },
+  {
+    "id": "7.3.3",
+    "title": "Numeric Objects",
+    "pdf_page": 22,
+    "depth": 2
+  },
+  {
+    "id": "7.3.4",
+    "title": "String Objects",
+    "pdf_page": 22,
+    "depth": 2
+  },
+  {
+    "id": "7.3.4.1",
+    "title": "General",
+    "pdf_page": 22,
+    "depth": 3
+  },
+  {
+    "id": "7.3.4.2",
+    "title": "Literal Strings",
+    "pdf_page": 23,
+    "depth": 3
+  },
+  {
+    "id": "7.3.4.3",
+    "title": "Hexadecimal Strings",
+    "pdf_page": 24,
+    "depth": 3
+  },
+  {
+    "id": "7.3.5",
+    "title": "Name Objects",
+    "pdf_page": 24,
+    "depth": 2
+  },
+  {
+    "id": "7.3.6",
+    "title": "Array Objects",
+    "pdf_page": 26,
+    "depth": 2
+  },
+  {
+    "id": "7.3.7",
+    "title": "Dictionary Objects",
+    "pdf_page": 26,
+    "depth": 2
+  },
+  {
+    "id": "7.3.8",
+    "title": "Stream Objects",
+    "pdf_page": 27,
+    "depth": 2
+  },
+  {
+    "id": "7.3.8.1",
+    "title": "General",
+    "pdf_page": 27,
+    "depth": 3
+  },
+  {
+    "id": "7.3.8.2",
+    "title": "Stream Extent",
+    "pdf_page": 28,
+    "depth": 3
+  },
+  {
+    "id": "7.3.9",
+    "title": "Null Object",
+    "pdf_page": 29,
+    "depth": 2
+  },
+  {
+    "id": "7.3.10",
+    "title": "Indirect Objects",
+    "pdf_page": 29,
+    "depth": 2
+  },
+  {
+    "id": "7.4",
+    "title": "Filters",
+    "pdf_page": 30,
+    "depth": 1
+  },
+  {
+    "id": "7.4.1",
+    "title": "General",
+    "pdf_page": 30,
+    "depth": 2
+  },
+  {
+    "id": "7.4.2",
+    "title": "ASCIIHexDecode Filter",
+    "pdf_page": 32,
+    "depth": 2
+  },
+  {
+    "id": "7.4.3",
+    "title": "ASCII85Decode Filter",
+    "pdf_page": 33,
+    "depth": 2
+  },
+  {
+    "id": "7.4.4",
+    "title": "LZWDecode and FlateDecode Filters",
+    "pdf_page": 33,
+    "depth": 2
+  },
+  {
+    "id": "7.4.4.1",
+    "title": "General",
+    "pdf_page": 33,
+    "depth": 3
+  },
+  {
+    "id": "7.4.4.2",
+    "title": "Details of LZW Encoding",
+    "pdf_page": 34,
+    "depth": 3
+  },
+  {
+    "id": "7.4.4.3",
+    "title": "LZWDecode and FlateDecode Parameters",
+    "pdf_page": 35,
+    "depth": 3
+  },
+  {
+    "id": "7.4.4.4",
+    "title": "LZW and Flate Predictor Functions",
+    "pdf_page": 36,
+    "depth": 3
+  },
+  {
+    "id": "7.4.5",
+    "title": "RunLengthDecode Filter",
+    "pdf_page": 37,
+    "depth": 2
+  },
+  {
+    "id": "7.4.6",
+    "title": "CCITTFaxDecode Filter",
+    "pdf_page": 38,
+    "depth": 2
+  },
+  {
+    "id": "7.4.7",
+    "title": "JBIG2Decode Filter",
+    "pdf_page": 39,
+    "depth": 2
+  },
+  {
+    "id": "7.4.8",
+    "title": "DCTDecode Filter",
+    "pdf_page": 42,
+    "depth": 2
+  },
+  {
+    "id": "7.4.9",
+    "title": "JPXDecode Filter",
+    "pdf_page": 43,
+    "depth": 2
+  },
+  {
+    "id": "7.4.10",
+    "title": "Crypt Filter",
+    "pdf_page": 46,
+    "depth": 2
+  },
+  {
+    "id": "7.5",
+    "title": "File Structure",
+    "pdf_page": 46,
+    "depth": 1
+  },
+  {
+    "id": "7.5.1",
+    "title": "General",
+    "pdf_page": 46,
+    "depth": 2
+  },
+  {
+    "id": "7.5.2",
+    "title": "File Header",
+    "pdf_page": 47,
+    "depth": 2
+  },
+  {
+    "id": "7.5.3",
+    "title": "File Body",
+    "pdf_page": 48,
+    "depth": 2
+  },
+  {
+    "id": "7.5.4",
+    "title": "Cross-Reference Table",
+    "pdf_page": 48,
+    "depth": 2
+  },
+  {
+    "id": "7.5.5",
+    "title": "File Trailer",
+    "pdf_page": 50,
+    "depth": 2
+  },
+  {
+    "id": "7.5.6",
+    "title": "Incremental Updates",
+    "pdf_page": 52,
+    "depth": 2
+  },
+  {
+    "id": "7.5.7",
+    "title": "Object Streams",
+    "pdf_page": 53,
+    "depth": 2
+  },
+  {
+    "id": "7.5.8",
+    "title": "Cross-Reference Streams",
+    "pdf_page": 57,
+    "depth": 2
+  },
+  {
+    "id": "7.5.8.1",
+    "title": "General",
+    "pdf_page": 57,
+    "depth": 3
+  },
+  {
+    "id": "7.5.8.2",
+    "title": "Cross-Reference Stream Dictionary",
+    "pdf_page": 57,
+    "depth": 3
+  },
+  {
+    "id": "7.5.8.3",
+    "title": "Cross-Reference Stream Data",
+    "pdf_page": 58,
+    "depth": 3
+  },
+  {
+    "id": "7.5.8.4",
+    "title": "Compatibility with Applications That Do Not Support Compressed Reference Streams",
+    "pdf_page": 59,
+    "depth": 3
+  },
+  {
+    "id": "7.6",
+    "title": "Encryption",
+    "pdf_page": 63,
+    "depth": 1
+  },
+  {
+    "id": "7.6.1",
+    "title": "General",
+    "pdf_page": 63,
+    "depth": 2
+  },
+  {
+    "id": "7.6.2",
+    "title": "General Encryption Algorithm",
+    "pdf_page": 65,
+    "depth": 2
+  },
+  {
+    "id": "7.6.3",
+    "title": "Standard Security Handler",
+    "pdf_page": 66,
+    "depth": 2
+  },
+  {
+    "id": "7.6.3.1",
+    "title": "General",
+    "pdf_page": 66,
+    "depth": 3
+  },
+  {
+    "id": "7.6.3.2",
+    "title": "Standard Encryption Dictionary",
+    "pdf_page": 68,
+    "depth": 3
+  },
+  {
+    "id": "7.6.3.3",
+    "title": "Encryption Key Algorithm",
+    "pdf_page": 69,
+    "depth": 3
+  },
+  {
+    "id": "7.6.3.4",
+    "title": "Password Algorithms",
+    "pdf_page": 70,
+    "depth": 3
+  },
+  {
+    "id": "7.6.4",
+    "title": "Public-Key Security Handlers",
+    "pdf_page": 72,
+    "depth": 2
+  },
+  {
+    "id": "7.6.4.1",
+    "title": "General",
+    "pdf_page": 72,
+    "depth": 3
+  },
+  {
+    "id": "7.6.4.2",
+    "title": "Public-Key Encryption Dictionary",
+    "pdf_page": 72,
+    "depth": 3
+  },
+  {
+    "id": "7.6.4.3",
+    "title": "Public-Key Encryption Algorithms",
+    "pdf_page": 74,
+    "depth": 3
+  },
+  {
+    "id": "7.6.5",
+    "title": "Crypt Filters",
+    "pdf_page": 75,
+    "depth": 2
+  },
+  {
+    "id": "7.7",
+    "title": "Document Structure",
+    "pdf_page": 78,
+    "depth": 1
+  },
+  {
+    "id": "7.7.1",
+    "title": "General",
+    "pdf_page": 78,
+    "depth": 2
+  },
+  {
+    "id": "7.7.2",
+    "title": "Document Catalog",
+    "pdf_page": 79,
+    "depth": 2
+  },
+  {
+    "id": "7.7.3",
+    "title": "Page Tree",
+    "pdf_page": 83,
+    "depth": 2
+  },
+  {
+    "id": "7.7.3.1",
+    "title": "General",
+    "pdf_page": 83,
+    "depth": 3
+  },
+  {
+    "id": "7.7.3.2",
+    "title": "Page Tree Nodes",
+    "pdf_page": 84,
+    "depth": 3
+  },
+  {
+    "id": "7.7.3.3",
+    "title": "Page Objects",
+    "pdf_page": 85,
+    "depth": 3
+  },
+  {
+    "id": "7.7.3.4",
+    "title": "Inheritance of Page Attributes",
+    "pdf_page": 88,
+    "depth": 3
+  },
+  {
+    "id": "7.7.4",
+    "title": "Name Dictionary",
+    "pdf_page": 88,
+    "depth": 2
+  },
+  {
+    "id": "7.8",
+    "title": "Content Streams and Resources",
+    "pdf_page": 89,
+    "depth": 1
+  },
+  {
+    "id": "7.8.1",
+    "title": "General",
+    "pdf_page": 89,
+    "depth": 2
+  },
+  {
+    "id": "7.8.2",
+    "title": "Content Streams",
+    "pdf_page": 89,
+    "depth": 2
+  },
+  {
+    "id": "7.8.3",
+    "title": "Resource Dictionaries",
+    "pdf_page": 90,
+    "depth": 2
+  },
+  {
+    "id": "7.9",
+    "title": "Common Data Structures",
+    "pdf_page": 92,
+    "depth": 1
+  },
+  {
+    "id": "7.9.1",
+    "title": "General",
+    "pdf_page": 92,
+    "depth": 2
+  },
+  {
+    "id": "7.9.2",
+    "title": "String Object Types",
+    "pdf_page": 93,
+    "depth": 2
+  },
+  {
+    "id": "7.9.2.1",
+    "title": "General",
+    "pdf_page": 93,
+    "depth": 3
+  },
+  {
+    "id": "7.9.2.2",
+    "title": "Text String Type",
+    "pdf_page": 94,
+    "depth": 3
+  },
+  {
+    "id": "7.9.2.3",
+    "title": "PDFDocEncoded String Type",
+    "pdf_page": 95,
+    "depth": 3
+  },
+  {
+    "id": "7.9.2.4",
+    "title": "Byte String Type",
+    "pdf_page": 95,
+    "depth": 3
+  },
+  {
+    "id": "7.9.3",
+    "title": "Text Streams",
+    "pdf_page": 95,
+    "depth": 2
+  },
+  {
+    "id": "7.9.4",
+    "title": "Dates",
+    "pdf_page": 95,
+    "depth": 2
+  },
+  {
+    "id": "7.9.5",
+    "title": "Rectangles",
+    "pdf_page": 96,
+    "depth": 2
+  },
+  {
+    "id": "7.9.6",
+    "title": "Name Trees",
+    "pdf_page": 96,
+    "depth": 2
+  },
+  {
+    "id": "7.9.7",
+    "title": "Number Trees",
+    "pdf_page": 99,
+    "depth": 2
+  },
+  {
+    "id": "7.10",
+    "title": "Functions",
+    "pdf_page": 100,
+    "depth": 1
+  },
+  {
+    "id": "7.10.1",
+    "title": "General",
+    "pdf_page": 100,
+    "depth": 2
+  },
+  {
+    "id": "7.10.2",
+    "title": "Type 0 (Sampled) Functions",
+    "pdf_page": 101,
+    "depth": 2
+  },
+  {
+    "id": "7.10.3",
+    "title": "Type 2 (Exponential Interpolation) Functions",
+    "pdf_page": 104,
+    "depth": 2
+  },
+  {
+    "id": "7.10.4",
+    "title": "Type 3 (Stitching) Functions",
+    "pdf_page": 104,
+    "depth": 2
+  },
+  {
+    "id": "7.10.5",
+    "title": "Type 4 (PostScript Calculator) Functions",
+    "pdf_page": 105,
+    "depth": 2
+  },
+  {
+    "id": "7.10.5.1",
+    "title": "General",
+    "pdf_page": 105,
+    "depth": 3
+  },
+  {
+    "id": "7.10.5.2",
+    "title": "Errors in Type 4 Functions",
+    "pdf_page": 107,
+    "depth": 3
+  },
+  {
+    "id": "7.11",
+    "title": "File Specifications",
+    "pdf_page": 107,
+    "depth": 1
+  },
+  {
+    "id": "7.11.1",
+    "title": "General",
+    "pdf_page": 107,
+    "depth": 2
+  },
+  {
+    "id": "7.11.2",
+    "title": "File Specification Strings",
+    "pdf_page": 108,
+    "depth": 2
+  },
+  {
+    "id": "7.11.2.1",
+    "title": "General",
+    "pdf_page": 108,
+    "depth": 3
+  },
+  {
+    "id": "7.11.2.2",
+    "title": "Absolute and Relative File Specifications",
+    "pdf_page": 108,
+    "depth": 3
+  },
+  {
+    "id": "7.11.2.3",
+    "title": "Conversion to Platform-Dependent File Names",
+    "pdf_page": 109,
+    "depth": 3
+  },
+  {
+    "id": "7.11.2.4",
+    "title": "Multiple-Byte Strings in File Specifications",
+    "pdf_page": 110,
+    "depth": 3
+  },
+  {
+    "id": "7.11.3",
+    "title": "File Specification Dictionaries",
+    "pdf_page": 110,
+    "depth": 2
+  },
+  {
+    "id": "7.11.4",
+    "title": "Embedded File Streams",
+    "pdf_page": 111,
+    "depth": 2
+  },
+  {
+    "id": "7.11.4.1",
+    "title": "General",
+    "pdf_page": 111,
+    "depth": 3
+  },
+  {
+    "id": "7.11.4.2",
+    "title": "Related Files Arrays",
+    "pdf_page": 113,
+    "depth": 3
+  },
+  {
+    "id": "7.11.5",
+    "title": "URL Specifications",
+    "pdf_page": 114,
+    "depth": 2
+  },
+  {
+    "id": "7.11.6",
+    "title": "Collection Items",
+    "pdf_page": 114,
+    "depth": 2
+  },
+  {
+    "id": "7.11.7",
+    "title": "Maintenance of File Specifications",
+    "pdf_page": 115,
+    "depth": 2
+  },
+  {
+    "id": "7.12",
+    "title": "Extensions Dictionary",
+    "pdf_page": 116,
+    "depth": 1
+  },
+  {
+    "id": "7.12.1",
+    "title": "General",
+    "pdf_page": 116,
+    "depth": 2
+  },
+  {
+    "id": "7.12.2",
+    "title": "Developer Extensions Dictionary",
+    "pdf_page": 116,
+    "depth": 2
+  },
+  {
+    "id": "7.12.3",
+    "title": "BaseVersion",
+    "pdf_page": 117,
+    "depth": 2
+  },
+  {
+    "id": "7.12.4",
+    "title": "ExtensionLevel",
+    "pdf_page": 117,
+    "depth": 2
+  },
+  {
+    "id": "8",
+    "title": "Graphics",
+    "pdf_page": 118,
+    "depth": 0
+  },
+  {
+    "id": "8.1",
+    "title": "General",
+    "pdf_page": 118,
+    "depth": 1
+  },
+  {
+    "id": "8.2",
+    "title": "Graphics Objects",
+    "pdf_page": 118,
+    "depth": 1
+  },
+  {
+    "id": "8.3",
+    "title": "Coordinate Systems",
+    "pdf_page": 122,
+    "depth": 1
+  },
+  {
+    "id": "8.3.1",
+    "title": "General",
+    "pdf_page": 122,
+    "depth": 2
+  },
+  {
+    "id": "8.3.2",
+    "title": "Coordinate Spaces",
+    "pdf_page": 122,
+    "depth": 2
+  },
+  {
+    "id": "8.3.2.1",
+    "title": "General",
+    "pdf_page": 122,
+    "depth": 3
+  },
+  {
+    "id": "8.3.2.2",
+    "title": "Device Space",
+    "pdf_page": 122,
+    "depth": 3
+  },
+  {
+    "id": "8.3.2.3",
+    "title": "User Space",
+    "pdf_page": 123,
+    "depth": 3
+  },
+  {
+    "id": "8.3.2.4",
+    "title": "Other Coordinate Spaces",
+    "pdf_page": 124,
+    "depth": 3
+  },
+  {
+    "id": "8.3.2.5",
+    "title": "Relationships among Coordinate Spaces",
+    "pdf_page": 125,
+    "depth": 3
+  },
+  {
+    "id": "8.3.3",
+    "title": "Common Transformations",
+    "pdf_page": 125,
+    "depth": 2
+  },
+  {
+    "id": "8.3.4",
+    "title": "Transformation Matrices",
+    "pdf_page": 127,
+    "depth": 2
+  },
+  {
+    "id": "8.4",
+    "title": "Graphics State",
+    "pdf_page": 129,
+    "depth": 1
+  },
+  {
+    "id": "8.4.1",
+    "title": "General",
+    "pdf_page": 129,
+    "depth": 2
+  },
+  {
+    "id": "8.4.2",
+    "title": "Graphics State Stack",
+    "pdf_page": 132,
+    "depth": 2
+  },
+  {
+    "id": "8.4.3",
+    "title": "Details of Graphics State Parameters",
+    "pdf_page": 133,
+    "depth": 2
+  },
+  {
+    "id": "8.4.3.1",
+    "title": "General",
+    "pdf_page": 133,
+    "depth": 3
+  },
+  {
+    "id": "8.4.3.2",
+    "title": "Line Width",
+    "pdf_page": 133,
+    "depth": 3
+  },
+  {
+    "id": "8.4.3.3",
+    "title": "Line Cap Style",
+    "pdf_page": 133,
+    "depth": 3
+  },
+  {
+    "id": "8.4.3.4",
+    "title": "Line Join Style",
+    "pdf_page": 133,
+    "depth": 3
+  },
+  {
+    "id": "8.4.3.5",
+    "title": "Miter Limit",
+    "pdf_page": 134,
+    "depth": 3
+  },
+  {
+    "id": "8.4.3.6",
+    "title": "Line Dash Pattern",
+    "pdf_page": 134,
+    "depth": 3
+  },
+  {
+    "id": "8.4.4",
+    "title": "Graphics State Operators",
+    "pdf_page": 135,
+    "depth": 2
+  },
+  {
+    "id": "8.4.5",
+    "title": "Graphics State Parameter Dictionaries",
+    "pdf_page": 136,
+    "depth": 2
+  },
+  {
+    "id": "8.5",
+    "title": "Path Construction and Painting",
+    "pdf_page": 139,
+    "depth": 1
+  },
+  {
+    "id": "8.5.1",
+    "title": "General",
+    "pdf_page": 139,
+    "depth": 2
+  },
+  {
+    "id": "8.5.2",
+    "title": "Path Construction Operators",
+    "pdf_page": 140,
+    "depth": 2
+  },
+  {
+    "id": "8.5.2.1",
+    "title": "General",
+    "pdf_page": 140,
+    "depth": 3
+  },
+  {
+    "id": "8.5.2.2",
+    "title": "Cubic Bézier Curves",
+    "pdf_page": 141,
+    "depth": 3
+  },
+  {
+    "id": "8.5.3",
+    "title": "Path-Painting Operators",
+    "pdf_page": 142,
+    "depth": 2
+  },
+  {
+    "id": "8.5.3.1",
+    "title": "General",
+    "pdf_page": 142,
+    "depth": 3
+  },
+  {
+    "id": "8.5.3.2",
+    "title": "Stroking",
+    "pdf_page": 143,
+    "depth": 3
+  },
+  {
+    "id": "8.5.3.3",
+    "title": "Filling",
+    "pdf_page": 144,
+    "depth": 3
+  },
+  {
+    "id": "8.5.3.3.1",
+    "title": "General",
+    "pdf_page": 144,
+    "depth": 4
+  },
+  {
+    "id": "8.5.3.3.2",
+    "title": "Nonzero Winding Number Rule",
+    "pdf_page": 144,
+    "depth": 4
+  },
+  {
+    "id": "8.5.3.3.3",
+    "title": "Even-Odd Rule",
+    "pdf_page": 145,
+    "depth": 4
+  },
+  {
+    "id": "8.5.4",
+    "title": "Clipping Path Operators",
+    "pdf_page": 145,
+    "depth": 2
+  },
+  {
+    "id": "8.6",
+    "title": "Colour Spaces",
+    "pdf_page": 146,
+    "depth": 1
+  },
+  {
+    "id": "8.6.1",
+    "title": "General",
+    "pdf_page": 146,
+    "depth": 2
+  },
+  {
+    "id": "8.6.2",
+    "title": "Colour Values",
+    "pdf_page": 147,
+    "depth": 2
+  },
+  {
+    "id": "8.6.3",
+    "title": "Colour Space Families",
+    "pdf_page": 147,
+    "depth": 2
+  },
+  {
+    "id": "8.6.4",
+    "title": "Device Colour Spaces",
+    "pdf_page": 150,
+    "depth": 2
+  },
+  {
+    "id": "8.6.4.1",
+    "title": "General",
+    "pdf_page": 150,
+    "depth": 3
+  },
+  {
+    "id": "8.6.4.2",
+    "title": "DeviceGray Colour Space",
+    "pdf_page": 151,
+    "depth": 3
+  },
+  {
+    "id": "8.6.4.3",
+    "title": "DeviceRGB Colour Space",
+    "pdf_page": 151,
+    "depth": 3
+  },
+  {
+    "id": "8.6.4.4",
+    "title": "DeviceCMYK Colour Space",
+    "pdf_page": 151,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5",
+    "title": "CIE-Based Colour Spaces",
+    "pdf_page": 152,
+    "depth": 2
+  },
+  {
+    "id": "8.6.5.1",
+    "title": "General",
+    "pdf_page": 152,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.2",
+    "title": "CalGray Colour Spaces",
+    "pdf_page": 153,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.3",
+    "title": "CalRGB Colour Spaces",
+    "pdf_page": 154,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.4",
+    "title": "Lab Colour Spaces",
+    "pdf_page": 156,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.5",
+    "title": "ICCBased Colour Spaces",
+    "pdf_page": 157,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.6",
+    "title": "Default Colour Spaces",
+    "pdf_page": 160,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.7",
+    "title": "Implicit Conversion of CIE-Based Colour Spaces",
+    "pdf_page": 161,
+    "depth": 3
+  },
+  {
+    "id": "8.6.5.8",
+    "title": "Rendering Intents",
+    "pdf_page": 162,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6",
+    "title": "Special Colour Spaces",
+    "pdf_page": 163,
+    "depth": 2
+  },
+  {
+    "id": "8.6.6.1",
+    "title": "General",
+    "pdf_page": 163,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6.2",
+    "title": "Pattern Colour Spaces",
+    "pdf_page": 164,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6.3",
+    "title": "Indexed Colour Spaces",
+    "pdf_page": 164,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6.4",
+    "title": "Separation Colour Spaces",
+    "pdf_page": 165,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6.5",
+    "title": "DeviceN Colour Spaces",
+    "pdf_page": 167,
+    "depth": 3
+  },
+  {
+    "id": "8.6.6.6",
+    "title": "Multitone Examples",
+    "pdf_page": 174,
+    "depth": 3
+  },
+  {
+    "id": "8.6.7",
+    "title": "Overprint Control",
+    "pdf_page": 177,
+    "depth": 2
+  },
+  {
+    "id": "8.6.8",
+    "title": "Colour Operators",
+    "pdf_page": 179,
+    "depth": 2
+  },
+  {
+    "id": "8.7",
+    "title": "Patterns",
+    "pdf_page": 181,
+    "depth": 1
+  },
+  {
+    "id": "8.7.1",
+    "title": "General",
+    "pdf_page": 181,
+    "depth": 2
+  },
+  {
+    "id": "8.7.2",
+    "title": "General Properties of Patterns",
+    "pdf_page": 182,
+    "depth": 2
+  },
+  {
+    "id": "8.7.3",
+    "title": "Tiling Patterns",
+    "pdf_page": 182,
+    "depth": 2
+  },
+  {
+    "id": "8.7.3.1",
+    "title": "General",
+    "pdf_page": 182,
+    "depth": 3
+  },
+  {
+    "id": "8.7.3.2",
+    "title": "Coloured Tiling Patterns",
+    "pdf_page": 184,
+    "depth": 3
+  },
+  {
+    "id": "8.7.3.3",
+    "title": "Uncoloured Tiling Patterns",
+    "pdf_page": 186,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4",
+    "title": "Shading Patterns",
+    "pdf_page": 189,
+    "depth": 2
+  },
+  {
+    "id": "8.7.4.1",
+    "title": "General",
+    "pdf_page": 189,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4.2",
+    "title": "Shading Operator",
+    "pdf_page": 189,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4.3",
+    "title": "Shading Dictionaries",
+    "pdf_page": 190,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4.4",
+    "title": "Colour Space: Special Considerations",
+    "pdf_page": 192,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4.4.1",
+    "title": "General",
+    "pdf_page": 192,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5",
+    "title": "Shading Types",
+    "pdf_page": 193,
+    "depth": 3
+  },
+  {
+    "id": "8.7.4.5.1",
+    "title": "General",
+    "pdf_page": 193,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.2",
+    "title": "Type 1 (Function-Based) Shadings",
+    "pdf_page": 193,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.3",
+    "title": "Type 2 (Axial) Shadings",
+    "pdf_page": 193,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.4",
+    "title": "Type 3 (Radial) Shadings",
+    "pdf_page": 195,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.5",
+    "title": "Type 4 Shadings (Free-Form Gouraud-Shaded Triangle Meshes)",
+    "pdf_page": 197,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.6",
+    "title": "Type 5 Shadings (Lattice-Form Gouraud-Shaded Triangle Meshes)",
+    "pdf_page": 200,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.7",
+    "title": "Type 6 Shadings (Coons Patch Meshes)",
+    "pdf_page": 202,
+    "depth": 4
+  },
+  {
+    "id": "8.7.4.5.8",
+    "title": "Type 7 Shadings (Tensor-Product Patch Meshes)",
+    "pdf_page": 206,
+    "depth": 4
+  },
+  {
+    "id": "8.8",
+    "title": "External Objects",
+    "pdf_page": 209,
+    "depth": 1
+  },
+  {
+    "id": "8.8.1",
+    "title": "General",
+    "pdf_page": 209,
+    "depth": 2
+  },
+  {
+    "id": "8.8.2",
+    "title": "PostScript XObjects",
+    "pdf_page": 210,
+    "depth": 2
+  },
+  {
+    "id": "8.9",
+    "title": "Images",
+    "pdf_page": 211,
+    "depth": 1
+  },
+  {
+    "id": "8.9.1",
+    "title": "General",
+    "pdf_page": 211,
+    "depth": 2
+  },
+  {
+    "id": "8.9.2",
+    "title": "Image Parameters",
+    "pdf_page": 211,
+    "depth": 2
+  },
+  {
+    "id": "8.9.3",
+    "title": "Sample Representation",
+    "pdf_page": 212,
+    "depth": 2
+  },
+  {
+    "id": "8.9.4",
+    "title": "Image Coordinate System",
+    "pdf_page": 212,
+    "depth": 2
+  },
+  {
+    "id": "8.9.5",
+    "title": "Image Dictionaries",
+    "pdf_page": 214,
+    "depth": 2
+  },
+  {
+    "id": "8.9.5.1",
+    "title": "General",
+    "pdf_page": 214,
+    "depth": 3
+  },
+  {
+    "id": "8.9.5.2",
+    "title": "Decode Arrays",
+    "pdf_page": 217,
+    "depth": 3
+  },
+  {
+    "id": "8.9.5.3",
+    "title": "Image Interpolation",
+    "pdf_page": 219,
+    "depth": 3
+  },
+  {
+    "id": "8.9.5.4",
+    "title": "Alternate Images",
+    "pdf_page": 219,
+    "depth": 3
+  },
+  {
+    "id": "8.9.6",
+    "title": "Masked Images",
+    "pdf_page": 221,
+    "depth": 2
+  },
+  {
+    "id": "8.9.6.1",
+    "title": "General",
+    "pdf_page": 221,
+    "depth": 3
+  },
+  {
+    "id": "8.9.6.2",
+    "title": "Stencil Masking",
+    "pdf_page": 221,
+    "depth": 3
+  },
+  {
+    "id": "8.9.6.3",
+    "title": "Explicit Masking",
+    "pdf_page": 222,
+    "depth": 3
+  },
+  {
+    "id": "8.9.6.4",
+    "title": "Colour Key Masking",
+    "pdf_page": 222,
+    "depth": 3
+  },
+  {
+    "id": "8.9.7",
+    "title": "Inline Images",
+    "pdf_page": 222,
+    "depth": 2
+  },
+  {
+    "id": "8.10",
+    "title": "Form XObjects",
+    "pdf_page": 225,
+    "depth": 1
+  },
+  {
+    "id": "8.10.1",
+    "title": "General",
+    "pdf_page": 225,
+    "depth": 2
+  },
+  {
+    "id": "8.10.2",
+    "title": "Form Dictionaries",
+    "pdf_page": 226,
+    "depth": 2
+  },
+  {
+    "id": "8.10.3",
+    "title": "Group XObjects",
+    "pdf_page": 228,
+    "depth": 2
+  },
+  {
+    "id": "8.10.4",
+    "title": "Reference XObjects",
+    "pdf_page": 228,
+    "depth": 2
+  },
+  {
+    "id": "8.10.4.1",
+    "title": "General",
+    "pdf_page": 228,
+    "depth": 3
+  },
+  {
+    "id": "8.10.4.2",
+    "title": "Printing Reference XObjects",
+    "pdf_page": 229,
+    "depth": 3
+  },
+  {
+    "id": "8.10.4.3",
+    "title": "Special Considerations",
+    "pdf_page": 229,
+    "depth": 3
+  },
+  {
+    "id": "8.11",
+    "title": "Optional Content",
+    "pdf_page": 230,
+    "depth": 1
+  },
+  {
+    "id": "8.11.1",
+    "title": "General",
+    "pdf_page": 230,
+    "depth": 2
+  },
+  {
+    "id": "8.11.2",
+    "title": "Optional Content Groups",
+    "pdf_page": 230,
+    "depth": 2
+  },
+  {
+    "id": "8.11.2.1",
+    "title": "General",
+    "pdf_page": 230,
+    "depth": 3
+  },
+  {
+    "id": "8.11.2.2",
+    "title": "Optional Content Membership Dictionaries",
+    "pdf_page": 231,
+    "depth": 3
+  },
+  {
+    "id": "8.11.2.3",
+    "title": "Intent",
+    "pdf_page": 233,
+    "depth": 3
+  },
+  {
+    "id": "8.11.3",
+    "title": "Making Graphical Content Optional",
+    "pdf_page": 233,
+    "depth": 2
+  },
+  {
+    "id": "8.11.3.1",
+    "title": "General",
+    "pdf_page": 233,
+    "depth": 3
+  },
+  {
+    "id": "8.11.3.2",
+    "title": "Optional Content in Content Streams",
+    "pdf_page": 234,
+    "depth": 3
+  },
+  {
+    "id": "8.11.3.3",
+    "title": "Optional Content in XObjects and Annotations",
+    "pdf_page": 236,
+    "depth": 3
+  },
+  {
+    "id": "8.11.4",
+    "title": "Configuring Optional Content",
+    "pdf_page": 236,
+    "depth": 2
+  },
+  {
+    "id": "8.11.4.1",
+    "title": "General",
+    "pdf_page": 236,
+    "depth": 3
+  },
+  {
+    "id": "8.11.4.2",
+    "title": "Optional Content Properties Dictionary",
+    "pdf_page": 236,
+    "depth": 3
+  },
+  {
+    "id": "8.11.4.3",
+    "title": "Optional Content Configuration Dictionaries",
+    "pdf_page": 237,
+    "depth": 3
+  },
+  {
+    "id": "8.11.4.4",
+    "title": "Usage and Usage Application Dictionaries",
+    "pdf_page": 240,
+    "depth": 3
+  },
+  {
+    "id": "8.11.4.5",
+    "title": "Determining the State of Optional Content Groups",
+    "pdf_page": 243,
+    "depth": 3
+  },
+  {
+    "id": "9",
+    "title": "Text",
+    "pdf_page": 245,
+    "depth": 0
+  },
+  {
+    "id": "9.1",
+    "title": "General",
+    "pdf_page": 245,
+    "depth": 1
+  },
+  {
+    "id": "9.2",
+    "title": "Organization and Use of Fonts",
+    "pdf_page": 245,
+    "depth": 1
+  },
+  {
+    "id": "9.2.1",
+    "title": "General",
+    "pdf_page": 245,
+    "depth": 2
+  },
+  {
+    "id": "9.2.2",
+    "title": "Basics of Showing Text",
+    "pdf_page": 246,
+    "depth": 2
+  },
+  {
+    "id": "9.2.3",
+    "title": "Achieving Special Graphical Effects",
+    "pdf_page": 247,
+    "depth": 2
+  },
+  {
+    "id": "9.2.4",
+    "title": "Glyph Positioning and Metrics",
+    "pdf_page": 249,
+    "depth": 2
+  },
+  {
+    "id": "9.3",
+    "title": "Text State Parameters and Operators",
+    "pdf_page": 251,
+    "depth": 1
+  },
+  {
+    "id": "9.3.1",
+    "title": "General",
+    "pdf_page": 251,
+    "depth": 2
+  },
+  {
+    "id": "9.3.2",
+    "title": "Character Spacing",
+    "pdf_page": 252,
+    "depth": 2
+  },
+  {
+    "id": "9.3.3",
+    "title": "Word Spacing",
+    "pdf_page": 252,
+    "depth": 2
+  },
+  {
+    "id": "9.3.4",
+    "title": "Horizontal Scaling",
+    "pdf_page": 253,
+    "depth": 2
+  },
+  {
+    "id": "9.3.5",
+    "title": "Leading",
+    "pdf_page": 253,
+    "depth": 2
+  },
+  {
+    "id": "9.3.6",
+    "title": "Text Rendering Mode",
+    "pdf_page": 254,
+    "depth": 2
+  },
+  {
+    "id": "9.3.7",
+    "title": "Text Rise",
+    "pdf_page": 255,
+    "depth": 2
+  },
+  {
+    "id": "9.3.8",
+    "title": "Text Knockout",
+    "pdf_page": 255,
+    "depth": 2
+  },
+  {
+    "id": "9.4",
+    "title": "Text Objects",
+    "pdf_page": 256,
+    "depth": 1
+  },
+  {
+    "id": "9.4.1",
+    "title": "General",
+    "pdf_page": 256,
+    "depth": 2
+  },
+  {
+    "id": "9.4.2",
+    "title": "Text-Positioning Operators",
+    "pdf_page": 257,
+    "depth": 2
+  },
+  {
+    "id": "9.4.3",
+    "title": "Text-Showing Operators",
+    "pdf_page": 258,
+    "depth": 2
+  },
+  {
+    "id": "9.4.4",
+    "title": "Text Space Details",
+    "pdf_page": 260,
+    "depth": 2
+  },
+  {
+    "id": "9.5",
+    "title": "Introduction to Font Data Structures",
+    "pdf_page": 261,
+    "depth": 1
+  },
+  {
+    "id": "9.6",
+    "title": "Simple Fonts",
+    "pdf_page": 262,
+    "depth": 1
+  },
+  {
+    "id": "9.6.1",
+    "title": "General",
+    "pdf_page": 262,
+    "depth": 2
+  },
+  {
+    "id": "9.6.2",
+    "title": "Type 1 Fonts",
+    "pdf_page": 262,
+    "depth": 2
+  },
+  {
+    "id": "9.6.2.1",
+    "title": "General",
+    "pdf_page": 262,
+    "depth": 3
+  },
+  {
+    "id": "9.6.2.2",
+    "title": "Standard Type 1 Fonts (Standard 14 Fonts)",
+    "pdf_page": 264,
+    "depth": 3
+  },
+  {
+    "id": "9.6.2.3",
+    "title": "Multiple Master Fonts",
+    "pdf_page": 264,
+    "depth": 3
+  },
+  {
+    "id": "9.6.3",
+    "title": "TrueType Fonts",
+    "pdf_page": 265,
+    "depth": 2
+  },
+  {
+    "id": "9.6.4",
+    "title": "Font Subsets",
+    "pdf_page": 266,
+    "depth": 2
+  },
+  {
+    "id": "9.6.5",
+    "title": "Type 3 Fonts",
+    "pdf_page": 266,
+    "depth": 2
+  },
+  {
+    "id": "9.6.6",
+    "title": "Character Encoding",
+    "pdf_page": 270,
+    "depth": 2
+  },
+  {
+    "id": "9.6.6.1",
+    "title": "General",
+    "pdf_page": 270,
+    "depth": 3
+  },
+  {
+    "id": "9.6.6.2",
+    "title": "Encodings for Type 1 Fonts",
+    "pdf_page": 272,
+    "depth": 3
+  },
+  {
+    "id": "9.6.6.3",
+    "title": "Encodings for Type 3 Fonts",
+    "pdf_page": 273,
+    "depth": 3
+  },
+  {
+    "id": "9.6.6.4",
+    "title": "Encodings for TrueType Fonts",
+    "pdf_page": 273,
+    "depth": 3
+  },
+  {
+    "id": "9.7",
+    "title": "Composite Fonts",
+    "pdf_page": 275,
+    "depth": 1
+  },
+  {
+    "id": "9.7.1",
+    "title": "General",
+    "pdf_page": 275,
+    "depth": 2
+  },
+  {
+    "id": "9.7.2",
+    "title": "CID-Keyed Fonts Overview",
+    "pdf_page": 275,
+    "depth": 2
+  },
+  {
+    "id": "9.7.3",
+    "title": "CIDSystemInfo Dictionaries",
+    "pdf_page": 276,
+    "depth": 2
+  },
+  {
+    "id": "9.7.4",
+    "title": "CIDFonts",
+    "pdf_page": 277,
+    "depth": 2
+  },
+  {
+    "id": "9.7.4.1",
+    "title": "General",
+    "pdf_page": 277,
+    "depth": 3
+  },
+  {
+    "id": "9.7.4.2",
+    "title": "Glyph Selection in CIDFonts",
+    "pdf_page": 278,
+    "depth": 3
+  },
+  {
+    "id": "9.7.4.3",
+    "title": "Glyph Metrics in CIDFonts",
+    "pdf_page": 279,
+    "depth": 3
+  },
+  {
+    "id": "9.7.5",
+    "title": "CMaps",
+    "pdf_page": 280,
+    "depth": 2
+  },
+  {
+    "id": "9.7.5.1",
+    "title": "General",
+    "pdf_page": 280,
+    "depth": 3
+  },
+  {
+    "id": "9.7.5.2",
+    "title": "Predefined CMaps",
+    "pdf_page": 281,
+    "depth": 3
+  },
+  {
+    "id": "9.7.5.3",
+    "title": "Embedded CMap Files",
+    "pdf_page": 285,
+    "depth": 3
+  },
+  {
+    "id": "9.7.5.4",
+    "title": "CMap Example and Operator Summary",
+    "pdf_page": 285,
+    "depth": 3
+  },
+  {
+    "id": "9.7.6",
+    "title": "Type 0 Font Dictionaries",
+    "pdf_page": 287,
+    "depth": 2
+  },
+  {
+    "id": "9.7.6.1",
+    "title": "General",
+    "pdf_page": 287,
+    "depth": 3
+  },
+  {
+    "id": "9.7.6.2",
+    "title": "CMap Mapping",
+    "pdf_page": 288,
+    "depth": 3
+  },
+  {
+    "id": "9.7.6.3",
+    "title": "Handling Undefined Characters",
+    "pdf_page": 288,
+    "depth": 3
+  },
+  {
+    "id": "9.8",
+    "title": "Font Descriptors",
+    "pdf_page": 289,
+    "depth": 1
+  },
+  {
+    "id": "9.8.1",
+    "title": "General",
+    "pdf_page": 289,
+    "depth": 2
+  },
+  {
+    "id": "9.8.2",
+    "title": "Font Descriptor Flags",
+    "pdf_page": 291,
+    "depth": 2
+  },
+  {
+    "id": "9.8.3",
+    "title": "Font Descriptors for CIDFonts",
+    "pdf_page": 293,
+    "depth": 2
+  },
+  {
+    "id": "9.8.3.1",
+    "title": "General",
+    "pdf_page": 293,
+    "depth": 3
+  },
+  {
+    "id": "9.8.3.2",
+    "title": "Style",
+    "pdf_page": 293,
+    "depth": 3
+  },
+  {
+    "id": "9.8.3.3",
+    "title": "FD",
+    "pdf_page": 294,
+    "depth": 3
+  },
+  {
+    "id": "9.9",
+    "title": "Embedded Font Programs",
+    "pdf_page": 296,
+    "depth": 1
+  },
+  {
+    "id": "9.10",
+    "title": "Extraction of Text Content",
+    "pdf_page": 300,
+    "depth": 1
+  },
+  {
+    "id": "9.10.1",
+    "title": "General",
+    "pdf_page": 300,
+    "depth": 2
+  },
+  {
+    "id": "9.10.2",
+    "title": "Mapping Character Codes to Unicode Values",
+    "pdf_page": 300,
+    "depth": 2
+  },
+  {
+    "id": "9.10.3",
+    "title": "ToUnicode CMaps",
+    "pdf_page": 301,
+    "depth": 2
+  },
+  {
+    "id": "10",
+    "title": "Rendering",
+    "pdf_page": 304,
+    "depth": 0
+  },
+  {
+    "id": "10.1",
+    "title": "General",
+    "pdf_page": 304,
+    "depth": 1
+  },
+  {
+    "id": "10.2",
+    "title": "CIE-Based Colour to Device Colour",
+    "pdf_page": 305,
+    "depth": 1
+  },
+  {
+    "id": "10.3",
+    "title": "Conversions among Device Colour Spaces",
+    "pdf_page": 305,
+    "depth": 1
+  },
+  {
+    "id": "10.3.1",
+    "title": "General",
+    "pdf_page": 305,
+    "depth": 2
+  },
+  {
+    "id": "10.3.2",
+    "title": "Conversion between DeviceGray and DeviceRGB",
+    "pdf_page": 306,
+    "depth": 2
+  },
+  {
+    "id": "10.3.3",
+    "title": "Conversion between DeviceGray and DeviceCMYK",
+    "pdf_page": 306,
+    "depth": 2
+  },
+  {
+    "id": "10.3.4",
+    "title": "Conversion from DeviceRGB to DeviceCMYK",
+    "pdf_page": 307,
+    "depth": 2
+  },
+  {
+    "id": "10.3.5",
+    "title": "Conversion from DeviceCMYK to DeviceRGB",
+    "pdf_page": 308,
+    "depth": 2
+  },
+  {
+    "id": "10.4",
+    "title": "Transfer Functions",
+    "pdf_page": 308,
+    "depth": 1
+  },
+  {
+    "id": "10.5",
+    "title": "Halftones",
+    "pdf_page": 309,
+    "depth": 1
+  },
+  {
+    "id": "10.5.1",
+    "title": "General",
+    "pdf_page": 309,
+    "depth": 2
+  },
+  {
+    "id": "10.5.2",
+    "title": "Halftone Screens",
+    "pdf_page": 310,
+    "depth": 2
+  },
+  {
+    "id": "10.5.3",
+    "title": "Spot Functions",
+    "pdf_page": 310,
+    "depth": 2
+  },
+  {
+    "id": "10.5.4",
+    "title": "Threshold Arrays",
+    "pdf_page": 315,
+    "depth": 2
+  },
+  {
+    "id": "10.5.5",
+    "title": "Halftone Dictionaries",
+    "pdf_page": 316,
+    "depth": 2
+  },
+  {
+    "id": "10.5.5.1",
+    "title": "General",
+    "pdf_page": 316,
+    "depth": 3
+  },
+  {
+    "id": "10.5.5.2",
+    "title": "Type 1 Halftones",
+    "pdf_page": 317,
+    "depth": 3
+  },
+  {
+    "id": "10.5.5.3",
+    "title": "Type 6 Halftones",
+    "pdf_page": 318,
+    "depth": 3
+  },
+  {
+    "id": "10.5.5.4",
+    "title": "Type 10 Halftones",
+    "pdf_page": 319,
+    "depth": 3
+  },
+  {
+    "id": "10.5.5.5",
+    "title": "Type 16 Halftones",
+    "pdf_page": 321,
+    "depth": 3
+  },
+  {
+    "id": "10.5.5.6",
+    "title": "Type 5 Halftones",
+    "pdf_page": 322,
+    "depth": 3
+  },
+  {
+    "id": "10.6",
+    "title": "Scan Conversion Details",
+    "pdf_page": 324,
+    "depth": 1
+  },
+  {
+    "id": "10.6.1",
+    "title": "General",
+    "pdf_page": 324,
+    "depth": 2
+  },
+  {
+    "id": "10.6.2",
+    "title": "Flatness Tolerance",
+    "pdf_page": 324,
+    "depth": 2
+  },
+  {
+    "id": "10.6.3",
+    "title": "Smoothness Tolerance",
+    "pdf_page": 325,
+    "depth": 2
+  },
+  {
+    "id": "10.6.4",
+    "title": "Scan Conversion Rules",
+    "pdf_page": 325,
+    "depth": 2
+  },
+  {
+    "id": "10.6.5",
+    "title": "Automatic Stroke Adjustment",
+    "pdf_page": 326,
+    "depth": 2
+  },
+  {
+    "id": "11",
+    "title": "Transparency",
+    "pdf_page": 328,
+    "depth": 0
+  },
+  {
+    "id": "11.1",
+    "title": "General",
+    "pdf_page": 328,
+    "depth": 1
+  },
+  {
+    "id": "11.2",
+    "title": "Overview of Transparency",
+    "pdf_page": 328,
+    "depth": 1
+  },
+  {
+    "id": "11.3",
+    "title": "Basic Compositing Computations",
+    "pdf_page": 330,
+    "depth": 1
+  },
+  {
+    "id": "11.3.1",
+    "title": "General",
+    "pdf_page": 330,
+    "depth": 2
+  },
+  {
+    "id": "11.3.2",
+    "title": "Basic Notation for Compositing Computations",
+    "pdf_page": 330,
+    "depth": 2
+  },
+  {
+    "id": "11.3.3",
+    "title": "Basic Compositing Formula",
+    "pdf_page": 330,
+    "depth": 2
+  },
+  {
+    "id": "11.3.4",
+    "title": "Blending Colour Space",
+    "pdf_page": 331,
+    "depth": 2
+  },
+  {
+    "id": "11.3.5",
+    "title": "Blend Mode",
+    "pdf_page": 332,
+    "depth": 2
+  },
+  {
+    "id": "11.3.6",
+    "title": "Interpretation of Alpha",
+    "pdf_page": 336,
+    "depth": 2
+  },
+  {
+    "id": "11.3.7",
+    "title": "Shape and Opacity Computations",
+    "pdf_page": 337,
+    "depth": 2
+  },
+  {
+    "id": "11.3.7.1",
+    "title": "General",
+    "pdf_page": 337,
+    "depth": 3
+  },
+  {
+    "id": "11.3.7.2",
+    "title": "Source Shape and Opacity",
+    "pdf_page": 337,
+    "depth": 3
+  },
+  {
+    "id": "11.3.7.3",
+    "title": "Result Shape and Opacity",
+    "pdf_page": 338,
+    "depth": 3
+  },
+  {
+    "id": "11.3.8",
+    "title": "Summary of Basic Compositing Computations",
+    "pdf_page": 339,
+    "depth": 2
+  },
+  {
+    "id": "11.4",
+    "title": "Transparency Groups",
+    "pdf_page": 340,
+    "depth": 1
+  },
+  {
+    "id": "11.4.1",
+    "title": "General",
+    "pdf_page": 340,
+    "depth": 2
+  },
+  {
+    "id": "11.4.2",
+    "title": "Notation for Group Compositing Computations",
+    "pdf_page": 340,
+    "depth": 2
+  },
+  {
+    "id": "11.4.3",
+    "title": "Group Structure and Nomenclature",
+    "pdf_page": 342,
+    "depth": 2
+  },
+  {
+    "id": "11.4.4",
+    "title": "Group Compositing Computations",
+    "pdf_page": 343,
+    "depth": 2
+  },
+  {
+    "id": "11.4.5",
+    "title": "Isolated Groups",
+    "pdf_page": 346,
+    "depth": 2
+  },
+  {
+    "id": "11.4.6",
+    "title": "Knockout Groups",
+    "pdf_page": 346,
+    "depth": 2
+  },
+  {
+    "id": "11.4.7",
+    "title": "Page Group",
+    "pdf_page": 348,
+    "depth": 2
+  },
+  {
+    "id": "11.4.8",
+    "title": "Summary of Group Compositing Computations",
+    "pdf_page": 349,
+    "depth": 2
+  },
+  {
+    "id": "11.5",
+    "title": "Soft Masks",
+    "pdf_page": 350,
+    "depth": 1
+  },
+  {
+    "id": "11.5.1",
+    "title": "General",
+    "pdf_page": 350,
+    "depth": 2
+  },
+  {
+    "id": "11.5.2",
+    "title": "Deriving a Soft Mask from Group Alpha",
+    "pdf_page": 350,
+    "depth": 2
+  },
+  {
+    "id": "11.5.3",
+    "title": "Deriving a Soft Mask from Group Luminosity",
+    "pdf_page": 351,
+    "depth": 2
+  },
+  {
+    "id": "11.6",
+    "title": "Specifying Transparency in PDF",
+    "pdf_page": 352,
+    "depth": 1
+  },
+  {
+    "id": "11.6.1",
+    "title": "General",
+    "pdf_page": 352,
+    "depth": 2
+  },
+  {
+    "id": "11.6.2",
+    "title": "Specifying Source and Backdrop Colours",
+    "pdf_page": 352,
+    "depth": 2
+  },
+  {
+    "id": "11.6.3",
+    "title": "Specifying Blending Colour Space and Blend Mode",
+    "pdf_page": 352,
+    "depth": 2
+  },
+  {
+    "id": "11.6.4",
+    "title": "Specifying Shape and Opacity",
+    "pdf_page": 352,
+    "depth": 2
+  },
+  {
+    "id": "11.6.4.1",
+    "title": "General",
+    "pdf_page": 352,
+    "depth": 3
+  },
+  {
+    "id": "11.6.4.2",
+    "title": "Object Shape and Opacity",
+    "pdf_page": 353,
+    "depth": 3
+  },
+  {
+    "id": "11.6.4.3",
+    "title": "Mask Shape and Opacity",
+    "pdf_page": 353,
+    "depth": 3
+  },
+  {
+    "id": "11.6.4.4",
+    "title": "Constant Shape and Opacity",
+    "pdf_page": 354,
+    "depth": 3
+  },
+  {
+    "id": "11.6.5",
+    "title": "Specifying Soft Masks",
+    "pdf_page": 354,
+    "depth": 2
+  },
+  {
+    "id": "11.6.5.1",
+    "title": "General",
+    "pdf_page": 354,
+    "depth": 3
+  },
+  {
+    "id": "11.6.5.2",
+    "title": "Soft-Mask Dictionaries",
+    "pdf_page": 354,
+    "depth": 3
+  },
+  {
+    "id": "11.6.5.3",
+    "title": "Soft-Mask Images",
+    "pdf_page": 355,
+    "depth": 3
+  },
+  {
+    "id": "11.6.6",
+    "title": "Transparency Group XObjects",
+    "pdf_page": 357,
+    "depth": 2
+  },
+  {
+    "id": "11.6.7",
+    "title": "Patterns and Transparency",
+    "pdf_page": 360,
+    "depth": 2
+  },
+  {
+    "id": "11.7",
+    "title": "Colour Space and Rendering Issues",
+    "pdf_page": 361,
+    "depth": 1
+  },
+  {
+    "id": "11.7.1",
+    "title": "General",
+    "pdf_page": 361,
+    "depth": 2
+  },
+  {
+    "id": "11.7.2",
+    "title": "Colour Spaces for Transparency Groups",
+    "pdf_page": 361,
+    "depth": 2
+  },
+  {
+    "id": "11.7.3",
+    "title": "Spot Colours and Transparency",
+    "pdf_page": 362,
+    "depth": 2
+  },
+  {
+    "id": "11.7.4",
+    "title": "Overprinting and Transparency",
+    "pdf_page": 363,
+    "depth": 2
+  },
+  {
+    "id": "11.7.4.1",
+    "title": "General",
+    "pdf_page": 363,
+    "depth": 3
+  },
+  {
+    "id": "11.7.4.2",
+    "title": "Blend Modes and Overprinting",
+    "pdf_page": 363,
+    "depth": 3
+  },
+  {
+    "id": "11.7.4.3",
+    "title": "Compatibility with Opaque Overprinting",
+    "pdf_page": 364,
+    "depth": 3
+  },
+  {
+    "id": "11.7.4.4",
+    "title": "Special Path-Painting Considerations",
+    "pdf_page": 365,
+    "depth": 3
+  },
+  {
+    "id": "11.7.4.5",
+    "title": "Summary of Overprinting Behaviour",
+    "pdf_page": 366,
+    "depth": 3
+  },
+  {
+    "id": "11.7.5",
+    "title": "Rendering Parameters and Transparency",
+    "pdf_page": 368,
+    "depth": 2
+  },
+  {
+    "id": "11.7.5.1",
+    "title": "General",
+    "pdf_page": 368,
+    "depth": 3
+  },
+  {
+    "id": "11.7.5.2",
+    "title": "Halftone and Transfer Function",
+    "pdf_page": 368,
+    "depth": 3
+  },
+  {
+    "id": "11.7.5.3",
+    "title": "Rendering Intent and Colour Conversions",
+    "pdf_page": 369,
+    "depth": 3
+  },
+  {
+    "id": "12",
+    "title": "Interactive Features",
+    "pdf_page": 370,
+    "depth": 0
+  },
+  {
+    "id": "12.1",
+    "title": "General",
+    "pdf_page": 370,
+    "depth": 1
+  },
+  {
+    "id": "12.2",
+    "title": "Viewer Preferences",
+    "pdf_page": 370,
+    "depth": 1
+  },
+  {
+    "id": "12.3",
+    "title": "Document-Level Navigation",
+    "pdf_page": 373,
+    "depth": 1
+  },
+  {
+    "id": "12.3.1",
+    "title": "General",
+    "pdf_page": 373,
+    "depth": 2
+  },
+  {
+    "id": "12.3.2",
+    "title": "Destinations",
+    "pdf_page": 373,
+    "depth": 2
+  },
+  {
+    "id": "12.3.2.1",
+    "title": "General",
+    "pdf_page": 373,
+    "depth": 3
+  },
+  {
+    "id": "12.3.2.2",
+    "title": "Explicit Destinations",
+    "pdf_page": 374,
+    "depth": 3
+  },
+  {
+    "id": "12.3.2.3",
+    "title": "Named Destinations",
+    "pdf_page": 375,
+    "depth": 3
+  },
+  {
+    "id": "12.3.3",
+    "title": "Document Outline",
+    "pdf_page": 375,
+    "depth": 2
+  },
+  {
+    "id": "12.3.4",
+    "title": "Thumbnail Images",
+    "pdf_page": 378,
+    "depth": 2
+  },
+  {
+    "id": "12.3.5",
+    "title": "Collections",
+    "pdf_page": 378,
+    "depth": 2
+  },
+  {
+    "id": "12.4",
+    "title": "Page-Level Navigation",
+    "pdf_page": 382,
+    "depth": 1
+  },
+  {
+    "id": "12.4.1",
+    "title": "General",
+    "pdf_page": 382,
+    "depth": 2
+  },
+  {
+    "id": "12.4.2",
+    "title": "Page Labels",
+    "pdf_page": 382,
+    "depth": 2
+  },
+  {
+    "id": "12.4.3",
+    "title": "Articles",
+    "pdf_page": 383,
+    "depth": 2
+  },
+  {
+    "id": "12.4.4",
+    "title": "Presentations",
+    "pdf_page": 385,
+    "depth": 2
+  },
+  {
+    "id": "12.4.4.1",
+    "title": "General",
+    "pdf_page": 385,
+    "depth": 3
+  },
+  {
+    "id": "12.4.4.2",
+    "title": "Sub-page Navigation",
+    "pdf_page": 388,
+    "depth": 3
+  },
+  {
+    "id": "12.5",
+    "title": "Annotations",
+    "pdf_page": 389,
+    "depth": 1
+  },
+  {
+    "id": "12.5.1",
+    "title": "General",
+    "pdf_page": 389,
+    "depth": 2
+  },
+  {
+    "id": "12.5.2",
+    "title": "Annotation Dictionaries",
+    "pdf_page": 390,
+    "depth": 2
+  },
+  {
+    "id": "12.5.3",
+    "title": "Annotation Flags",
+    "pdf_page": 392,
+    "depth": 2
+  },
+  {
+    "id": "12.5.4",
+    "title": "Border Styles",
+    "pdf_page": 394,
+    "depth": 2
+  },
+  {
+    "id": "12.5.5",
+    "title": "Appearance Streams",
+    "pdf_page": 395,
+    "depth": 2
+  },
+  {
+    "id": "12.5.6",
+    "title": "Annotation Types",
+    "pdf_page": 397,
+    "depth": 2
+  },
+  {
+    "id": "12.5.6.1",
+    "title": "General",
+    "pdf_page": 397,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.2",
+    "title": "Markup Annotations",
+    "pdf_page": 399,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.3",
+    "title": "Annotation States",
+    "pdf_page": 401,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.4",
+    "title": "Text Annotations",
+    "pdf_page": 402,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.5",
+    "title": "Link Annotations",
+    "pdf_page": 402,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.6",
+    "title": "Free Text Annotations",
+    "pdf_page": 403,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.7",
+    "title": "Line Annotations",
+    "pdf_page": 405,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.8",
+    "title": "Square and Circle Annotations",
+    "pdf_page": 409,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.9",
+    "title": "Polygon and Polyline Annotations",
+    "pdf_page": 410,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.10",
+    "title": "Text Markup Annotations",
+    "pdf_page": 411,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.11",
+    "title": "Caret Annotations",
+    "pdf_page": 412,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.12",
+    "title": "Rubber Stamp Annotations",
+    "pdf_page": 412,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.13",
+    "title": "Ink Annotations",
+    "pdf_page": 413,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.14",
+    "title": "Pop-up Annotations",
+    "pdf_page": 413,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.15",
+    "title": "File Attachment Annotations",
+    "pdf_page": 414,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.16",
+    "title": "Sound Annotations",
+    "pdf_page": 414,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.17",
+    "title": "Movie Annotations",
+    "pdf_page": 415,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.18",
+    "title": "Screen Annotations",
+    "pdf_page": 415,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.19",
+    "title": "Widget Annotations",
+    "pdf_page": 416,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.20",
+    "title": "Printer’s Mark Annotations",
+    "pdf_page": 418,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.21",
+    "title": "Trap Network Annotations",
+    "pdf_page": 418,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.22",
+    "title": "Watermark Annotations",
+    "pdf_page": 418,
+    "depth": 3
+  },
+  {
+    "id": "12.5.6.23",
+    "title": "Redaction Annotations",
+    "pdf_page": 420,
+    "depth": 3
+  },
+  {
+    "id": "12.6",
+    "title": "Actions",
+    "pdf_page": 422,
+    "depth": 1
+  },
+  {
+    "id": "12.6.1",
+    "title": "General",
+    "pdf_page": 422,
+    "depth": 2
+  },
+  {
+    "id": "12.6.2",
+    "title": "Action Dictionaries",
+    "pdf_page": 422,
+    "depth": 2
+  },
+  {
+    "id": "12.6.3",
+    "title": "Trigger Events",
+    "pdf_page": 423,
+    "depth": 2
+  },
+  {
+    "id": "12.6.4",
+    "title": "Action Types",
+    "pdf_page": 425,
+    "depth": 2
+  },
+  {
+    "id": "12.6.4.1",
+    "title": "General",
+    "pdf_page": 425,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.2",
+    "title": "Go-To Actions",
+    "pdf_page": 426,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.3",
+    "title": "Remote Go-To Actions",
+    "pdf_page": 427,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.4",
+    "title": "Embedded Go-To Actions",
+    "pdf_page": 427,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.5",
+    "title": "Launch Actions",
+    "pdf_page": 430,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.6",
+    "title": "Thread Actions",
+    "pdf_page": 431,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.7",
+    "title": "URI Actions",
+    "pdf_page": 431,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.8",
+    "title": "Sound Actions",
+    "pdf_page": 433,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.9",
+    "title": "Movie Actions",
+    "pdf_page": 433,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.10",
+    "title": "Hide Actions",
+    "pdf_page": 434,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.11",
+    "title": "Named Actions",
+    "pdf_page": 434,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.12",
+    "title": "Set-OCG-State Actions",
+    "pdf_page": 435,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.13",
+    "title": "Rendition Actions",
+    "pdf_page": 436,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.14",
+    "title": "Transition Actions",
+    "pdf_page": 437,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.15",
+    "title": "Go-To-3D-View Actions",
+    "pdf_page": 437,
+    "depth": 3
+  },
+  {
+    "id": "12.6.4.16",
+    "title": "JavaScript Actions",
+    "pdf_page": 438,
+    "depth": 3
+  },
+  {
+    "id": "12.7",
+    "title": "Interactive Forms",
+    "pdf_page": 438,
+    "depth": 1
+  },
+  {
+    "id": "12.7.1",
+    "title": "General",
+    "pdf_page": 438,
+    "depth": 2
+  },
+  {
+    "id": "12.7.2",
+    "title": "Interactive Form Dictionary",
+    "pdf_page": 439,
+    "depth": 2
+  },
+  {
+    "id": "12.7.3",
+    "title": "Field Dictionaries",
+    "pdf_page": 440,
+    "depth": 2
+  },
+  {
+    "id": "12.7.3.1",
+    "title": "General",
+    "pdf_page": 440,
+    "depth": 3
+  },
+  {
+    "id": "12.7.3.2",
+    "title": "Field Names",
+    "pdf_page": 442,
+    "depth": 3
+  },
+  {
+    "id": "12.7.3.3",
+    "title": "Variable Text",
+    "pdf_page": 442,
+    "depth": 3
+  },
+  {
+    "id": "12.7.3.4",
+    "title": "Rich Text Strings",
+    "pdf_page": 444,
+    "depth": 3
+  },
+  {
+    "id": "12.7.4",
+    "title": "Field Types",
+    "pdf_page": 447,
+    "depth": 2
+  },
+  {
+    "id": "12.7.4.1",
+    "title": "General",
+    "pdf_page": 447,
+    "depth": 3
+  },
+  {
+    "id": "12.7.4.2",
+    "title": "Button Fields",
+    "pdf_page": 447,
+    "depth": 3
+  },
+  {
+    "id": "12.7.4.2.1",
+    "title": "General",
+    "pdf_page": 447,
+    "depth": 4
+  },
+  {
+    "id": "12.7.4.2.2",
+    "title": "Pushbuttons",
+    "pdf_page": 448,
+    "depth": 4
+  },
+  {
+    "id": "12.7.4.2.3",
+    "title": "Check Boxes",
+    "pdf_page": 448,
+    "depth": 4
+  },
+  {
+    "id": "12.7.4.2.4",
+    "title": "Radio Buttons",
+    "pdf_page": 449,
+    "depth": 4
+  },
+  {
+    "id": "12.7.4.3",
+    "title": "Text Fields",
+    "pdf_page": 450,
+    "depth": 3
+  },
+  {
+    "id": "12.7.4.4",
+    "title": "Choice Fields",
+    "pdf_page": 452,
+    "depth": 3
+  },
+  {
+    "id": "12.7.4.5",
+    "title": "Signature Fields",
+    "pdf_page": 454,
+    "depth": 3
+  },
+  {
+    "id": "12.7.5",
+    "title": "Form Actions",
+    "pdf_page": 459,
+    "depth": 2
+  },
+  {
+    "id": "12.7.5.1",
+    "title": "General",
+    "pdf_page": 459,
+    "depth": 3
+  },
+  {
+    "id": "12.7.5.2",
+    "title": "Submit-Form Action",
+    "pdf_page": 459,
+    "depth": 3
+  },
+  {
+    "id": "12.7.5.3",
+    "title": "Reset-Form Action",
+    "pdf_page": 463,
+    "depth": 3
+  },
+  {
+    "id": "12.7.5.4",
+    "title": "Import-Data Action",
+    "pdf_page": 464,
+    "depth": 3
+  },
+  {
+    "id": "12.7.6",
+    "title": "Named Pages",
+    "pdf_page": 464,
+    "depth": 2
+  },
+  {
+    "id": "12.7.7",
+    "title": "Forms Data Format",
+    "pdf_page": 464,
+    "depth": 2
+  },
+  {
+    "id": "12.7.7.1",
+    "title": "General",
+    "pdf_page": 464,
+    "depth": 3
+  },
+  {
+    "id": "12.7.7.2",
+    "title": "FDF File Structure",
+    "pdf_page": 465,
+    "depth": 3
+  },
+  {
+    "id": "12.7.7.2.1",
+    "title": "General",
+    "pdf_page": 465,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.2.2",
+    "title": "FDF Header",
+    "pdf_page": 465,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.2.3",
+    "title": "FDF Body",
+    "pdf_page": 465,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.2.4",
+    "title": "FDF Trailer",
+    "pdf_page": 466,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.3",
+    "title": "FDF Catalog",
+    "pdf_page": 466,
+    "depth": 3
+  },
+  {
+    "id": "12.7.7.3.1",
+    "title": "General",
+    "pdf_page": 466,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.3.2",
+    "title": "FDF Fields",
+    "pdf_page": 469,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.3.3",
+    "title": "FDF Pages",
+    "pdf_page": 471,
+    "depth": 4
+  },
+  {
+    "id": "12.7.7.3.4",
+    "title": "FDF Annotation Dictionaries",
+    "pdf_page": 472,
+    "depth": 4
+  },
+  {
+    "id": "12.7.8",
+    "title": "XFA Forms",
+    "pdf_page": 472,
+    "depth": 2
+  },
+  {
+    "id": "12.8",
+    "title": "Digital Signatures",
+    "pdf_page": 474,
+    "depth": 1
+  },
+  {
+    "id": "12.8.1",
+    "title": "General",
+    "pdf_page": 474,
+    "depth": 2
+  },
+  {
+    "id": "12.8.2",
+    "title": "Transform Methods",
+    "pdf_page": 478,
+    "depth": 2
+  },
+  {
+    "id": "12.8.2.1",
+    "title": "General",
+    "pdf_page": 478,
+    "depth": 3
+  },
+  {
+    "id": "12.8.2.2",
+    "title": "DocMDP",
+    "pdf_page": 478,
+    "depth": 3
+  },
+  {
+    "id": "12.8.2.2.1",
+    "title": "General",
+    "pdf_page": 478,
+    "depth": 4
+  },
+  {
+    "id": "12.8.2.2.2",
+    "title": "Validating Signatures That Use the DocMDP Transform Method",
+    "pdf_page": 478,
+    "depth": 4
+  },
+  {
+    "id": "12.8.2.3",
+    "title": "UR",
+    "pdf_page": 479,
+    "depth": 3
+  },
+  {
+    "id": "12.8.2.4",
+    "title": "FieldMDP",
+    "pdf_page": 481,
+    "depth": 3
+  },
+  {
+    "id": "12.8.3",
+    "title": "Signature Interoperability",
+    "pdf_page": 482,
+    "depth": 2
+  },
+  {
+    "id": "12.8.3.1",
+    "title": "General",
+    "pdf_page": 482,
+    "depth": 3
+  },
+  {
+    "id": "12.8.3.2",
+    "title": "PKCS#1 Signatures",
+    "pdf_page": 482,
+    "depth": 3
+  },
+  {
+    "id": "12.8.3.3",
+    "title": "PKCS#7 Signatures as used in ISO 32000",
+    "pdf_page": 483,
+    "depth": 3
+  },
+  {
+    "id": "12.8.3.3.1",
+    "title": "General",
+    "pdf_page": 483,
+    "depth": 4
+  },
+  {
+    "id": "12.8.3.3.2",
+    "title": "Revocation Information",
+    "pdf_page": 483,
+    "depth": 4
+  },
+  {
+    "id": "12.8.4",
+    "title": "Permissions",
+    "pdf_page": 484,
+    "depth": 2
+  },
+  {
+    "id": "12.8.5",
+    "title": "Legal Content Attestations",
+    "pdf_page": 485,
+    "depth": 2
+  },
+  {
+    "id": "12.9",
+    "title": "Measurement Properties",
+    "pdf_page": 487,
+    "depth": 1
+  },
+  {
+    "id": "12.10",
+    "title": "Document Requirements",
+    "pdf_page": 492,
+    "depth": 1
+  },
+  {
+    "id": "12.10.1",
+    "title": "General",
+    "pdf_page": 492,
+    "depth": 2
+  },
+  {
+    "id": "12.10.2",
+    "title": "Requirement Handlers",
+    "pdf_page": 493,
+    "depth": 2
+  },
+  {
+    "id": "13",
+    "title": "Multimedia Features",
+    "pdf_page": 494,
+    "depth": 0
+  },
+  {
+    "id": "13.1",
+    "title": "General",
+    "pdf_page": 494,
+    "depth": 1
+  },
+  {
+    "id": "13.2",
+    "title": "Multimedia",
+    "pdf_page": 494,
+    "depth": 1
+  },
+  {
+    "id": "13.2.1",
+    "title": "General",
+    "pdf_page": 494,
+    "depth": 2
+  },
+  {
+    "id": "13.2.2",
+    "title": "Viability",
+    "pdf_page": 495,
+    "depth": 2
+  },
+  {
+    "id": "13.2.3",
+    "title": "Renditions",
+    "pdf_page": 496,
+    "depth": 2
+  },
+  {
+    "id": "13.2.3.1",
+    "title": "General",
+    "pdf_page": 496,
+    "depth": 3
+  },
+  {
+    "id": "13.2.3.2",
+    "title": "Media Renditions",
+    "pdf_page": 499,
+    "depth": 3
+  },
+  {
+    "id": "13.2.3.3",
+    "title": "Selector Renditions",
+    "pdf_page": 499,
+    "depth": 3
+  },
+  {
+    "id": "13.2.4",
+    "title": "Media Clip Objects",
+    "pdf_page": 500,
+    "depth": 2
+  },
+  {
+    "id": "13.2.4.1",
+    "title": "General",
+    "pdf_page": 500,
+    "depth": 3
+  },
+  {
+    "id": "13.2.4.2",
+    "title": "Media Clip Data",
+    "pdf_page": 500,
+    "depth": 3
+  },
+  {
+    "id": "13.2.4.3",
+    "title": "Media Clip Section",
+    "pdf_page": 502,
+    "depth": 3
+  },
+  {
+    "id": "13.2.5",
+    "title": "Media Play Parameters",
+    "pdf_page": 504,
+    "depth": 2
+  },
+  {
+    "id": "13.2.6",
+    "title": "Media Screen Parameters",
+    "pdf_page": 506,
+    "depth": 2
+  },
+  {
+    "id": "13.2.6.1",
+    "title": "General",
+    "pdf_page": 506,
+    "depth": 3
+  },
+  {
+    "id": "13.2.6.2",
+    "title": "Media Offset Dictionary",
+    "pdf_page": 509,
+    "depth": 3
+  },
+  {
+    "id": "13.2.6.3",
+    "title": "Timespan Dictionary",
+    "pdf_page": 510,
+    "depth": 3
+  },
+  {
+    "id": "13.2.7",
+    "title": "Other Multimedia Objects",
+    "pdf_page": 510,
+    "depth": 2
+  },
+  {
+    "id": "13.2.7.1",
+    "title": "General",
+    "pdf_page": 510,
+    "depth": 3
+  },
+  {
+    "id": "13.2.7.2",
+    "title": "Media Players Dictionary",
+    "pdf_page": 510,
+    "depth": 3
+  },
+  {
+    "id": "13.2.7.3",
+    "title": "Media Player Info Dictionary",
+    "pdf_page": 511,
+    "depth": 3
+  },
+  {
+    "id": "13.2.7.4",
+    "title": "Software Identifier Dictionary",
+    "pdf_page": 512,
+    "depth": 3
+  },
+  {
+    "id": "13.2.7.4.1",
+    "title": "General",
+    "pdf_page": 512,
+    "depth": 4
+  },
+  {
+    "id": "13.2.7.4.2",
+    "title": "Software URIs",
+    "pdf_page": 513,
+    "depth": 4
+  },
+  {
+    "id": "13.2.7.4.3",
+    "title": "Version arrays",
+    "pdf_page": 513,
+    "depth": 4
+  },
+  {
+    "id": "13.2.7.5",
+    "title": "Monitor Specifier",
+    "pdf_page": 513,
+    "depth": 3
+  },
+  {
+    "id": "13.3",
+    "title": "Sounds",
+    "pdf_page": 514,
+    "depth": 1
+  },
+  {
+    "id": "13.4",
+    "title": "Movies",
+    "pdf_page": 515,
+    "depth": 1
+  },
+  {
+    "id": "13.5",
+    "title": "Alternate Presentations",
+    "pdf_page": 517,
+    "depth": 1
+  },
+  {
+    "id": "13.6",
+    "title": "3D Artwork",
+    "pdf_page": 519,
+    "depth": 1
+  },
+  {
+    "id": "13.6.1",
+    "title": "General",
+    "pdf_page": 519,
+    "depth": 2
+  },
+  {
+    "id": "13.6.2",
+    "title": "3D Annotations",
+    "pdf_page": 520,
+    "depth": 2
+  },
+  {
+    "id": "13.6.3",
+    "title": "3D Streams",
+    "pdf_page": 524,
+    "depth": 2
+  },
+  {
+    "id": "13.6.3.1",
+    "title": "General",
+    "pdf_page": 524,
+    "depth": 3
+  },
+  {
+    "id": "13.6.3.2",
+    "title": "3D Animation Style Dictionaries",
+    "pdf_page": 525,
+    "depth": 3
+  },
+  {
+    "id": "13.6.3.3",
+    "title": "3D Reference Dictionaries",
+    "pdf_page": 526,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4",
+    "title": "3D Views",
+    "pdf_page": 529,
+    "depth": 2
+  },
+  {
+    "id": "13.6.4.1",
+    "title": "General",
+    "pdf_page": 529,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.2",
+    "title": "Projection Dictionaries",
+    "pdf_page": 531,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.3",
+    "title": "3D Background Dictionaries",
+    "pdf_page": 534,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.4",
+    "title": "3D Render Mode Dictionaries",
+    "pdf_page": 535,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.5",
+    "title": "3D Lighting Scheme Dictionaries",
+    "pdf_page": 538,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.6",
+    "title": "3D Cross Section Dictionaries",
+    "pdf_page": 539,
+    "depth": 3
+  },
+  {
+    "id": "13.6.4.7",
+    "title": "3D Node Dictionaries",
+    "pdf_page": 545,
+    "depth": 3
+  },
+  {
+    "id": "13.6.5",
+    "title": "Coordinate Systems for 3D",
+    "pdf_page": 549,
+    "depth": 2
+  },
+  {
+    "id": "13.6.6",
+    "title": "3D Markup",
+    "pdf_page": 550,
+    "depth": 2
+  },
+  {
+    "id": "14",
+    "title": "Document Interchange",
+    "pdf_page": 555,
+    "depth": 0
+  },
+  {
+    "id": "14.1",
+    "title": "General",
+    "pdf_page": 555,
+    "depth": 1
+  },
+  {
+    "id": "14.2",
+    "title": "Procedure Sets",
+    "pdf_page": 555,
+    "depth": 1
+  },
+  {
+    "id": "14.3",
+    "title": "Metadata",
+    "pdf_page": 556,
+    "depth": 1
+  },
+  {
+    "id": "14.3.1",
+    "title": "General",
+    "pdf_page": 556,
+    "depth": 2
+  },
+  {
+    "id": "14.3.2",
+    "title": "Metadata Streams",
+    "pdf_page": 556,
+    "depth": 2
+  },
+  {
+    "id": "14.3.3",
+    "title": "Document Information Dictionary",
+    "pdf_page": 557,
+    "depth": 2
+  },
+  {
+    "id": "14.4",
+    "title": "File Identifiers",
+    "pdf_page": 559,
+    "depth": 1
+  },
+  {
+    "id": "14.5",
+    "title": "Page-Piece Dictionaries",
+    "pdf_page": 559,
+    "depth": 1
+  },
+  {
+    "id": "14.6",
+    "title": "Marked Content",
+    "pdf_page": 560,
+    "depth": 1
+  },
+  {
+    "id": "14.6.1",
+    "title": "General",
+    "pdf_page": 560,
+    "depth": 2
+  },
+  {
+    "id": "14.6.2",
+    "title": "Property Lists",
+    "pdf_page": 562,
+    "depth": 2
+  },
+  {
+    "id": "14.6.3",
+    "title": "Marked Content and Clipping",
+    "pdf_page": 562,
+    "depth": 2
+  },
+  {
+    "id": "14.7",
+    "title": "Logical Structure",
+    "pdf_page": 564,
+    "depth": 1
+  },
+  {
+    "id": "14.7.1",
+    "title": "General",
+    "pdf_page": 564,
+    "depth": 2
+  },
+  {
+    "id": "14.7.2",
+    "title": "Structure Hierarchy",
+    "pdf_page": 565,
+    "depth": 2
+  },
+  {
+    "id": "14.7.3",
+    "title": "Structure Types",
+    "pdf_page": 567,
+    "depth": 2
+  },
+  {
+    "id": "14.7.4",
+    "title": "Structure Content",
+    "pdf_page": 568,
+    "depth": 2
+  },
+  {
+    "id": "14.7.4.1",
+    "title": "General",
+    "pdf_page": 568,
+    "depth": 3
+  },
+  {
+    "id": "14.7.4.2",
+    "title": "Marked-Content Sequences as Content Items",
+    "pdf_page": 568,
+    "depth": 3
+  },
+  {
+    "id": "14.7.4.3",
+    "title": "PDF Objects as Content Items",
+    "pdf_page": 572,
+    "depth": 3
+  },
+  {
+    "id": "14.7.4.4",
+    "title": "Finding Structure Elements from Content Items",
+    "pdf_page": 572,
+    "depth": 3
+  },
+  {
+    "id": "14.7.5",
+    "title": "Structure Attributes",
+    "pdf_page": 575,
+    "depth": 2
+  },
+  {
+    "id": "14.7.5.1",
+    "title": "General",
+    "pdf_page": 575,
+    "depth": 3
+  },
+  {
+    "id": "14.7.5.2",
+    "title": "Attribute Classes",
+    "pdf_page": 575,
+    "depth": 3
+  },
+  {
+    "id": "14.7.5.3",
+    "title": "Attribute Revision Numbers",
+    "pdf_page": 576,
+    "depth": 3
+  },
+  {
+    "id": "14.7.5.4",
+    "title": "User Properties",
+    "pdf_page": 576,
+    "depth": 3
+  },
+  {
+    "id": "14.7.6",
+    "title": "Example of Logical Structure",
+    "pdf_page": 578,
+    "depth": 2
+  },
+  {
+    "id": "14.8",
+    "title": "Tagged PDF",
+    "pdf_page": 581,
+    "depth": 1
+  },
+  {
+    "id": "14.8.1",
+    "title": "General",
+    "pdf_page": 581,
+    "depth": 2
+  },
+  {
+    "id": "14.8.2",
+    "title": "Tagged PDF and Page Content",
+    "pdf_page": 582,
+    "depth": 2
+  },
+  {
+    "id": "14.8.2.1",
+    "title": "General",
+    "pdf_page": 582,
+    "depth": 3
+  },
+  {
+    "id": "14.8.2.2",
+    "title": "Real Content and Artifacts",
+    "pdf_page": 583,
+    "depth": 3
+  },
+  {
+    "id": "14.8.2.2.1",
+    "title": "General",
+    "pdf_page": 583,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.2.2",
+    "title": "Specification of Artifacts",
+    "pdf_page": 583,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.2.3",
+    "title": "Incidental Artifacts",
+    "pdf_page": 585,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.3",
+    "title": "Page Content Order",
+    "pdf_page": 585,
+    "depth": 3
+  },
+  {
+    "id": "14.8.2.3.1",
+    "title": "General",
+    "pdf_page": 585,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.3.2",
+    "title": "Sequencing of Annotations",
+    "pdf_page": 586,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.3.3",
+    "title": "Reverse-Order Show Strings",
+    "pdf_page": 586,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.4",
+    "title": "Extraction of Character Properties",
+    "pdf_page": 587,
+    "depth": 3
+  },
+  {
+    "id": "14.8.2.4.1",
+    "title": "General",
+    "pdf_page": 587,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.4.2",
+    "title": "Unicode Mapping in Tagged PDF",
+    "pdf_page": 587,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.4.3",
+    "title": "Font Characteristics",
+    "pdf_page": 587,
+    "depth": 4
+  },
+  {
+    "id": "14.8.2.5",
+    "title": "Identifying Word Breaks",
+    "pdf_page": 589,
+    "depth": 3
+  },
+  {
+    "id": "14.8.3",
+    "title": "Basic Layout Model",
+    "pdf_page": 589,
+    "depth": 2
+  },
+  {
+    "id": "14.8.4",
+    "title": "Standard Structure Types",
+    "pdf_page": 591,
+    "depth": 2
+  },
+  {
+    "id": "14.8.4.1",
+    "title": "General",
+    "pdf_page": 591,
+    "depth": 3
+  },
+  {
+    "id": "14.8.4.2",
+    "title": "Grouping Elements",
+    "pdf_page": 591,
+    "depth": 3
+  },
+  {
+    "id": "14.8.4.3",
+    "title": "Block-Level Structure Elements",
+    "pdf_page": 592,
+    "depth": 3
+  },
+  {
+    "id": "14.8.4.3.1",
+    "title": "General",
+    "pdf_page": 592,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.3.2",
+    "title": "Paragraphlike Elements",
+    "pdf_page": 593,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.3.3",
+    "title": "List Elements",
+    "pdf_page": 593,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.3.4",
+    "title": "Table Elements",
+    "pdf_page": 594,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.3.5",
+    "title": "Usage Guidelines for Block-Level Structure",
+    "pdf_page": 594,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.4",
+    "title": "Inline-Level Structure Elements",
+    "pdf_page": 595,
+    "depth": 3
+  },
+  {
+    "id": "14.8.4.4.1",
+    "title": "General",
+    "pdf_page": 595,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.4.2",
+    "title": "Link Elements",
+    "pdf_page": 597,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.4.3",
+    "title": "Annotation Elements",
+    "pdf_page": 599,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.4.4",
+    "title": "Ruby and Warichu Elements",
+    "pdf_page": 599,
+    "depth": 4
+  },
+  {
+    "id": "14.8.4.5",
+    "title": "Illustration Elements",
+    "pdf_page": 600,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5",
+    "title": "Standard Structure Attributes",
+    "pdf_page": 601,
+    "depth": 2
+  },
+  {
+    "id": "14.8.5.1",
+    "title": "General",
+    "pdf_page": 601,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.2",
+    "title": "Standard Attribute Owners",
+    "pdf_page": 601,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.3",
+    "title": "Attribute Values and Inheritance",
+    "pdf_page": 602,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.4",
+    "title": "Layout Attributes",
+    "pdf_page": 603,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.4.1",
+    "title": "General",
+    "pdf_page": 603,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.2",
+    "title": "General Layout Attributes",
+    "pdf_page": 604,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.3",
+    "title": "Layout Attributes for BLSEs",
+    "pdf_page": 608,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.4",
+    "title": "Layout Attributes for ILSEs",
+    "pdf_page": 611,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.5",
+    "title": "Content and Allocation Rectangles",
+    "pdf_page": 614,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.6",
+    "title": "Illustration Attributes",
+    "pdf_page": 615,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.4.7",
+    "title": "Column Attributes",
+    "pdf_page": 615,
+    "depth": 4
+  },
+  {
+    "id": "14.8.5.5",
+    "title": "List Attribute",
+    "pdf_page": 616,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.6",
+    "title": "PrintField Attributes",
+    "pdf_page": 617,
+    "depth": 3
+  },
+  {
+    "id": "14.8.5.7",
+    "title": "Table Attributes",
+    "pdf_page": 617,
+    "depth": 3
+  },
+  {
+    "id": "14.9",
+    "title": "Accessibility Support",
+    "pdf_page": 618,
+    "depth": 1
+  },
+  {
+    "id": "14.9.1",
+    "title": "General",
+    "pdf_page": 618,
+    "depth": 2
+  },
+  {
+    "id": "14.9.2",
+    "title": "Natural Language Specification",
+    "pdf_page": 619,
+    "depth": 2
+  },
+  {
+    "id": "14.9.2.1",
+    "title": "General",
+    "pdf_page": 619,
+    "depth": 3
+  },
+  {
+    "id": "14.9.2.2",
+    "title": "Language Identifiers",
+    "pdf_page": 619,
+    "depth": 3
+  },
+  {
+    "id": "14.9.2.3",
+    "title": "Language Specification Hierarchy",
+    "pdf_page": 620,
+    "depth": 3
+  },
+  {
+    "id": "14.9.2.4",
+    "title": "Multi-language Text Arrays",
+    "pdf_page": 622,
+    "depth": 3
+  },
+  {
+    "id": "14.9.3",
+    "title": "Alternate Descriptions",
+    "pdf_page": 622,
+    "depth": 2
+  },
+  {
+    "id": "14.9.4",
+    "title": "Replacement Text",
+    "pdf_page": 623,
+    "depth": 2
+  },
+  {
+    "id": "14.9.5",
+    "title": "Expansion of Abbreviations and Acronyms",
+    "pdf_page": 624,
+    "depth": 2
+  },
+  {
+    "id": "14.10",
+    "title": "Web Capture",
+    "pdf_page": 624,
+    "depth": 1
+  },
+  {
+    "id": "14.10.1",
+    "title": "General",
+    "pdf_page": 624,
+    "depth": 2
+  },
+  {
+    "id": "14.10.2",
+    "title": "Web Capture Information Dictionary",
+    "pdf_page": 625,
+    "depth": 2
+  },
+  {
+    "id": "14.10.3",
+    "title": "Content Database",
+    "pdf_page": 625,
+    "depth": 2
+  },
+  {
+    "id": "14.10.3.1",
+    "title": "General",
+    "pdf_page": 625,
+    "depth": 3
+  },
+  {
+    "id": "14.10.3.2",
+    "title": "URL Strings",
+    "pdf_page": 627,
+    "depth": 3
+  },
+  {
+    "id": "14.10.3.3",
+    "title": "Digital Identifiers",
+    "pdf_page": 628,
+    "depth": 3
+  },
+  {
+    "id": "14.10.3.4",
+    "title": "Unique Name Generation",
+    "pdf_page": 628,
+    "depth": 3
+  },
+  {
+    "id": "14.10.4",
+    "title": "Content Sets",
+    "pdf_page": 629,
+    "depth": 2
+  },
+  {
+    "id": "14.10.4.1",
+    "title": "General",
+    "pdf_page": 629,
+    "depth": 3
+  },
+  {
+    "id": "14.10.4.2",
+    "title": "Page Sets",
+    "pdf_page": 629,
+    "depth": 3
+  },
+  {
+    "id": "14.10.4.3",
+    "title": "Image Sets",
+    "pdf_page": 630,
+    "depth": 3
+  },
+  {
+    "id": "14.10.5",
+    "title": "Source Information",
+    "pdf_page": 631,
+    "depth": 2
+  },
+  {
+    "id": "14.10.5.1",
+    "title": "General",
+    "pdf_page": 631,
+    "depth": 3
+  },
+  {
+    "id": "14.10.5.2",
+    "title": "URL Alias Dictionaries",
+    "pdf_page": 632,
+    "depth": 3
+  },
+  {
+    "id": "14.10.5.3",
+    "title": "Command Dictionaries",
+    "pdf_page": 632,
+    "depth": 3
+  },
+  {
+    "id": "14.10.5.4",
+    "title": "Command Settings",
+    "pdf_page": 634,
+    "depth": 3
+  },
+  {
+    "id": "14.10.6",
+    "title": "Object Attributes Related to Web Capture",
+    "pdf_page": 635,
+    "depth": 2
+  },
+  {
+    "id": "14.11",
+    "title": "Prepress Support",
+    "pdf_page": 635,
+    "depth": 1
+  },
+  {
+    "id": "14.11.1",
+    "title": "General",
+    "pdf_page": 635,
+    "depth": 2
+  },
+  {
+    "id": "14.11.2",
+    "title": "Page Boundaries",
+    "pdf_page": 635,
+    "depth": 2
+  },
+  {
+    "id": "14.11.2.1",
+    "title": "General",
+    "pdf_page": 635,
+    "depth": 3
+  },
+  {
+    "id": "14.11.2.2",
+    "title": "Display of Page Boundaries",
+    "pdf_page": 638,
+    "depth": 3
+  },
+  {
+    "id": "14.11.3",
+    "title": "Printer’s Marks",
+    "pdf_page": 638,
+    "depth": 2
+  },
+  {
+    "id": "14.11.4",
+    "title": "Separation Dictionaries",
+    "pdf_page": 640,
+    "depth": 2
+  },
+  {
+    "id": "14.11.5",
+    "title": "Output Intents",
+    "pdf_page": 641,
+    "depth": 2
+  },
+  {
+    "id": "14.11.6",
+    "title": "Trapping Support",
+    "pdf_page": 643,
+    "depth": 2
+  },
+  {
+    "id": "14.11.6.1",
+    "title": "General",
+    "pdf_page": 643,
+    "depth": 3
+  },
+  {
+    "id": "14.11.6.2",
+    "title": "Trap Network Annotations",
+    "pdf_page": 644,
+    "depth": 3
+  },
+  {
+    "id": "14.11.6.3",
+    "title": "Trap Network Appearances",
+    "pdf_page": 646,
+    "depth": 3
+  },
+  {
+    "id": "14.11.7",
+    "title": "Open Prepress Interface (OPI)",
+    "pdf_page": 646,
+    "depth": 2
+  },
+  {
+    "id": null,
+    "title": "Annex A (informative) Operator Summary",
+    "pdf_page": 651,
+    "depth": 0
+  },
+  {
+    "id": "A.1",
+    "title": "General",
+    "pdf_page": 651,
+    "depth": 1
+  },
+  {
+    "id": "A.2",
+    "title": "PDF Content Stream Operators",
+    "pdf_page": 651,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex B (normative) Operators in Type 4 Functions",
+    "pdf_page": 655,
+    "depth": 0
+  },
+  {
+    "id": "B.1",
+    "title": "General",
+    "pdf_page": 655,
+    "depth": 1
+  },
+  {
+    "id": "B.2",
+    "title": "Arithmetic Operators",
+    "pdf_page": 655,
+    "depth": 1
+  },
+  {
+    "id": "B.3",
+    "title": "Relational, Boolean, and Bitwise Operators",
+    "pdf_page": 655,
+    "depth": 1
+  },
+  {
+    "id": "B.4",
+    "title": "Conditional Operators",
+    "pdf_page": 656,
+    "depth": 1
+  },
+  {
+    "id": "B.5",
+    "title": "Stack Operators",
+    "pdf_page": 656,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex C (normative) Implementation Limits",
+    "pdf_page": 657,
+    "depth": 0
+  },
+  {
+    "id": "C.1",
+    "title": "General",
+    "pdf_page": 657,
+    "depth": 1
+  },
+  {
+    "id": "C.2",
+    "title": "Architectural limits",
+    "pdf_page": 657,
+    "depth": 1
+  },
+  {
+    "id": "C.3",
+    "title": "Memory limits",
+    "pdf_page": 658,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex D (normative) Character Sets and Encodings",
+    "pdf_page": 659,
+    "depth": 0
+  },
+  {
+    "id": "D.1",
+    "title": "General",
+    "pdf_page": 659,
+    "depth": 1
+  },
+  {
+    "id": "D.2",
+    "title": "Latin Character Set and Encodings",
+    "pdf_page": 661,
+    "depth": 1
+  },
+  {
+    "id": "D.3",
+    "title": "PDFDocEncoding Character Set",
+    "pdf_page": 664,
+    "depth": 1
+  },
+  {
+    "id": "D.4",
+    "title": "Expert Set and MacExpertEncoding",
+    "pdf_page": 673,
+    "depth": 1
+  },
+  {
+    "id": "D.5",
+    "title": "Symbol Set and Encoding",
+    "pdf_page": 676,
+    "depth": 1
+  },
+  {
+    "id": "D.6",
+    "title": "ZapfDingbats Set and Encoding",
+    "pdf_page": 679,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex E (normative) PDF Name Registry",
+    "pdf_page": 681,
+    "depth": 0
+  },
+  {
+    "id": "E.1",
+    "title": "General",
+    "pdf_page": 681,
+    "depth": 1
+  },
+  {
+    "id": "E.2",
+    "title": "Name Registry",
+    "pdf_page": 681,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex F (normative) Linearized PDF",
+    "pdf_page": 683,
+    "depth": 0
+  },
+  {
+    "id": "F.1",
+    "title": "General",
+    "pdf_page": 683,
+    "depth": 1
+  },
+  {
+    "id": "F.2",
+    "title": "Background and Assumptions",
+    "pdf_page": 684,
+    "depth": 1
+  },
+  {
+    "id": "F.3",
+    "title": "Linearized PDF Document Structure",
+    "pdf_page": 685,
+    "depth": 1
+  },
+  {
+    "id": "F.3.1",
+    "title": "General",
+    "pdf_page": 685,
+    "depth": 2
+  },
+  {
+    "id": "F.3.2",
+    "title": "Header (Part 1)",
+    "pdf_page": 687,
+    "depth": 2
+  },
+  {
+    "id": "F.3.3",
+    "title": "Linearization Parameter Dictionary (Part 2)",
+    "pdf_page": 687,
+    "depth": 2
+  },
+  {
+    "id": "F.3.4",
+    "title": "First-Page Cross-Reference Table and Trailer (Part 3)",
+    "pdf_page": 688,
+    "depth": 2
+  },
+  {
+    "id": "F.3.5",
+    "title": "Document Catalogue and Document-Level Objects (Part 4)",
+    "pdf_page": 689,
+    "depth": 2
+  },
+  {
+    "id": "F.3.6",
+    "title": "Hint Streams (Parts 5 and 10)",
+    "pdf_page": 689,
+    "depth": 2
+  },
+  {
+    "id": "F.3.7",
+    "title": "First-Page Section (Part 6)",
+    "pdf_page": 691,
+    "depth": 2
+  },
+  {
+    "id": "F.3.8",
+    "title": "Remaining Pages (Part 7)",
+    "pdf_page": 692,
+    "depth": 2
+  },
+  {
+    "id": "F.3.9",
+    "title": "Shared Objects (Part 8)",
+    "pdf_page": 692,
+    "depth": 2
+  },
+  {
+    "id": "F.3.10",
+    "title": "Other Objects (Part 9)",
+    "pdf_page": 692,
+    "depth": 2
+  },
+  {
+    "id": "F.3.11",
+    "title": "Main Cross-Reference and Trailer (Part 11)",
+    "pdf_page": 693,
+    "depth": 2
+  },
+  {
+    "id": "F.4",
+    "title": "Hint Tables",
+    "pdf_page": 694,
+    "depth": 1
+  },
+  {
+    "id": "F.4.1",
+    "title": "Page Offset Hint Table",
+    "pdf_page": 694,
+    "depth": 2
+  },
+  {
+    "id": "F.4.2",
+    "title": "Shared Object Hint Table",
+    "pdf_page": 697,
+    "depth": 2
+  },
+  {
+    "id": "F.4.3",
+    "title": "Thumbnail Hint Table",
+    "pdf_page": 699,
+    "depth": 2
+  },
+  {
+    "id": "F.4.4",
+    "title": "Generic Hint Tables",
+    "pdf_page": 700,
+    "depth": 2
+  },
+  {
+    "id": "F.4.5",
+    "title": "Extended Generic Hint Tables",
+    "pdf_page": 701,
+    "depth": 2
+  },
+  {
+    "id": "F.4.6",
+    "title": "Embedded File Stream Hint Tables",
+    "pdf_page": 701,
+    "depth": 2
+  },
+  {
+    "id": null,
+    "title": "Annex G (informative) Linearized PDF Access Strategies",
+    "pdf_page": 703,
+    "depth": 0
+  },
+  {
+    "id": "G.1",
+    "title": "General",
+    "pdf_page": 703,
+    "depth": 1
+  },
+  {
+    "id": "G.2",
+    "title": "Opening at the First Page",
+    "pdf_page": 703,
+    "depth": 1
+  },
+  {
+    "id": "G.3",
+    "title": "Opening at an Arbitrary Page",
+    "pdf_page": 703,
+    "depth": 1
+  },
+  {
+    "id": "G.4",
+    "title": "Going to Another Page of an Open Document",
+    "pdf_page": 704,
+    "depth": 1
+  },
+  {
+    "id": "G.5",
+    "title": "Drawing a Page Incrementally",
+    "pdf_page": 705,
+    "depth": 1
+  },
+  {
+    "id": "G.6",
+    "title": "Following an Article Thread",
+    "pdf_page": 705,
+    "depth": 1
+  },
+  {
+    "id": "G.7",
+    "title": "Accessing an Updated File",
+    "pdf_page": 705,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex H (informative) Example PDF Files",
+    "pdf_page": 707,
+    "depth": 0
+  },
+  {
+    "id": "H.1",
+    "title": "General",
+    "pdf_page": 707,
+    "depth": 1
+  },
+  {
+    "id": "H.2",
+    "title": "Minimal PDF File",
+    "pdf_page": 707,
+    "depth": 1
+  },
+  {
+    "id": "H.3",
+    "title": "Simple Text String Example",
+    "pdf_page": 708,
+    "depth": 1
+  },
+  {
+    "id": "H.4",
+    "title": "Simple Graphics Example",
+    "pdf_page": 710,
+    "depth": 1
+  },
+  {
+    "id": "H.5",
+    "title": "Page Tree Example",
+    "pdf_page": 712,
+    "depth": 1
+  },
+  {
+    "id": "H.6",
+    "title": "Outline Hierarchy Example",
+    "pdf_page": 716,
+    "depth": 1
+  },
+  {
+    "id": "H.7",
+    "title": "Updating Example",
+    "pdf_page": 718,
+    "depth": 1
+  },
+  {
+    "id": "H.7.1",
+    "title": "Stage 1: Add Four Text Annotations",
+    "pdf_page": 719,
+    "depth": 2
+  },
+  {
+    "id": "H.7.2",
+    "title": "Stage 2: Modify Text of One Annotation",
+    "pdf_page": 720,
+    "depth": 2
+  },
+  {
+    "id": "H.7.3",
+    "title": "Stage 3: Delete Two Annotations",
+    "pdf_page": 721,
+    "depth": 2
+  },
+  {
+    "id": "H.7.4",
+    "title": "Stage 4: Add Three Annotations",
+    "pdf_page": 722,
+    "depth": 2
+  },
+  {
+    "id": "H.8",
+    "title": "Structured Elements That Describe Hierarchical Lists",
+    "pdf_page": 723,
+    "depth": 1
+  },
+  {
+    "id": "H.8.1",
+    "title": "Table of Contents",
+    "pdf_page": 724,
+    "depth": 2
+  },
+  {
+    "id": "H.8.2",
+    "title": "Nested Lists",
+    "pdf_page": 730,
+    "depth": 2
+  },
+  {
+    "id": null,
+    "title": "Annex I (normative) PDF Versions and Compatibility",
+    "pdf_page": 735,
+    "depth": 0
+  },
+  {
+    "id": "I.1",
+    "title": "General",
+    "pdf_page": 735,
+    "depth": 1
+  },
+  {
+    "id": "I.2",
+    "title": "PDF Version Numbers",
+    "pdf_page": 735,
+    "depth": 1
+  },
+  {
+    "id": "I.3",
+    "title": "Feature Compatibility",
+    "pdf_page": 736,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex J (informative) FDF Rename Flag Implementation Example",
+    "pdf_page": 737,
+    "depth": 0
+  },
+  {
+    "id": "J.1",
+    "title": "General",
+    "pdf_page": 737,
+    "depth": 1
+  },
+  {
+    "id": "J.2",
+    "title": "Implementation Example",
+    "pdf_page": 737,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex K (informative) PostScript Compatibility — Transparent Imaging Model",
+    "pdf_page": 739,
+    "depth": 0
+  },
+  {
+    "id": "K.1",
+    "title": "General",
+    "pdf_page": 739,
+    "depth": 1
+  },
+  {
+    "id": "K.2",
+    "title": "Conversion",
+    "pdf_page": 739,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Annex L (informative) Colour Plates",
+    "pdf_page": 741,
+    "depth": 0
+  },
+  {
+    "id": "L.1",
+    "title": "Colour Plates",
+    "pdf_page": 741,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "Bibliography",
+    "pdf_page": 753,
+    "depth": 0
+  },
+  {
+    "id": null,
+    "title": "[1] ISO 15930-1:2001, Graphic technology — Prepress digital data exchange — Use of PDF — Part 1: Complete exchange using CMYK data (PDF/X-1 and PDF/X-1a).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[2] ISO 15930-3:2002, Graphic technology — Prepress digital data exchange — Use of PDF — Part 3: Complete exchange suitable for colour-managed workflows (PDF/X-3).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[3] ISO 15930-4:2003, Graphic technology — Prepress digital data exchange using PDF — Part 4: Complete exchange of CMYK and spot colour printing data using PDF 1.4 (PDF/X-1a).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[4] ISO 15930-5:2003, Graphic technology — Prepress digital data exchange using PDF — Part 5: Partial exchange of printing data using PDF 1.4 (PDF/X-2).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[5] ISO 15930-6:2003, Graphic technology — Prepress digital data exchange using PDF — Part 6: Complete exchange of printing data suitable for colour-managed workflows using PDF 1.4 (PDF/X-3).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[6] ISO 19005-1:2005, Document management — Electronic document file format for long-term preservation -- Part 1: Use of PDF 1.4 (PDF/A-1) .",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[7] ISO 24517-1:2007, Document management — Engineering document format using PDF — Part 1: Use of PDF 1.6 (PDF/E-1).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[8] PDF Reference, First Edition, version 1.0 (June 1993), Addison-Wesley, 0-201-62628-4.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[9] PDF Reference, First Edition Revised, version 1.1 (March 1996), Adobe Systems Incorporated.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[10] PDF Reference, First Edition Revised, version 1.2 (November 1996), Adobe Systems Incorporated.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[11] PDF Reference, Second Edition, version 1.3 (July 2000), Addison-Wesley, ISBN 0-201-61588-6.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[12] PDF Reference, Third Edition, version 1.4 (November 2001), Addison-Wesley, ISBN 0-201-75839-3.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[13] PDF Reference, Fourth Edition, version 1.5 (August 2003), Adobe Systems Incorporated (website only).",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[14] PDF Reference, Fifth Edition, version 1.6 (December 2004), Adobe Press, ISBN 0-321-30474-8.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[15] PostScript Language Reference, Third Edition, Addison-Wesley, Reading, MA, 1999.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[16] Technical Note #5001, PostScript Language Document Structuring Conventions Specification, Version 3.0, Adobe Systems Incorporated.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[17] Technical Note #5044, Color Separation Conventions for PostScript Language Programs, Adobe Systems Incorporated.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[18] Aho, A. V., Hopcroft, J. E., and Ullman, J. D., Data Structures and Algorithms, Addison-Wesley, Reading, MA, 1983. Includes a discussion of balanced trees.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[19] Apple Computer, Inc., TrueType Reference Manual. Available on Apple’s Web site at < http:// developer.apple.com/fonts/TTRefMan/>.",
+    "pdf_page": 753,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[20] Arvo, J. (ed.), Graphics Gems II, Academic Press, 1994. The section “Geometrically Continuous Cubic Bézier Curves” by Hans-Peter Seidel describes the mathematics used to smoothly join two cubic Bézier curves.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[21] Cascading Style Sheets, level 2 (CSS2) Specification, <http://www.w3.org/TR/REC-CSS2/>.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[22] CIP4. See International Cooperation for the Integration of Processes in Prepress, Press and Postpress.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[23] Ecma International, Standard ECMA-363, Universal 3D File Format, 1st Edition. This document is available at <http://www.ecma-international.org/>.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[24] Extensible Stylesheet Language (XSL) 1.0, <http://www.w3.org/TR/xsl/>.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[25] Fairchild, M. D., Color Appearance Models, Addison-Wesley, Reading, MA, 1997. Covers color vision, basic colorimetry, color appearance models, cross-media color reproduction, and the current CIE standards activities. Updates, software, and color...",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[26] Foley, J. D. et al., Computer Graphics: Principles and Practice, Addison-Wesley, Reading, MA, 1996. (First edition was Foley, J. D. and van Dam, A., Fundamentals of Interactive Computer Graphics, Addison-Wesley, Reading, MA, 1982.) Covers many g...",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[27] Glassner, A. S. (ed.), Graphics Gems, Academic Press, 1993. The section “An Algorithm for Automatically Fitting Digitized Curves” by Philip J. Schneider describes an algorithm for determining the set of Bézier curves approximating an arbitr...",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[28] Hewlett-Packard Corporation, PANOSE Classification Metrics Guide. Available on the Agfa Monotype Web site at < http://www.agfamonotype.com/printer/pan1.asp >.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[29] HTML 4.01 Specification, <http://www.w3.org/TR/html401/>.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[30] Hunt, R. W. G., The Reproduction of Colour, 5th ed., Fisher Books, England, 1996. A comprehensive general reference on color reproduction; includes an introduction to the CIE system.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[31] Institute of Electrical and Electronics Engineers, IEEE Standard for Binary Floating-Point Arithmetic (IEEE 754-1985).",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[32] International Cooperation for the Integration of Processes in Prepress, Press and Postpress (CIP4), JDF Specification, Version 1.2. Available through the CIP4 Web site at < http://www.cip4.org >.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[33] Kirk, D. (ed.), Graphics Gems III, Academic Press, 1994. The section “Interpolation Using Bézier Curves” by Gershon Elber contains an algorithm for calculating a Bézier curve that passes through a user-specified set of points. The algorith...",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[34] Lunde, K., CJKV Information Processing, O’Reilly & Associates, Sebastopol, CA, 1999. Excellent background material on CMaps, character sets, encodings, and the like.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[35] Microsoft Corporation, TrueType 1.0 Font Files Technical Specification. Available at < http:// www.microsoft.com/typography/tt/tt.htm >.",
+    "pdf_page": 754,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[36] Porter, T. and Duff, T., “Compositing Digital Images,” Computer Graphics, Vol. 18 No. 3, July 1984. Computer Graphics is the newsletter of the ACM’s special interest group SIGGRAPH; for more information, see < http://www.acm.org >.",
+    "pdf_page": 755,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[37] RSA Security, Inc. This document, among others related to encryption and digital signatures, is available at < http://www.rsasecurity.com >: PKCS #1 - RSA Cryptography Standard <http:// www.rsasecurity.com/rsalabs/node.asp?id=2125>.",
+    "pdf_page": 755,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[38] Scalable Vector Graphics (SVG) 1.0 Specification, <http://www.w3.org/TR/2001/REC-SVG-20010904/>.",
+    "pdf_page": 755,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[39] Synchronized Multimedia Integration Language (SMIL 2.0), <http//:www.w3.org/TR/smil20/>.",
+    "pdf_page": 755,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[40] Web Content Accessibility Guidelines 1.0, <http://www.w3.org/TR/WAI-WEBCONTENT/>.",
+    "pdf_page": 755,
+    "depth": 1
+  },
+  {
+    "id": null,
+    "title": "[41] XHTML 1.0: The Extensible HyperText Markup Language, <http://www.w3.org/TR/xhtml1/>.",
+    "pdf_page": 755,
+    "depth": 1
+  }
+]

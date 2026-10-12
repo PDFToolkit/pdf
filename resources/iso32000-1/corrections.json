@@ -1,0 +1,14 @@
+[
+  {
+    "id": "trailer-prev-direct-object",
+    "table": "15",
+    "entry": "Prev",
+    "constraints": {
+      "direct": true,
+      "indirect": false
+    },
+    "rationale": "ISO 32000-1:2008 Table 15 describes Prev as an indirect reference, whereas Adobe PDF Reference 1.7 Table 3.13 requires a direct integer. A direct byte offset allows a reader to locate the previous cross-reference section before resolving indirect references. This is an explicit implementation correction supported by the earlier Adobe reference, not a claim of an official ISO erratum. The original ISO source description and qualifier are preserved.",
+    "evidence_url": "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf",
+    "evidence_locator": "Adobe PDF Reference 1.7, Table 3.13, printed page 97"
+  }
+]

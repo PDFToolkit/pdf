@@ -1,0 +1,14 @@
+{
+  "standard": "ISO 32000-1:2008",
+  "pdf_version": "1.7",
+  "source": "PDF32000_2008.pdf",
+  "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+  "pdf_pages": 756,
+  "outline_entries": 823,
+  "table_count": 392,
+  "dictionary_table_count": 263,
+  "dictionary_entry_count": 1399,
+  "variable_entry_count": 6,
+  "operator_count": 73,
+  "interpretation": "Mechanical source inventory. Qualifiers are preserved; conditional requirements, enum values, inheritance, algorithms and conformance require additional semantic implementation."
+}

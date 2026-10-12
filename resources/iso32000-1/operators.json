@@ -1,0 +1,440 @@
+[
+  {
+    "token": "b",
+    "description": "Close, fill, and stroke path using nonzero winding number rule",
+    "table": "60",
+    "pdf_page": 651
+  },
+  {
+    "token": "B",
+    "description": "Fill and stroke path using nonzero winding number rule",
+    "table": "60",
+    "pdf_page": 651
+  },
+  {
+    "token": "b*",
+    "description": "Close, fill, and stroke path using even-odd rule",
+    "table": "60",
+    "pdf_page": 651
+  },
+  {
+    "token": "B*",
+    "description": "Fill and stroke path using even-odd rule",
+    "table": "60",
+    "pdf_page": 651
+  },
+  {
+    "token": "BDC",
+    "description": "(PDF 1.2) Begin marked-content sequence with property list",
+    "table": "320",
+    "pdf_page": 651
+  },
+  {
+    "token": "BI",
+    "description": "Begin inline image object",
+    "table": "92",
+    "pdf_page": 651
+  },
+  {
+    "token": "BMC",
+    "description": "(PDF 1.2) Begin marked-content sequence",
+    "table": "320",
+    "pdf_page": 651
+  },
+  {
+    "token": "BT",
+    "description": "Begin text object",
+    "table": "107",
+    "pdf_page": 651
+  },
+  {
+    "token": "BX",
+    "description": "(PDF 1.1) Begin compatibility section",
+    "table": "32",
+    "pdf_page": 651
+  },
+  {
+    "token": "c",
+    "description": "Append curved segment to path (three control points)",
+    "table": "59",
+    "pdf_page": 651
+  },
+  {
+    "token": "cm",
+    "description": "Concatenate matrix to current transformation matrix",
+    "table": "57",
+    "pdf_page": 651
+  },
+  {
+    "token": "CS",
+    "description": "(PDF 1.1) Set color space for stroking operations",
+    "table": "74",
+    "pdf_page": 651
+  },
+  {
+    "token": "cs",
+    "description": "(PDF 1.1) Set color space for nonstroking operations",
+    "table": "74",
+    "pdf_page": 651
+  },
+  {
+    "token": "d",
+    "description": "Set line dash pattern",
+    "table": "57",
+    "pdf_page": 651
+  },
+  {
+    "token": "d0",
+    "description": "Set glyph width in Type 3 font",
+    "table": "113",
+    "pdf_page": 651
+  },
+  {
+    "token": "d1",
+    "description": "Set glyph width and bounding box in Type 3 font",
+    "table": "113",
+    "pdf_page": 651
+  },
+  {
+    "token": "Do",
+    "description": "Invoke named XObject",
+    "table": "87",
+    "pdf_page": 651
+  },
+  {
+    "token": "DP",
+    "description": "(PDF 1.2) Define marked-content point with property list",
+    "table": "320",
+    "pdf_page": 651
+  },
+  {
+    "token": "EI",
+    "description": "End inline image object",
+    "table": "92",
+    "pdf_page": 651
+  },
+  {
+    "token": "EMC",
+    "description": "(PDF 1.2) End marked-content sequence",
+    "table": "320",
+    "pdf_page": 651
+  },
+  {
+    "token": "ET",
+    "description": "End text object",
+    "table": "107",
+    "pdf_page": 652
+  },
+  {
+    "token": "EX",
+    "description": "(PDF 1.1) End compatibility section",
+    "table": "32",
+    "pdf_page": 652
+  },
+  {
+    "token": "f",
+    "description": "Fill path using nonzero winding number rule",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "F",
+    "description": "Fill path using nonzero winding number rule (obsolete)",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "f*",
+    "description": "Fill path using even-odd rule",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "G",
+    "description": "Set gray level for stroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "g",
+    "description": "Set gray level for nonstroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "gs",
+    "description": "(PDF 1.2) Set parameters from graphics state parameter dictionary",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "h",
+    "description": "Close subpath",
+    "table": "59",
+    "pdf_page": 652
+  },
+  {
+    "token": "i",
+    "description": "Set flatness tolerance",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "ID",
+    "description": "Begin inline image data",
+    "table": "92",
+    "pdf_page": 652
+  },
+  {
+    "token": "j",
+    "description": "Set line join style",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "J",
+    "description": "Set line cap style",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "K",
+    "description": "Set CMYK color for stroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "k",
+    "description": "Set CMYK color for nonstroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "l",
+    "description": "Append straight line segment to path",
+    "table": "59",
+    "pdf_page": 652
+  },
+  {
+    "token": "m",
+    "description": "Begin new subpath",
+    "table": "59",
+    "pdf_page": 652
+  },
+  {
+    "token": "M",
+    "description": "Set miter limit",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "MP",
+    "description": "(PDF 1.2) Define marked-content point",
+    "table": "320",
+    "pdf_page": 652
+  },
+  {
+    "token": "n",
+    "description": "End path without filling or stroking",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "q",
+    "description": "Save graphics state",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "Q",
+    "description": "Restore graphics state",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "re",
+    "description": "Append rectangle to path",
+    "table": "59",
+    "pdf_page": 652
+  },
+  {
+    "token": "RG",
+    "description": "Set RGB color for stroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "rg",
+    "description": "Set RGB color for nonstroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "ri",
+    "description": "Set color rendering intent",
+    "table": "57",
+    "pdf_page": 652
+  },
+  {
+    "token": "s",
+    "description": "Close and stroke path",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "S",
+    "description": "Stroke path",
+    "table": "60",
+    "pdf_page": 652
+  },
+  {
+    "token": "SC",
+    "description": "(PDF 1.1) Set color for stroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "sc",
+    "description": "(PDF 1.1) Set color for nonstroking operations",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "SCN",
+    "description": "(PDF 1.2) Set color for stroking operations (ICCBased and special colour spaces)",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "scn",
+    "description": "(PDF 1.2) Set color for nonstroking operations (ICCBased and special colour spaces)",
+    "table": "74",
+    "pdf_page": 652
+  },
+  {
+    "token": "sh",
+    "description": "(PDF 1.3) Paint area defined by shading pattern",
+    "table": "77",
+    "pdf_page": 653
+  },
+  {
+    "token": "T*",
+    "description": "Move to start of next text line",
+    "table": "108",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tc",
+    "description": "Set character spacing",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Td",
+    "description": "Move text position",
+    "table": "108",
+    "pdf_page": 653
+  },
+  {
+    "token": "TD",
+    "description": "Move text position and set leading",
+    "table": "108",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tf",
+    "description": "Set text font and size",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tj",
+    "description": "Show text",
+    "table": "109",
+    "pdf_page": 653
+  },
+  {
+    "token": "TJ",
+    "description": "Show text, allowing individual glyph positioning",
+    "table": "109",
+    "pdf_page": 653
+  },
+  {
+    "token": "TL",
+    "description": "Set text leading",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tm",
+    "description": "Set text matrix and text line matrix",
+    "table": "108",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tr",
+    "description": "Set text rendering mode",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Ts",
+    "description": "Set text rise",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tw",
+    "description": "Set word spacing",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "Tz",
+    "description": "Set horizontal text scaling",
+    "table": "105",
+    "pdf_page": 653
+  },
+  {
+    "token": "v",
+    "description": "Append curved segment to path (initial point replicated)",
+    "table": "59",
+    "pdf_page": 653
+  },
+  {
+    "token": "w",
+    "description": "Set line width",
+    "table": "57",
+    "pdf_page": 653
+  },
+  {
+    "token": "W",
+    "description": "Set clipping path using nonzero winding number rule",
+    "table": "61",
+    "pdf_page": 653
+  },
+  {
+    "token": "W*",
+    "description": "Set clipping path using even-odd rule",
+    "table": "61",
+    "pdf_page": 653
+  },
+  {
+    "token": "y",
+    "description": "Append curved segment to path (final point replicated)",
+    "table": "59",
+    "pdf_page": 653
+  },
+  {
+    "token": "'",
+    "description": "Move to next line and show text",
+    "table": "109",
+    "pdf_page": 653
+  },
+  {
+    "token": "\"",
+    "description": "Set word and character spacing, move to next line, and show text",
+    "table": "109",
+    "pdf_page": 653
+  }
+]
