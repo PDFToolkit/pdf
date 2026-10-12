@@ -1,0 +1,32 @@
+name: Quality
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  php:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: iconv, zlib
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: composer validate --strict
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer check
+      - run: python tools/generate_specification.py --check
+      - run: sudo apt-get update && sudo apt-get install -y qpdf
+      - run: php examples/hello-world.php /tmp/hello-world.pdf
+      - run: php examples/object-stream.php /tmp/object-stream.pdf
+      - run: qpdf --check /tmp/hello-world.pdf
+      - run: qpdf --check /tmp/object-stream.pdf
