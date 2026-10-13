@@ -61,6 +61,11 @@ php examples/object-stream.php object-stream.pdf
 
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
+Dans une branche de contribution, définir `COMPOSER_ROOT_VERSION=dev-master`
+avant `composer install`. Les modules de développement dépendent de cette version
+du core ; cette variable identifie le checkout courant pour Composer. Les CI la
+définissent également pour les branches et les pull requests.
+
 ## Construction objet par objet
 
 ```php

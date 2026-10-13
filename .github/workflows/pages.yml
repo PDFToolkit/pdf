@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  COMPOSER_ROOT_VERSION: dev-master
+
 concurrency:
   group: documentation-${{ github.ref }}
   cancel-in-progress: false
