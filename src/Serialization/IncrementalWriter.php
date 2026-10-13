@@ -15,6 +15,8 @@ use PDF\Syntax\FileStructure\CrossReferenceStreamFreeEntry;
 use PDF\Syntax\FileStructure\CrossReferenceStreamInUseEntry;
 use PDF\Syntax\FileStructure\CrossReferenceTable;
 use PDF\Syntax\FileStructure\FileRevision;
+use PDF\Syntax\FileStructure\GeneratedRevisionTimeline;
+use PDF\Syntax\FileStructure\CrossReferenceStreamObject;
 use PDF\Syntax\FileStructure\FileTrailer;
 use PDF\Syntax\FileStructure\IncrementalUpdate;
 use PDF\Syntax\FileStructure\ObjectStream;
@@ -37,6 +39,7 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 use PDF\Syntax\Object\StringType;
+use PDF\Syntax\DocumentStructure\PageTree\PageObject;
 
 /** Append a delta while preserving every byte and reference identity of previous revisions (7.5.6). */
 final class IncrementalWriter
@@ -49,7 +52,7 @@ final class IncrementalWriter
     {
         $previous = $update->previous;
         $security = $previous->encryption === null ? [] : [$previous->encryption];
-        $context = new SerializationContext(new ObjectNumber($previous->size->integer()), ...[...$previous->objects(), ...$security]);
+        $context = new SerializationContext(new ObjectNumber($previous->size->integer()), ...[...$previous->objects(), ...$previous->references(), ...$security]);
         $effective = [];
         foreach ($previous->objects() as $record) {
             $effective[$record->identifier->objectNumber->value] = $record;
@@ -60,7 +63,21 @@ final class IncrementalWriter
             }
             if ($object instanceof IndirectObject) {
                 $old = $effective[$object->identifier->objectNumber->value] ?? null;
-                if ($old !== null && ($old->value instanceof CrossReferenceStream || $old->value instanceof ObjectStream)) {
+                if ($object->value instanceof PageObject && $old !== null && $old->value !== $object->value) {
+                    // A linearized snapshot pinned inherited values onto the
+                    // leaf and removed them from its emitted ancestors. Keep
+                    // those explicit values when its construction alias is
+                    // staged again; the source graph itself stays unchanged.
+                    $page = new DictionaryType(...iterator_to_array($object->value->entries(), false));
+                    foreach (['MediaBox', 'Resources', 'CropBox', 'Rotate'] as $key) {
+                        $inherited = $old->dictionary?->get($key);
+                        if (!$page->has($key) && $inherited !== null) {
+                            $page = $page->with(new Entry(new NameType($key), $inherited));
+                        }
+                    }
+                    $object = new IndirectObject($page, $object->identifier);
+                }
+                if ($old !== null && $this->structural($old)) {
                     throw new \LogicException('Existing structural streams cannot be replaced; create a new object-stream container.');
                 }
                 if ($old !== null && $old->value === $previous->encryption?->dictionary()) {
@@ -83,7 +100,7 @@ final class IncrementalWriter
             if ($old !== null && $old->value === $previous->encryption?->dictionary()) {
                 throw new \LogicException('Incremental revisions must preserve the encryption dictionary and file key, including object-stream members.');
             }
-            if ($old !== null && ($old->value instanceof ObjectStream || $old->value instanceof CrossReferenceStream)) {
+            if ($old !== null && $this->structural($old)) {
                 throw new \LogicException('Existing structural streams cannot be replaced through object-stream members.');
             }
             if ($old === null && $context->identifier($object)->generationNumber->value !== 0) {
@@ -173,7 +190,7 @@ final class IncrementalWriter
         $written = array_fill_keys(array_keys($compressed), true);
         do {
             foreach (array_diff_key($context->objects(), $written) as $number => $object) {
-                if ($object instanceof CrossReferenceStream) {
+                if ($object instanceof CrossReferenceStreamObject) {
                     throw new \LogicException('Cross-reference streams belong to the incremental writer.');
                 }
                 $identifier = $context->identifier($object);
@@ -255,8 +272,8 @@ final class IncrementalWriter
         foreach ($context->objects() as $number => $object) {
             $value = $hybrid?->serializedValue($object) ?? $object;
             $effective[$number] = isset($effective[$number])
-                ? $effective[$number]->replacedBy($value)
-                : new RevisionObject($context->identifier($object), $value, $object);
+                ? $effective[$number]->replacedBy($value, $context->serializedSnapshot($value, $context->identifier($object)))
+                : new RevisionObject($context->identifier($object), $value, $object, $context->serializedSnapshot($value, $context->identifier($object)));
         }
         return new FileRevision(
             $bytes,
@@ -267,8 +284,15 @@ final class IncrementalWriter
             $trailer,
             $previous->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...array_values($effective), ...array_values($spans), ...($previous->encryption === null ? [] : [$previous->encryption])],
+            ...[...array_values($effective), ...array_values($spans), ...$context->references(), ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
         );
+    }
+
+    private function structural(RevisionObject $record): bool
+    {
+        $type = $record->dictionary?->get('Type');
+        return $record->value instanceof CrossReferenceStreamObject || $record->value instanceof ObjectStream
+            || ($type instanceof NameType && in_array($type->value, ['ObjStm', 'XRef'], true));
     }
 
     private function validateIdentifierChange(FileRevision $previous, IncrementalUpdate $update): void

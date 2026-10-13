@@ -19,9 +19,12 @@ final readonly class FileRevision implements \Stringable
     private array $effectiveObjects;
     /** @var array<int, ObjectByteSpan> */
     private array $byteSpans;
+    /** @var list<RevisionReference> */
+    private array $referenceAliases;
     public ?FileEncryption $encryption;
     public ObjectIdentifier $pageTreeIdentifier;
     public DictionaryType $trailerEntries;
+    public ?FileRevision $previous;
 
     public function __construct(
         public string $bytes,
@@ -32,7 +35,7 @@ final readonly class FileRevision implements \Stringable
         DictionaryType $trailerEntries,
         public CrossReferenceFormat $crossReferenceFormat,
         public IntegerType $freeListHead,
-        RevisionObject|ObjectByteSpan|FileEncryption ...$objects,
+        RevisionObject|RevisionReference|ObjectByteSpan|FileEncryption|GeneratedRevisionTimeline ...$objects,
     ) {
         $this->trailerEntries = new DictionaryType(...iterator_to_array($trailerEntries->entries(), false));
         if (!str_starts_with($bytes, (string) $header) || $crossReferenceOffset->value >= strlen($bytes)
@@ -51,7 +54,20 @@ final readonly class FileRevision implements \Stringable
         $spans = [];
         $encryption = null;
         $aliases = new \SplObjectStorage();
+        $timeline = null;
+        $references = [];
         foreach ($objects as $object) {
+            if ($object instanceof RevisionReference) {
+                $references[] = $object;
+                continue;
+            }
+            if ($object instanceof GeneratedRevisionTimeline) {
+                if ($timeline !== null) {
+                    throw new \InvalidArgumentException('A generated revision has one explicit timeline.');
+                }
+                $timeline = $object;
+                continue;
+            }
             if ($object instanceof FileEncryption) {
                 if ($encryption !== null) {
                     throw new \InvalidArgumentException('A revision has exactly one encryption operation.');
@@ -85,12 +101,23 @@ final readonly class FileRevision implements \Stringable
         }
         ksort($records, SORT_NUMERIC);
         $this->effectiveObjects = $records;
+        foreach ($references as $reference) {
+            $binding = $this->binding($reference->reference->target());
+            if ((string) $binding->identifier !== (string) $reference->identifier) {
+                throw new \InvalidArgumentException('A historical reference must describe its actual effective binding.');
+            }
+        }
+        $this->referenceAliases = $references;
         foreach ($spans as $number => $span) {
             if (!isset($records[$number]) || (string) $records[$number]->identifier !== (string) $span->identifier) {
                 throw new \InvalidArgumentException('Every byte span must belong to a live revision object.');
             }
         }
         $this->byteSpans = $spans;
+        $this->previous = $timeline?->previous;
+        if ($this->previous !== null && !str_starts_with($bytes, $this->previous->bytes)) {
+            throw new \InvalidArgumentException('An incremental timeline preserves the entire previous byte prefix.');
+        }
         $encrypt = $this->trailerEntries->get('Encrypt');
         if ($encryption === null ? $encrypt !== null : (!$encrypt instanceof IndirectReference || $encrypt->target() !== $encryption->dictionary())) {
             throw new \InvalidArgumentException('Revision encryption must match its exact Encrypt dictionary reference.');
@@ -131,6 +158,12 @@ final readonly class FileRevision implements \Stringable
         return array_values($this->byteSpans);
     }
 
+    /** @return list<RevisionReference> */
+    public function references(): array
+    {
+        return $this->referenceAliases;
+    }
+
     public function span(BasicType|ObjectIdentifier $value): ObjectByteSpan
     {
         $record = $this->binding($value);
@@ -161,7 +194,7 @@ final readonly class FileRevision implements \Stringable
             $this->trailerEntries,
             $this->crossReferenceFormat,
             $this->freeListHead,
-            ...[...array_values($records), ...$this->spans(), ...($this->encryption === null ? [] : [$this->encryption])]
+            ...[...array_values($records), ...$this->spans(), ...$this->references(), ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
         );
     }
 

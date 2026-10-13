@@ -11,6 +11,9 @@ use PDF\Syntax\FileStructure\ByteOffset;
 use PDF\Syntax\FileStructure\CrossReferenceFormat;
 use PDF\Syntax\FileStructure\CrossReferenceStreamCompressedEntry;
 use PDF\Syntax\FileStructure\FileTrailer;
+use PDF\Syntax\FileStructure\FileRevision;
+use PDF\Syntax\FileStructure\RevisionObject;
+use PDF\Syntax\FileStructure\ObjectByteSpan;
 use PDF\Syntax\Linearization\ExtendedGenericHintTable;
 use PDF\Syntax\Linearization\EmbeddedFileHintGroup;
 use PDF\Syntax\Linearization\EmbeddedFileHintTable;
@@ -53,6 +56,16 @@ final readonly class LinearizedWriter
     }
 
     public function serialize(FileStructure $file): string
+    {
+        return $this->write($file)->bytes;
+    }
+
+    public function revision(FileStructure $file): FileRevision
+    {
+        return $this->write($file);
+    }
+
+    private function write(FileStructure $file): FileRevision
     {
         $streamXrefs = $file->crossReferenceFormat === CrossReferenceFormat::Stream;
         $hybridXrefs = $file->crossReferenceFormat === CrossReferenceFormat::Hybrid;
@@ -170,8 +183,9 @@ final readonly class LinearizedWriter
         foreach ($plan->compressedFirstObjects as $member) {
             $firstRecords[] = new CrossReferenceStreamCompressedEntry(new ObjectNumber($numbers->value($member)), new ObjectNumber($numbers->value($plan->container($member))), new IntegerType(0));
         }
-        $firstXref = $streamXrefs
-            ? $this->indirect($firstXrefNumber, new LinearizationCrossReferenceStream(new IntegerType($linearNumber), new IntegerType($size), $plan->root, $trailerEntries, new FixedWidthOffset($mainXrefOffset), ...$firstRecords), $context)
+        $firstXrefObject = $streamXrefs ? new LinearizationCrossReferenceStream(new IntegerType($linearNumber), new IntegerType($size), $plan->root, $trailerEntries, new FixedWidthOffset($mainXrefOffset), ...$firstRecords) : null;
+        $firstXref = $firstXrefObject !== null
+            ? $this->indirect($firstXrefNumber, $firstXrefObject, $context)
             : (string) new LinearizationCrossReferenceTable(new IntegerType($linearNumber), ...$firstOffsets);
         $mainOffsets = array_map($actual, $second);
         $mainRecords = [...$mainOffsets, new ByteOffset($mainXrefOffset)];
@@ -185,11 +199,14 @@ final readonly class LinearizedWriter
         foreach ($plan->compressedSecondObjects as $member) {
             $auxiliaryRecords[] = new CrossReferenceStreamCompressedEntry(new ObjectNumber($numbers->value($member)), new ObjectNumber($numbers->value($plan->container($member))), new IntegerType(0));
         }
-        $auxiliaryBytes = $hybridXrefs
-            ? $this->indirect($mainXrefNumber, new LinearizationCrossReferenceStream(new IntegerType(0), new IntegerType($linearNumber), null, null, null, ...$auxiliaryRecords), $context)
+        $auxiliaryObject = $hybridXrefs ? new LinearizationCrossReferenceStream(new IntegerType(0), new IntegerType($linearNumber), null, null, null, ...$auxiliaryRecords) : null;
+        $auxiliaryBytes = $auxiliaryObject !== null
+            ? $this->indirect($mainXrefNumber, $auxiliaryObject, $context)
             : '';
-        $tail = $streamXrefs
-            ? $this->indirect($mainXrefNumber, new LinearizationCrossReferenceStream(new IntegerType(0), new IntegerType($linearNumber), null, null, null, ...$mainRecords), $context) . "startxref\n" . $firstXrefOffset . "\n%%EOF\n"
+        $mainXrefObject = $streamXrefs ? new LinearizationCrossReferenceStream(new IntegerType(0), new IntegerType($linearNumber), null, null, null, ...$mainRecords) : null;
+        $mainXrefBytes = $mainXrefObject === null ? '' : $this->indirect($mainXrefNumber, $mainXrefObject, $context);
+        $tail = $mainXrefObject !== null
+            ? $mainXrefBytes . "startxref\n" . $firstXrefOffset . "\n%%EOF\n"
             : $auxiliaryBytes . $mainXref . 'trailer' . "\n<< /Size " . $linearNumber . " >>\nstartxref\n" . $firstXrefOffset . "\n%%EOF\n";
         $firstTrailer = $this->firstTrailer($size, $mainXrefOffset, $plan->root, $trailerEntries, $context, $hybridXrefs ? $auxiliaryOffset : null);
         if ($streamXrefs) {
@@ -211,7 +228,52 @@ final readonly class LinearizedWriter
         if (strlen($bytes) !== $parameters->fileLength->value || strlen($bytes) > $this->limits->maximumFileBytes) {
             throw new \LengthException('The generated file exceeds its exact linearization layout or explicit capacity.');
         }
-        return $bytes;
+        $records = [];
+        $spans = [];
+        foreach ([...$second, ...$first] as $object) {
+            $identifier = new ObjectIdentifier(new ObjectNumber($numbers->value($object)));
+            $value = $plan->serializedValue($object);
+            $records[] = new RevisionObject($identifier, $value, $object, $context->serializedSnapshot($value, $identifier));
+            $spans[] = new ObjectByteSpan($identifier, $actual($object), strlen($serialized->value($object)));
+        }
+        foreach ([...$plan->compressedSecondObjects, ...$plan->compressedFirstObjects] as $member) {
+            $identifier = new ObjectIdentifier(new ObjectNumber($numbers->value($member)));
+            $value = $plan->plan->serializedValue($member);
+            $records[] = new RevisionObject($identifier, $value, $member, $context->serializedSnapshot($value, $identifier));
+        }
+        $generated = [[$linearNumber, $parameters, strlen($header), strlen($linearBytes)], [$hintNumber, $primary, $hintOffset, $hintLength]];
+        if ($overflowBytes !== '') {
+            $generated[] = [$hintNumber + 1, $overflow, $overflowOffset, strlen($overflowBytes)];
+        }
+        if ($firstXrefObject !== null) {
+            $generated[] = [$firstXrefNumber, $firstXrefObject, $firstXrefOffset, strlen($firstXref)];
+        }
+        if ($mainXrefObject !== null) {
+            $generated[] = [$mainXrefNumber, $mainXrefObject, $mainXrefOffset, strlen($mainXrefBytes)];
+        }
+        if ($auxiliaryObject !== null) {
+            $generated[] = [$mainXrefNumber, $auxiliaryObject, $auxiliaryOffset, strlen($auxiliaryBytes)];
+        }
+        foreach ($generated as [$number, $value, $offset, $length]) {
+            $identifier = new ObjectIdentifier(new ObjectNumber($number));
+            $records[] = new RevisionObject($identifier, $value, $context->serializedSnapshot($value, $identifier));
+            $spans[] = new ObjectByteSpan($identifier, new ByteOffset($offset), $length);
+        }
+        $trailerSnapshot = $context->serializedSnapshot($trailerEntries ?? new DictionaryType())->value;
+        if (!$trailerSnapshot instanceof DictionaryType) {
+            throw new \LogicException('A revision trailer freezes as a dictionary.');
+        }
+        return new FileRevision(
+            $bytes,
+            $file->header,
+            new ByteOffset($firstXrefOffset),
+            new IntegerType($size),
+            new IndirectReference($plan->root->target(), $context->identifier($plan->root->target())),
+            $trailerSnapshot,
+            $file->crossReferenceFormat,
+            new IntegerType(0),
+            ...[...$records, ...$spans, ...$context->references(), ...($this->encryption === null ? [] : [$this->encryption])]
+        );
     }
 
     public function writeTo(FileStructure $file, string $path): void

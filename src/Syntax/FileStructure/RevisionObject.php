@@ -25,24 +25,33 @@ final readonly class RevisionObject
     public BasicType $snapshot;
     public string $objectKind;
 
-    public function __construct(public ObjectIdentifier $identifier, public BasicType $value, BasicType ...$aliases)
+    public function __construct(public ObjectIdentifier $identifier, public BasicType $value, BasicType|SerializedRevisionValue ...$aliases)
     {
         if ($value instanceof IndirectReference || $identifier->generationNumber->value === 65535) {
             throw new \InvalidArgumentException('A revision object requires a live indirect value.');
         }
         $identities = [];
+        $serialized = null;
         foreach ([$value, ...$aliases] as $alias) {
+            if ($alias instanceof SerializedRevisionValue) {
+                if ($serialized !== null) {
+                    throw new \InvalidArgumentException('A revision value has one explicit serialized snapshot.');
+                }
+                $serialized = $alias;
+                continue;
+            }
             if ($alias instanceof IndirectReference) {
                 throw new \InvalidArgumentException('A revision alias must be an indirect value.');
             }
             $identities[spl_object_id($alias)] = $alias;
         }
         $this->aliases = array_values($identities);
-        $dictionary = $value instanceof DictionaryType ? $value : ($value instanceof StreamObject ? $value->dictionary() : null);
+        $actual = $serialized === null ? $value : $serialized->value;
+        $dictionary = $actual instanceof DictionaryType ? $actual : ($actual instanceof StreamObject ? $actual->dictionary() : null);
         $capture = new RevisionValueSnapshot();
         $frozen = $dictionary === null ? null : $capture->capture($dictionary);
         $this->dictionary = $frozen instanceof DictionaryType ? $frozen : null;
-        $this->snapshot = $value instanceof StreamObject ? $value : $capture->capture($value);
+        $this->snapshot = $actual instanceof StreamObject ? $actual : $capture->capture($actual);
         $this->objectKind = match (true) {
             $value instanceof StreamObject => 'stream',
             $value instanceof DictionaryType => 'dictionary',
@@ -58,9 +67,9 @@ final readonly class RevisionObject
     }
 
     #[\NoDiscard]
-    public function replacedBy(BasicType $value): self
+    public function replacedBy(BasicType $value, ?SerializedRevisionValue $serialized = null): self
     {
-        $replacement = new self($this->identifier, $value, ...$this->aliases);
+        $replacement = new self($this->identifier, $value, ...[...$this->aliases, ...($serialized === null ? [] : [$serialized])]);
         if ($replacement->objectKind !== $this->objectKind && !($this->objectKind === 'number' && $replacement->objectKind === 'integer')) {
             throw new \LogicException('A replacement must preserve the PDF object type of existing references.');
         }

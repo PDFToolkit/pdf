@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\FileStructure;
 
+use PDF\Serialization\SerializationContext;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\DictionaryType;
@@ -18,7 +19,7 @@ final class RevisionValueSnapshot
     /** @var \SplObjectStorage<BasicType, null> */
     private \SplObjectStorage $active;
 
-    public function __construct()
+    public function __construct(private readonly ?SerializationContext $context = null)
     {
         $this->copies = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
@@ -26,6 +27,9 @@ final class RevisionValueSnapshot
 
     public function capture(BasicType $value): BasicType
     {
+        if ($value instanceof IndirectReference && $this->context !== null) {
+            return new IndirectReference($value->target(), $this->context->reference($value));
+        }
         if ($value instanceof IndirectReference || (!$value instanceof DictionaryType && !$value instanceof ArrayType)) {
             if ($value instanceof StreamObject) {
                 throw new \LogicException('A direct revision value cannot contain a stream.');

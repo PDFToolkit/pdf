@@ -7,6 +7,10 @@ namespace PDF\Serialization;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\ObjectStream;
 use PDF\Syntax\FileStructure\RevisionObject;
+use PDF\Syntax\FileStructure\RevisionStreamSnapshot;
+use PDF\Syntax\FileStructure\RevisionValueSnapshot;
+use PDF\Syntax\FileStructure\SerializedRevisionValue;
+use PDF\Syntax\FileStructure\RevisionReference;
 use PDF\Syntax\FileStructure\FileBody;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
@@ -26,6 +30,7 @@ use PDF\Security\DocumentMetadataExemption;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 
@@ -50,18 +55,30 @@ final class SerializationContext
     private ?ObjectIdentifier $containingIdentifier = null;
     private int $encryptionSuppression = 0;
     private readonly bool $remapping;
+    /** @var array<int, RevisionStreamSnapshot> */
+    private array $streamEmissions = [];
+    /** @var \SplObjectStorage<IndirectReference, ObjectIdentifier> */
+    private \SplObjectStorage $referenceAliases;
 
-    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|FileEncryption|DocumentMetadataExemption|ObjectIdentifierRemapping ...$existingObjects)
+    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|RevisionReference|FileEncryption|DocumentMetadataExemption|ObjectIdentifierRemapping ...$existingObjects)
     {
         $this->identifiers = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
         $this->historical = new \SplObjectStorage();
+        $this->referenceAliases = new \SplObjectStorage();
         $this->firstNewNumber = $firstNewNumber->value;
         $this->nextNumber = $this->firstNewNumber;
         $encryption = null;
         $metadata = null;
         $remapping = false;
         foreach ($existingObjects as $record) {
+            if ($record instanceof RevisionReference) {
+                if ($this->referenceAliases->offsetExists($record->reference)) {
+                    throw new \InvalidArgumentException('Historical reference instances are bound once.');
+                }
+                $this->referenceAliases[$record->reference] = $record->identifier;
+                continue;
+            }
             if ($record instanceof ObjectIdentifierRemapping) {
                 if ($remapping) {
                     throw new \InvalidArgumentException('Object identifier remapping is selected once per context.');
@@ -270,7 +287,27 @@ final class SerializationContext
 
     public function reference(IndirectReference $reference): ObjectIdentifier
     {
-        return $this->register($reference->target(), $this->remapping ? null : $reference->identifier);
+        if ($this->referenceAliases->offsetExists($reference)) {
+            $identifier = $this->referenceAliases[$reference];
+            $known = $this->knownIdentifier($reference->target());
+            if ($known === null || (string) $known !== (string) $identifier) {
+                throw new \LogicException('A historical reference must retain its actual emitted target identifier.');
+            }
+            return $identifier;
+        }
+        $identifier = $this->register($reference->target(), $this->remapping ? null : $reference->identifier);
+        $this->referenceAliases[$reference] = $identifier;
+        return $identifier;
+    }
+
+    /** @return list<RevisionReference> */
+    public function references(): array
+    {
+        $records = [];
+        foreach ($this->referenceAliases as $reference) {
+            $records[] = new RevisionReference($reference, $this->referenceAliases[$reference]);
+        }
+        return $records;
     }
     public function referenceTo(BasicType $target): IndirectReference
     {
@@ -284,6 +321,36 @@ final class SerializationContext
     public function identifier(BasicType $object): ObjectIdentifier
     {
         return $this->register($object);
+    }
+
+    /** Inspect an existing identity without allocating or discovering another object. */
+    public function knownIdentifier(BasicType $object): ?ObjectIdentifier
+    {
+        return $this->identifiers->offsetExists($object) ? $this->identifiers[$object] : null;
+    }
+
+    /** Called by StreamObject with the actual final dictionary and same-call pre-encryption bytes. */
+    public function recordStreamEmission(StreamObject $stream, DictionaryType $dictionary, string $encoded): void
+    {
+        $identifier = $this->containingIdentifier ?? $this->knownIdentifier($this->indirectValue ?? $stream);
+        if ($identifier === null) {
+            throw new \LogicException('A stream emission belongs to a known containing indirect identifier.');
+        }
+        $frozen = (new RevisionValueSnapshot($this))->capture($dictionary);
+        if (!$frozen instanceof DictionaryType) {
+            throw new \LogicException('An emitted stream dictionary must freeze as a dictionary.');
+        }
+        $this->streamEmissions[$identifier->objectNumber->value] = new RevisionStreamSnapshot($frozen, $encoded);
+    }
+
+    public function serializedSnapshot(BasicType $value, ?ObjectIdentifier $identifier = null): SerializedRevisionValue
+    {
+        $identifier ??= $this->knownIdentifier($value);
+        if ($value instanceof StreamObject) {
+            $emitted = $identifier === null ? null : ($this->streamEmissions[$identifier->objectNumber->value] ?? null);
+            return new SerializedRevisionValue($emitted ?? throw new \LogicException('A stream snapshot requires its actual recorded emission.'));
+        }
+        return new SerializedRevisionValue((new RevisionValueSnapshot($this))->capture($value));
     }
 
     public function serialize(BasicType $object): string
@@ -366,6 +433,10 @@ final class SerializationContext
     /** @return list<Filter> */
     public function streamFilters(StreamObject $stream): array
     {
+        $external = $stream->dictionary()->get('F');
+        if ($external !== null && !$external instanceof NullType) {
+            return $stream->filters;
+        }
         if ($stream === $this->metadataExemption?->stream && (new StreamCryptFilter())->explicit($stream) === null) {
             return [new Crypt(), ...$stream->filters];
         }
@@ -375,6 +446,10 @@ final class SerializationContext
     /** Stream encoders run before encryption; xref and excluded metadata bytes stay clear. */
     public function encryptStream(StreamObject $stream, string $bytes): string
     {
+        $external = $stream->dictionary()->get('F');
+        if ($external !== null && !$external instanceof NullType) {
+            return $bytes;
+        }
         $explicit = (new StreamCryptFilter())->explicit($stream);
         if ($explicit !== null && $stream instanceof CrossReferenceStreamObject) {
             throw new \LogicException('Cross-reference streams cannot use a Crypt filter.');

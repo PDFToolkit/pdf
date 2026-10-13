@@ -53,7 +53,8 @@ class StreamObject implements BasicType
 
     public function toPdf(SerializationContext $context): string
     {
-        $bytes = $context->encryptStream($this, $this->bytes($context));
+        $encoded = $this->bytes($context);
+        $bytes = $context->encryptStream($this, $encoded);
         $dictionary = $this->dictionary()->with(new Entry(new NameType('Length'), new StreamExtent($bytes)));
         $filters = $context->streamFilters($this);
         if ($filters !== []) {
@@ -64,6 +65,7 @@ class StreamObject implements BasicType
                 $dictionary = $dictionary->with(new Entry(new NameType('DecodeParms'), count($parameters) === 1 ? $parameters[0] : new ArrayType(...$parameters)));
             }
         }
+        $context->recordStreamEmission($this, $dictionary, $encoded);
         return $context->serialize($dictionary) . "\nstream\n" . $bytes . "\nendstream";
     }
 }

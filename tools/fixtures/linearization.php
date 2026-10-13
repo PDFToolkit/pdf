@@ -122,6 +122,10 @@ function linearizationSecurityCases(): array
     return $cases;
 }
 
+if (realpath($_SERVER['SCRIPT_FILENAME'] ?? '') !== __FILE__) {
+    return;
+}
+
 $manifest = [];
 foreach (linearizationSecurityCases() as [$name, $encryption]) {
     foreach (CrossReferenceFormat::cases() as $format) {

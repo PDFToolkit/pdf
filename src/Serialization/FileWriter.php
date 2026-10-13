@@ -220,9 +220,15 @@ final class FileWriter
     /** @param list<ObjectByteSpan> $spans */
     private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null): FileRevision
     {
+        $trailerSnapshot = $context->serializedSnapshot($trailerEntries ?? new DictionaryType())->value;
+        if (!$trailerSnapshot instanceof DictionaryType) {
+            throw new \LogicException('A revision trailer freezes as a dictionary.');
+        }
         $objects = [];
         foreach ($context->objects() as $object) {
-            $objects[] = new RevisionObject($context->identifier($object), $hybrid?->serializedValue($object) ?? $object, $object);
+            $identifier = $context->identifier($object);
+            $value = $hybrid?->serializedValue($object) ?? $object;
+            $objects[] = new RevisionObject($identifier, $value, $object, $context->serializedSnapshot($value, $identifier));
         }
         $root = $file->root ?? $this->findRoot($file);
         return new FileRevision(
@@ -231,10 +237,10 @@ final class FileWriter
             new ByteOffset($offset),
             $section->size,
             new IndirectReference($root->target(), $context->identifier($root->target())),
-            $trailerEntries ?? new DictionaryType(),
+            $trailerSnapshot,
             $file->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...$objects, ...$spans, ...($this->encryption === null ? [] : [$this->encryption])],
+            ...[...$objects, ...$spans, ...$context->references(), ...($this->encryption === null ? [] : [$this->encryption])],
         );
     }
 
