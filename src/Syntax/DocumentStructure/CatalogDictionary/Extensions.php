@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace PDF\Syntax\DocumentStructure\CatalogDictionary;
 
 use PDF\Syntax\Object\DictionaryObject\Entry;
-use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 
-final class Extension extends Entry
+final class Extensions extends Entry
 {
     public function __construct(DictionaryType|IndirectReference $value)
     {

@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
+- Rename the catalog entry `Extension` to `Extensions`, matching the PDF key. These API changes have no compatibility aliases.
+
 ### Removed
 
 - The unused `PDF\Dictionary\CatalogDictionary` compatibility alias and catalog entry constant registry. Catalog entries now extend the PDF dictionary entry object directly.

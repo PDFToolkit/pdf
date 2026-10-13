@@ -8,7 +8,7 @@ use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\NameType;
 
-/** Deprecated procedure-set resource entry retained for exact PDF terminology. */
+/** Procedure-set resource entry defined and deprecated by PDF 1.7 (14.2). */
 final class ProcSet extends Entry
 {
     public function __construct(NameType ...$sets)

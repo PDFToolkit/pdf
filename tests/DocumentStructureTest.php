@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
-use PDF\Dictionary\OutlineDictionary;
 use PDF\Document\Destinations\Fit;
 use PDF\Document\Destinations\XYZ;
+use PDF\Document\OutlineDictionary;
 use PDF\Document\OutlineItem;
 use PDF\Document\ResourceDictionary;
 use PDF\FileStructure;
