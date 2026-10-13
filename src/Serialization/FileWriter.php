@@ -88,7 +88,12 @@ final class FileWriter
         if ($numbers === []) {
             throw new \LogicException('The document must contain indirect objects.');
         }
-        $size = max($numbers) + 1;
+        $maximumNumber = max($numbers);
+        $reservedNumbers = $file->crossReferenceFormat === CrossReferenceFormat::Stream ? 2 : 1;
+        if ($maximumNumber > PHP_INT_MAX - $reservedNumbers) {
+            throw new \OverflowException('Not enough object number space to serialize this file.');
+        }
+        $size = $maximumNumber + 1;
         if ($file->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
             $entries[] = new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($xrefOffset));

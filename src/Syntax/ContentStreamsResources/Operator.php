@@ -52,28 +52,45 @@ abstract readonly class Operator implements \Stringable
         return $this->toPdf(new SerializationContext());
     }
 
-    /**
-     * Indirect references and streams are prohibited as content operands.
-     * @param array<int, true> $ancestors
-     */
-    protected static function assertDirect(BasicType $object, array $ancestors = []): void
+    /** Indirect references and streams are prohibited as content operands. */
+    protected static function assertDirect(BasicType $object): void
     {
-        if ($object instanceof IndirectReference || $object instanceof StreamObject) {
+        /** @var \SplObjectStorage<BasicType, null> $active */
+        $active = new \SplObjectStorage();
+        /** @var \SplObjectStorage<BasicType, null> $completed */
+        $completed = new \SplObjectStorage();
+        self::visitDirect($object, $active, $completed);
+    }
+
+    /**
+     * @param \SplObjectStorage<BasicType, null> $active
+     * @param \SplObjectStorage<BasicType, null> $completed
+     */
+    private static function visitDirect(BasicType $value, \SplObjectStorage $active, \SplObjectStorage $completed): void
+    {
+        if ($value instanceof IndirectReference || $value instanceof StreamObject) {
             throw new \InvalidArgumentException('Content-stream operands must be direct objects, and cannot contain streams.');
         }
-        $id = spl_object_id($object);
-        if (isset($ancestors[$id])) {
+        if ($active->offsetExists($value)) {
             throw new \InvalidArgumentException('A content-stream operand cannot contain a cyclic array or dictionary.');
         }
-        $ancestors[$id] = true;
-        if ($object instanceof ArrayType) {
-            foreach ($object->items as $item) {
-                self::assertDirect($item, $ancestors);
-            }
-        } elseif ($object instanceof DictionaryType) {
-            foreach ($object->entries() as $entry) {
-                self::assertDirect($entry->value, $ancestors);
-            }
+        if ($completed->offsetExists($value)) {
+            return;
         }
+        $active->offsetSet($value);
+        try {
+            if ($value instanceof ArrayType) {
+                foreach ($value->items as $item) {
+                    self::visitDirect($item, $active, $completed);
+                }
+            } elseif ($value instanceof DictionaryType) {
+                foreach ($value->entries() as $entry) {
+                    self::visitDirect($entry->value, $active, $completed);
+                }
+            }
+        } finally {
+            $active->offsetUnset($value);
+        }
+        $completed->offsetSet($value);
     }
 }
