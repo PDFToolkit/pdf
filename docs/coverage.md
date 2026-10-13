@@ -83,6 +83,21 @@ Les conditions, seuils de versions et ressources doivent aussi continuer à êtr
 audités famille par famille. Les inventaires distinguent ces travaux des
 constructions et preuves déjà livrées.
 
+## Apparences modifiables corrigées dans la version 0.5.1
+
+Les exemples AcroForm et de politique de signature délimitent leurs trois
+apparences de texte variable par `/Tx BMC ... EMC`. Le cadre reste à l'extérieur ;
+le texte, le clipping et les sélections de liste restent dans la partie
+remplaçable. Sans ce marqueur, la procédure ISO autorise l'ajout du nouveau texte
+à l'ancien flux, ce qui explique la superposition observée dans Acrobat Reader.
+
+L'[oracle de régression](../tools/validate_variable_text_appearances.py) analyse
+les vrais opérateurs avec pypdf et exerce deux remplacements successifs pour
+chaque apparence. Il vérifie la disparition des anciens textes, la conservation
+des cadres et le cas négatif sans marqueur. Ces contrôles passent sous les trois
+versions de PHP ; ils ne constituent pas une validation interactive d'Acrobat.
+Les dessins statiques, boutons et signatures restent des apparences libres.
+
 ## Frontière du core
 
 Le core construit les objets PDF et leurs mécanismes d'écriture. Les programmes

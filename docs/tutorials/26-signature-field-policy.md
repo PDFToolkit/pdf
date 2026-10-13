@@ -87,6 +87,12 @@ Le contrat vérifie qu'elle est bien l'apparence normale sélectionnée de chaqu
 widget du champ, y compris un champ/widget fusionné et les dictionnaires d'états.
 Il ne dessine pas une apparence et ne reproduit pas le dialogue d'un lecteur PDF.
 
+L'apparence du champ texte `Reference` suit aussi la procédure de texte variable
+du [tutoriel AcroForm](14-acroform-fields.md) : `/Tx BMC ... EMC` encadre le texte
+et le clipping, tandis que le cadre reste à l'extérieur. Elle est distincte de
+l'apparence statique de signature. Le marquage ne rend pas le champ modifiable
+après signature lorsque le lecteur applique son verrou FieldMDP.
+
 ## Lier le catalogue, figer les octets et signer
 
 ```php

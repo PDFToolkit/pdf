@@ -18798,8 +18798,8 @@
   "currentDevelopment": {
     "baselineAuditPreserved": true,
     "baselineRelease": "0.3.0",
-    "date": "2026-10-13",
-    "targetRelease": "0.5.0",
+    "date": "2026-10-14",
+    "targetRelease": "0.5.1",
     "status": "validated-native-evidence",
     "readingRule": "The historical mechanism/table/algorithm assessments above remain the complete unchanged 0.3.0 baseline. implementedChanges preserves 0.4.0 validation evidence with releasedIn metadata and records separately the native subsets introducedIn 0.5.0. Superseded remaining-work text is retained as history; no schema/class count or syntax check implies complete clause coverage.",
     "allSourceMechanismsImplemented": false,
@@ -21612,6 +21612,119 @@
           "PKI trust/path/validity and OID normalization, RFC3161 issuance/validation, OCSP/CRL acquisition/verification/embed and external history import remain explicit external or incomplete components.",
           "Native PHP CMS has no selectable digest; unsupported mandatory digest/evidence requirements fail rather than claim compliance. External backends/verifiers may supply legitimate capabilities.",
           "One reservation shared by distinct field representations is currently refused as an API limitation, not a normative prohibition."
+        ]
+      },
+      {
+        "mechanism": "acroform-graph",
+        "relatedMechanisms": [
+          "text-and-choice-fields",
+          "annotation-appearances",
+          "content-language",
+          "signature-fields"
+        ],
+        "title": "Replaceable variable-text sections in supplied editable example appearances",
+        "introducedIn": "0.5.1",
+        "writingStatus": "executable-and-validated-example-correction",
+        "libraryApiChanged": false,
+        "sourceEvidence": [
+          {
+            "mechanism": "text-and-choice-fields",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.3.3",
+                  "pdfPage": 443,
+                  "pdfPages": [
+                    443,
+                    444
+                  ],
+                  "title": "Variable Text"
+                }
+              ]
+            },
+            "scope": "The variable-text appearance procedure replaces the /Tx BMC through its matching EMC; when no such section exists, new contents are appended."
+          },
+          {
+            "mechanism": "annotation-appearances",
+            "source": {
+              "document": "adobe_supplement_iso32000.pdf",
+              "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+              "clauses": [
+                {
+                  "clause": "Implementation Notes 118-119",
+                  "pdfPage": 121,
+                  "title": "Field Dictionaries (Variable Text)"
+                }
+              ]
+            },
+            "scope": "Adobe product implementation behavior, not a universal PDF requirement: note 119 distinguishes full regeneration when MK exists from preservation outside /Tx when MK is absent; note 118 concerns obsolete field-level DR."
+          }
+        ],
+        "implementationPaths": [
+          "examples/acroform-fields.php",
+          "examples/signature-field-policy.php"
+        ],
+        "implementedBehavior": [
+          "The supplied Name and Countries normal appearances and the signing example Reference normal appearance place all editable text and selection painting inside an explicit /Tx BMC ... EMC section; static frames remain outside.",
+          "The Countries example displays the actual France and Belgique options on two separate text baselines, consistent with its multi-selection V, Opt, I and TI values.",
+          "Existing explicit content operators construct these appearances; no native library API or model changes are needed."
+        ],
+        "semanticConstraints": [
+          "Independent parsing checks complete text operations, balanced q/Q graphics-state scope, clipping and selection painting inside the matching Tx section, with frame strokes outside; nested marked content uses the matching EMC rather than the first EMC.",
+          "Two successive source-prescribed section replacements remove old and intermediate displayed values while preserving every outside operation exactly.",
+          "Absence of Tx remains valid PDF behavior with the normative append fallback; the stricter replaceable-section assertion applies to these editable examples, not to all appearance streams.",
+          "The Countries example contains exactly two initial selection fills inside the replaceable Tx section. Moving graphics-state scope, clipping or these fills outside Tx is rejected by the three-example oracle contract, not by a universal PDF validity rule."
+        ],
+        "validation": {
+          "examples": [
+            "examples/acroform-fields.php",
+            "examples/signature-field-policy.php"
+          ],
+          "fixture": "tools/fixtures/acroform_fields.php",
+          "oracles": [
+            "tools/validate_variable_text_appearances.py",
+            "tools/validate_forms.py",
+            "tools/validate_signature_field_policy_example.py"
+          ],
+          "php": [
+            "8.3.35",
+            "8.4.26",
+            "8.5.11"
+          ],
+          "checkedAppearances": [
+            "Person.Name",
+            "Person.Countries",
+            "Reference"
+          ],
+          "successiveReplacementsPerAppearance": 2,
+          "totalReplacementsPerPhp": 6,
+          "negativeMutationKinds": [
+            "missing Tx section",
+            "stale displayed values after the permitted append fallback",
+            "text operations moved outside the Tx section",
+            "q/Q graphics-state scope moved outside the Tx section",
+            "clipping moved outside the Tx section",
+            "Countries selection fill moved outside the Tx section"
+          ],
+          "negativeChecksPerPhp": 16,
+          "nestedMarkedContentChecksPerPhp": 3,
+          "noTxAppendFallbackChecksPerPhp": 3,
+          "independentResult": "All three PHP versions pass pypdf ContentStream inspection, reparsed successive replacement simulations, exact preservation of outside operations, France/Belgique text-baseline and V/Opt/I/TI checks, balanced q/Q and clipping scope inside Tx, exactly two replaceable Countries selection fills, nested /Span marked content and the valid no-Tx append fallback. Each PHP run checks six replacements and sixteen negative mutations: five for Name, six for Countries and five for Reference. qpdf checks the generated form/signature examples; the original signing example CMS RSA/SHA256 remains mathematically verified.",
+          "originalAppearanceBytesUnchangedByOracle": true,
+          "acrobatInteractiveTested": false,
+          "negativeChecksPerAppearance": {
+            "Person.Name": 5,
+            "Person.Countries": 6,
+            "Reference": 5
+          },
+          "graphicsStateScopeAndClippingInsideTx": true,
+          "countriesInitialSelectionFillsInsideTx": 2
+        },
+        "remainingWorkOrBoundary": [
+          "Acrobat is not installed; actual viewer editing and rendering behavior are not inferred from the independent stream-level regressions.",
+          "The oracle simulates appearance-content replacement without modifying the emitted PDFs or performing an actual fill of the signed PDF. Form-filling, automatic layout/appearance regeneration and full authenticated MDP/UR change analysis remain separate incomplete behaviors."
         ]
       }
     ]

@@ -1,7 +1,7 @@
 # Core et modules optionnels
 
 PDFToolkit sépare le modèle PDF des traitements de fichiers externes. Le core
-**0.5.0** et les trois modules **0.1.3** utilisent PHP 8.3 ou supérieur et une CI
+**0.5.1** et les trois modules **0.1.3** utilisent PHP 8.3 ou supérieur et une CI
 sur PHP 8.3, 8.4 et 8.5.
 Le core conserve son nom Composer `roukmoute/pdf` après son transfert dans
 l'organisation ; les nouveaux modules utilisent le préfixe `pdftoolkit/`.
