@@ -135,11 +135,9 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
     public function selectFormat(SignatureHandlerCapabilities $capabilities): SignatureFormat
     {
         $this->assertHandler($capabilities);
-        foreach ($this->formats ?? [] as $name) {
-            $format = SignatureFormat::tryFrom($name->value);
-            if ($format !== null && $capabilities->supports($format)) {
-                return $format;
-            }
+        $preferred = $this->preferredFormat($capabilities);
+        if ($preferred !== null) {
+            return $preferred;
         }
         if ($this->formats !== null && $this->flags->requires(SignatureSeedFlag::SubFilter)) {
             throw new \InvalidArgumentException('No supported encoding satisfies the required SubFilter seed.');
@@ -147,16 +145,31 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
         return $capabilities->formats[0];
     }
 
+    /** First matching preference; null leaves optional fallback choice to the actual handler. */
+    public function preferredFormat(SignatureHandlerCapabilities $capabilities): ?SignatureFormat
+    {
+        foreach ($this->formats ?? [] as $name) {
+            $format = SignatureFormat::tryFrom($name->value);
+            if ($format !== null && $capabilities->supports($format)) {
+                return $format;
+            }
+        }
+        return null;
+    }
+
     public function validateChoice(SignatureSigningChoice $choice, SignatureCertificateFacts $certificate, ?SignatureCertificateUrlUsage $urlUsage = null): void
     {
-        if ($choice->format !== $this->selectFormat($choice->capabilities)) {
+        $this->assertHandler($choice->capabilities);
+        $preferred = $this->preferredFormat($choice->capabilities);
+        if (($preferred !== null && $choice->format !== $preferred) || ($this->formats !== null && $preferred === null && $this->flags->requires(SignatureSeedFlag::SubFilter))) {
             throw new \InvalidArgumentException('Signing must select the first supported preferred SubFilter.');
         }
         $version = $this->get('V');
         if ($version instanceof NumericType && $this->flags->requires(SignatureSeedFlag::ParserCapability) && $choice->capabilities->seedParserCapability->value < $version->value) {
             throw new \InvalidArgumentException('The selected handler cannot recognize the required seed parser version.');
         }
-        if ($certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $choice->digest !== SignatureDigestMethod::SHA1) {
+        // Table234 describes DSA/SHA1 within the DigestMethod entry; an absent entry adds no restriction.
+        if ($this->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $choice->digest !== SignatureDigestMethod::SHA1) {
             throw new \InvalidArgumentException('ISO seed digest rules require SHA1 for DSA credentials.');
         }
         if ($certificate->keyAlgorithm() === SignatureKeyAlgorithm::RSA && $this->digests !== null && $this->flags->requires(SignatureSeedFlag::DigestMethod) && !in_array($choice->digest, $this->digests, true)) {

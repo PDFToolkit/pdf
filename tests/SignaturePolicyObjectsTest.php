@@ -355,10 +355,10 @@ final class SignaturePolicyObjectsTest extends TestCase
         $seed->validateChoice($this->choice(SignatureDigestMethod::SHA1), $this->facts());
     }
 
-    public function testDsaDoesNotAcceptNonSha1Digest(): void
+    public function testDsaDigestMethodEntryDoesNotAcceptNonSha1Digest(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        (new SignatureSeedValue())->validateChoice($this->choice(), $this->facts(SignatureKeyAlgorithm::DSA));
+        (new SignatureSeedValue(entries: $this->entry('DigestMethod', new ArrayType(new NameType('SHA256')))))->validateChoice($this->choice(), $this->facts(SignatureKeyAlgorithm::DSA));
     }
 
     public function testPkcs1FormatPermitsSha256PerTable257ButRequiresRsa(): void

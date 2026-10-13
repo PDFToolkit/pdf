@@ -11,6 +11,9 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 use PDF\Serialization\SerializationContext;
 use PDF\Document\Signatures\Policies\SignatureSeedValidationRequirement;
+use PDF\Document\Signatures\Policies\SignatureSigningEvidence;
+use PDF\Document\Signatures\Policies\UnavailableSignatureEvidence;
+use PDF\Document\Signatures\Policies\SignatureCertificateUrlUsage;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\StringType;
@@ -46,6 +49,12 @@ final readonly class PreparedSignature
         $this->range = new SignatureByteRange($before, $after, strlen($revision->bytes) - $after);
         $this->byteRangeOffset = $after + strlen(' /ByteRange ');
         $this->bytes = substr_replace($revision->bytes, $signature->byteRange->filled($this->range), $this->byteRangeOffset, strlen($range));
+        $graph = new FrozenSignatureGraph($revision);
+        (new SignatureDocumentSigningRules())->validate($graph, $binding->identifier);
+        $history = new SignaturePermissionHistory($graph);
+        foreach ($graph->bindings($binding->identifier) as $field) {
+            $history->assertSigning($field);
+        }
     }
 
     public function coveredBytes(): string
@@ -63,7 +72,7 @@ final readonly class PreparedSignature
             ), $this->signature->format);
         }
         if ($this->signature->format === SignatureFormat::X509RsaSha1 && $backend instanceof CertificateAwareSignatureBackend) {
-            $certificate = $this->signature->get('Cert');
+            $certificate = $this->revision->binding($this->signature)->dictionary?->get('Cert');
             $signer = $certificate instanceof ArrayType ? ($certificate->items[0] ?? null) : $certificate;
             if (!$signer instanceof StringType || !hash_equals($backend->certificateChain()->signer->value->value, $signer->value)) {
                 throw new \InvalidArgumentException('The signature Cert must match the certificate of the actual signing key.');
@@ -76,6 +85,37 @@ final readonly class PreparedSignature
     public function finalize(SignatureValue $value): SignedRevision
     {
         $this->validateFieldObligations();
+        return $this->finalizeValidated($value);
+    }
+
+    public function signWithPolicy(
+        PolicySignatureBackend $backend,
+        SignatureSigningIntent $intent = new SignatureSigningIntent(),
+        ?SignatureOutputVerifier $verifier = null,
+        SignatureSigningEvidence $evidence = new UnavailableSignatureEvidence(),
+        ?SignatureCertificateUrlUsage $urlUsage = null
+    ): SignedRevision {
+        $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
+        $value = $backend->signWithDigest($this->coveredBytes(), $this->signature->format, $contract->choice->digest);
+        $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
+        return $this->finalizeValidated($value);
+    }
+
+    public function finalizeWithPolicy(
+        SignatureValue $value,
+        PolicySignatureBackend $backend,
+        SignatureSigningIntent $intent = new SignatureSigningIntent(),
+        ?SignatureOutputVerifier $verifier = null,
+        SignatureSigningEvidence $evidence = new UnavailableSignatureEvidence(),
+        ?SignatureCertificateUrlUsage $urlUsage = null
+    ): SignedRevision {
+        $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
+        $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
+        return $this->finalizeValidated($value);
+    }
+
+    private function finalizeValidated(SignatureValue $value): SignedRevision
+    {
         if (strlen($value->bytes) > $this->signature->capacity->bytes) {
             throw new \LengthException('Signature output exceeds its reserved capacity; prepare a new reservation and sign again.');
         }
@@ -86,7 +126,8 @@ final readonly class PreparedSignature
             $this->range->before,
             $this->range->afterOffset - $this->range->before
         );
-        $dictionary = new DictionaryType(...iterator_to_array($this->signature->entries(), false));
+        $dictionary = $this->revision->binding($this->signature)->dictionary
+            ?? throw new \LogicException('Finalization requires the dictionary actually emitted for this reservation.');
         $dictionary = $dictionary->with(new Entry(new NameType('Contents'), new HexadecimalString($padded)))
             ->with(new Entry(new NameType('ByteRange'), $this->range->object()));
         $record = $this->revision->binding($this->signature)->replacedBy($dictionary);
@@ -97,19 +138,16 @@ final readonly class PreparedSignature
     private function validateFieldObligations(): void
     {
         $identifier = $this->revision->binding($this->signature)->identifier;
-        foreach ($this->revision->objects() as $record) {
-            $value = $record->dictionary?->get('V');
-            if (!$value instanceof IndirectReference || (string) $this->revision->binding($value->target())->identifier !== (string) $identifier) {
-                continue;
-            }
-            if ($record->dictionary?->has('Lock')) {
+        $graph = new FrozenSignatureGraph($this->revision);
+        foreach ($graph->bindings($identifier) as $field) {
+            if ($field->dictionary->has('Lock')) {
                 throw new \LogicException('Signing a locked field requires FieldMDP orchestration; the byte-range operation cannot ignore it.');
             }
-            $seed = $record->dictionary?->get('SV');
+            $seed = $field->dictionary->get('SV');
             if ($seed === null) {
                 continue;
             }
-            $seed = $seed instanceof IndirectReference ? $this->revision->binding($seed->target())->dictionary : $seed;
+            $seed = $graph->resolve($seed);
             if (!$seed instanceof DictionaryType || (new SignatureSeedValidationRequirement())->requiresValidation($seed)) {
                 throw new \LogicException('Signature seed obligations require a validated signing contract; the byte-range operation cannot ignore them.');
             }
