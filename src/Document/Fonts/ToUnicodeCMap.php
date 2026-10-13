@@ -4,29 +4,65 @@ declare(strict_types=1);
 
 namespace PDF\Document\Fonts;
 
+use PDF\Document\VersionedComponent;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Filters\Filter;
+use PDF\Document\Fonts\CMaps\CMapCode;
+use PDF\Document\Fonts\CMaps\CMapName;
+use PDF\Document\Fonts\CMaps\CodeSpaces;
+use PDF\Document\Fonts\CMaps\CodeSpaceRange;
+use PDF\Document\Fonts\CMaps\UnicodeCMap;
+use PDF\Document\Fonts\CMaps\UnicodeCMapResource;
+use PDF\Document\Fonts\CMaps\UnicodeChar;
+use PDF\Document\Fonts\CMaps\UnicodeMappings;
+use PDF\Document\Fonts\CMaps\UnicodeScalar;
+use PDF\Document\Fonts\CMaps\UnicodeSequence;
+use PDF\Syntax\Object\DictionaryObject\Entry;
+use PDF\Syntax\Object\DictionaryType;
+use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\IntegerType;
+use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\StringObject\HexadecimalString;
 
 /** 9.10.3: character codes map to UTF-16BE, including surrogate pairs. */
-final class ToUnicodeCMap extends FontStream
+final class ToUnicodeCMap extends FontStream implements UnicodeCMapResource
 {
-    public function __construct(public readonly CharacterMap $map, Filter ...$filters)
+    public readonly UnicodeCMap $definition;
+
+    public function __construct(public readonly CharacterMap|UnicodeCMap $map, Filter ...$filters)
     {
-        $lines = [
-            '/CIDInit /ProcSet findresource begin', '12 dict begin', 'begincmap',
-            '/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def',
-            '/CMapName /Adobe-Identity-UCS def', '/CMapType 2 def',
-            '1 begincodespacerange', '<0000> <FFFF>', 'endcodespacerange',
-        ];
-        foreach (array_chunk($map->mappings, 100) as $chunk) {
-            $lines[] = count($chunk) . ' beginbfchar';
-            foreach ($chunk as $mapping) {
-                $point = $mapping->codePoint;
-                $utf16 = $point <= 0xFFFF ? pack('n', $point) : pack('nn', 0xD800 + (($point - 0x10000) >> 10), 0xDC00 + (($point - 0x10000) & 0x3FF));
-                $lines[] = sprintf('<%04X> <%s>', $mapping->cid, strtoupper(bin2hex($utf16)));
-            }
-            $lines[] = 'endbfchar';
+        if ($map instanceof CharacterMap) {
+            $map = new UnicodeCMap(
+                new CMapName(new NameType('Adobe-Identity-UCS')),
+                new CodeSpaces(new CodeSpaceRange(new CMapCode(new HexadecimalString("\0\0")), new CMapCode(new HexadecimalString("\xff\xff")))),
+                new UnicodeMappings(...array_map(static fn (CharacterMapping $mapping) => new UnicodeChar(new CMapCode(new HexadecimalString(pack('n', $mapping->cid))), (new UnicodeScalar(new IntegerType($mapping->codePoint)))->sequence()), $map->mappings)),
+            );
         }
-        array_push($lines, 'endcmap', 'CMapName currentdict /CMap defineresource pop', 'end', 'end');
-        parent::__construct(implode("\n", $lines) . "\n", null, ...$filters);
+        $this->definition = $map;
+        $dictionary = $map->base === null ? new DictionaryType() : new DictionaryType(new Entry(new NameType('UseCMap'), $map->base->object()));
+        parent::__construct($map->program(), $dictionary, ...$filters);
+    }
+
+    public function object(): IndirectReference
+    {
+        return new IndirectReference($this);
+    }
+    public function name(): CMapName
+    {
+        return $this->definition->name;
+    }
+    public function codeSpaces(): CodeSpaces
+    {
+        return $this->definition->effectiveSpaces;
+    }
+    public function sequence(CMapCode $code): ?UnicodeSequence
+    {
+        return $this->definition->sequence($code);
+    }
+    public function validateVersion(EffectivePdfVersion $version): void
+    {
+        parent::validateVersion($version);
+        $version->require(PdfVersion::PDF12, 'ToUnicode CMap');
     }
 }
