@@ -5127,8 +5127,8 @@
     "baselineAuditPreserved": true,
     "baselineRelease": "0.3.0",
     "date": "2026-10-13",
-    "targetRelease": "0.4.0",
-    "status": "release-candidate-evidence",
+    "targetRelease": "0.5.0",
+    "status": "validated-native-evidence",
     "allSourceMechanismsImplemented": false,
     "allSemanticConstraintsValidated": false,
     "currentAlgorithmIntegration": [
@@ -5154,7 +5154,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.2",
@@ -5177,7 +5178,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.2a",
@@ -5199,7 +5201,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.8",
@@ -5221,7 +5224,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.9",
@@ -5243,7 +5247,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.10",
@@ -5266,7 +5271,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.11",
@@ -5288,7 +5294,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.12",
@@ -5310,7 +5317,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "3.13",
@@ -5332,7 +5340,8 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       },
       {
         "algorithm": "public-key-256-digest",
@@ -5354,10 +5363,66 @@
           "tools/validate_public_key_security.py",
           "tools/validate_linearization.py"
         ],
-        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy.",
+        "integrationReleasedIn": "0.4.0"
       }
     ],
-    "unreleasedChanges": [
+    "remainingNativeSourceProcedures": [
+      {
+        "procedure": "Complete authenticated transform revision-difference authorization and UR authority after native signing orchestration",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            43,
+            44,
+            45
+          ],
+          "clause": "8.6.3"
+        },
+        "inheritedIsoClauses": [
+          "12.8.2",
+          "12.8.3"
+        ],
+        "status": "native-signing-orchestration-implemented-full-transform-revision-analysis-open",
+        "previousProcedure": "Mandatory signature seed/lock orchestration and authenticated transform revision analysis",
+        "previousStatus": "native-policy-objects-available-orchestration-incomplete",
+        "implementedIn": "0.5.0",
+        "remainingWork": "DocMDP/FieldMDP/UR change classification, rights/authority validation, shared payload and field topology/inheritance changes remain incomplete; actual seeds/backend/certificate/appearance/output, first certification uniqueness and historical signing-operation constraints are evidenced by the 0.5.0 signature-fields entry."
+      },
+      {
+        "procedure": "Barcode prepared-data division among associated widgets and full-widget AP.N construction",
+        "source": {
+          "clause": "8.6.3",
+          "pdfPages": [
+            45,
+            46,
+            47
+          ]
+        },
+        "status": "partial-native-procedure-external-symbology-codec-required",
+        "existingEvidence": "DataPrep compression and module width remain independently verified baseline primitives; field/widget/PMD contracts are added. No barcode appearance encoder is claimed."
+      },
+      {
+        "procedure": "Geospatial/2D measurement, RichMedia and remaining annotation/action/navigation graphs",
+        "status": "generated-definitions-present-native-graph-semantics-incomplete",
+        "existingEvidence": "Inherited ISO local destination/label/article/transition/PresSteps construction is added in 0.5.0; this does not implement the supplement geospatial/RichMedia mechanisms."
+      },
+      {
+        "procedure": "Remaining conditional requirements and source-specific semantics beyond dictionary schemas",
+        "status": "ongoing-source-family-audit",
+        "remainingWork": "Continue family-specific conditional constraints and function/resource/operator/version gates beyond generic dictionary typing."
+      }
+    ],
+    "readerRenderingAndExternalBoundaries": [
+      "External PDF parsing (including still-missing hybrid/encrypted support in pdf-reader) belongs to the separately released reader package.",
+      "Image/font format conversion, ICC profiles, barcode symbologies, XFA/XML/HTML/JavaScript, media and 3D runtimes are separately specified processors or optional modules.",
+      "Rendering, visual reading order/reflow, PDF/UA conformance, screen/print device behavior and cryptographic trust/revocation/timestamp policy are not inferred from model/schema presence."
+    ],
+    "isoCoverage": "../iso32000-1/coverage.json",
+    "coverageConclusion": "All supplement dictionary/table definitions remain inventoried. Historical cryptographic procedures and inherited ISO writer mechanisms now have evidenced generated revision lifecycle, file/collection/navigation and applied signing integration. Full MDP/UR change/authority analysis, barcode appearance procedures, geospatial/measurement/RichMedia and other conditional semantics remain incomplete; consumer/external-standard behavior is separately identified.",
+    "implementedChanges": [
       {
         "mechanism": "iso-standard-security-handler",
         "relatedMechanisms": [
@@ -5470,7 +5535,8 @@
             }
           }
         ],
-        "supplementSourceEvidence": []
+        "supplementSourceEvidence": [],
+        "releasedIn": "0.4.0"
       },
       {
         "mechanism": "public-key-security-handler",
@@ -5541,7 +5607,8 @@
             }
           }
         ],
-        "supplementSourceEvidence": []
+        "supplementSourceEvidence": [],
+        "releasedIn": "0.4.0"
       },
       {
         "mechanism": "digital-signature-finalization",
@@ -5599,7 +5666,7 @@
         },
         "remainingWorkOrBoundary": [
           "Certificate trust, revocation, timestamp authority and key custody remain explicit external policies.",
-          "Full seed orchestration, first-certification uniqueness and DocMDP/FieldMDP/UR effective revision comparison remain open; native policy objects are not a certification of those behaviors."
+          "Seed/lock/backend/output orchestration and first-certification uniqueness are added in 0.5.0; full authenticated DocMDP/FieldMDP/UR effective revision-difference authorization remains open."
         ],
         "inheritedIsoMechanismEvidence": [
           {
@@ -5645,7 +5712,16 @@
             }
           }
         ],
-        "supplementSourceEvidence": []
+        "supplementSourceEvidence": [],
+        "releasedIn": "0.4.0",
+        "supersededRemainingWork": [
+          {
+            "atRelease": "0.4.0",
+            "text": "Full seed orchestration, first-certification uniqueness and DocMDP/FieldMDP/UR effective revision comparison remain open; native policy objects are not a certification of those behaviors.",
+            "supersededIn": "0.5.0",
+            "byMechanism": "signature-fields"
+          }
+        ]
       },
       {
         "mechanism": "signature-transforms",
@@ -5681,9 +5757,9 @@
           "independentBoundary": "These policy-object tests do not prove cryptographic integrity by themselves. That evidence is in tools/validate_pdf_signatures.py."
         },
         "remainingWorkOrBoundary": [
-          "Required orchestration remains incomplete: bind seeds to the actual selected backend/certificate/appearance/signature values and verify post-signature evidence.",
+          "Seed binding to actual backend/certificate/appearance/signature values and cryptographic output evidence is added in 0.5.0; full revision-policy classification remains incomplete.",
           "Analyze effective frozen revisions and authorize only the changes permitted by an authenticated DocMDP/FieldMDP/UR signature; a caller-supplied list of changes is insufficient.",
-          "Construction/audit of legal-attestation catalog declarations remains separate work."
+          "Actual Legal.Attestation matching is checked by the 0.5.0 signing policy pipeline; its content/appearance generation and full document revision authorization are separate."
         ],
         "inheritedIsoMechanismEvidence": [
           {
@@ -5722,6 +5798,21 @@
               45
             ],
             "clause": "8.6.3"
+          }
+        ],
+        "releasedIn": "0.4.0",
+        "supersededRemainingWork": [
+          {
+            "atRelease": "0.4.0",
+            "text": "Required orchestration remains incomplete: bind seeds to the actual selected backend/certificate/appearance/signature values and verify post-signature evidence.",
+            "supersededIn": "0.5.0",
+            "byMechanism": "signature-fields"
+          },
+          {
+            "atRelease": "0.4.0",
+            "text": "Construction/audit of legal-attestation catalog declarations remains separate work.",
+            "supersededIn": "0.5.0",
+            "byMechanism": "signature-fields"
           }
         ]
       },
@@ -5775,7 +5866,7 @@
         },
         "remainingWorkOrBoundary": [
           "Automatic text layout/appearance synthesis, event execution, XFA XML/HTML/CSS processing and external barcode codecs are consumer/module behaviors.",
-          "All remaining annotation families, page/navigation/media graphs and signature orchestration need further native semantic models."
+          "Local destination/label/article/presentation graphs and signature orchestration are added in 0.5.0; remaining annotation/action/media graphs and full signature revision authorization still need native semantic models."
         ],
         "inheritedIsoMechanismEvidence": [
           {
@@ -5936,6 +6027,15 @@
             ],
             "clause": "8.6.7"
           }
+        ],
+        "releasedIn": "0.4.0",
+        "supersededRemainingWork": [
+          {
+            "atRelease": "0.4.0",
+            "text": "All remaining annotation families, page/navigation/media graphs and signature orchestration need further native semantic models.",
+            "supersededIn": "0.5.0",
+            "byMechanism": "document-navigation"
+          }
         ]
       },
       {
@@ -6052,57 +6152,1107 @@
             ],
             "clause": "3.6.4"
           }
+        ],
+        "releasedIn": "0.4.0"
+      },
+      {
+        "mechanism": "incremental-writing",
+        "relatedMechanisms": [
+          "classic-file-writing",
+          "linearization",
+          "object-streams",
+          "xref-streams",
+          "hybrid-xrefs",
+          "primitive-objects"
+        ],
+        "title": "Exact generated revision snapshots, including native linearized initial files",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "primitive-objects",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.3.9",
+                  "pdfPage": 29,
+                  "title": "Null Object"
+                },
+                {
+                  "clause": "7.3.10",
+                  "pdfPage": 29,
+                  "title": "Indirect Objects"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "incremental-writing",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.6",
+                  "pdfPage": 52,
+                  "title": "Incremental Updates"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "object-streams",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.7",
+                  "pdfPage": 53,
+                  "title": "Object Streams"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "xref-streams",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.8",
+                  "pdfPage": 56,
+                  "title": "Cross-Reference Streams"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "hybrid-xrefs",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.8.4",
+                  "pdfPage": 59,
+                  "title": "Compatibility with Applications That Do Not Support Compressed Reference Streams"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "linearization",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "F.1",
+                  "pdfPage": 683,
+                  "title": "General"
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Serialization/FileWriter.php",
+          "src/Serialization/IncrementalWriter.php",
+          "src/Serialization/LinearizedWriter.php",
+          "src/Serialization/SerializationContext.php",
+          "src/Syntax/FileStructure/FileRevision.php",
+          "src/Syntax/FileStructure/RevisionObject.php",
+          "src/Syntax/FileStructure/RevisionValueSnapshot.php",
+          "src/Syntax/FileStructure/RevisionStreamSnapshot.php",
+          "src/Syntax/FileStructure/SerializedRevisionValue.php",
+          "src/Syntax/FileStructure/GeneratedRevisionTimeline.php",
+          "src/Syntax/FileStructure/RevisionReference.php"
+        ],
+        "implementedBehavior": [
+          "Initial ordinary and native linearized writing return a FileRevision describing exactly the bytes, object identifiers, managed dictionaries and emitted references.",
+          "Direct dictionary/array values and exact post-filter pre-encryption stream payloads are frozen from the same emission, without rereading mutable historical builders or invoking bytes() twice.",
+          "Appended revisions preserve every prior byte, original hint range, real logical alias and complete historical timeline across classic, stream and hybrid layouts."
+        ],
+        "semanticConstraints": [
+          "Snapshot container capture is idempotent; temporary entries() values are retained by identity instead of recycled spl_object_id numbers.",
+          "Standalone streams bind their actual indirect owner before capture/encryption; a bare stream body creates no fictitious recorded emission.",
+          "Appending to a linearized initial file is permitted but the resulting file ceases to be linearized under F.1."
+        ],
+        "validation": {
+          "tests": [
+            "tests/LinearizedRevisionTest.php",
+            "tests/IncrementalUpdateTest.php",
+            "tests/HybridReferenceTest.php"
+          ],
+          "linearizedRevisionUnitResult": {
+            "tests": 10,
+            "assertions": 133,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "fixture": "tools/fixtures/linearized_revisions.php",
+          "oracle": "tools/validate_linearized_revisions.py",
+          "independentResult": "90 histories / 270 PDFs under each PHP 8.3/8.4/8.5; all three xref layouts, compressed variants, primary/overflow hints, historical R2/R3/R4 and Adobe R5 security/metadata selections. Physical xref offsets/ranges, strict pypdf and qpdf independently check the generated bytes."
+        },
+        "remainingWorkOrBoundary": [
+          "These are exact snapshots of generated histories, not a parser/importer of arbitrary external PDF histories.",
+          "Authenticated full DocMDP/FieldMDP/UR revision-difference classification remains separate incomplete work.",
+          "Raw-content/schema presence does not establish complete source conformance or consumer scheduling."
+        ]
+      },
+      {
+        "mechanism": "free-objects-and-xrefs",
+        "relatedMechanisms": [
+          "incremental-writing",
+          "object-streams",
+          "xref-streams",
+          "hybrid-xrefs",
+          "linearization"
+        ],
+        "title": "Explicit freeing, generation advancement and reuse across complete revision indexes",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "primitive-objects",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.3.9",
+                  "pdfPage": 29,
+                  "title": "Null Object"
+                },
+                {
+                  "clause": "7.3.10",
+                  "pdfPage": 29,
+                  "title": "Indirect Objects"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "free-objects-and-xrefs",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.4",
+                  "pdfPage": 48,
+                  "title": "Cross-Reference Table"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "incremental-writing",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.6",
+                  "pdfPage": 52,
+                  "title": "Incremental Updates"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "object-streams",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.7",
+                  "pdfPage": 53,
+                  "title": "Object Streams"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "xref-streams",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.8.3",
+                  "pdfPage": 58,
+                  "title": "Cross-Reference Stream Data"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "18",
+                  "pdfPage": 58
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "hybrid-xrefs",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.5.8.4",
+                  "pdfPage": 59,
+                  "title": "Compatibility with Applications That Do Not Support Compressed Reference Streams"
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Syntax/FileStructure/ReleaseIndirectObject.php",
+          "src/Syntax/FileStructure/ReuseObjectNumber.php",
+          "src/Syntax/FileStructure/FreeListState.php",
+          "src/Syntax/FileStructure/FreeListDelta.php",
+          "src/Syntax/FileStructure/ObjectLifecycleTransition.php",
+          "src/Syntax/FileStructure/RetiredObjectGeneration.php",
+          "src/Syntax/FileStructure/IncrementalUpdate.php",
+          "src/Syntax/FileStructure/FileRevision.php",
+          "src/Serialization/IncrementalWriter.php",
+          "src/Serialization/SerializationContext.php"
+        ],
+        "implementedBehavior": [
+          "Immutable release/reuse operations distinguish unused generation-zero holes from deleted generations and retain exact retired record/byte-span history.",
+          "Linked type-0 lists preserve the object-zero generation-65535 head, tail zero, deletion increment, stored reuse generation and permanent generation-65535 entries.",
+          "Reuse requires a new PHP value identity and may change the PDF object kind; obsolete aliases remain their original number/generation and resolve to null.",
+          "Complete effective free/live/compressed indexes and encrypted reused streams work for all three xref formats and ordinary/linearized initial snapshots."
+        ],
+        "semanticConstraints": [
+          "No identifier receives conflicting operations in one revision; generation saturation never wraps or becomes live.",
+          "ObjStm containers and members remain generation zero and never take a reused/free number; remembered initial holes cannot bypass this rule later.",
+          "Hybrid generation-65535 compatibility shadows for live compressed members are not reusable free entries.",
+          "A container can be released only if all its still-live compressed members are released; optional obsolete references are allowed as null but required effective Resources cannot disappear."
+        ],
+        "validation": {
+          "tests": [
+            "tests/ObjectLifecycleTest.php",
+            "tests/LinearizedRevisionTest.php"
+          ],
+          "objectLifecycleUnitResult": {
+            "tests": 22,
+            "assertions": 124,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "example": "examples/object-lifecycle.php",
+          "fixture": "tools/fixtures/object_lifecycle.php",
+          "oracle": "tools/validate_object_lifecycle.py",
+          "independentResult": "90 histories / 450 PDFs under each PHP 8.3/8.4/8.5; all three xref layouts, ordinary/linearized initial files, nine plain/R2/R3/R4/R5 security cases, generation-zero holes and generation-one/two delete/reuse transitions. An independent physical xref parser checks complete indexes/chains/offsets, qpdf checks/rebuilds semantic views and classic hybrid views, and unmodified pypdf checks all live values and decrypted streams.",
+          "validatorLimits": [
+            "Unmodified pypdf resolves some obsolete aliases to cached historical generations in 360/450 files; ISO 7.3.9 requires null. Independent effective xref reconstruction and unmodified qpdf views demonstrate writer behavior; no reader patch or broad exception hides live-value failures."
+          ]
+        },
+        "remainingWorkOrBoundary": [
+          "The native API conservatively protects root/page-tree/leaf/Encrypt/xref/linearization structures; these API restrictions are not described as universal normative bans on freeing PDF objects.",
+          "Arbitrary external history import remains a reader-package responsibility; historical signature authorization is not inferred from free-list integrity."
+        ]
+      },
+      {
+        "mechanism": "document-navigation",
+        "relatedMechanisms": [
+          "page-navigation",
+          "actions-and-triggers",
+          "name-and-number-trees",
+          "page-tree"
+        ],
+        "title": "Native local destinations, page labels, article rings and presentation lists",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "document-navigation",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.3.2",
+                  "pdfPage": 373,
+                  "title": "Destinations"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "151",
+                  "pdfPage": 374
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "page-navigation",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.4.2",
+                  "pdfPage": 382,
+                  "title": "Page Labels"
+                },
+                {
+                  "clause": "12.4.3",
+                  "pdfPage": 383,
+                  "title": "Articles"
+                },
+                {
+                  "clause": "12.4.4",
+                  "pdfPage": 385,
+                  "title": "Presentations"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "159",
+                  "pdfPage": 383
+                },
+                {
+                  "table": "160",
+                  "pdfPage": 384
+                },
+                {
+                  "table": "161",
+                  "pdfPage": 384
+                },
+                {
+                  "table": "162",
+                  "pdfPage": 386
+                },
+                {
+                  "table": "163",
+                  "pdfPage": 388
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "name-and-number-trees",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.9.6",
+                  "pdfPage": 97,
+                  "title": "Name Trees"
+                },
+                {
+                  "clause": "7.9.7",
+                  "pdfPage": 99,
+                  "title": "Number Trees"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "36",
+                  "pdfPage": 97
+                },
+                {
+                  "table": "37",
+                  "pdfPage": 99
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "actions-and-triggers",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.6.2",
+                  "pdfPage": 422,
+                  "title": "Action Dictionaries"
+                },
+                {
+                  "clause": "12.6.4.2",
+                  "pdfPage": 426,
+                  "title": "Go-To Actions"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "193",
+                  "pdfPage": 422
+                },
+                {
+                  "table": "199",
+                  "pdfPage": 426
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Document/Navigation/"
+        ],
+        "implementedBehavior": [
+          "All eight local explicit destination forms share parameter validation and actual viewport fitting from explicit page/content bounds and current view; null/XYZ zero retain state and FitB clips to CropBox.",
+          "PDF Name and byte-string destination namespaces remain distinct; dictionary-D targets, binary keys and replacements under historical identifiers resolve from the actual frozen catalogue.",
+          "Native PageLabels ranges build a NumberTree with D/R/r/A/a, repeated identical alphabetic letters, prefix-only labels, positive St and bounded overflow-safe output.",
+          "Scoped thread/bead builders derive reciprocal circular N/V, first F/T and independent page B drawing order; PresSteps derives a finite reciprocal list with a chosen interior primary.",
+          "All twelve transition styles, style-specific options, display/effect duration and explicit forward/backward/random-access request plans are constructed without action execution.",
+          "One immutable effective page/namespace index serves the global validation pass; native callbacks do not rebuild entire page trees for each destination."
+        ],
+        "semanticConstraints": [
+          "Indices and destination pages belong to actual Catalog.Pages; branch children are ordered/disjoint, nonroot Limits are exact and root Limits are forbidden.",
+          "Active articles require indirect catalogue Threads, actual bead P/B membership exactly once, reciprocal rings, first T and source-versioned optional nonfirst T.",
+          "Presentation nodes belong to one actual finite page list; known page-exit omission follows the source recommendation without a blanket action-cycle ban or opaque script inference.",
+          "Actual action slots and Type Action identify GoTo declarations; private metadata S=GoTo or Title/Parent is not accidentally interpreted as action/outline semantics.",
+          "Selected feature versions are reconstructed from effective frozen generic dictionaries as well as native objects; optional Next chains require PDF 1.2."
+        ],
+        "validation": {
+          "tests": [
+            "tests/NativeNavigationTest.php"
+          ],
+          "unitResult": {
+            "tests": 77,
+            "assertions": 175,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "example": "examples/native-navigation.php",
+          "fixture": "tools/fixtures/native_navigation.php",
+          "oracle": "tools/validate_native_navigation.py",
+          "independentResult": "Three rendered/inspected pages, two independently checked article rings, both named namespaces and all eight explicit forms; 55 label vectors, ten independently computed fitting vectors and three real append/replacement/removal revisions. Strict pypdf and qpdf pass under all three PHP runtimes."
+        },
+        "remainingWorkOrBoundary": [
+          "Viewport axes, current view and content bounds are supplied explicitly; no renderer, animation/timer scheduler or action execution is added.",
+          "Remote/embedded GoTo, Thread actions, other action subtypes, remaining outline/annotation/media graph rules and alternate presentations are not completed by this local navigation lot.",
+          "Thread information composes the existing DocumentInformation model; complete metadata policy is separate work.",
+          "NavigationLimits are explicit application construction budgets, not invented ISO numeric maxima."
+        ]
+      },
+      {
+        "mechanism": "file-specifications-embedding",
+        "relatedMechanisms": [
+          "document-navigation",
+          "stream-filter-composition",
+          "iso-encryption-overview",
+          "document-catalogue",
+          "name-and-number-trees"
+        ],
+        "title": "Native filenames, embedded/related/external streams and portable collection graphs",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "file-specifications-embedding",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.11",
+                  "pdfPage": 107,
+                  "title": "File Specifications"
+                },
+                {
+                  "clause": "7.11.3",
+                  "pdfPage": 110,
+                  "title": "File Specification Dictionaries"
+                },
+                {
+                  "clause": "7.11.4.1",
+                  "pdfPage": 112,
+                  "title": "Embedded File Streams"
+                },
+                {
+                  "clause": "7.11.4.2",
+                  "pdfPage": 113,
+                  "title": "Related Files Arrays"
+                },
+                {
+                  "clause": "7.11.6",
+                  "pdfPage": 115,
+                  "title": "Collection Items"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "44",
+                  "pdfPage": 110
+                },
+                {
+                  "table": "45",
+                  "pdfPage": 112
+                },
+                {
+                  "table": "46",
+                  "pdfPage": 112
+                },
+                {
+                  "table": "47",
+                  "pdfPage": 113
+                },
+                {
+                  "table": "48",
+                  "pdfPage": 114
+                },
+                {
+                  "table": "49",
+                  "pdfPage": 115
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "stream-filter-composition",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.3.8",
+                  "pdfPage": 27,
+                  "title": "Stream Objects"
+                },
+                {
+                  "clause": "7.3.9",
+                  "pdfPage": 29,
+                  "title": "Indirect Objects"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "5",
+                  "pdfPage": 28
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "iso-encryption-overview",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.1",
+                  "pdfPage": 63,
+                  "title": "Encryption General"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "document-navigation",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.3.5",
+                  "pdfPage": 378,
+                  "title": "Collections"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "155",
+                  "pdfPage": 379
+                },
+                {
+                  "table": "156",
+                  "pdfPage": 379
+                },
+                {
+                  "table": "157",
+                  "pdfPage": 380
+                },
+                {
+                  "table": "158",
+                  "pdfPage": 381
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "name-and-number-trees",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.9.6",
+                  "pdfPage": 97,
+                  "title": "Name Trees"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "36",
+                  "pdfPage": 97
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Document/Files/",
+          "src/Document/Collections/",
+          "src/Syntax/Object/ExternalStreamObject.php",
+          "src/Syntax/Filters/ExternalStreamFilters.php",
+          "src/Document/DocumentGraphContext.php",
+          "src/Document/DocumentGraphValidation.php",
+          "src/Document/Files/ExternalStreamsGraphValidation.php",
+          "src/Serialization/SerializationContext.php"
+        ],
+        "implementedBehavior": [
+          "Explicit platform/portable/Unicode file names, embedded stream payloads/parameters, EF bindings, related RF pairs and external-stream F/FF/FDecodeParms composition.",
+          "Portable collection schema fields, item/subitem values, sort/view choices and actual CI/EF/name-tree relationships are constructed as native objects.",
+          "Collection/file validators use actual normalized snapshot dictionaries and generation-aware identities during initial/incremental/native-linearized writing.",
+          "Embedded payload sizes/checksums and encrypted/replaced attachments remain tied to actual emitted streams rather than stale PHP aliases.",
+          "A historical construction instance used directly keeps its actual direct dictionary/array values, independently of the replacement stored at its former indirect object identifier; direct native child validation still runs."
+        ],
+        "semanticConstraints": [
+          "EF/RF file specifications require Type Filespec and indirect reference; RF keys match EF, CI is indirect, filename keys and stream ownership are checked.",
+          "Collection item domains, source-schema field relationships, declared sorting/default-document behavior and actual attachment graphs are validated.",
+          "External-stream filter parameters apply to external bytes without an implicit filesystem/network fetch. A non-null effective F must declare a valid filename/file-specification; a null or retired-generation F on a newly staged generic stream is omitted semantically under 7.3.9 and its local payload retains ordinary encryption.",
+          "Shared name-tree validation enforces byte order, uniqueness, exact nonroot Limits and no root Limits.",
+          "An unchanged external stream cannot lose the effective F dependency that justified its emitted encryption exemption. This retained-state check uses the actual RevisionStreamSnapshot and full object identifier, excludes newly staged generic streams and permits an explicit internal replacement."
+        ],
+        "validation": {
+          "tests": [
+            "tests/NativeFilesTest.php",
+            "tests/EffectivePageGraphTest.php"
+          ],
+          "nativeFilesUnitResult": {
+            "tests": 103,
+            "assertions": 321,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "effectivePageGraphUnitResult": {
+            "tests": 8,
+            "assertions": 17,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "combinedUnitResult": {
+            "tests": 111,
+            "assertions": 338,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "example": "examples/embedded-files.php",
+          "fixture": "tools/fixtures/native_files.php",
+          "oracle": "tools/validate_native_files.py",
+          "independentResult": "90 histories / 180 PDFs under each PHP 8.3/8.4/8.5; all three xref layouts, plain/R2/R3/R4/R5 variants, ordinary/native-linearized/object-stream cases and actual EF/RF/CI relationships. Independent pypdf, hashlib and qpdf verify original/replaced embedded payloads, metadata, collection values and exact append prefixes.",
+          "relatedWriterRegressionMatrix": {
+            "tests": [
+              "tests/NativeFilesTest.php",
+              "tests/ObjectLifecycleTest.php",
+              "tests/LinearizedRevisionTest.php"
+            ],
+            "unitResult": {
+              "tests": 135,
+              "assertions": 578,
+              "php": [
+                "8.3.35",
+                "8.4.26",
+                "8.5.11"
+              ]
+            },
+            "scope": "The final NativeFilesTest file is included in this passing PHP 8.3/8.4/8.5 target; its isolated PHP 8.3 result is 103 tests / 321 assertions."
+          },
+          "regressionEvidence": [
+            {
+              "case": "direct-file-specification-versus-replaced-indirect-slot",
+              "test": "testAFormerIndirectFileSpecificationUsedDirectlyKeepsItsOwnValues",
+              "result": "All three xref layouts accept the actual direct a.bin specification without EF while its former indirect slot contains the replacement b.bin specification with EF."
+            },
+            {
+              "case": "direct-array-versus-replaced-indirect-slot",
+              "test": "testDirectChildrenOfAFormerIndirectArrayAreStillValidatedAfterReplacement",
+              "result": "The actual native child of the directly used former array is still visited and its invalid state rejects the update, even though the former indirect slot contains a different array."
+            },
+            {
+              "case": "retained-native-external-stream-dependency",
+              "test": "testRetiringAnExternalFileDependencyFailsBeforeAnyUpdateEmission",
+              "result": "12 cases: three xref layouts, plain/R5 encryption and ordinary/native-linearized bases reject retirement of a live external F dependency before any staged payload emission."
+            },
+            {
+              "case": "explicit-internal-stream-replacement",
+              "test": "testExplicitInternalReplacementCanRemoveTheExternalDeclaration",
+              "result": "12 corresponding cases accept an explicit internal replacement without F, preserve the exact append prefix and retain the encoded replacement payload."
+            },
+            {
+              "case": "new-generic-stream-with-effective-null-file-reference",
+              "test": "testNewGenericStreamMayUseAnObsoleteFileReferenceAsEffectiveNull",
+              "result": "24 cases cover new and replacement generic streams across the same writer matrix: a retired-generation F becomes effective null, the append prefix remains exact and local payload bytes are encrypted under R5."
+            },
+            {
+              "case": "retained-generic-external-stream-dependency",
+              "test": "testUnchangedGenericExternalSnapshotCannotLoseItsRecordedExemption",
+              "result": "12 corresponding cases reject retirement when the actual unchanged emitted snapshot records a non-null F and an external encryption exemption; classification follows the recorded snapshot/full identifier rather than the PHP target class."
+            },
+            {
+              "case": "primitive-generic-external-file-declarations",
+              "tests": [
+                "testGenericMalformedExternalEntryCannotObtainAnEncryptionExemption",
+                "testGenericNullExternalEntryRetainsOrdinaryStreamEncryption",
+                "testGenericObsoleteExternalEntryNoLongerExemptsInternalStreamData"
+              ],
+              "result": "An integer, empty dictionary or reference to an empty dictionary cannot obtain an external-stream encryption exemption. A reference to null or to a retired generation instead retains ordinary internal-stream encryption."
+            }
+          ]
+        },
+        "remainingWorkOrBoundary": [
+          "File paths/URLs and external-stream bytes are declarations supplied explicitly; the core does not fetch referenced files or emulate portfolio UI.",
+          "External image/font/media/ICC/codec processors and later-standard AF associations are not claimed from these retained-source file graphs."
+        ]
+      },
+      {
+        "mechanism": "page-tree",
+        "relatedMechanisms": [
+          "document-catalogue",
+          "name-and-number-trees",
+          "pdf-version-gates",
+          "primitive-objects"
+        ],
+        "title": "Effective page inheritance and generation-aware catalogue graph views",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "page-tree",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.7.3",
+                  "pdfPage": 83,
+                  "title": "Page Tree"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "name-and-number-trees",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.9.6",
+                  "pdfPage": 97,
+                  "title": "Name Trees"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "36",
+                  "pdfPage": 97
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "primitive-objects",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.3.9",
+                  "pdfPage": 29,
+                  "title": "Null Object"
+                },
+                {
+                  "clause": "7.3.10",
+                  "pdfPage": 29,
+                  "title": "Indirect Objects"
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Document/DocumentGraphContext.php",
+          "src/Document/DocumentGraphComponent.php",
+          "src/Document/DocumentGraphValidation.php"
+        ],
+        "implementedBehavior": [
+          "The shared read-only view resolves actual effective dictionaries/references and inherited page properties across replacement/removal snapshots without allocating new identifiers.",
+          "Null/nonexistent generations are absent entries; stale PHP PageObject.parent pointers cannot resurrect removed inherited Resources or MediaBox.",
+          "Native page ownership, actual Kids/Parent/Count and resource/media-box requirements are checked across the effective catalogue, with cached reachability.",
+          "Shared name trees are checked with byte-order/limits invariants even when original native builders have become generic snapshot dictionaries."
+        ],
+        "semanticConstraints": [
+          "Historical unreachable objects remain available as xref history without being mistaken for current catalogue membership.",
+          "Current source-model callbacks and collective snapshot validators distinguish actual PDF identities from replaced PHP class roles."
+        ],
+        "validation": {
+          "tests": [
+            "tests/EffectivePageGraphTest.php",
+            "tests/NativeFilesTest.php",
+            "tests/NativeNavigationTest.php"
+          ],
+          "effectivePageGraphUnitResult": {
+            "tests": 8,
+            "assertions": 17,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "oracles": [
+            "tools/validate_native_files.py",
+            "tools/validate_native_navigation.py"
+          ],
+          "independentBoundary": "These establish the declared page/name/file/navigation relations, not every resource/operator/version condition of arbitrary raw content."
+        },
+        "remainingWorkOrBoundary": [
+          "Remaining function domains/ranges, operator/resource/version prerequisites and family-specific conditional rules still require separate native audits.",
+          "A generic dictionary or successful syntax parse is not a complete semantic conformance certificate."
+        ]
+      },
+      {
+        "mechanism": "signature-fields",
+        "relatedMechanisms": [
+          "digital-signature-finalization",
+          "signature-transforms",
+          "signature-interoperability",
+          "acroform-graph"
+        ],
+        "title": "Applied field seed/lock/backend/output verification and historical signing constraints",
+        "introducedIn": "0.5.0",
+        "writingStatus": "executable-and-validated-native-subset",
+        "sourceEvidence": [
+          {
+            "mechanism": "signature-fields",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.4.5",
+                  "pdfPage": 454,
+                  "title": "Signature Fields"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "234",
+                  "pdfPage": 455
+                },
+                {
+                  "table": "235",
+                  "pdfPage": 457
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "digital-signature-finalization",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.1",
+                  "pdfPage": 474,
+                  "title": "Digital Signatures General"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "252",
+                  "pdfPage": 475
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "signature-transforms",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.2.2",
+                  "pdfPage": 478,
+                  "title": "DocMDP"
+                },
+                {
+                  "clause": "12.8.2.4",
+                  "pdfPage": 481,
+                  "title": "FieldMDP"
+                },
+                {
+                  "clause": "12.8.4",
+                  "pdfPage": 484,
+                  "title": "Permissions"
+                },
+                {
+                  "clause": "12.8.5",
+                  "pdfPage": 485,
+                  "title": "Legal Content Attestations"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "254",
+                  "pdfPage": 479
+                },
+                {
+                  "table": "256",
+                  "pdfPage": 481
+                },
+                {
+                  "table": "258",
+                  "pdfPage": 485
+                },
+                {
+                  "table": "259",
+                  "pdfPage": 486
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "signature-interoperability",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.3",
+                  "pdfPage": 482,
+                  "title": "Signature Interoperability"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "257",
+                  "pdfPage": 483
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "signature-fields",
+            "source": {
+              "document": "adobe_supplement_iso32000.pdf",
+              "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+              "clauses": [
+                {
+                  "clause": "8.6.3",
+                  "pdfPage": 43,
+                  "title": "Interactive Form Dictionaries"
+                },
+                {
+                  "clause": "Implementation Notes E14-E16",
+                  "pdfPage": 131,
+                  "title": "Signature lock and appearance consumer behavior"
+                }
+              ],
+              "tables": [
+                {
+                  "table": "8.82",
+                  "pdfPage": 43
+                },
+                {
+                  "table": "8.83",
+                  "pdfPage": 44
+                }
+              ]
+            }
+          }
+        ],
+        "implementationPaths": [
+          "src/Document/Signatures/SignatureFieldSigning.php",
+          "src/Document/Signatures/SignatureFieldPolicyContract.php",
+          "src/Document/Signatures/PreparedSignature.php",
+          "src/Document/Signatures/FrozenSignatureGraph.php",
+          "src/Document/Signatures/SignatureDocumentSigningRules.php",
+          "src/Document/Signatures/SignaturePermissionHistory.php",
+          "src/Document/Signatures/PolicySignatureBackend.php",
+          "src/Security/OpenSslSignatureOutputVerifier.php",
+          "src/Security/OpenSslSignatureCertificateFacts.php",
+          "src/Security/SignatureCmsInspection.php",
+          "src/Security/SignatureDerReader.php"
+        ],
+        "implementedBehavior": [
+          "Explicit field/reservation/seed/lock/intent/backend composition negotiates actual Filter/SubFilter/Reason/digest/parser/certificate/appearance choices and copies FieldMDP transforms/Data scope.",
+          "Preflight and finalization read the actual frozen emitted field/seed/catalogue/appearance and verify the real cryptographic output against exact input/output hashes and the expected signing credential.",
+          "First/unique certification, ordered signed ends, one finalization per revision and at most two historical UR signatures are enforced even after later catalogue links hide an earlier target.",
+          "Prior DocMDP/Adobe permission levels and FieldMDP All/Include/Exclude protect the new signature-field value operation, including nonterminal descendants and renamed historical names.",
+          "Strict bounded DER/CMS inspection and actual RSA/DSA mathematical output verification distinguish hash encapsulation, signer digest, certificate facts and replay/tamper failures."
+        ],
+        "semanticConstraints": [
+          "Perms/DocMDP is optional under Table254; a certification field alone detects changes and the optional catalogue link adds prevention.",
+          "Adobe Lock.P can tighten but never raise earlier effective permissions; attached named appearance and Legal.Attestation are supplied and checked explicitly.",
+          "Native DSA/SHA256 remains available when SV.DigestMethod is absent, including an empty or Reasons-only SV; DSA/SHA1 applies at the present DigestMethod entry. This Table234/Table257 interpretation is explicit, not an official erratum.",
+          "Removed V resolving to null does not erase prior signing history; qualified field scope follows actual catalogue Fields/Kids/Parent and inherited FT/V.",
+          "RFC3161/revocation/private URL requirements need actual explicit evidence/components; capability metadata alone cannot allow finalization."
+        ],
+        "validation": {
+          "tests": [
+            "tests/SignatureOutputVerificationTest.php",
+            "tests/SignatureFieldPolicySigningTest.php",
+            "tests/SignaturePermissionHistoryTest.php",
+            "tests/FrozenSignatureGraphTest.php",
+            "tests/SignatureWritingTest.php"
+          ],
+          "targetedSignatureUnitResult": {
+            "tests": 251,
+            "assertions": 506,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "fixture": "tools/fixtures/signature_field_policies.php",
+          "oracle": "tools/validate_signature_field_policies.py",
+          "independentResult": "Eight PDFs / nine mathematical RSA/DSA signatures under each PHP 8.3/8.4/8.5, using unmodified qpdf/pypdf, asn1crypto and cryptography. Cases include certification with/without optional Perms, DSA/SHA256 Reasons-only seed, required/advisory choices, two incremental signatures, copied FieldMDP/Data, Adobe P1 and a supplied named normal appearance."
+        },
+        "remainingWorkOrBoundary": [
+          "Full authenticated immutable revision-difference classification for DocMDP/FieldMDP/UR remains open: page/shared-content/resource/annotation/AP changes, field removal/rename/reparenting/inheritance and controlled template instantiation are not authorized merely by these signing guards.",
+          "UR granting authority, security/handler rights intersection and viewer feature authorization remain unimplemented beyond signature target/history/count checks.",
+          "PKI trust/path/validity and OID normalization, RFC3161 issuance/validation, OCSP/CRL acquisition/verification/embed and external history import remain explicit external or incomplete components.",
+          "Native PHP CMS has no selectable digest; unsupported mandatory digest/evidence requirements fail rather than claim compliance. External backends/verifiers may supply legitimate capabilities.",
+          "One reservation shared by distinct field representations is currently refused as an API limitation, not a normative prohibition."
         ]
       }
     ],
-    "remainingNativeSourceProcedures": [
-      {
-        "procedure": "Mandatory signature seed/lock orchestration and authenticated transform revision analysis",
-        "source": {
-          "document": "adobe-supplement-iso32000-2008-extension-level-3",
-          "filename": "adobe_supplement_iso32000.pdf",
-          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
-          "pdfPages": [
-            43,
-            44,
-            45
-          ],
-          "clause": "8.6.3"
-        },
-        "inheritedIsoClauses": [
-          "12.8.2",
-          "12.8.3"
-        ],
-        "status": "native-policy-objects-available-orchestration-incomplete"
-      },
-      {
-        "procedure": "Barcode prepared-data division among associated widgets and full-widget AP.N construction",
-        "source": {
-          "clause": "8.6.3",
-          "pdfPages": [
-            45,
-            46,
-            47
-          ]
-        },
-        "status": "partial-native-procedure-external-symbology-codec-required",
-        "existingEvidence": "DataPrep compression and module width remain independently verified baseline primitives; field/widget/PMD contracts are added. No barcode appearance encoder is claimed."
-      },
-      {
-        "procedure": "Geospatial/2D measurement and RichMedia/native navigation graphs",
-        "status": "generated-definitions-present-native-graph-semantics-incomplete"
-      },
-      {
-        "procedure": "Remaining conditional requirements and source-specific semantics beyond dictionary schemas",
-        "status": "ongoing-source-family-audit"
-      }
-    ],
-    "readerRenderingAndExternalBoundaries": [
-      "External PDF parsing (including still-missing hybrid/encrypted support in pdf-reader) belongs to the separately released reader package.",
-      "Image/font format conversion, ICC profiles, barcode symbologies, XFA/XML/HTML/JavaScript, media and 3D runtimes are separately specified processors or optional modules.",
-      "Rendering, visual reading order/reflow, PDF/UA conformance, screen/print device behavior and cryptographic trust/revocation/timestamp policy are not inferred from model/schema presence."
-    ],
-    "isoCoverage": "../iso32000-1/coverage.json",
-    "coverageConclusion": "All supplement dictionary/table definitions are inventoried. Its cryptographic procedures now have wider executable writer integration; seed orchestration, barcode appearance procedures and other native semantics remain incomplete. Product/consumer/external-standard behavior is separately identified."
+    "readingRule": "The historical mechanism/table/algorithm assessments above remain the complete unchanged 0.3.0 baseline. implementedChanges preserves 0.4.0 validation evidence with releasedIn metadata and records separately the native subsets introducedIn 0.5.0. Superseded remaining-work text is retained as history; no schema/class count or syntax check implies complete clause coverage."
   }
 }
