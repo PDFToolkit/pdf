@@ -4,6 +4,8 @@ Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.5.
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
+La [documentation en ligne](https://roukmoute.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
+
 La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0` ; elle ne garantit pas la compatibilité avec l'ancien prototype PHP 7.4. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
 
 La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dans ce dépôt. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
@@ -88,6 +90,8 @@ La [recette de tableau](docs/recipes/table.md) assemble ces notions dans une pr�
 - Les filtres s'appliquent dans l'ordre inverse de leur ordre de décodage. Les flux sont toujours référencés comme objets indirects.
 
 Voir [`docs/architecture.md`](docs/architecture.md) pour les choix de construction et [`docs/specification.md`](docs/specification.md) pour la traçabilité et les limites.
+
+Le [guide des composants](docs/components.md) explique chaque famille d'objets. La [référence API](https://roukmoute.github.io/pdf/reference/index.html) donne les signatures et les liens vers le code et la norme. Les [instructions de construction du site](docs/site/README.md) décrivent la génération et les vérifications locales.
 
 ## Couverture et limites
 

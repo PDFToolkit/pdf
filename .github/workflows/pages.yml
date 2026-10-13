@@ -1,0 +1,67 @@
+name: Documentation
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documentation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: ctype, iconv, zlib
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: composer install --no-dev --no-interaction --prefer-dist
+      - run: composer audit --locked
+      - run: python -m pip install --require-hashes -r tools/site-requirements.txt
+      - run: sudo apt-get update && sudo apt-get install -y qpdf poppler-utils
+      - name: Export the API and generate validated PDF examples
+        run: |
+          mkdir -p _build/pdfs _build/pdf-pages
+          php tools/export_api.php _build/api.json
+          for example in examples/*.php; do
+            name=$(basename "$example" .php)
+            output="_build/pdfs/$name.pdf"
+            php "$example" "$output"
+            qpdf --check "$output"
+            pdftoppm -r 96 -png "$output" "_build/pdf-pages/$name"
+          done
+      - name: Build and check the documentation
+        run: |
+          python tools/build_site.py --api _build/api.json --pdf-dir _build/pdfs --pdf-preview-dir _build/pdf-pages --output _site --base-path /pdf --revision "$GITHUB_SHA"
+          python tools/check_site.py _site
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publish the documentation
+        id: deployment
+        uses: actions/deploy-pages@v4
