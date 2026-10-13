@@ -1,0 +1,11 @@
+{
+  "file": "srgb.icc",
+  "sha256": "6fed07efe9c4f4636305c1b9c7f5b49f656f5caa39f4009093a58af5ff716293",
+  "bytes": 588,
+  "producer": "Pillow ImageCms.createProfile(sRGB), LittleCMS built-in generated profile",
+  "pillow_version": "12.3.0",
+  "littlecms_version": "2.19",
+  "description": "sRGB built-in",
+  "copyright": "No copyright, use freely",
+  "purpose": "Test-only source RGB ICC payload; PDF core does not generate, parse or transform ICC profiles."
+}
