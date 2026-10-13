@@ -65,25 +65,18 @@ final class SecurityLimitsTest extends TestCase
     }
 
     #[DataProvider('crossReferenceFormats')]
-    public function testSparseObjectNumbersProduceCompactCrossReferences(CrossReferenceFormat $format): void
+    public function testEnormousObjectNumberGapsAreRejectedBeforeFreeEntryAllocation(CrossReferenceFormat $format): void
     {
-        $pdf = $this->fileWithObjectNumber(1_000_000_000, $format)->toPdf();
-
-        self::assertLessThan(1_000, strlen($pdf));
-        self::assertStringContainsString("1000000000 0 obj\n42\nendobj", $pdf);
-        $size = $format === CrossReferenceFormat::Table ? 1_000_000_001 : 1_000_000_002;
-        self::assertStringContainsString('/Size ' . $size, $pdf);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->fileWithObjectNumber(1_000_000_000, $format)->toPdf();
     }
 
     #[DataProvider('crossReferenceFormats')]
-    public function testLargestIdentifierWithRoomForManagedNumbersStillSerializes(CrossReferenceFormat $format): void
+    public function testNonOverflowingButUnboundedIndexIsRejected(CrossReferenceFormat $format): void
     {
         $number = PHP_INT_MAX - ($format === CrossReferenceFormat::Stream ? 2 : 1);
-        $pdf = $this->fileWithObjectNumber($number, $format)->toPdf();
-
-        self::assertLessThan(1_000, strlen($pdf));
-        self::assertStringContainsString($number . " 0 obj\n42\nendobj", $pdf);
-        self::assertStringContainsString('/Size ' . PHP_INT_MAX, $pdf);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->fileWithObjectNumber($number, $format)->toPdf();
     }
 
     public function testSharedDirectSubgraphsAreValidatedOnce(): void

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PDF;
 
 use PDF\Serialization\FileWriter;
+use PDF\Serialization\PdfFileOutput;
+use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\FileBody;
 use PDF\Syntax\FileStructure\FileHeader;
 use PDF\Syntax\FileStructure\CrossReferenceFormat;
@@ -28,17 +30,17 @@ final readonly class FileStructure implements \Stringable
         return (new FileWriter())->serialize($this);
     }
 
+    public function toRevision(): FileRevision
+    {
+        return (new FileWriter())->revision($this);
+    }
+
     /** Writes to a filesystem path chosen by the application; stream URIs are refused. */
     public function writeTo(string $path): void
     {
-        if ($path === '' || str_contains($path, "\0") || preg_match('~^[a-z][a-z0-9+.-]*://~i', $path) === 1) {
-            throw new \InvalidArgumentException('The PDF output must be a non-empty filesystem path without a stream wrapper.');
-        }
-        $bytes = $this->toPdf();
-        $written = @file_put_contents($path, $bytes, LOCK_EX);
-        if ($written !== strlen($bytes)) {
-            throw new \RuntimeException('Unable to write the complete PDF.');
-        }
+        $output = new PdfFileOutput();
+        $output->validatePath($path);
+        $output->write($path, $this->toPdf());
     }
 
     public function __toString(): string
