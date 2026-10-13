@@ -45,6 +45,7 @@ def main():
         run(sys.executable, 'tools/validate_iso_security.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_public_key_security.py', '--php', args.php)
         run(sys.executable, 'tools/validate_pdf_signatures.py', '--php', args.php, '--qpdf', args.qpdf)
+        run(sys.executable, 'tools/validate_signature_algorithms.py', '--php', args.php, '--qpdf', args.qpdf)
     print('Native source mechanisms: all independent validators passed.')
 
 
