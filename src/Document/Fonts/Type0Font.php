@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PDF\Document\Fonts;
 
-use PDF\Document\Fonts\TrueType\ToUnicodeCMap;
 use PDF\Specification\Definition\Type0FontDictionaryTable121Definition;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
@@ -32,7 +31,7 @@ final class Type0Font extends ManagedFontDictionary
             $managed,
             new Entry(new NameType('Type'), new NameType('Font')),
             new Entry(new NameType('Subtype'), new NameType('Type0')),
-            new Entry(new NameType('BaseFont'), new NameType($descendantFont->map->program->postScriptName)),
+            new Entry(new NameType('BaseFont'), $descendantFont->map->fontName),
             new Entry(new NameType('Encoding'), new NameType('Identity-H')),
             new Entry(new NameType('DescendantFonts'), new ArrayType(new IndirectReference($descendantFont))),
             new Entry(new NameType('ToUnicode'), new IndirectReference($toUnicode)),

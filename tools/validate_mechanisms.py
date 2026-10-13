@@ -46,7 +46,7 @@ def validate_font(directory):
     font_file = descendant['/FontDescriptor']['/FontFile2']
     data = font_file.get_data()
     require(font_file['/Length1'] == len(data), 'FontFile2 decoded length differs')
-    original = sfnt_tables((ROOT / 'examples/assets/fonts/NotoSans-Regular.ttf').read_bytes())
+    original = sfnt_tables((ROOT / 'vendor/pdftoolkit/pdf-fonts/examples/assets/fonts/NotoSans-Regular.ttf').read_bytes())
     embedded = sfnt_tables(data)
     require(set(embedded) == set(original) - {b'cmap', b'DSIG'}, 'Unexpected CID font table removal')
     for tag in embedded:
@@ -69,7 +69,7 @@ def validate_images(directory):
         image = images[name]
         require(image['/Filter'] == '/DCTDecode' and image['/ColorSpace'] == space, 'Incorrect JPEG filter/space')
         require(image['/DecodeParms']['/ColorTransform'] == transform, 'Incorrect JPEG colour transform')
-        require(image.get_data() == (ROOT / 'examples/assets/images' / fixture).read_bytes(), 'JPEG bytes changed')
+        require(image.get_data() == (ROOT / 'vendor/pdftoolkit/pdf-images/examples/assets/images' / fixture).read_bytes(), 'JPEG bytes changed')
     require(list(images['/JpegCMYK']['/Decode']) == [1, 0] * 4, 'Adobe CMYK decode inversion missing')
     for name in ['/PngRGBA', '/PngPalette']:
         image = images[name]

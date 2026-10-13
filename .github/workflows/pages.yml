@@ -28,8 +28,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - run: composer install --no-dev --no-interaction --prefer-dist
-      - run: composer check-platform-reqs --no-dev
+      - run: composer install --no-interaction --prefer-dist
+      - run: composer check-platform-reqs
       - run: composer audit --locked
       - run: python -m pip install --require-hashes -r tools/site-requirements.txt
       - run: python -m pip install --require-hashes -r tools/validation-requirements.txt

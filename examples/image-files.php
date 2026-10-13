@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use PDF\Document\Fonts\StandardFont;
 use PDF\Document\Fonts\Type1Font;
-use PDF\Document\Images\ImageFileBytes;
-use PDF\Document\Images\ImageImportLimits;
+use PDF\Images\ImageFileBytes;
+use PDF\Images\ImageImportLimits;
 use PDF\Document\Images\ImageXObjectFactory;
-use PDF\Document\Images\JpegImageReader;
-use PDF\Document\Images\PngImageDecoder;
+use PDF\Images\JpegImageReader;
+use PDF\Images\PngImageDecoder;
 use PDF\Document\ResourceDictionary;
 use PDF\Document\Resources\Font;
 use PDF\Document\Resources\XObject;
@@ -49,7 +49,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 //    permet d'ouvrir une ressource. Les motifs du dépôt sont sous licence MIT.
 $files = [];
 foreach (['rgb.jpg', 'rgba.png', 'cmyk.jpg', 'palette.png'] as $filename) {
-    $bytes = file_get_contents(__DIR__ . '/assets/images/' . $filename);
+    $bytes = file_get_contents(dirname(__DIR__) . '/vendor/pdftoolkit/pdf-images/examples/assets/images/' . $filename);
     if ($bytes === false) {
         throw new RuntimeException('The example image fixture could not be read.');
     }

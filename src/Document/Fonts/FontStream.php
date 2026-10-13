@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PDF\Document\Fonts\TrueType;
+namespace PDF\Document\Fonts;
 
 use PDF\Syntax\Filters\EncodedData;
 use PDF\Syntax\Filters\Filter;

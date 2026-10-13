@@ -4,3 +4,5 @@
 /examples/*.pdf
 /_build/
 /_site/
+/.composer-validation.*
+**/__pycache__/

@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 use PDF\Document\Fonts\CIDFontType2;
-use PDF\Document\Fonts\FontDescriptor;
 use PDF\Document\Fonts\FontDescriptorFlags;
-use PDF\Document\Fonts\TrueType\CharacterMap;
-use PDF\Document\Fonts\TrueType\CIDFontProgram;
-use PDF\Document\Fonts\TrueType\CIDToGIDMap;
-use PDF\Document\Fonts\TrueType\CIDWidths;
-use PDF\Document\Fonts\TrueType\FontFile2;
-use PDF\Document\Fonts\TrueType\FontProgram;
-use PDF\Document\Fonts\TrueType\TextEncoder;
-use PDF\Document\Fonts\TrueType\ToUnicodeCMap;
-use PDF\Document\Fonts\TrueType\UnicodeText;
+use PDF\Fonts\TrueType\CIDFontProgram;
+use PDF\Fonts\TrueType\CharacterMapFactory;
+use PDF\Fonts\TrueType\FontDescriptorFactory;
+use PDF\Document\Fonts\CIDToGIDMap;
+use PDF\Document\Fonts\CIDWidths;
+use PDF\Document\Fonts\FontFile2;
+use PDF\Fonts\TrueType\FontProgram;
+use PDF\Fonts\TrueType\TextEncoder;
+use PDF\Document\Fonts\ToUnicodeCMap;
+use PDF\Fonts\TrueType\UnicodeText;
 use PDF\Document\Fonts\Type0Font;
 use PDF\Document\ResourceDictionary;
 use PDF\Document\Resources\Font;
@@ -41,9 +41,12 @@ use PDF\Syntax\Object\StreamObject;
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 // Tutoriel 09 : docs/tutorials/09-embedded-font.md.
+// Le package optionnel PDFToolkit/pdf-fonts analyse les octets TrueType.
+// Le core conserve seulement les objets PDF et leurs valeurs explicites.
 // La lecture du fichier appartient à l'application. FontProgram reçoit des octets,
 // sans connaître de chemin, d'URL ou de mécanisme d'accès aux fichiers.
-$fontBytes = file_get_contents(__DIR__ . '/assets/fonts/NotoSans-Regular.ttf');
+// Les données du tutoriel sont distribuées par le module, sans copie dans le core.
+$fontBytes = file_get_contents(dirname(__DIR__) . '/vendor/pdftoolkit/pdf-fonts/examples/assets/fonts/NotoSans-Regular.ttf');
 if ($fontBytes === false) {
     throw new RuntimeException('Unable to read the bundled demonstration font.');
 }
@@ -56,9 +59,6 @@ $lines = [
 // Le répertoire est connu avant l'écriture : aucun enregistrement global mutable.
 // Deux caractères Unicode peuvent avoir le même GID et des CID différents.
 $repertoire = new UnicodeText(implode('', array_map(static fn (UnicodeText $text): string => $text->utf8, $lines)));
-$map = new CharacterMap($program, $repertoire);
-$encoder = new TextEncoder($map);
-
 // Le programme CID conserve tous les glyphes. La norme exige de retirer cmap
 // pour FontFile2/CIDFontType2 ; les correspondances restent dans nos objets PDF.
 // Le répertoire sfnt et ses checksums sont recalculés, sans sous-ensemble de glyphes.
@@ -67,8 +67,10 @@ $encoder = new TextEncoder($map);
 // car TrueType n'a pas de champ universel donnant l'épaisseur des fûts verticaux.
 // Le flag Symbolic convient à ce répertoire comprenant du grec (table 123).
 $cidProgram = new CIDFontProgram($program);
-$fontFile = new FontFile2($cidProgram, new FlateDecode());
-$descriptor = new FontDescriptor($fontFile, new FontDescriptorFlags(4), new NumericType(80));
+$fontFile = new FontFile2($cidProgram->bytes, new FlateDecode());
+$map = (new CharacterMapFactory($cidProgram))->create($fontFile, $repertoire);
+$encoder = new TextEncoder($map);
+$descriptor = (new FontDescriptorFactory($cidProgram))->create($fontFile, new FontDescriptorFlags(4), new NumericType(80));
 $glyphMap = new CIDToGIDMap($map, new FlateDecode());
 $widths = new CIDWidths($map);
 $descendant = new CIDFontType2($descriptor, $glyphMap, $widths);

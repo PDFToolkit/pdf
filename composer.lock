@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "968ed146db8906f2738ecd800bf3998c",
+    "content-hash": "df762a0579ba645ca26f973a03311a22",
     "packages": [],
     "packages-dev": [
         {
@@ -688,6 +688,245 @@
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
             "time": "2026-09-13T18:51:52+00:00"
+        },
+        {
+            "name": "pdftoolkit/pdf-fonts",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PDFToolkit/pdf-fonts.git",
+                "reference": "a1d624c45d199af8c1d6d4bb2521cc0680b1db0d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-fonts/zipball/a1d624c45d199af8c1d6d4bb2521cc0680b1db0d",
+                "reference": "a1d624c45d199af8c1d6d4bb2521cc0680b1db0d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-iconv": "*",
+                "php": "^8.3",
+                "roukmoute/pdf": "dev-master"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^12.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PDF\\Fonts\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PDF\\Fonts\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "analyse": [
+                    "phpstan analyse --no-progress"
+                ],
+                "format": [
+                    "php-cs-fixer fix"
+                ],
+                "format:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "check": [
+                    "@test",
+                    "@analyse",
+                    "@format:check"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias STRASSER",
+                    "email": "contact@roukmoute.fr"
+                }
+            ],
+            "description": "Bounded TrueType converters into explicit PDF font objects",
+            "homepage": "https://github.com/PDFToolkit/pdf-fonts",
+            "keywords": [
+                "fonts",
+                "object-model",
+                "pdf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/PDFToolkit/pdf-fonts/issues",
+                "source": "https://github.com/PDFToolkit/pdf-fonts"
+            },
+            "time": "2026-10-13T09:01:45+00:00"
+        },
+        {
+            "name": "pdftoolkit/pdf-images",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PDFToolkit/pdf-images.git",
+                "reference": "1366452c48f5c4c308a3851e85015604c936ca6e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-images/zipball/1366452c48f5c4c308a3851e85015604c936ca6e",
+                "reference": "1366452c48f5c4c308a3851e85015604c936ca6e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-zlib": "*",
+                "php": "^8.3",
+                "roukmoute/pdf": "dev-master"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^12.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PDF\\Images\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PDF\\Images\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "analyse": [
+                    "phpstan analyse --no-progress"
+                ],
+                "format": [
+                    "php-cs-fixer fix"
+                ],
+                "format:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "check": [
+                    "@test",
+                    "@analyse",
+                    "@format:check"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias STRASSER",
+                    "email": "contact@roukmoute.fr"
+                }
+            ],
+            "description": "Bounded PNG and JPEG converters into explicit PDF image objects",
+            "homepage": "https://github.com/PDFToolkit/pdf-images",
+            "keywords": [
+                "images",
+                "object-model",
+                "pdf",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/PDFToolkit/pdf-images/issues",
+                "source": "https://github.com/PDFToolkit/pdf-images"
+            },
+            "time": "2026-10-13T09:01:32+00:00"
+        },
+        {
+            "name": "pdftoolkit/pdf-reader",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PDFToolkit/pdf-reader.git",
+                "reference": "9aac316cf0f288447fd0af5b4de927db05c8c0ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/9aac316cf0f288447fd0af5b4de927db05c8c0ac",
+                "reference": "9aac316cf0f288447fd0af5b4de927db05c8c0ac",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-zlib": "*",
+                "php": "^8.3",
+                "roukmoute/pdf": "dev-master"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^12.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PDF\\Reading\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "PDF\\Reading\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "analyse": [
+                    "phpstan analyse --no-progress"
+                ],
+                "format": [
+                    "php-cs-fixer fix"
+                ],
+                "format:check": [
+                    "php-cs-fixer fix --dry-run --diff"
+                ],
+                "check": [
+                    "@test",
+                    "@analyse",
+                    "@format:check"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias STRASSER",
+                    "email": "contact@roukmoute.fr"
+                }
+            ],
+            "description": "An explicit, bounded object reader for ISO 32000-1 PDF 1.7",
+            "homepage": "https://github.com/PDFToolkit/pdf-reader",
+            "keywords": [
+                "iso-32000-1",
+                "object-model",
+                "pdf",
+                "pdf-1.7",
+                "php",
+                "reader"
+            ],
+            "support": {
+                "issues": "https://github.com/PDFToolkit/pdf-reader/issues",
+                "source": "https://github.com/PDFToolkit/pdf-reader"
+            },
+            "time": "2026-10-13T08:34:21+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4466,7 +4705,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "pdftoolkit/pdf-fonts": 20,
+        "pdftoolkit/pdf-images": 20,
+        "pdftoolkit/pdf-reader": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

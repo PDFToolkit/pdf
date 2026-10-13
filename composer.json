@@ -2,7 +2,13 @@
     "name": "roukmoute/pdf",
     "type": "library",
     "description": "An explicit object model and writer for ISO 32000-1 PDF 1.7",
-    "keywords": ["pdf", "pdf-1.7", "iso-32000-1", "object-model", "php"],
+    "keywords": [
+        "pdf",
+        "pdf-1.7",
+        "iso-32000-1",
+        "object-model",
+        "php"
+    ],
     "homepage": "https://github.com/PDFToolkit/pdf",
     "support": {
         "issues": "https://github.com/PDFToolkit/pdf/issues",
@@ -16,8 +22,11 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "phpunit/phpunit": "^12.0",
-        "phpstan/phpstan": "^2.1"
+        "pdftoolkit/pdf-fonts": "dev-master",
+        "pdftoolkit/pdf-images": "dev-master",
+        "pdftoolkit/pdf-reader": "dev-master",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^12.0"
     },
     "license": "MIT",
     "authors": [
@@ -51,7 +60,25 @@
         "analyse": "phpstan analyse --no-progress",
         "format": "php-cs-fixer fix",
         "format:check": "php-cs-fixer fix --dry-run --diff",
-        "check": ["@test", "@analyse", "@format:check"],
+        "check": [
+            "@test",
+            "@analyse",
+            "@format:check"
+        ],
         "example": "@php examples/hello-world.php"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/PDFToolkit/pdf-fonts"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/PDFToolkit/pdf-images"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/PDFToolkit/pdf-reader"
+        }
+    ]
 }

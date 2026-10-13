@@ -32,7 +32,7 @@ final readonly class ImageXObjectFactory
     {
     }
 
-    public function create(SampledImage|JpegImage $image, Entry ...$entries): StreamObject
+    public function create(SampledImage|DCTImage $image, Entry ...$entries): StreamObject
     {
         foreach ($entries as $entry) {
             if (in_array($entry->key->value, [
@@ -56,7 +56,7 @@ final readonly class ImageXObjectFactory
             $mask = $this->create(new SampledImage($image->alpha));
             $dictionaryEntries[] = new SMaskEntry(new IndirectReference($mask));
         }
-        if ($image instanceof JpegImage && $image->invertedComponents) {
+        if ($image instanceof DCTImage && $image->invertedComponents) {
             $dictionaryEntries[] = new DecodeEntry(new ArrayType(
                 new IntegerType(1),
                 new IntegerType(0),
@@ -72,7 +72,7 @@ final readonly class ImageXObjectFactory
         if ($image instanceof SampledImage) {
             return new StreamObject($image->samples->bytes, $dictionary, $this->sampleCompression);
         }
-        return new StreamObject($image->file->bytes, $dictionary, new EncodedData(
+        return new StreamObject($image->encodedBytes, $dictionary, new EncodedData(
             FilterName::DCTDecode,
             new DCTDecodeFilterTable13(new ColorTransformEntry(new IntegerType($image->colorTransform))),
         ));
