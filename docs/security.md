@@ -1,12 +1,6 @@
 # Revue de sécurité du 13 octobre 2026
 
-Cette revue porte sur le générateur PHP et ses dépendances verrouillées. Elle examine le chargement de ressources, la sérialisation des valeurs PDF, les images inline, les graphes et les limites numériques, ainsi que l'écriture des fichiers. Les correctifs disposent de tests de régression. Une revue de code et des tests ne permettent pas de garantir l'absence de toute vulnérabilité future.
-
-## Le signalement FPDF
-
-La [CVE-2025-65875](https://nvd.nist.gov/vuln/detail/CVE-2025-65875) concerne le chargement de définitions de police PHP. Le [rapport original](https://blog.sanidhya.tech/posts/security-research/cve-2025-65875-fpdf-rce-vulnerability/) décrit une application qui laisse un attaquant contrôler les fichiers ou chemins donnés à `AddFont()`, puis les exécute par inclusion PHP. Le [mainteneur de FPDF conteste l'attribution à la bibliothèque](https://www.fpdf.org/phorum/read.php?f=1&i=64016&t=64016) et relève que le scénario dépend de cette intégration.
-
-`roukmoute/pdf` ne dépend pas de FPDF et ne possède pas de chargeur de définitions de police PHP. `Type1Font` construit un dictionnaire depuis `StandardFont` et des objets d'entrée. Les polices, images et fichiers décrits par les objets PDF sont sérialisés comme données ; aucune inclusion PHP de ces données n'a lieu.
+Cette revue documente les contrôles de sécurité effectués sur le générateur PHP et ses dépendances verrouillées : revue de code, tests de régression, audit des dépendances et validation des PDF par des lecteurs indépendants. Elle couvre la sérialisation des valeurs PDF, les images inline, les ressources binaires, les graphes, les limites numériques et l'écriture des fichiers. Les résultats ci-dessous correspondent aux surfaces et scénarios vérifiés ; ils ne constituent pas une garantie d'absence de toute vulnérabilité.
 
 ## Résultats et protections
 
@@ -17,7 +11,7 @@ La [CVE-2025-65875](https://nvd.nist.gov/vuln/detail/CVE-2025-65875) concerne le
 | Images inline | Correction d'une ambiguïté `EI` : un lecteur tolérant peut reconnaître le terminateur sans blanc avant lui. Les octets pourraient alors être lus comme opérateurs de contenu. Ces séquences sont désormais refusées ; un XObject image fournit une représentation séparée avec longueur explicite. |
 | Dimensions d'image | Calcul entier contrôlé des octets par ligne et du total. Un débordement est refusé au lieu de passer par un flottant puis une longueur incorrecte. |
 | Import PNG/JPEG | Octets fournis explicitement, sans chargement de chemin/URL. Limites sur les octets, pixels, dimensions et segments ; PNG CRC/ordre/filtres/zlib borné ; JPEG marqueurs, tables et couleurs inspectés. Les coefficients JPEG sont décodés par le lecteur PDF. |
-| Programme TrueType | Tables, offsets, métriques, cmap et glyphes contrôlés ; cycles et profondeur des glyphes composés bornés. Aucune définition PHP de police n'est incluse ni exécutée. CFF, fontes variables et collections non prises en charge sont refusées. |
+| Programme TrueType | Validation des données binaires fournies explicitement : tables, offsets, métriques, cmap et glyphes contrôlés ; cycles et profondeur des glyphes composés bornés. CFF, fontes variables et collections non prises en charge sont refusées. |
 | Opérandes partagés | La validation visite chaque identité une seule fois, avec un ensemble distinct pour les ancêtres actifs. Elle conserve le refus des cycles sans revisiter exponentiellement un sous-graphe partagé. |
 | Références croisées | Les trous initiaux reçoivent des enregistrements libres conformément à la norme. La capacité cumulée est bornée avant leur allocation par `CrossReferenceLimits`. Les sections incrémentales restent partielles ; les additions pour `/Size` et le numéro du flux xref sont contrôlées. |
 | Révisions | Réservations des anciens numéros, conservation des générations et des alias ; remplacement de conteneurs structuraux refusé même à travers un nouveau flux d'objets. Les métadonnées du catalogue et de l'arbre de pages sont contrôlées sur les valeurs effectives. Les anciens octets demeurent dans le fichier : une update ne permet pas d'effacer un secret. |
