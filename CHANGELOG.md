@@ -6,6 +6,11 @@
 
 - Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
 - Rename the catalog entry `Extension` to `Extensions`, matching the PDF key. These API changes have no compatibility aliases.
+- Validate document catalogs and resource dictionaries through their specification definitions, including generic entries added at construction or with `with()`.
+
+### Fixed
+
+- Require indirect references for catalog `Dests`, `Outlines` and `Threads`, as specified in table 28. Their specialized entry constructors still check the reference targets.
 
 ### Removed
 

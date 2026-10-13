@@ -11,9 +11,9 @@ use PDF\Syntax\Object\NameType;
 
 final class Outlines extends Entry
 {
-    public function __construct(OutlineDictionary|IndirectReference $value)
+    public function __construct(IndirectReference $value)
     {
-        $target = $value instanceof IndirectReference ? $value->target() : $value;
+        $target = $value->target();
         if (!$target instanceof OutlineDictionary) {
             throw new \InvalidArgumentException('Invalid value for catalog Outlines.');
         }

@@ -16,6 +16,8 @@ Les dictionnaires et entrées générés portent les termes du tableau d'origine
 
 Une table d'« additional entries » peut composer les définitions communes de son type. Les entrées inconnues restent accessibles par un objet `Entry` explicite afin de permettre les extensions du format. Ce mécanisme n'autorise pas à contourner les contraintes d'une entrée connue.
 
+`DocumentCatalog` et `ResourceDictionary` composent les définitions des tableaux 28 et 33 pour valider leurs entrées. Le catalogue ajoute les règles de propriété du graphe de pages. Ces règles complètent les contraintes de la définition, qui s'appliquent aussi aux entrées génériques.
+
 ## Assemblage des graphes
 
 Les valeurs et définitions ne gèrent pas l'identité d'un fichier. Les références visent leurs objets. Pendant une écriture, `SerializationContext` parcourt les objets accessibles et réserve les identifiants explicites avant d'attribuer les identifiants automatiques. Un même objet reçoit un seul identifiant dans ce fichier.
