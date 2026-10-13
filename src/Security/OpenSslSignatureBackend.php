@@ -7,9 +7,15 @@ namespace PDF\Security;
 use PDF\Document\Signatures\CertificateAwareSignatureBackend;
 use PDF\Document\Signatures\SignatureFormat;
 use PDF\Document\Signatures\SignatureValue;
+use PDF\Document\Signatures\SignatureAlgorithmParameters;
+use PDF\Document\Signatures\VersionedSignatureBackend;
+use PDF\Document\Signatures\Policies\SignatureDigestMethod;
+use PDF\Document\Signatures\Policies\SignatureKeyAlgorithm;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\Object\IntegerType;
 
 /** Explicit mathematical signature backend. Trust, revocation and timestamp policy remain caller-owned. */
-final readonly class OpenSslSignatureBackend implements CertificateAwareSignatureBackend
+final readonly class OpenSslSignatureBackend implements CertificateAwareSignatureBackend, VersionedSignatureBackend
 {
     public function __construct(
         public OpenSslIdentity $identity,
@@ -25,11 +31,8 @@ final readonly class OpenSslSignatureBackend implements CertificateAwareSignatur
 
     public function sign(string $coveredBytes, SignatureFormat $format): SignatureValue
     {
+        $this->algorithmParameters($format)->validateFormat($format);
         if ($format === SignatureFormat::X509RsaSha1) {
-            $details = openssl_pkey_get_details($this->identity->key());
-            if ($details === false || $details['type'] !== OPENSSL_KEYTYPE_RSA) {
-                throw new \InvalidArgumentException('adbe.x509.rsa_sha1 requires an RSA private key.');
-            }
             if (!openssl_sign($coveredBytes, $signature, $this->identity->key(), OPENSSL_ALGO_SHA1)) {
                 throw new \RuntimeException('Native PKCS#1 signing failed.');
             }
@@ -58,5 +61,29 @@ final readonly class OpenSslSignatureBackend implements CertificateAwareSignatur
         } finally {
             $files->close();
         }
+    }
+
+    public function validateVersion(EffectivePdfVersion $version, SignatureFormat $format): void
+    {
+        $this->algorithmParameters($format)->validateVersion($version, $format);
+    }
+
+    /** Native PKCS#1 is SHA1; PHP CMS_sign has no digest-selection argument and uses SHA256 for RSA/DSA. */
+    public function algorithmParameters(SignatureFormat $format): SignatureAlgorithmParameters
+    {
+        $details = openssl_pkey_get_details($this->identity->key());
+        if ($details === false) {
+            throw new \RuntimeException('The actual signing key parameters are unavailable.');
+        }
+        $algorithm = match ($details['type']) {
+            OPENSSL_KEYTYPE_RSA => SignatureKeyAlgorithm::RSA,
+            OPENSSL_KEYTYPE_DSA => SignatureKeyAlgorithm::DSA,
+            default => SignatureKeyAlgorithm::Other,
+        };
+        return new SignatureAlgorithmParameters(
+            $algorithm,
+            new IntegerType($details['bits']),
+            $format === SignatureFormat::X509RsaSha1 ? SignatureDigestMethod::SHA1 : SignatureDigestMethod::SHA256
+        );
     }
 }

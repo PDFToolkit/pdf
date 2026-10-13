@@ -24,8 +24,10 @@ final readonly class PreparedSignature
 
     public function __construct(public FileRevision $revision, public PendingSignature $signature)
     {
-        (new \PDF\Syntax\FileStructure\EffectivePdfVersion($revision->header,
-            $revision->binding($revision->root->target())->dictionary ?? throw new \LogicException('Signature revision has no catalog.')))
+        (new \PDF\Syntax\FileStructure\EffectivePdfVersion(
+            $revision->header,
+            $revision->binding($revision->root->target())->dictionary ?? throw new \LogicException('Signature revision has no catalog.')
+        ))
             ->require(\PDF\Syntax\FileStructure\PdfVersion::PDF13, 'Digital signatures');
         $binding = $revision->binding($signature);
         if ($binding->value !== $signature) {
@@ -54,6 +56,12 @@ final readonly class PreparedSignature
     public function sign(SignatureBackend $backend): SignedRevision
     {
         $this->validateFieldObligations();
+        if ($backend instanceof VersionedSignatureBackend) {
+            $backend->validateVersion(new \PDF\Syntax\FileStructure\EffectivePdfVersion(
+                $this->revision->header,
+                $this->revision->binding($this->revision->root->target())->dictionary ?? throw new \LogicException('Signature revision has no catalog.')
+            ), $this->signature->format);
+        }
         if ($this->signature->format === SignatureFormat::X509RsaSha1 && $backend instanceof CertificateAwareSignatureBackend) {
             $certificate = $this->signature->get('Cert');
             $signer = $certificate instanceof ArrayType ? ($certificate->items[0] ?? null) : $certificate;
@@ -72,8 +80,12 @@ final readonly class PreparedSignature
             throw new \LengthException('Signature output exceeds its reserved capacity; prepare a new reservation and sign again.');
         }
         $padded = str_pad($value->bytes, $this->signature->capacity->bytes, "\0");
-        $bytes = substr_replace($this->bytes, '<' . strtoupper(bin2hex($padded)) . '>', $this->range->before,
-            $this->range->afterOffset - $this->range->before);
+        $bytes = substr_replace(
+            $this->bytes,
+            '<' . strtoupper(bin2hex($padded)) . '>',
+            $this->range->before,
+            $this->range->afterOffset - $this->range->before
+        );
         $dictionary = new DictionaryType(...iterator_to_array($this->signature->entries(), false));
         $dictionary = $dictionary->with(new Entry(new NameType('Contents'), new HexadecimalString($padded)))
             ->with(new Entry(new NameType('ByteRange'), $this->range->object()));
