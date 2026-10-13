@@ -1470,7 +1470,7 @@
         "type": "dictionary",
         "description": "(Optional; ISO 32000) An extensions dictionary containing developer prefix identification and version numbers for developer extensions that occur in this document. 7.12, “Extensions Dictionary”, describes this dictionary and how it shall be used.",
         "fixed_name": null,
-        "direct": false,
+        "direct": true,
         "array_elements_direct": false,
         "qualifier": "Optional; ISO 32000",
         "required": false,
@@ -1483,6 +1483,18 @@
           "direct": false,
           "indirect": false,
           "array_elements_direct": false
+        },
+        "implementation_correction": {
+          "id": "extension-declaration-direct-28-extensions",
+          "table": "28",
+          "entry": "Extensions",
+          "constraints": {
+            "direct": true,
+            "indirect": false
+          },
+          "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
       {
@@ -4262,7 +4274,7 @@
         "type": "name",
         "description": "(Optional) The type of PDF object that this dictionary describes; if present, shall be DeveloperExtensions.",
         "fixed_name": "DeveloperExtensions",
-        "direct": false,
+        "direct": true,
         "array_elements_direct": false,
         "qualifier": "Optional",
         "required": false,
@@ -4275,6 +4287,18 @@
           "direct": false,
           "indirect": false,
           "array_elements_direct": false
+        },
+        "implementation_correction": {
+          "id": "extension-declaration-direct-50-type",
+          "table": "50",
+          "entry": "Type",
+          "constraints": {
+            "direct": true,
+            "indirect": false
+          },
+          "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
       {
@@ -4282,7 +4306,7 @@
         "type": "name",
         "description": "(Required) The name of the PDF version to which this extension applies. The name shall be consistent with the syntax used for the Version entry of the catalog dictionary (see 7.7.2, “Document Catalog”).",
         "fixed_name": null,
-        "direct": false,
+        "direct": true,
         "array_elements_direct": false,
         "qualifier": "Required",
         "required": true,
@@ -4295,6 +4319,18 @@
           "direct": false,
           "indirect": false,
           "array_elements_direct": false
+        },
+        "implementation_correction": {
+          "id": "extension-declaration-direct-50-baseversion",
+          "table": "50",
+          "entry": "BaseVersion",
+          "constraints": {
+            "direct": true,
+            "indirect": false
+          },
+          "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
       {
@@ -4302,7 +4338,7 @@
         "type": "integer",
         "description": "(Required) An integer defined by the developer to denote the extension being used. If the developer introduces more than one extension to a given BaseVersion the extension level numbers assigned by that developer shall increase over time.",
         "fixed_name": null,
-        "direct": false,
+        "direct": true,
         "array_elements_direct": false,
         "qualifier": "Required",
         "required": true,
@@ -4315,6 +4351,18 @@
           "direct": false,
           "indirect": false,
           "array_elements_direct": false
+        },
+        "implementation_correction": {
+          "id": "extension-declaration-direct-50-extensionlevel",
+          "table": "50",
+          "entry": "ExtensionLevel",
+          "constraints": {
+            "direct": true,
+            "indirect": false
+          },
+          "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       }
     ],

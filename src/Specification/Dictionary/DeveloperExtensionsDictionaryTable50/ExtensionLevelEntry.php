@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace PDF\Specification\Dictionary\DeveloperExtensionsDictionaryTable50;
 
 use PDF\Specification\Definition\DeveloperExtensionsDictionaryTable50Definition;
-use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 
 /** Table 50, /ExtensionLevel; PDF type: integer; Required. */
@@ -16,7 +15,7 @@ final class ExtensionLevelEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '50';
     public const string KEY = 'ExtensionLevel';
 
-    public function __construct(IntegerType|IndirectReference $value)
+    public function __construct(IntegerType $value)
     {
         parent::__construct((new DeveloperExtensionsDictionaryTable50Definition())->entry('ExtensionLevel'), $value);
     }

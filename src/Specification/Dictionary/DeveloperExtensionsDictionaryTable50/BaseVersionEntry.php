@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace PDF\Specification\Dictionary\DeveloperExtensionsDictionaryTable50;
 
 use PDF\Specification\Definition\DeveloperExtensionsDictionaryTable50Definition;
-use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 
 /** Table 50, /BaseVersion; PDF type: name; Required. */
@@ -16,7 +15,7 @@ final class BaseVersionEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '50';
     public const string KEY = 'BaseVersion';
 
-    public function __construct(NameType|IndirectReference $value)
+    public function __construct(NameType $value)
     {
         parent::__construct((new DeveloperExtensionsDictionaryTable50Definition())->entry('BaseVersion'), $value);
     }

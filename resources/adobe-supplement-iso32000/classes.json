@@ -1,0 +1,2235 @@
+[
+  {
+    "table": "3.18",
+    "title": "Entries common to all encryption dictionaries",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\EncryptionDictionaryTable3_18",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\EncryptionDictionaryTable3_18Definition",
+    "iso_base_tables": [
+      "20"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "20"
+    ],
+    "entries": [
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\EncryptionDictionaryTable3_18\\VEntry"
+      },
+      {
+        "name": "StmF",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\EncryptionDictionaryTable3_18\\StmFEntry"
+      },
+      {
+        "name": "StrF",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\EncryptionDictionaryTable3_18\\StrFEntry"
+      },
+      {
+        "name": "EFF",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\EncryptionDictionaryTable3_18\\EFFEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.19",
+    "title": "Additional encryption dictionary entries for the standard security handler",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19Definition",
+    "iso_base_tables": [
+      "21"
+    ],
+    "adobe_base_tables": [
+      "3.18"
+    ],
+    "common_tables": [
+      "21",
+      "3.18"
+    ],
+    "entries": [
+      {
+        "name": "R",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\REntry"
+      },
+      {
+        "name": "O",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\OEntry"
+      },
+      {
+        "name": "U",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\UEntry"
+      },
+      {
+        "name": "OE",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\OEEntry"
+      },
+      {
+        "name": "UE",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\UEEntry"
+      },
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\PEntry"
+      },
+      {
+        "name": "Perms",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\PermsEntry"
+      },
+      {
+        "name": "EncryptMetadata",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\AdditionalEncryptionDictionaryEntriesForTheStandardSecurityHandlerTable3_19\\EncryptMetadataEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.22",
+    "title": "Entries common to all crypt filter dictionaries",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CryptFilterDictionaryTable3_22",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CryptFilterDictionaryTable3_22Definition",
+    "iso_base_tables": [
+      "25"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "25"
+    ],
+    "entries": [
+      {
+        "name": "CFM",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CryptFilterDictionaryTable3_22\\CFMEntry"
+      },
+      {
+        "name": "Length",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CryptFilterDictionaryTable3_22\\LengthEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.25",
+    "title": "Entries in the catalog dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CatalogDictionaryTable3_25",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CatalogDictionaryTable3_25Definition",
+    "iso_base_tables": [
+      "28"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "28"
+    ],
+    "entries": [
+      {
+        "name": "Extensions",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CatalogDictionaryTable3_25\\ExtensionsEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.27",
+    "title": "Entries in a page object",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\PageObjectTable3_27",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\PageObjectTable3_27Definition",
+    "iso_base_tables": [
+      "30"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "30"
+    ],
+    "entries": [
+      {
+        "name": "Tabs",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PageObjectTable3_27\\TabsEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.28",
+    "title": "Entries in the name dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\NameDictionaryTable3_28",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\NameDictionaryTable3_28Definition",
+    "iso_base_tables": [
+      "31"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "31"
+    ],
+    "entries": [
+      {
+        "name": "XFAResources",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NameDictionaryTable3_28\\XFAResourcesEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.25a",
+    "title": "Entries in the extensions dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ExtensionsDictionaryTable3_25a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ExtensionsDictionaryTable3_25aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ExtensionsDictionaryTable3_25a\\TypeEntry"
+      },
+      {
+        "name": "Prefix name",
+        "variable": true,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ExtensionsDictionaryTable3_25a\\NamedEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.25b",
+    "title": "Entries in a developer extensions dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\DeveloperExtensionsDictionaryTable3_25b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\DeveloperExtensionsDictionaryTable3_25bDefinition",
+    "iso_base_tables": [
+      "50"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "50"
+    ],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\DeveloperExtensionsDictionaryTable3_25b\\TypeEntry"
+      },
+      {
+        "name": "BaseVersion",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\DeveloperExtensionsDictionaryTable3_25b\\BaseVersionEntry"
+      },
+      {
+        "name": "ExtensionLevel",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\DeveloperExtensionsDictionaryTable3_25b\\ExtensionLevelEntry"
+      }
+    ]
+  },
+  {
+    "table": "3.41",
+    "title": "Entries in a file specification dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\FileSpecificationDictionaryTable3_41",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\FileSpecificationDictionaryTable3_41Definition",
+    "iso_base_tables": [
+      "44"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "44"
+    ],
+    "entries": [
+      {
+        "name": "Thumb",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FileSpecificationDictionaryTable3_41\\ThumbEntry"
+      }
+    ]
+  },
+  {
+    "table": "4.39",
+    "title": "Additional entries specific to an image dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ImageDictionaryTable4_39",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ImageDictionaryTable4_39Definition",
+    "iso_base_tables": [
+      "5",
+      "89"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "5",
+      "89"
+    ],
+    "entries": [
+      {
+        "name": "Measure",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ImageDictionaryTable4_39\\MeasureEntry"
+      },
+      {
+        "name": "PtData",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ImageDictionaryTable4_39\\PtDataEntry"
+      }
+    ]
+  },
+  {
+    "table": "4.45",
+    "title": "Additional entries specific to a type 1 form dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\Type1FormDictionaryTable4_45",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\Type1FormDictionaryTable4_45Definition",
+    "iso_base_tables": [
+      "5",
+      "95"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "5",
+      "95"
+    ],
+    "entries": [
+      {
+        "name": "Measure",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\Type1FormDictionaryTable4_45\\MeasureEntry"
+      },
+      {
+        "name": "PtData",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\Type1FormDictionaryTable4_45\\PtDataEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.1",
+    "title": "Entries in a viewer preferences dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewerPreferencesDictionaryTable8_1",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ViewerPreferencesDictionaryTable8_1Definition",
+    "iso_base_tables": [
+      "150"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "150"
+    ],
+    "entries": [
+      {
+        "name": "Enforce",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewerPreferencesDictionaryTable8_1\\EnforceEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.6",
+    "title": "Entries in a collection dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CollectionDictionaryTable8_6Definition",
+    "iso_base_tables": [
+      "155"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "155"
+    ],
+    "entries": [
+      {
+        "name": "View",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\ViewEntry"
+      },
+      {
+        "name": "Navigator",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\NavigatorEntry"
+      },
+      {
+        "name": "Resources",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\ResourcesEntry"
+      },
+      {
+        "name": "Colors",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\ColorsEntry"
+      },
+      {
+        "name": "Folders",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\FoldersEntry"
+      },
+      {
+        "name": "Split",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionDictionaryTable8_6\\SplitEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.8",
+    "title": "Entries in a collection field dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionFieldDictionaryTable8_8",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CollectionFieldDictionaryTable8_8Definition",
+    "iso_base_tables": [
+      "157"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "157"
+    ],
+    "entries": [
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionFieldDictionaryTable8_8\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.6a",
+    "title": "Entries in a collection colors dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CollectionColorsDictionaryTable8_6aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Background",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a\\BackgroundEntry"
+      },
+      {
+        "name": "CardBackground",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a\\CardBackgroundEntry"
+      },
+      {
+        "name": "CardBorder",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a\\CardBorderEntry"
+      },
+      {
+        "name": "PrimaryText",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a\\PrimaryTextEntry"
+      },
+      {
+        "name": "SecondaryText",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionColorsDictionaryTable8_6a\\SecondaryTextEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.6b",
+    "title": "Entries in a collection split dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionSplitDictionaryTable8_6b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CollectionSplitDictionaryTable8_6bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Direction",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionSplitDictionaryTable8_6b\\DirectionEntry"
+      },
+      {
+        "name": "Position",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CollectionSplitDictionaryTable8_6b\\PositionEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.6c",
+    "title": "Entries in a folder dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\FolderDictionaryTable8_6cDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\TypeEntry"
+      },
+      {
+        "name": "ID",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\IDEntry"
+      },
+      {
+        "name": "Name",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\NameEntry"
+      },
+      {
+        "name": "Parent",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\ParentEntry"
+      },
+      {
+        "name": "Child",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\ChildEntry"
+      },
+      {
+        "name": "Next",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\NextEntry"
+      },
+      {
+        "name": "CI",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\CIEntry"
+      },
+      {
+        "name": "Desc",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\DescEntry"
+      },
+      {
+        "name": "CreationDate",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\CreationDateEntry"
+      },
+      {
+        "name": "ModDate",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\ModDateEntry"
+      },
+      {
+        "name": "Thumb",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\ThumbEntry"
+      },
+      {
+        "name": "Free",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\FolderDictionaryTable8_6c\\FreeEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.6d",
+    "title": "Entries in a navigator dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\NavigatorDictionaryTable8_6dDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "SWF",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\SWFEntry"
+      },
+      {
+        "name": "Name",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\NameEntry"
+      },
+      {
+        "name": "Desc",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\DescEntry"
+      },
+      {
+        "name": "Category",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\CategoryEntry"
+      },
+      {
+        "name": "ID",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\IDEntry"
+      },
+      {
+        "name": "Version",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\VersionEntry"
+      },
+      {
+        "name": "APIVersion",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\APIVersionEntry"
+      },
+      {
+        "name": "LoadType",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\LoadTypeEntry"
+      },
+      {
+        "name": "Icon",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\IconEntry"
+      },
+      {
+        "name": "Locale",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\LocaleEntry"
+      },
+      {
+        "name": "Strings",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\StringsEntry"
+      },
+      {
+        "name": "InitialFields",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\InitialFieldsEntry"
+      },
+      {
+        "name": "Resources",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\NavigatorDictionaryTable8_6d\\ResourcesEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.21",
+    "title": "Additional entries specific to markup annotations",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\MarkupAnnotationsTable8_21",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\MarkupAnnotationsTable8_21Definition",
+    "iso_base_tables": [
+      "170"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "170"
+    ],
+    "entries": [
+      {
+        "name": "ExData",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\MarkupAnnotationsTable8_21\\ExDataEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.39",
+    "title": "Additional entries specific to a widget annotation",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\WidgetAnnotationTable8_39",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\WidgetAnnotationTable8_39Definition",
+    "iso_base_tables": [
+      "188"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "188"
+    ],
+    "entries": [
+      {
+        "name": "PMD",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\WidgetAnnotationTable8_39\\PMDEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.48a",
+    "title": "Additional entries specific to a rich-media-execute action",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaExecuteActionTable8_48a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaExecuteActionTable8_48aDefinition",
+    "iso_base_tables": [
+      "193"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "193"
+    ],
+    "entries": [
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaExecuteActionTable8_48a\\SEntry"
+      },
+      {
+        "name": "TA",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaExecuteActionTable8_48a\\TAEntry"
+      },
+      {
+        "name": "TI",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaExecuteActionTable8_48a\\TIEntry"
+      },
+      {
+        "name": "CMD",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaExecuteActionTable8_48a\\CMDEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.48b",
+    "title": "Entries in a RichMediaCommand dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaCommandDictionaryTable8_48b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaCommandDictionaryTable8_48bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaCommandDictionaryTable8_48b\\TypeEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaCommandDictionaryTable8_48b\\CEntry"
+      },
+      {
+        "name": "A",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaCommandDictionaryTable8_48b\\AEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.82",
+    "title": "Entries in a signature field lock dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldLockDictionaryTable8_82",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\SignatureFieldLockDictionaryTable8_82Definition",
+    "iso_base_tables": [
+      "233"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "233"
+    ],
+    "entries": [
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldLockDictionaryTable8_82\\PEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.83",
+    "title": "Entries in a signature field seed value dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldSeedValueDictionaryTable8_83",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\SignatureFieldSeedValueDictionaryTable8_83Definition",
+    "iso_base_tables": [
+      "234"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "234"
+    ],
+    "entries": [
+      {
+        "name": "LockDocument",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldSeedValueDictionaryTable8_83\\LockDocumentEntry"
+      },
+      {
+        "name": "AppearanceFilter",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldSeedValueDictionaryTable8_83\\AppearanceFilterEntry"
+      },
+      {
+        "name": "Ff",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldSeedValueDictionaryTable8_83\\FfEntry"
+      },
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\SignatureFieldSeedValueDictionaryTable8_83\\VEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.39a",
+    "title": "Additional entry specific to a barcode field",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\BarcodeFieldTable8_39a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\BarcodeFieldTable8_39aDefinition",
+    "iso_base_tables": [
+      "229"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "229"
+    ],
+    "entries": [
+      {
+        "name": "DataPrep",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\BarcodeFieldTable8_39a\\DataPrepEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.39b",
+    "title": "Entries in a PaperMetaData generation parameters dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\PaperMetaDataGenerationParametersDictionaryTable8_39bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\TypeEntry"
+      },
+      {
+        "name": "Version",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\VersionEntry"
+      },
+      {
+        "name": "Resolution",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\ResolutionEntry"
+      },
+      {
+        "name": "Caption",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\CaptionEntry"
+      },
+      {
+        "name": "Symbology",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\SymbologyEntry"
+      },
+      {
+        "name": "Width",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\WidthEntry"
+      },
+      {
+        "name": "Height",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\HeightEntry"
+      },
+      {
+        "name": "XSymWidth",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\XSymWidthEntry"
+      },
+      {
+        "name": "XSymHeight",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\XSymHeightEntry"
+      },
+      {
+        "name": "ECC",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\ECCEntry"
+      },
+      {
+        "name": "nCodeWordRow",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\nCodeWordRowEntry"
+      },
+      {
+        "name": "nCodeWordCol",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PaperMetaDataGenerationParametersDictionaryTable8_39b\\nCodeWordColEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.109",
+    "title": "Entries in a viewport dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewportDictionaryTable8_109",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ViewportDictionaryTable8_109Definition",
+    "iso_base_tables": [
+      "260"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "260"
+    ],
+    "entries": [
+      {
+        "name": "Measure",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewportDictionaryTable8_109\\MeasureEntry"
+      },
+      {
+        "name": "PtData",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewportDictionaryTable8_109\\PtDataEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.110",
+    "title": "Entries in a measure dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\MeasureDictionaryTable8_110",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\MeasureDictionaryTable8_110Definition",
+    "iso_base_tables": [
+      "261"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "261"
+    ],
+    "entries": [
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\MeasureDictionaryTable8_110\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.111a",
+    "title": "Additional entries specific in a geospatial measure dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\GeospatialMeasureDictionaryTable8_111aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "8.110"
+    ],
+    "common_tables": [
+      "8.110"
+    ],
+    "entries": [
+      {
+        "name": "Bounds",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\BoundsEntry"
+      },
+      {
+        "name": "GCS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\GCSEntry"
+      },
+      {
+        "name": "DCS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\DCSEntry"
+      },
+      {
+        "name": "PDU",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\PDUEntry"
+      },
+      {
+        "name": "GPTS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\GPTSEntry"
+      },
+      {
+        "name": "LPTS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\LPTSEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeospatialMeasureDictionaryTable8_111a\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.111b",
+    "title": "Entries in a geographic coordinate system dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\GeographicCoordinateSystemDictionaryTable8_111b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\GeographicCoordinateSystemDictionaryTable8_111bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeographicCoordinateSystemDictionaryTable8_111b\\TypeEntry"
+      },
+      {
+        "name": "EPSG",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeographicCoordinateSystemDictionaryTable8_111b\\EPSGEntry"
+      },
+      {
+        "name": "WKT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\GeographicCoordinateSystemDictionaryTable8_111b\\WKTEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.111c",
+    "title": "Entries in a projected coordinate system dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ProjectedCoordinateSystemDictionaryTable8_111c",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ProjectedCoordinateSystemDictionaryTable8_111cDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ProjectedCoordinateSystemDictionaryTable8_111c\\TypeEntry"
+      },
+      {
+        "name": "EPSG",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ProjectedCoordinateSystemDictionaryTable8_111c\\EPSGEntry"
+      },
+      {
+        "name": "WKT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ProjectedCoordinateSystemDictionaryTable8_111c\\WKTEntry"
+      }
+    ]
+  },
+  {
+    "table": "8.111d",
+    "title": "Entries in a point data dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\PointDataDictionaryTable8_111d",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\PointDataDictionaryTable8_111dDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PointDataDictionaryTable8_111d\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PointDataDictionaryTable8_111d\\SubtypeEntry"
+      },
+      {
+        "name": "Names",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PointDataDictionaryTable8_111d\\NamesEntry"
+      },
+      {
+        "name": "XPTS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PointDataDictionaryTable8_111d\\XPTSEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.33",
+    "title": "Additional entries specific to a 3D annotation",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDAnnotationTable9_33",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDAnnotationTable9_33Definition",
+    "iso_base_tables": [
+      "298"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "298"
+    ],
+    "entries": [
+      {
+        "name": "3DU",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDAnnotationTable9_33\\Key3DUEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.34",
+    "title": "Entries in a 3D activation dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDActivationDictionaryTable9_34",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDActivationDictionaryTable9_34Definition",
+    "iso_base_tables": [
+      "299"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "299"
+    ],
+    "entries": [
+      {
+        "name": "Style",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDActivationDictionaryTable9_34\\StyleEntry"
+      },
+      {
+        "name": "Window",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDActivationDictionaryTable9_34\\WindowEntry"
+      },
+      {
+        "name": "Transparent",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDActivationDictionaryTable9_34\\TransparentEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.35",
+    "title": "Entries in a 3D stream dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDStreamDictionaryTable9_35",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDStreamDictionaryTable9_35Definition",
+    "iso_base_tables": [
+      "5",
+      "300"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "5",
+      "300"
+    ],
+    "entries": [
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDStreamDictionaryTable9_35\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39",
+    "title": "Entries in a 3D view dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_39",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDViewDictionaryTable9_39Definition",
+    "iso_base_tables": [
+      "304"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "304"
+    ],
+    "entries": [
+      {
+        "name": "MA",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_39\\MAEntry"
+      },
+      {
+        "name": "MS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_39\\MSEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.47",
+    "title": "Entries in a 3D node dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDNodeDictionaryTable9_47",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDNodeDictionaryTable9_47Definition",
+    "iso_base_tables": [
+      "312"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "312"
+    ],
+    "entries": [
+      {
+        "name": "N",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDNodeDictionaryTable9_47\\NEntry"
+      },
+      {
+        "name": "Instance",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDNodeDictionaryTable9_47\\InstanceEntry"
+      },
+      {
+        "name": "Data",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDNodeDictionaryTable9_47\\DataEntry"
+      },
+      {
+        "name": "RM",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDNodeDictionaryTable9_47\\RMEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.33a",
+    "title": "Entries in a 3D units dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDUnitsDictionaryTable9_33aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "TSm",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\TSmEntry"
+      },
+      {
+        "name": "TSn",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\TSnEntry"
+      },
+      {
+        "name": "TU",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\TUEntry"
+      },
+      {
+        "name": "USm",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\USmEntry"
+      },
+      {
+        "name": "USn",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\USnEntry"
+      },
+      {
+        "name": "UU",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\UUEntry"
+      },
+      {
+        "name": "DSm",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\DSmEntry"
+      },
+      {
+        "name": "DSn",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\DSnEntry"
+      },
+      {
+        "name": "DU",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDUnitsDictionaryTable9_33a\\DUEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39a",
+    "title": "Entries in a 3D measurement/markup dictionary common to all markup subtypes",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryCommonToAllMarkupSubtypesTable9_39a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryCommonToAllMarkupSubtypesTable9_39aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryCommonToAllMarkupSubtypesTable9_39a\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryCommonToAllMarkupSubtypesTable9_39a\\SubtypeEntry"
+      },
+      {
+        "name": "TRL",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryCommonToAllMarkupSubtypesTable9_39a\\TRLEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39b",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D linear dimension measurement",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "9.39a"
+    ],
+    "common_tables": [
+      "9.39a"
+    ],
+    "entries": [
+      {
+        "name": "AP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\APEntry"
+      },
+      {
+        "name": "A1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\A1Entry"
+      },
+      {
+        "name": "N1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\N1Entry"
+      },
+      {
+        "name": "A2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\A2Entry"
+      },
+      {
+        "name": "N2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\N2Entry"
+      },
+      {
+        "name": "TP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\TPEntry"
+      },
+      {
+        "name": "TY",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\TYEntry"
+      },
+      {
+        "name": "TS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\TSEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\CEntry"
+      },
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\VEntry"
+      },
+      {
+        "name": "U",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\UEntry"
+      },
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\PEntry"
+      },
+      {
+        "name": "UT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\UTEntry"
+      },
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\SEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDLinearDimensionMeasurementTable9_39b\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39c",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D perpendicular dimension measurement",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39cDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "9.39a"
+    ],
+    "common_tables": [
+      "9.39a"
+    ],
+    "entries": [
+      {
+        "name": "AP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\APEntry"
+      },
+      {
+        "name": "A1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\A1Entry"
+      },
+      {
+        "name": "N1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\N1Entry"
+      },
+      {
+        "name": "A2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\A2Entry"
+      },
+      {
+        "name": "N2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\N2Entry"
+      },
+      {
+        "name": "D1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\D1Entry"
+      },
+      {
+        "name": "TP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\TPEntry"
+      },
+      {
+        "name": "TY",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\TYEntry"
+      },
+      {
+        "name": "TS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\TSEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\CEntry"
+      },
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\VEntry"
+      },
+      {
+        "name": "U",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\UEntry"
+      },
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\PEntry"
+      },
+      {
+        "name": "UT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\UTEntry"
+      },
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\SEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDPerpendicularDimensionMeasurementTable9_39c\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39d",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D angular dimension measurement",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39dDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "9.39a"
+    ],
+    "common_tables": [
+      "9.39a"
+    ],
+    "entries": [
+      {
+        "name": "AP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\APEntry"
+      },
+      {
+        "name": "A1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\A1Entry"
+      },
+      {
+        "name": "D1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\D1Entry"
+      },
+      {
+        "name": "N1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\N1Entry"
+      },
+      {
+        "name": "A2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\A2Entry"
+      },
+      {
+        "name": "D2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\D2Entry"
+      },
+      {
+        "name": "N2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\N2Entry"
+      },
+      {
+        "name": "TP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\TPEntry"
+      },
+      {
+        "name": "TX",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\TXEntry"
+      },
+      {
+        "name": "TY",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\TYEntry"
+      },
+      {
+        "name": "TS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\TSEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\CEntry"
+      },
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\VEntry"
+      },
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\PEntry"
+      },
+      {
+        "name": "UT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\UTEntry"
+      },
+      {
+        "name": "DR",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\DREntry"
+      },
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\SEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDAngularDimensionMeasurementTable9_39d\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39e",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D radial dimension measurement",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39eDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "9.39a"
+    ],
+    "common_tables": [
+      "9.39a"
+    ],
+    "entries": [
+      {
+        "name": "AP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\APEntry"
+      },
+      {
+        "name": "A1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\A1Entry"
+      },
+      {
+        "name": "A2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\A2Entry"
+      },
+      {
+        "name": "N2",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\N2Entry"
+      },
+      {
+        "name": "A3",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\A3Entry"
+      },
+      {
+        "name": "A4",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\A4Entry"
+      },
+      {
+        "name": "TP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\TPEntry"
+      },
+      {
+        "name": "TX",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\TXEntry"
+      },
+      {
+        "name": "TY",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\TYEntry"
+      },
+      {
+        "name": "EL",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\ELEntry"
+      },
+      {
+        "name": "TS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\TSEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\CEntry"
+      },
+      {
+        "name": "V",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\VEntry"
+      },
+      {
+        "name": "U",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\UEntry"
+      },
+      {
+        "name": "P",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\PEntry"
+      },
+      {
+        "name": "UT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\UTEntry"
+      },
+      {
+        "name": "SC",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\SCEntry"
+      },
+      {
+        "name": "R",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\REntry"
+      },
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\SEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDRadialDimensionMeasurementTable9_39e\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39f",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D comment note",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39fDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [
+      "9.39a"
+    ],
+    "common_tables": [
+      "9.39a"
+    ],
+    "entries": [
+      {
+        "name": "A1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\A1Entry"
+      },
+      {
+        "name": "N1",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\N1Entry"
+      },
+      {
+        "name": "TP",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\TPEntry"
+      },
+      {
+        "name": "TB",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\TBEntry"
+      },
+      {
+        "name": "TS",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\TSEntry"
+      },
+      {
+        "name": "C",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\CEntry"
+      },
+      {
+        "name": "UT",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\UTEntry"
+      },
+      {
+        "name": "S",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\SEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDMeasurementMarkupDictionaryForAThreeDCommentNoteTable9_39f\\SubtypeEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.39g",
+    "title": "Entries in the external data dictionary of a projection annotation",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ExternalDataDictionaryOfAProjectionAnnotationTable9_39g",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ExternalDataDictionaryOfAProjectionAnnotationTable9_39gDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ExternalDataDictionaryOfAProjectionAnnotationTable9_39g\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ExternalDataDictionaryOfAProjectionAnnotationTable9_39g\\SubtypeEntry"
+      },
+      {
+        "name": "M3DREF",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ExternalDataDictionaryOfAProjectionAnnotationTable9_39g\\M3DREFEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.49",
+    "title": "Additional entries specific to a RichMedia annotation",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnnotationTable9_49",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaAnnotationTable9_49Definition",
+    "iso_base_tables": [
+      "164"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "164"
+    ],
+    "entries": [
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnnotationTable9_49\\SubtypeEntry"
+      },
+      {
+        "name": "RichMediaSettings",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnnotationTable9_49\\RichMediaSettingsEntry"
+      },
+      {
+        "name": "RichMediaContent",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnnotationTable9_49\\RichMediaContentEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50",
+    "title": "Entries in a RichMediaSettings dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaSettingsDictionaryTable9_50",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaSettingsDictionaryTable9_50Definition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaSettingsDictionaryTable9_50\\TypeEntry"
+      },
+      {
+        "name": "Activation",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaSettingsDictionaryTable9_50\\ActivationEntry"
+      },
+      {
+        "name": "Deactivation",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaSettingsDictionaryTable9_50\\DeactivationEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50a",
+    "title": "Entries in a RichMediaActivation dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaActivationDictionaryTable9_50aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\TypeEntry"
+      },
+      {
+        "name": "Condition",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\ConditionEntry"
+      },
+      {
+        "name": "Animation",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\AnimationEntry"
+      },
+      {
+        "name": "View",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\ViewEntry"
+      },
+      {
+        "name": "Configuration",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\ConfigurationEntry"
+      },
+      {
+        "name": "Presentation",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\PresentationEntry"
+      },
+      {
+        "name": "Scripts",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaActivationDictionaryTable9_50a\\ScriptsEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50b",
+    "title": "Entries in a RichMediaDeactivation dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaDeactivationDictionaryTable9_50b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaDeactivationDictionaryTable9_50bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaDeactivationDictionaryTable9_50b\\TypeEntry"
+      },
+      {
+        "name": "Condition",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaDeactivationDictionaryTable9_50b\\ConditionEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50c",
+    "title": "Entries in a RichMediaAnimation dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnimationDictionaryTable9_50c",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaAnimationDictionaryTable9_50cDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnimationDictionaryTable9_50c\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnimationDictionaryTable9_50c\\SubtypeEntry"
+      },
+      {
+        "name": "PlayCount",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnimationDictionaryTable9_50c\\PlayCountEntry"
+      },
+      {
+        "name": "Speed",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaAnimationDictionaryTable9_50c\\SpeedEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50d",
+    "title": "Entries in a RichMediaPresentation dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaPresentationDictionaryTable9_50dDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\TypeEntry"
+      },
+      {
+        "name": "Style",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\StyleEntry"
+      },
+      {
+        "name": "Window",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\WindowEntry"
+      },
+      {
+        "name": "Transparent",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\TransparentEntry"
+      },
+      {
+        "name": "NavigationPane",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\NavigationPaneEntry"
+      },
+      {
+        "name": "Toolbar",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\ToolbarEntry"
+      },
+      {
+        "name": "PassContextClick",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPresentationDictionaryTable9_50d\\PassContextClickEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50e",
+    "title": "Entries in a RichMediaWindow dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaWindowDictionaryTable9_50e",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaWindowDictionaryTable9_50eDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaWindowDictionaryTable9_50e\\TypeEntry"
+      },
+      {
+        "name": "Width",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaWindowDictionaryTable9_50e\\WidthEntry"
+      },
+      {
+        "name": "Height",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaWindowDictionaryTable9_50e\\HeightEntry"
+      },
+      {
+        "name": "Position",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaWindowDictionaryTable9_50e\\PositionEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.50f",
+    "title": "Entries in a RichMediaPosition dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaPositionDictionaryTable9_50fDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f\\TypeEntry"
+      },
+      {
+        "name": "HAlign",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f\\HAlignEntry"
+      },
+      {
+        "name": "VAlign",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f\\VAlignEntry"
+      },
+      {
+        "name": "HOffset",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f\\HOffsetEntry"
+      },
+      {
+        "name": "VOffset",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaPositionDictionaryTable9_50f\\VOffsetEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51",
+    "title": "Entries in a RichMediaContent dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaContentDictionaryTable9_51",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaContentDictionaryTable9_51Definition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaContentDictionaryTable9_51\\TypeEntry"
+      },
+      {
+        "name": "Assets",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaContentDictionaryTable9_51\\AssetsEntry"
+      },
+      {
+        "name": "Configurations",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaContentDictionaryTable9_51\\ConfigurationsEntry"
+      },
+      {
+        "name": "Views",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaContentDictionaryTable9_51\\ViewsEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51a",
+    "title": "Entries in a RichMediaConfiguration dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaConfigurationDictionaryTable9_51a",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaConfigurationDictionaryTable9_51aDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaConfigurationDictionaryTable9_51a\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaConfigurationDictionaryTable9_51a\\SubtypeEntry"
+      },
+      {
+        "name": "Name",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaConfigurationDictionaryTable9_51a\\NameEntry"
+      },
+      {
+        "name": "Instances",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaConfigurationDictionaryTable9_51a\\InstancesEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51b",
+    "title": "Entries in a RichMediaInstance dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaInstanceDictionaryTable9_51b",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaInstanceDictionaryTable9_51bDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaInstanceDictionaryTable9_51b\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaInstanceDictionaryTable9_51b\\SubtypeEntry"
+      },
+      {
+        "name": "Params",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaInstanceDictionaryTable9_51b\\ParamsEntry"
+      },
+      {
+        "name": "Asset",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaInstanceDictionaryTable9_51b\\AssetEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51c",
+    "title": "Entries in a RichMediaParams dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\RichMediaParamsDictionaryTable9_51cDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\TypeEntry"
+      },
+      {
+        "name": "FlashVars",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\FlashVarsEntry"
+      },
+      {
+        "name": "Binding",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\BindingEntry"
+      },
+      {
+        "name": "BindingMaterialName",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\BindingMaterialNameEntry"
+      },
+      {
+        "name": "CuePoints",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\CuePointsEntry"
+      },
+      {
+        "name": "Settings",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\RichMediaParamsDictionaryTable9_51c\\SettingsEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51e",
+    "title": "Entries in a CuePoint dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\CuePointDictionaryTable9_51eDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Type",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e\\TypeEntry"
+      },
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e\\SubtypeEntry"
+      },
+      {
+        "name": "Name",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e\\NameEntry"
+      },
+      {
+        "name": "Time",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e\\TimeEntry"
+      },
+      {
+        "name": "A",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\CuePointDictionaryTable9_51e\\AEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51f",
+    "title": "Additional entries to a 3D view dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_51f",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ThreeDViewDictionaryTable9_51fDefinition",
+    "iso_base_tables": [
+      "304"
+    ],
+    "adobe_base_tables": [
+      "9.39"
+    ],
+    "common_tables": [
+      "304",
+      "9.39"
+    ],
+    "entries": [
+      {
+        "name": "Snapshot",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_51f\\SnapshotEntry"
+      },
+      {
+        "name": "Params",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ThreeDViewDictionaryTable9_51f\\ParamsEntry"
+      }
+    ]
+  },
+  {
+    "table": "9.51g",
+    "title": "Entries in a View Params dictionary",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewParamsDictionaryTable9_51g",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\ViewParamsDictionaryTable9_51gDefinition",
+    "iso_base_tables": [],
+    "adobe_base_tables": [],
+    "common_tables": [],
+    "entries": [
+      {
+        "name": "Instance",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewParamsDictionaryTable9_51g\\InstanceEntry"
+      },
+      {
+        "name": "Data",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\ViewParamsDictionaryTable9_51g\\DataEntry"
+      }
+    ]
+  },
+  {
+    "table": "10.17",
+    "title": "Property list entries for artifacts",
+    "class": "PDF\\Specification\\Adobe\\Dictionary\\PropertyListEntriesForArtifactsTable10_17",
+    "definition_class": "PDF\\Specification\\Adobe\\Definition\\PropertyListEntriesForArtifactsTable10_17Definition",
+    "iso_base_tables": [
+      "330"
+    ],
+    "adobe_base_tables": [],
+    "common_tables": [
+      "330"
+    ],
+    "entries": [
+      {
+        "name": "Subtype",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PropertyListEntriesForArtifactsTable10_17\\SubtypeEntry"
+      },
+      {
+        "name": "Contents",
+        "variable": false,
+        "class": "PDF\\Specification\\Adobe\\Dictionary\\PropertyListEntriesForArtifactsTable10_17\\ContentsEntry"
+      }
+    ]
+  }
+]

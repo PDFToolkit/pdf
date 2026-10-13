@@ -1,0 +1,110 @@
+[
+  {
+    "id": "rich-media-configuration-name-text-string",
+    "table": "9.51a",
+    "entry": "Name",
+    "rationale": "The source table prints text tree, which is not a PDF object type. The same document's extended example supplies a literal text string for the unique configuration name. The schema therefore uses a text string while retaining the printed source type separately.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 9.51a, PDF page 88; extended example, PDF page 95, /Name (Configuration01)",
+    "constraints": {"type": "text string"}
+  },
+  {
+    "id": "barcode-symbol-height-conditional-requirement",
+    "table": "8.39b",
+    "entry": "XSymHeight",
+    "rationale": "The qualifier says Required, but its immediately following normative description restricts the entry to PDF417. Preserve Required and the qualifier, while avoiding an unconditional missing-entry failure for QRCode and DataMatrix dictionaries.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 8.39b, PDF page 47, XSymHeight: Only needed for PDF417",
+    "constraints": {"conditional": true}
+  },
+  {
+    "id": "collection-field-subtype-required-preserved",
+    "table": "8.8",
+    "entry": "Subtype",
+    "rationale": "The supplement shows only the new CompressedSize subtype value, whose qualifier describes that value. The dictionary's Subtype key remains required in ISO 32000-1 table 157; adding a new value does not make this key optional. Preserve the printed qualifier and base requirement separately.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 8.8, PDF page 30; ISO 32000-1 table 157, PDF32000_2008.pdf page 380",
+    "constraints": {"required": true, "introduced_in": null}
+  },
+  {
+    "id": "image-point-data-dictionary-or-array",
+    "table": "4.39",
+    "entry": "PtData",
+    "rationale": "The added entry's table lists dictionary, but the point data section explicitly permits PtData to reference one point data dictionary or an array of these dictionaries. The schema accepts both object types while retaining the printed table type.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 4.39, PDF page 27; Point Data section, PDF page 53",
+    "constraints": {"type": "dictionary or array of dictionaries"}
+  },
+  {
+    "id": "form-point-data-dictionary-or-array",
+    "table": "4.45",
+    "entry": "PtData",
+    "rationale": "The added entry's table lists dictionary, but the point data section explicitly permits PtData to reference one point data dictionary or an array of these dictionaries. The schema accepts both object types while retaining the printed table type.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 4.45, PDF page 27; Point Data section, PDF page 53",
+    "constraints": {"type": "dictionary or array of dictionaries"}
+  },
+  {
+    "id": "viewport-point-data-dictionary-or-array",
+    "table": "8.109",
+    "entry": "PtData",
+    "rationale": "The added entry's table lists dictionary, but the point data section explicitly permits PtData to reference one point data dictionary or an array of these dictionaries. The schema accepts both object types while retaining the printed table type.",
+    "evidence_url": "adobe_supplement_iso32000.pdf",
+    "evidence_locator": "Table 8.109, PDF page 48; Point Data section, PDF page 53",
+    "constraints": {"type": "dictionary or array of dictionaries"}
+  },
+  {
+    "id": "catalog-extensions-dictionary-direct",
+    "table": "3.25",
+    "entry": "Extensions",
+    "rationale": "The supplement's catalogue row is constrained by ISO 32000-1 7.12.1: the extensions dictionary shall be a direct object. Preserve the supplement row and identify the normative ISO rule separately.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  },
+  {
+    "id": "extensions-dictionary-type-direct",
+    "table": "3.25a",
+    "entry": "Type",
+    "rationale": "ISO 32000-1 7.12.1 requires the extensions dictionary and all its entries to be direct objects. The optional Type entry follows this rule.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  },
+  {
+    "id": "developer-prefix-dictionary-direct",
+    "table": "3.25a",
+    "entry": "Prefix name",
+    "rationale": "ISO 32000-1 7.12.1 requires each developer extensions dictionary to be a direct object, as an entry of the direct extensions dictionary.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  },
+  {
+    "id": "developer-extensions-type-direct",
+    "table": "3.25b",
+    "entry": "Type",
+    "rationale": "ISO 32000-1 7.12.1 requires all entries in a developer extensions dictionary to be direct objects. Preserve the supplement's optional Type qualifier.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  },
+  {
+    "id": "developer-base-version-direct",
+    "table": "3.25b",
+    "entry": "BaseVersion",
+    "rationale": "ISO 32000-1 7.12.1 requires all entries in a developer extensions dictionary to be direct objects. The BaseVersion name therefore cannot be an indirect reference.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  },
+  {
+    "id": "developer-extension-level-direct",
+    "table": "3.25b",
+    "entry": "ExtensionLevel",
+    "rationale": "ISO 32000-1 7.12.1 requires all entries in a developer extensions dictionary to be direct objects. The ExtensionLevel integer therefore cannot be an indirect reference.",
+    "evidence_url": "PDF32000_2008.pdf",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1, physical PDF page 116, Extensions Dictionary",
+    "constraints": {"direct": true, "indirect": false}
+  }
+]

@@ -6,17 +6,13 @@ namespace PDF\Syntax\DocumentStructure\CatalogDictionary;
 
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\DictionaryType;
-use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 
 final class Extensions extends Entry
 {
-    public function __construct(DictionaryType|IndirectReference $value)
+    public function __construct(DictionaryType $value)
     {
-        $target = $value instanceof IndirectReference ? $value->target() : $value;
-        if (!$target instanceof DictionaryType) {
-            throw new \InvalidArgumentException('Invalid value for catalog Extensions.');
-        }
+        (new \PDF\Document\Extensions\ExtensionDirectness())->validate($value);
         parent::__construct(new NameType('Extensions'), $value);
     }
 }

@@ -10,5 +10,53 @@
     "rationale": "ISO 32000-1:2008 Table 15 describes Prev as an indirect reference, whereas Adobe PDF Reference 1.7 Table 3.13 requires a direct integer. A direct byte offset allows a reader to locate the previous cross-reference section before resolving indirect references. This is an explicit implementation correction supported by the earlier Adobe reference, not a claim of an official ISO erratum. The original ISO source description and qualifier are preserved.",
     "evidence_url": "https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/pdfreference1.7old.pdf",
     "evidence_locator": "Adobe PDF Reference 1.7, Table 3.13, printed page 97"
+  },
+  {
+    "id": "extension-declaration-direct-28-extensions",
+    "table": "28",
+    "entry": "Extensions",
+    "constraints": {
+      "direct": true,
+      "indirect": false
+    },
+    "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+    "evidence_url": "PDF32000_2008.pdf#page=116",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
+  },
+  {
+    "id": "extension-declaration-direct-50-type",
+    "table": "50",
+    "entry": "Type",
+    "constraints": {
+      "direct": true,
+      "indirect": false
+    },
+    "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+    "evidence_url": "PDF32000_2008.pdf#page=116",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
+  },
+  {
+    "id": "extension-declaration-direct-50-baseversion",
+    "table": "50",
+    "entry": "BaseVersion",
+    "constraints": {
+      "direct": true,
+      "indirect": false
+    },
+    "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+    "evidence_url": "PDF32000_2008.pdf#page=116",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
+  },
+  {
+    "id": "extension-declaration-direct-50-extensionlevel",
+    "table": "50",
+    "entry": "ExtensionLevel",
+    "constraints": {
+      "direct": true,
+      "indirect": false
+    },
+    "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
+    "evidence_url": "PDF32000_2008.pdf#page=116",
+    "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
   }
 ]

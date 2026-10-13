@@ -1,0 +1,22 @@
+{
+  "document": "adobe_supplement_iso32000.pdf",
+  "document_sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+  "standard": "Adobe Supplement to ISO 32000, BaseVersion 1.7, ExtensionLevel 3 (June 2008)",
+  "base_version": "1.7",
+  "extension_level": 3,
+  "edition": "1.0",
+  "date": "June 2008",
+  "pdf_pages": 140,
+  "part_i_pdf_pages": [
+    9,
+    103
+  ],
+  "part_ii_pdf_pages": [
+    106,
+    132
+  ],
+  "dictionary_tables": 61,
+  "dictionary_entries": 276,
+  "prose_specialization_entries": 6,
+  "scope": "Object schemas for printed PDF dictionary tables in Part I; algorithms, XML and Adobe application implementation notes are catalogued separately."
+}

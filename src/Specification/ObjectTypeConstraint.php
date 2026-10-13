@@ -26,7 +26,12 @@ final readonly class ObjectTypeConstraint
         public bool $direct = false,
         public bool $directArrayElements = false,
         public ?string $fixedName = null,
+        public bool $indirectArrayElements = false,
+        public ?self $arrayElementConstraint = null,
     ) {
+        if ($directArrayElements && $indirectArrayElements) {
+            throw new \InvalidArgumentException('Array elements cannot be both direct and indirect.');
+        }
         $this->classes = $this->objectTypes($specificationType);
     }
 
@@ -66,6 +71,18 @@ final readonly class ObjectTypeConstraint
             }
         }
         if ($target instanceof ArrayType) {
+            if ($this->arrayElementConstraint !== null) {
+                foreach ($target->items as $item) {
+                    $this->arrayElementConstraint->validate($item);
+                }
+            }
+            if ($this->indirectArrayElements) {
+                foreach ($target->items as $item) {
+                    if (!$item instanceof IndirectReference) {
+                        throw new \InvalidArgumentException('This array requires indirect references as its elements.');
+                    }
+                }
+            }
             if ($this->directArrayElements) {
                 foreach ($target->items as $item) {
                     if ($item instanceof IndirectReference) {
@@ -73,35 +90,55 @@ final readonly class ObjectTypeConstraint
                     }
                 }
             }
-            if (str_starts_with(strtolower($this->specificationType), 'array of ')) {
-                $memberType = match (strtolower($this->specificationType)) {
-                    'array of dictionaries' => DictionaryType::class,
-                    'array of text strings', 'array of ascii strings' => StringType::class,
+            $this->validateArrayMembers($target);
+        }
+    }
+
+    private function validateArrayMembers(ArrayType $array): void
+    {
+        $parts = preg_split('/\s*,\s*(?:or\s+)?|\s+or\s+/', strtolower($this->specificationType)) ?: [];
+        $domains = [];
+        foreach ($parts as $part) {
+            if (str_starts_with($part, 'array of ')) {
+                $domains[] = match (substr($part, 9)) {
+                    'dictionaries' => DictionaryType::class,
+                    'text strings', 'ascii strings', 'strings', 'text string', 'byte strings' => StringType::class,
+                    'names' => NameType::class,
+                    'numbers', 'reals' => NumericType::class,
+                    'integers' => IntegerType::class,
                     default => BasicType::class,
                 };
-                foreach ($target->items as $item) {
-                    $member = $item instanceof IndirectReference ? $item->target() : $item;
-                    if (!$member instanceof $memberType) {
-                        throw new \InvalidArgumentException('Invalid array member type.');
-                    }
-                }
             }
         }
+        if ($domains === []) {
+            return;
+        }
+        foreach ($domains as $memberType) {
+            $accepted = true;
+            foreach ($array->items as $item) {
+                $member = $item instanceof IndirectReference ? $item->target() : $item;
+                if (!$member instanceof $memberType) {
+                    $accepted = false;
+                    break;
+                }
+            }
+            if ($accepted) {
+                return;
+            }
+        }
+        throw new \InvalidArgumentException('Invalid array member type.');
     }
 
     /** @return list<class-string<BasicType>> */
     private function objectTypes(string $specificationType): array
     {
         $type = strtolower(trim($specificationType, " \t\n\r\0\x0B‘’"));
-        if (in_array($type, ['(any)', '(various)', '(undefined)', 'any'], true)) {
+        if (in_array($type, ['(any)', '(various)', '(undefined)', 'any', 'various', 'undefined'], true)) {
             return [BasicType::class];
-        }
-        if (str_starts_with($type, 'array of ')) {
-            return [ArrayType::class];
         }
         $types = [];
         foreach (preg_split('/\s*,\s*(?:or\s+)?|\s+or\s+/', $type) ?: [] as $part) {
-            $classes = match ($part) {
+            $classes = str_starts_with($part, 'array of ') ? [ArrayType::class] : match ($part) {
                 'name' => [NameType::class], 'integer' => [IntegerType::class],
                 'number', 'real' => [NumericType::class], 'boolean' => [BooleanType::class],
                 'array', 'rectangle' => [ArrayType::class],
@@ -109,7 +146,7 @@ final readonly class ObjectTypeConstraint
                 'stream', 'text stream' => [StreamObject::class],
                 'function' => [DictionaryType::class, StreamObject::class],
                 'file specification' => [StringType::class, DictionaryType::class],
-                'string', 'text string', 'byte string', 'ascii string', 'pdfdocencoded string', 'date', 'text' => [StringType::class],
+                'string', 'text string', 'byte string', 'ascii string', 'pdfdocencoded string', 'date', 'date string', 'text' => [StringType::class],
                 default => throw new \LogicException('Unmapped specification type: ' . $specificationType),
             };
             array_push($types, ...$classes);

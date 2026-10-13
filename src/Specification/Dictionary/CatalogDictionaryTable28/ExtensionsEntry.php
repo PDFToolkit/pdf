@@ -8,7 +8,6 @@ namespace PDF\Specification\Dictionary\CatalogDictionaryTable28;
 
 use PDF\Specification\Definition\CatalogDictionaryTable28Definition;
 use PDF\Syntax\Object\DictionaryType;
-use PDF\Syntax\Object\IndirectReference;
 
 /** Table 28, /Extensions; PDF type: dictionary; Optional; ISO 32000. */
 final class ExtensionsEntry extends \PDF\Specification\SchemaEntry
@@ -16,7 +15,7 @@ final class ExtensionsEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '28';
     public const string KEY = 'Extensions';
 
-    public function __construct(DictionaryType|IndirectReference $value)
+    public function __construct(DictionaryType $value)
     {
         parent::__construct((new CatalogDictionaryTable28Definition())->entry('Extensions'), $value);
     }
