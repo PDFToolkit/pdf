@@ -57,15 +57,21 @@ final class SignatureWritingTest extends TestCase
     private function signature(SignatureFormat $format, int $capacity = 8192): PendingSignature
     {
         $cert = $format === SignatureFormat::X509RsaSha1 ? [new Entry(new NameType('Cert'), $this->identity()->chain->object())] : [];
-        return new PendingSignature(new SignatureCapacity($capacity), $format, new NameType('Adobe.PPKLite'),
-            ...[new Entry(new NameType('Reason'), new LiteralString('Reviewed')), ...$cert]);
+        return new PendingSignature(
+            new SignatureCapacity($capacity),
+            $format,
+            new NameType('Adobe.PPKLite'),
+            ...[new Entry(new NameType('Reason'), new LiteralString('Reviewed')), ...$cert]
+        );
     }
 
     private function file(PendingSignature $signature, CrossReferenceFormat $xref): FileStructure
     {
         $fields = (new FieldTree())->addRoot(new SignatureField(new PartialFieldName(new TextString('approval')), value: new IndirectReference($signature)));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm($fields,
-            entries: new Entry(new NameType('SigFlags'), new IntegerType(3))))));
+        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm(
+            $fields,
+            entries: new Entry(new NameType('SigFlags'), new IntegerType(3))
+        ))));
         return new FileStructure(new FileHeader(), new FileBody($catalog), crossReferenceFormat: $xref);
     }
 
@@ -114,8 +120,11 @@ final class SignatureWritingTest extends TestCase
     public function testPkcs7CannotSmuggleASeparateCertEntry(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new PendingSignature(new SignatureCapacity(8), SignatureFormat::Pkcs7Detached,
-            entries: new Entry(new NameType('Cert'), new LiteralString('certificate')));
+        new PendingSignature(
+            new SignatureCapacity(8),
+            SignatureFormat::Pkcs7Detached,
+            entries: new Entry(new NameType('Cert'), new LiteralString('certificate'))
+        );
     }
 
     public function testBackendCredentialsRejectFilenameInputsBeforeReadingAnyFile(): void
@@ -151,8 +160,11 @@ final class SignatureWritingTest extends TestCase
     public function testNativePkcs1SignerRejectsAnotherDeclaredCertificate(): void
     {
         $other = file_get_contents(__DIR__ . '/Fixtures/signing/recipient.der');
-        $pending = new PendingSignature(new SignatureCapacity(8192), SignatureFormat::X509RsaSha1,
-            entries: new Entry(new NameType('Cert'), new HexadecimalString($other)));
+        $pending = new PendingSignature(
+            new SignatureCapacity(8192),
+            SignatureFormat::X509RsaSha1,
+            entries: new Entry(new NameType('Cert'), new HexadecimalString($other))
+        );
         $prepared = (new SignatureWriter())->prepare($this->file($pending, CrossReferenceFormat::Table), $pending);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('actual signing key');

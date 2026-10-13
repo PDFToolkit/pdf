@@ -18,9 +18,12 @@ final class PendingSignature extends SchemaDictionary
     public readonly SignatureContentsReservation $contents;
     public readonly ByteRangeReservation $byteRange;
 
-    public function __construct(public readonly SignatureCapacity $capacity, public readonly SignatureFormat $format,
-        public readonly NameType $handler = new NameType('Adobe.PPKLite'), Entry ...$entries)
-    {
+    public function __construct(
+        public readonly SignatureCapacity $capacity,
+        public readonly SignatureFormat $format,
+        public readonly NameType $handler = new NameType('Adobe.PPKLite'),
+        Entry ...$entries
+    ) {
         $this->contents = new SignatureContentsReservation($capacity);
         $this->byteRange = new ByteRangeReservation();
         foreach ($entries as $entry) {
@@ -31,12 +34,15 @@ final class PendingSignature extends SchemaDictionary
                 throw new \InvalidArgumentException('All byte-range signature dictionary values must be direct objects.');
             }
         }
-        parent::__construct(new SignatureDictionaryTable252Definition(),
+        parent::__construct(
+            new SignatureDictionaryTable252Definition(),
             new Entry(new NameType('Contents'), $this->contents),
             new Entry(new NameType('ByteRange'), $this->byteRange),
             new Entry(new NameType('Type'), new NameType('Sig')),
             new Entry(new NameType('Filter'), $handler),
-            new Entry(new NameType('SubFilter'), new NameType($format->value)), ...$entries);
+            new Entry(new NameType('SubFilter'), new NameType($format->value)),
+            ...$entries
+        );
         $cert = $this->get('Cert');
         if ($format === SignatureFormat::X509RsaSha1) {
             if (!$cert instanceof StringType && !$cert instanceof ArrayType) {

@@ -26,27 +26,40 @@ final class PublicKeySecurityHandlerTest extends TestCase
 
     private function decrypter(string $name): Sec\OpenSslRecipientDecrypter
     {
-        return new Sec\OpenSslRecipientDecrypter(new Sec\OpenSslIdentity(new Sec\CertificateChain($this->certificate($name)),
-            file_get_contents(__DIR__ . '/Fixtures/signing/' . $name . '-private-key.pem')));
+        return new Sec\OpenSslRecipientDecrypter(new Sec\OpenSslIdentity(
+            new Sec\CertificateChain($this->certificate($name)),
+            file_get_contents(__DIR__ . '/Fixtures/signing/' . $name . '-private-key.pem')
+        ));
     }
 
     private function handler(Sec\PublicKeyPermissionByteOrder $order = Sec\PublicKeyPermissionByteOrder::IsoLeastSignificantFirst): Sec\PublicKeySecurityHandler
     {
-        return new Sec\PublicKeySecurityHandler(new Sec\OpenSslCmsEnvelopeBackend(), aes128: new Sec\OpenSslAes128Backend(),
-            aes256: new Sec\OpenSslAes256Backend(), permissionByteOrder: $order);
+        return new Sec\PublicKeySecurityHandler(
+            new Sec\OpenSslCmsEnvelopeBackend(),
+            aes128: new Sec\OpenSslAes128Backend(),
+            aes256: new Sec\OpenSslAes256Backend(),
+            permissionByteOrder: $order
+        );
     }
 
     private function group(?int $permissions, string ...$names): Sec\PublicKeyRecipientGroup
     {
-        return new Sec\PublicKeyRecipientGroup($permissions === null ? null : new Sec\PublicKeyPermissions(new IntegerType($permissions)),
-            ...array_map($this->certificate(...), $names));
+        return new Sec\PublicKeyRecipientGroup(
+            $permissions === null ? null : new Sec\PublicKeyPermissions(new IntegerType($permissions)),
+            ...array_map($this->certificate(...), $names)
+        );
     }
 
     public function testLegacyEnvelopesGroupEqualPermissionsAndAuthenticateTheFirstMatchingList(): void
     {
-        $operation = $this->handler()->createLegacy(Sec\PublicKeySubFilter::Pkcs7S4, new Sec\PublicKeyKeyLength(new IntegerType(128)),
-            new Sec\PublicKeyPermissions(new IntegerType(-4)), $this->group(-4, 'signer'), $this->group(-4, 'recipient'),
-            $this->group(2, 'signer'));
+        $operation = $this->handler()->createLegacy(
+            Sec\PublicKeySubFilter::Pkcs7S4,
+            new Sec\PublicKeyKeyLength(new IntegerType(128)),
+            new Sec\PublicKeyPermissions(new IntegerType(-4)),
+            $this->group(-4, 'signer'),
+            $this->group(-4, 'recipient'),
+            $this->group(2, 'signer')
+        );
         self::assertCount(2, $operation->material->recipients);
         $first = $operation->material->authenticate($this->decrypter('signer'));
         self::assertSame(0, $first?->recipientIndex);
@@ -70,12 +83,31 @@ final class PublicKeySecurityHandlerTest extends TestCase
     public function testIndependentNamedKeysSelectStringsStreamsAndIndividualEncryptedFiles(Sec\PublicKeyCipher $cipher, int $bits): void
     {
         $handler = $this->handler();
-        $default = $handler->createFilter(new NameType('DefaultCryptFilter'), $cipher, new Sec\PublicKeyKeyLength(new IntegerType($bits)),
-            new Sec\EncryptMetadata(true), Sec\PublicKeyRecipientScope::Document, new NameType('DocOpen'), $this->group(-4, 'signer'));
-        $file = $handler->createFilter(new NameType('AttachmentKey'), $cipher, new Sec\PublicKeyKeyLength(new IntegerType($bits)),
-            new Sec\EncryptMetadata(true), Sec\PublicKeyRecipientScope::IndividualStream, new NameType('EFOpen'), $this->group(null, 'recipient'));
-        $operation = new Sec\PublicKeyEncryption(new Sec\PublicKeyFilterConfiguration(new NameType('DefaultCryptFilter'), new NameType('DefaultCryptFilter'),
-            new NameType('AttachmentKey'), $default, $file), new Sec\PublicKeyPermissions(new IntegerType(-4)));
+        $default = $handler->createFilter(
+            new NameType('DefaultCryptFilter'),
+            $cipher,
+            new Sec\PublicKeyKeyLength(new IntegerType($bits)),
+            new Sec\EncryptMetadata(true),
+            Sec\PublicKeyRecipientScope::Document,
+            new NameType('DocOpen'),
+            $this->group(-4, 'signer')
+        );
+        $file = $handler->createFilter(
+            new NameType('AttachmentKey'),
+            $cipher,
+            new Sec\PublicKeyKeyLength(new IntegerType($bits)),
+            new Sec\EncryptMetadata(true),
+            Sec\PublicKeyRecipientScope::IndividualStream,
+            new NameType('EFOpen'),
+            $this->group(null, 'recipient')
+        );
+        $operation = new Sec\PublicKeyEncryption(new Sec\PublicKeyFilterConfiguration(
+            new NameType('DefaultCryptFilter'),
+            new NameType('DefaultCryptFilter'),
+            new NameType('AttachmentKey'),
+            $default,
+            $file
+        ), new Sec\PublicKeyPermissions(new IntegerType(-4)));
         $identifier = new ObjectIdentifier(new ObjectNumber(29));
         $data = implode('', array_map(chr(...), range(0, 255)));
         $string = $operation->encryptString($data, $identifier);

@@ -152,9 +152,17 @@ final readonly class FileRevision implements \Stringable
         }
         $records = $this->effectiveObjects;
         $records[$old->identifier->objectNumber->value] = $replacement;
-        return new self($bytes, $this->header, $this->crossReferenceOffset, $this->size, $this->root,
-            $this->trailerEntries, $this->crossReferenceFormat, $this->freeListHead,
-            ...[...array_values($records), ...$this->spans(), ...($this->encryption === null ? [] : [$this->encryption])]);
+        return new self(
+            $bytes,
+            $this->header,
+            $this->crossReferenceOffset,
+            $this->size,
+            $this->root,
+            $this->trailerEntries,
+            $this->crossReferenceFormat,
+            $this->freeListHead,
+            ...[...array_values($records), ...$this->spans(), ...($this->encryption === null ? [] : [$this->encryption])]
+        );
     }
 
     public function binding(BasicType|ObjectIdentifier $value): RevisionObject
