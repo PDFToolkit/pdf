@@ -12,7 +12,7 @@ La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dan
 
 PHP 8.5 et les extensions `ctype`, `iconv` et `zlib` sont nécessaires.
 
-La version est identifiée par le tag Git `v0.1.0`. Avec le dépôt déclaré comme source Composer :
+La version corrective est identifiée par le tag Git `v0.1.1`. Avec le dépôt déclaré comme source Composer :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf

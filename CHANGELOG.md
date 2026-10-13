@@ -4,14 +4,11 @@
 
 ### Added
 
-- A security policy, private vulnerability reporting, a documented security review and regression coverage for hostile PDF values, shared graphs, numeric limits and file output.
 - A French tutorial series with explained scripts, rendered previews, experiments and PDF specification references: first document, pages and text, graphics, navigation, links, images, gradients and compressed objects.
 - A practical table recipe and guidance for contributing further examples.
 
 ### Changed
 
-- Audit locked Composer dependencies for known security advisories in CI.
-- Restrict `writeTo()` to native filesystem paths, reject empty/NUL paths and stream URIs, and report write failures without leaking the destination path.
 - Run PHPStan on examples and generate and validate every example with qpdf in CI.
 - Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
 - Rename the catalog entry `Extension` to `Extensions`, matching the PDF key. These API changes have no compatibility aliases.
@@ -19,15 +16,28 @@
 
 ### Fixed
 
-- Reject ambiguous inline-image `EI` sequences accepted without preceding whitespace by tolerant readers.
-- Use checked integer arithmetic for inline-image sizes and cross-reference identifier bounds.
-- Validate shared direct operand graphs once per identity while retaining active-cycle detection.
 - Require indirect references for catalog `Dests`, `Outlines` and `Threads`, as specified in table 28. Their specialized entry constructors still check the reference targets.
 
 ### Removed
 
 - The unused `PDF\Dictionary\CatalogDictionary` compatibility alias and catalog entry constant registry. Catalog entries now extend the PDF dictionary entry object directly.
 - The `PDF\Text\Font` and `PDF\Text\TextObject` convenience wrappers. Compose `BeginTextObject`, `SetTextFontAndSize`, `ShowText` and `EndTextObject` explicitly in a `ContentStreams` object.
+
+## [0.1.1] - 2026-10-13
+
+Security fixes for the published 0.1 API. The additional API changes and tutorials on master are not part of this maintenance release.
+
+### Fixed
+
+- Reject ambiguous inline-image `EI` sequences accepted without preceding whitespace by tolerant readers.
+- Use checked integer arithmetic for inline-image sizes and cross-reference identifier bounds.
+- Validate shared direct operand graphs once per identity while retaining active-cycle detection.
+- Reject empty/NUL output paths and stream URIs before writing, and report write failures without leaking the destination path.
+
+### Added
+
+- Security regression tests, private vulnerability reporting and a documented trust-boundary policy.
+- Locked Composer dependency auditing in CI.
 
 ## [0.1.0] - 2026-10-13
 
@@ -49,5 +59,6 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0 and replaces the unfinished PHP 7.4 prototype.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/roukmoute/pdf/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/roukmoute/pdf/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/roukmoute/pdf/releases/tag/v0.1.1
 [0.1.0]: https://github.com/roukmoute/pdf/releases/tag/v0.1.0
