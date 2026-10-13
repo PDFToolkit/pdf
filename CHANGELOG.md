@@ -2,6 +2,29 @@
 
 ## [Unreleased]
 
+## [0.5.3] - 2026-10-14
+
+### Documentation
+
+- Move shared guides, tutorials, site assets, API export and site generation to
+  [PDFToolkit/pdftoolkit.github.io](https://github.com/PDFToolkit/pdftoolkit.github.io).
+  The common documentation lives at https://pdftoolkit.github.io/ with dedicated
+  core, reader, image and font entry points. PHP sources, executable examples,
+  fixtures, original Adobe PDFs and specification catalogues remain in the core.
+- Update repository and security links to the shared site. Document its separate
+  ownership and release process, using published package versions and exact
+  source commits for API and example provenance.
+- Preserve the existing `/pdf/` project site through validated HTML redirects
+  carrying queries and fragments, with unchanged copies of the actual binary
+  downloads. The compatibility workflow uses an immutable documentation-tool
+  commit and verifies its complete output before deployment.
+
+### Development dependencies
+
+- Lock optional modules to their published 0.1.4 documentation releases. The
+  core remains independent of them in production. PHP 8.3 and the PHP API are
+  unchanged.
+
 ## [0.5.2] - 2026-10-14
 
 ### Fixed
