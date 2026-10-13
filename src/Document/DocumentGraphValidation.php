@@ -15,6 +15,7 @@ use PDF\Syntax\FileStructure\FileHeader;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Object\ArrayType;
+use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
@@ -27,13 +28,15 @@ final class DocumentGraphValidation
     /** @var array<int, RevisionObject> */
     private array $effective = [];
     private readonly FontSubsetRegistry $subsets;
+    private readonly DictionaryType $catalog;
 
-    public function __construct(private readonly SerializationContext $context, private readonly DictionaryType $catalog, RevisionObject ...$effective)
+    public function __construct(private readonly SerializationContext $context, DictionaryType $catalog, RevisionObject ...$effective)
     {
         $this->subsets = new FontSubsetRegistry();
         foreach ($effective as $record) {
             $this->effective[$record->identifier->objectNumber->value] = $record;
         }
+        $this->catalog = $effective === [] ? $catalog : $this->effectiveDictionary($catalog);
     }
 
     public function validate(FileHeader $header = new FileHeader()): void
@@ -84,6 +87,11 @@ final class DocumentGraphValidation
                     }
                 }
                 $type = $dictionary->get('Type');
+                $associatedPage = $dictionary->get('Pg');
+                if ($type instanceof NameType && in_array($type->value, ['StructElem', 'MCR', 'OBJR'], true) && $associatedPage instanceof IndirectReference
+                    && !isset($pages[$this->context->reference($associatedPage)->objectNumber->value])) {
+                    throw new \InvalidArgumentException('Structure Pg must belong to the effective Catalog.Pages tree.');
+                }
                 $page = $dictionary->get('P');
                 if ($type instanceof NameType && $type->value === 'Annot' && $page instanceof IndirectReference) {
                     $number = $this->context->reference($page)->objectNumber->value;
@@ -113,6 +121,30 @@ final class DocumentGraphValidation
     {
         $number = $this->context->reference($reference)->objectNumber->value;
         return $this->effective[$number]->value ?? $reference->target();
+    }
+
+    /** Resolve frozen direct catalog containers through effective indirect bindings. */
+    private function effectiveDictionary(DictionaryType $dictionary): DictionaryType
+    {
+        $entries = [];
+        foreach ($dictionary->entries() as $entry) {
+            $entries[] = new Entry($entry->key, $this->effectiveValue($entry->value));
+        }
+        return new DictionaryType(...$entries);
+    }
+
+    private function effectiveValue(BasicType $value): BasicType
+    {
+        if ($value instanceof IndirectReference) {
+            return new IndirectReference($this->resolve($value), $this->context->reference($value));
+        }
+        if ($value::class === DictionaryType::class) {
+            return $this->effectiveDictionary($value);
+        }
+        if ($value::class === ArrayType::class) {
+            return new ArrayType(...array_map($this->effectiveValue(...), $value->items));
+        }
+        return $value;
     }
 
     private function isCurrent(BasicType $value): bool

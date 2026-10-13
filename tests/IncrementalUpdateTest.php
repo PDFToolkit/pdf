@@ -269,6 +269,47 @@ final class IncrementalUpdateTest extends TestCase
         self::assertSame((string) $base->pageTreeIdentifier, (string) $next->pageTreeIdentifier);
     }
 
+    public function testStructureCannotReferenceAPageAddedOnlyToTheOldMutableBuilder(): void
+    {
+        $pages = new PageTreeNode();
+        $base = (new FileStructure(new FileHeader(), new FileBody(new DocumentCatalog($pages))))->toRevision();
+        $newPage = new \PDF\Syntax\DocumentStructure\PageTree\PageObject(new \PDF\Syntax\DataStructure\Rectangle(
+            new \PDF\Syntax\Object\NumericType(0),
+            new \PDF\Syntax\Object\NumericType(0),
+            new \PDF\Syntax\Object\NumericType(10),
+            new \PDF\Syntax\Object\NumericType(10),
+        ), new \PDF\Document\ResourceDictionary());
+        $pages->addKid($newPage);
+        $reference = new DictionaryType(
+            new Entry(new NameType('Type'), new NameType('MCR')),
+            new Entry(new NameType('Pg'), new IndirectReference($newPage)),
+            new Entry(new NameType('MCID'), new IntegerType(0)),
+        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('effective Catalog.Pages');
+        (new IncrementalUpdate($base, new FileBody($reference)))->toRevision();
+    }
+
+    public function testReplacedGroupsResolveInsideFrozenDirectCatalogContainers(): void
+    {
+        $old = new \PDF\Graphics\OptionalContent\OptionalContentGroup(new \PDF\Syntax\DataStructure\TextString('Before'));
+        $properties = new \PDF\Graphics\OptionalContent\OptionalContentProperties(new \PDF\Graphics\OptionalContent\GroupCollection($old));
+        $catalog = new DocumentCatalog(new PageTreeNode(), $properties->catalogEntry(), new Entry(new NameType('Private'), new ArrayType(
+            new DictionaryType(new Entry(new NameType('Group'), new IndirectReference($old))),
+        )));
+        $base = (new FileStructure(new FileHeader(), new FileBody($catalog)))->toRevision();
+        $new = new \PDF\Graphics\OptionalContent\OptionalContentGroup(new \PDF\Syntax\DataStructure\TextString('After'));
+        $newProperties = new \PDF\Graphics\OptionalContent\OptionalContentProperties(new \PDF\Graphics\OptionalContent\GroupCollection($new));
+        $frozenPrivate = $base->binding($catalog)->dictionary->get('Private');
+        $nextCatalog = $catalog->with($newProperties->catalogEntry())->with(new Entry(new NameType('Private'), $frozenPrivate));
+        $next = (new IncrementalUpdate($base, new FileBody(
+            new IndirectObject($new, $base->binding($old)->identifier),
+            new IndirectObject($nextCatalog, $base->root->identifier),
+        )))->toRevision();
+        self::assertSame($new, $next->reference($old)->target());
+        self::assertStringContainsString('/Group ' . $base->binding($old)->identifier . ' R', substr($next->bytes, strlen($base->bytes)));
+    }
+
     public function testDirectTrailerValuesAreNotPromotedToUnusedIndirectObjects(): void
     {
         $id = new ArrayType(new LiteralString('original'), new LiteralString('changing'));

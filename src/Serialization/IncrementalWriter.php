@@ -99,7 +99,9 @@ final class IncrementalWriter
             || $catalogDictionary->get('Type')->value !== 'Catalog' || !$catalogDictionary->get('Pages') instanceof IndirectReference) {
             throw new \LogicException('The effective incremental Root must be a catalog with an indirect Pages entry.');
         }
-        (new DocumentGraphValidation($context, $catalogDictionary, ...array_values($effective)))->validate($previous->header);
+        // Current typed components need their explicit construction identities; unchanged roots use frozen values.
+        $validationCatalog = ($context->objects()[$rootIdentifier->objectNumber->value] ?? null) === $catalog ? $catalog : $catalogDictionary;
+        (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header);
         if ($previous->encryption !== null) {
             if (!$previous->encryption->metadata()->value && $catalogDictionary->has('Metadata')) {
                 $metadata = $catalogDictionary->get('Metadata');
