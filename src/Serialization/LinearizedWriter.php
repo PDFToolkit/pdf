@@ -14,6 +14,8 @@ use PDF\Syntax\FileStructure\FileTrailer;
 use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\RevisionObject;
 use PDF\Syntax\FileStructure\ObjectByteSpan;
+use PDF\Syntax\FileStructure\FreeListState;
+use PDF\Syntax\FileStructure\CrossReferenceStreamFreeEntry;
 use PDF\Syntax\Linearization\ExtendedGenericHintTable;
 use PDF\Syntax\Linearization\EmbeddedFileHintGroup;
 use PDF\Syntax\Linearization\EmbeddedFileHintTable;
@@ -272,7 +274,10 @@ final readonly class LinearizedWriter
             $trailerSnapshot,
             $file->crossReferenceFormat,
             new IntegerType(0),
-            ...[...$records, ...$spans, ...$context->references(), ...($this->encryption === null ? [] : [$this->encryption])]
+            ...[...$records, ...$spans, ...$context->references(),
+                ...array_values(array_filter([...$firstRecords, ...$mainRecords], fn ($record): bool => $record instanceof CrossReferenceStreamCompressedEntry)),
+                new FreeListState(new IntegerType($size), new CrossReferenceStreamFreeEntry(new IntegerType(0), new IntegerType(0), new \PDF\Syntax\Object\IndirectObject\GenerationNumber(65535))),
+                ...($this->encryption === null ? [] : [$this->encryption])]
         );
     }
 

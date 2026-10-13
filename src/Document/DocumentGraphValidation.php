@@ -20,6 +20,8 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\StreamObject;
 
 /** Relationships and subset identities are checked once in the actual, document-scoped graph. */
@@ -48,19 +50,23 @@ final class DocumentGraphValidation
         }
         $pages = [];
         $visitedPages = [];
-        $this->visitPages($pageReferences, null, $pages, $visitedPages);
-        $pending = [$this->catalog, ...array_values($this->context->objects())];
+        $graph = new DocumentGraphContext($this->context, $this->catalog, ...array_values($this->effective));
+        $this->visitPages($pageReferences, null, $pages, $visitedPages, $graph);
+        /** @var list<array{BasicType, bool}> $pending */
+        $pending = [[$this->catalog, true], ...array_map(static fn (BasicType $value): array => [$value, true], array_values($this->context->objects()))];
         // Unchanged objects still participate in file-scoped subset uniqueness and graph relationships.
         foreach ($this->effective as $record) {
-            $pending[] = $record->value;
+            $pending[] = [$record->value, true];
         }
         $seen = new \SplObjectStorage();
         while ($pending !== []) {
-            $value = array_pop($pending);
+            [$value, $indirect] = array_pop($pending);
             if ($value instanceof IndirectReference) {
-                $pending[] = $this->resolve($value);
+                $pending[] = [$this->resolve($value), true];
                 continue;
             }
+            $dictionary = $this->dictionary($value);
+            $type = $dictionary?->get('Type');
             if ($seen->offsetExists($value)) {
                 continue;
             }
@@ -71,10 +77,12 @@ final class DocumentGraphValidation
             if ($value instanceof CatalogComponent && $this->isCurrent($value)) {
                 $value->validateCatalog($this->catalog);
             }
+            if ($value instanceof DocumentGraphComponent) {
+                $value->validateGraph($graph);
+            }
             if ($value instanceof VersionedComponent && $this->isCurrent($value)) {
                 $value->validateVersion($version);
             }
-            $dictionary = $this->dictionary($value);
             if ($dictionary !== null) {
                 if ($value instanceof SchemaDictionary) {
                     foreach ($dictionary->entries() as $entry) {
@@ -100,18 +108,18 @@ final class DocumentGraphValidation
                     }
                 }
                 foreach ($dictionary->entries() as $entry) {
-                    $pending[] = $entry->value;
+                    $pending[] = [$entry->value, false];
                 }
             } elseif ($value instanceof ArrayType) {
                 $array = $this->context->isHistorical($value)
                     ? ($this->effective[$this->context->identifier($value)->objectNumber->value]->snapshot ?? $value) : $value;
                 if ($array instanceof ArrayType) {
-                    array_push($pending, ...$array->items);
+                    array_push($pending, ...array_map(static fn (BasicType $item): array => [$item, false], $array->items));
                 }
             }
             if ($value instanceof StreamObject && $this->isCurrent($value) && $value->data instanceof ContentStreams) {
                 foreach ($value->data->operators as $operator) {
-                    array_push($pending, ...$operator->operands);
+                    array_push($pending, ...array_map(static fn (BasicType $operand): array => [$operand, false], $operator->operands));
                 }
             }
         }
@@ -119,8 +127,9 @@ final class DocumentGraphValidation
 
     private function resolve(IndirectReference $reference): BasicType
     {
-        $number = $this->context->reference($reference)->objectNumber->value;
-        return $this->effective[$number]->value ?? $reference->target();
+        $identifier = $this->context->reference($reference);
+        $record = $this->effective[$identifier->objectNumber->value] ?? null;
+        return $record === null ? ($this->context->isHistorical($reference->target()) ? new NullType() : $reference->target()) : ((string) $identifier === (string) $record->identifier ? $record->value : new NullType());
     }
 
     /** Resolve frozen direct catalog containers through effective indirect bindings. */
@@ -136,7 +145,8 @@ final class DocumentGraphValidation
     private function effectiveValue(BasicType $value): BasicType
     {
         if ($value instanceof IndirectReference) {
-            return new IndirectReference($this->resolve($value), $this->context->reference($value));
+            $resolved = $this->resolve($value);
+            return $resolved instanceof NullType ? $resolved : new IndirectReference($resolved, $this->context->reference($value));
         }
         if ($value::class === DictionaryType::class) {
             return $this->effectiveDictionary($value);
@@ -166,8 +176,9 @@ final class DocumentGraphValidation
     /**
      * @param array<int, true> $pages
      * @param array<int, true> $visited
+     * @param array<string, BasicType> $inherited
      */
-    private function visitPages(IndirectReference $reference, ?int $parent, array &$pages, array &$visited): int
+    private function visitPages(IndirectReference $reference, ?int $parent, array &$pages, array &$visited, DocumentGraphContext $graph, array $inherited = []): int
     {
         $number = $this->context->reference($reference)->objectNumber->value;
         if (isset($visited[$number])) {
@@ -181,7 +192,34 @@ final class DocumentGraphValidation
             || ($parent === null ? $parentReference !== null : (!$parentReference instanceof IndirectReference || $this->context->reference($parentReference)->objectNumber->value !== $parent))) {
             throw new \LogicException('Effective page-tree nodes require consistent Type and Parent references.');
         }
+        foreach (['MediaBox', 'CropBox', 'Resources', 'Rotate'] as $key) {
+            $entry = $graph->entry($dictionary, $key);
+            if ($entry !== null) {
+                $inherited[$key] = $graph->resolve($entry);
+            }
+        }
         if ($type->value === 'Page') {
+            if (!($inherited['Resources'] ?? null) instanceof DictionaryType) {
+                throw new \LogicException('An effective page requires explicit or inherited Resources.');
+            }
+            foreach (['MediaBox', 'CropBox'] as $key) {
+                $box = $inherited[$key] ?? null;
+                if ($box === null && $key === 'CropBox') {
+                    continue;
+                }
+                if (!$box instanceof ArrayType || count($box) !== 4) {
+                    throw new \LogicException('An effective page requires valid explicit or inherited ' . $key . '.');
+                }
+                foreach ($box as $coordinate) {
+                    if (!$graph->resolve($coordinate) instanceof NumericType) {
+                        throw new \LogicException('Effective page rectangles require four numeric coordinates.');
+                    }
+                }
+            }
+            $rotation = $inherited['Rotate'] ?? null;
+            if ($rotation !== null && (!$rotation instanceof NumericType || fmod($rotation->value, 90) != 0)) {
+                throw new \LogicException('Effective page rotation must be an integer multiple of90.');
+            }
             $pages[$number] = true;
             return 1;
         }
@@ -195,7 +233,7 @@ final class DocumentGraphValidation
             if (!$kid instanceof IndirectReference) {
                 throw new \LogicException('Page-tree children must be indirect references.');
             }
-            $leaves += $this->visitPages($kid, $number, $pages, $visited);
+            $leaves += $this->visitPages($kid, $number, $pages, $visited, $graph, $inherited);
         }
         if ($leaves !== $count->integer()) {
             throw new \LogicException('The effective page-tree Count must match its descendant pages.');

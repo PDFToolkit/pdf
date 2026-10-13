@@ -54,6 +54,9 @@ final class RevisionValueSnapshot
                 $copy = new DictionaryType(...$entries);
             }
             $this->copies[$value] = $copy;
+            // Captured plain containers are immutable values. Reusing this
+            // capture object preserves their identity during graph projection.
+            $this->copies[$copy] = $copy;
             return $copy;
         } finally {
             $this->active->offsetUnset($value);

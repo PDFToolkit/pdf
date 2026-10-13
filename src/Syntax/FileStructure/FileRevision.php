@@ -25,6 +25,13 @@ final readonly class FileRevision implements \Stringable
     public ObjectIdentifier $pageTreeIdentifier;
     public DictionaryType $trailerEntries;
     public ?FileRevision $previous;
+    public FreeListState $freeList;
+    /** @var list<RetiredObjectGeneration> */
+    private array $retired;
+    /** @var array<int, CrossReferenceStreamCompressedEntry> */
+    private array $compressed;
+    /** @var array<int, true> Numbers allocated from a prior free entry, including unused generation-zero holes. */
+    private array $reusedNumbers;
 
     public function __construct(
         public string $bytes,
@@ -35,7 +42,7 @@ final readonly class FileRevision implements \Stringable
         DictionaryType $trailerEntries,
         public CrossReferenceFormat $crossReferenceFormat,
         public IntegerType $freeListHead,
-        RevisionObject|RevisionReference|ObjectByteSpan|FileEncryption|GeneratedRevisionTimeline ...$objects,
+        RevisionObject|RevisionReference|ObjectByteSpan|FileEncryption|GeneratedRevisionTimeline|FreeListState|RetiredObjectGeneration|CrossReferenceStreamCompressedEntry ...$objects,
     ) {
         $this->trailerEntries = new DictionaryType(...iterator_to_array($trailerEntries->entries(), false));
         if (!str_starts_with($bytes, (string) $header) || $crossReferenceOffset->value >= strlen($bytes)
@@ -56,7 +63,28 @@ final readonly class FileRevision implements \Stringable
         $aliases = new \SplObjectStorage();
         $timeline = null;
         $references = [];
+        $freeList = null;
+        $retired = [];
+        $compressed = [];
         foreach ($objects as $object) {
+            if ($object instanceof FreeListState) {
+                if ($freeList !== null) {
+                    throw new \InvalidArgumentException('A revision has one effective free-list index.');
+                }
+                $freeList = $object;
+                continue;
+            }
+            if ($object instanceof RetiredObjectGeneration) {
+                $retired[] = $object;
+                continue;
+            }
+            if ($object instanceof CrossReferenceStreamCompressedEntry) {
+                if (isset($compressed[$object->number()])) {
+                    throw new \InvalidArgumentException('One effective compressed object has one containing stream.');
+                }
+                $compressed[$object->number()] = $object;
+                continue;
+            }
             if ($object instanceof RevisionReference) {
                 $references[] = $object;
                 continue;
@@ -101,13 +129,67 @@ final readonly class FileRevision implements \Stringable
         }
         ksort($records, SORT_NUMERIC);
         $this->effectiveObjects = $records;
+        $deadAliases = new \SplObjectStorage();
+        $retiredIdentifiers = [];
+        foreach ($retired as $tombstone) {
+            $identifier = (string) $tombstone->object->identifier;
+            if (isset($retiredIdentifiers[$identifier])) {
+                throw new \InvalidArgumentException('Retired generations occur once in the effective history.');
+            }
+            $retiredIdentifiers[$identifier] = true;
+            foreach ($tombstone->object->aliases as $alias) {
+                if ($aliases->offsetExists($alias) || $deadAliases->offsetExists($alias)) {
+                    throw new \InvalidArgumentException('A retired alias can never become live or belong to another retired generation.');
+                }
+                $deadAliases->offsetSet($alias);
+            }
+        }
+        $this->retired = $retired;
         foreach ($references as $reference) {
-            $binding = $this->binding($reference->reference->target());
+            $binding = $this->generationBinding($reference->reference->target());
             if ((string) $binding->identifier !== (string) $reference->identifier) {
                 throw new \InvalidArgumentException('A historical reference must describe its actual effective binding.');
             }
         }
         $this->referenceAliases = $references;
+        if ($freeList === null) {
+            if ($size->value > (new CrossReferenceLimits())->maximumEntries->value) {
+                throw new \InvalidArgumentException('Large revisions require an explicit bounded free-list index.');
+            }
+            $next = 0;
+            $free = [];
+            for ($number = $size->integer() - 1; $number > 0; --$number) {
+                if (!isset($records[$number])) {
+                    $free[] = new CrossReferenceStreamFreeEntry(new IntegerType($number), new IntegerType($next));
+                    $next = $number;
+                }
+            }
+            $free[] = new CrossReferenceStreamFreeEntry(new IntegerType(0), new IntegerType($next), new \PDF\Syntax\Object\IndirectObject\GenerationNumber(65535));
+            $freeList = new FreeListState($size, ...$free);
+        }
+        if ($freeList->size->value !== $size->value || $freeList->head()->value !== $freeListHead->value) {
+            throw new \InvalidArgumentException('The effective free index matches the exact revision Size and object-zero head.');
+        }
+        $indexed = array_fill_keys(array_keys($records), true);
+        foreach ($freeList->entries() as $entry) {
+            if (isset($records[$entry->number()])) {
+                throw new \InvalidArgumentException('An effective object number cannot be both live and free.');
+            }
+            $indexed[$entry->number()] = true;
+        }
+        if (count($indexed) !== $size->value) {
+            throw new \InvalidArgumentException('Every number below Size is either live or an effective free entry.');
+        }
+        $this->freeList = $freeList;
+        foreach ($compressed as $number => $entry) {
+            $container = $records[$entry->objectStreamNumber->value] ?? null;
+            if (!isset($records[$number]) || $records[$number]->identifier->generationNumber->value !== 0
+                || $container === null || $container->identifier->generationNumber->value !== 0
+                || !($container->dictionary?->get('Type') instanceof NameType) || $container->dictionary->get('Type')->value !== 'ObjStm') {
+                throw new \InvalidArgumentException('Effective compressed objects belong to live generation-zero object streams.');
+            }
+        }
+        $this->compressed = $compressed;
         foreach ($spans as $number => $span) {
             if (!isset($records[$number]) || (string) $records[$number]->identifier !== (string) $span->identifier) {
                 throw new \InvalidArgumentException('Every byte span must belong to a live revision object.');
@@ -118,6 +200,18 @@ final readonly class FileRevision implements \Stringable
         if ($this->previous !== null && !str_starts_with($bytes, $this->previous->bytes)) {
             throw new \InvalidArgumentException('An incremental timeline preserves the entire previous byte prefix.');
         }
+        $reusedNumbers = $this->previous->reusedNumbers ?? [];
+        foreach ($this->previous?->freeList->entries() ?? [] as $entry) {
+            if (isset($records[$entry->number()])) {
+                $reusedNumbers[$entry->number()] = true;
+            }
+        }
+        foreach ($records as $record) {
+            if ($record->identifier->generationNumber->value > 0) {
+                $reusedNumbers[$record->identifier->objectNumber->value] = true;
+            }
+        }
+        $this->reusedNumbers = $reusedNumbers;
         $encrypt = $this->trailerEntries->get('Encrypt');
         if ($encryption === null ? $encrypt !== null : (!$encrypt instanceof IndirectReference || $encrypt->target() !== $encryption->dictionary())) {
             throw new \InvalidArgumentException('Revision encryption must match its exact Encrypt dictionary reference.');
@@ -164,6 +258,24 @@ final readonly class FileRevision implements \Stringable
         return $this->referenceAliases;
     }
 
+    /** @return list<RetiredObjectGeneration> */
+    public function retiredObjects(): array
+    {
+        return $this->retired;
+    }
+
+    /** @return array<int, CrossReferenceStreamCompressedEntry> */
+    public function compressedObjects(): array
+    {
+        return $this->compressed;
+    }
+
+    /** ISO 7.5.7: even a previously unused hole allocated at generation zero is no longer a new number. */
+    public function wasReusedNumber(int $number): bool
+    {
+        return isset($this->reusedNumbers[$number]);
+    }
+
     public function span(BasicType|ObjectIdentifier $value): ObjectByteSpan
     {
         $record = $this->binding($value);
@@ -194,7 +306,7 @@ final readonly class FileRevision implements \Stringable
             $this->trailerEntries,
             $this->crossReferenceFormat,
             $this->freeListHead,
-            ...[...array_values($records), ...$this->spans(), ...$this->references(), ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
+            ...[...array_values($records), ...$this->spans(), ...$this->references(), ...$this->retiredObjects(), ...array_values($this->compressedObjects()), $this->freeList, ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
         );
     }
 
@@ -218,8 +330,25 @@ final readonly class FileRevision implements \Stringable
     /** Return an ordinary typed reference to the effective value, never a target-less placeholder. */
     public function reference(BasicType|ObjectIdentifier $value): IndirectReference
     {
-        $binding = $this->binding($value);
+        $binding = $this->generationBinding($value);
         return new IndirectReference($binding->value, $binding->identifier);
+    }
+
+    /** Resolve a known retired generation only for an obsolete reference (ISO 7.3.9, PDF p29). */
+    private function generationBinding(BasicType|ObjectIdentifier $value): RevisionObject
+    {
+        try {
+            return $this->binding($value);
+        } catch (\OutOfBoundsException $error) {
+            foreach ($this->retired as $tombstone) {
+                if ($value instanceof ObjectIdentifier
+                    ? (string) $value === (string) $tombstone->object->identifier
+                    : in_array($value, $tombstone->object->aliases, true)) {
+                    return $tombstone->object;
+                }
+            }
+            throw $error;
+        }
     }
 
     public function writeTo(string $path): void

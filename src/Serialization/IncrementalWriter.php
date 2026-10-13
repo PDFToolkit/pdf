@@ -17,6 +17,7 @@ use PDF\Syntax\FileStructure\CrossReferenceTable;
 use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\GeneratedRevisionTimeline;
 use PDF\Syntax\FileStructure\CrossReferenceStreamObject;
+use PDF\Syntax\FileStructure\ObjectLifecycleTransition;
 use PDF\Syntax\FileStructure\FileTrailer;
 use PDF\Syntax\FileStructure\IncrementalUpdate;
 use PDF\Syntax\FileStructure\ObjectStream;
@@ -51,10 +52,14 @@ final class IncrementalWriter
     public function serialize(IncrementalUpdate $update): FileRevision
     {
         $previous = $update->previous;
+        $lifecycle = new ObjectLifecycleTransition($previous, ...$update->objectOperations);
         $security = $previous->encryption === null ? [] : [$previous->encryption];
-        $context = new SerializationContext(new ObjectNumber($previous->size->integer()), ...[...$previous->objects(), ...$previous->references(), ...$security]);
+        $context = new SerializationContext(new ObjectNumber($previous->size->integer()), ...[...$lifecycle->liveObjects, ...$previous->references(), ...$lifecycle->retiredObjects, $previous->freeList, ...$security]);
+        foreach ($lifecycle->reusedObjects as $object) {
+            $context->stageReused($object);
+        }
         $effective = [];
-        foreach ($previous->objects() as $record) {
+        foreach ($lifecycle->liveObjects as $record) {
             $effective[$record->identifier->objectNumber->value] = $record;
         }
         foreach ($update->body->objects() as $object) {
@@ -95,6 +100,9 @@ final class IncrementalWriter
         new FileTrailer($previous->size, $root, ...iterator_to_array($trailer->entries(), false));
         $this->validateIdentifierChange($previous, $update);
         $context->prepareFile($update->body, $root, $trailer);
+        // Reuse values can be unreferenced explicit roots, but their children
+        // still need discovery and native graph checks before any bytes emit.
+        $context->prepare(...array_values($context->objects()));
         foreach ($context->objects() as $number => $object) {
             $old = $effective[$number] ?? null;
             if ($old !== null && $old->value === $previous->encryption?->dictionary()) {
@@ -103,7 +111,7 @@ final class IncrementalWriter
             if ($old !== null && $this->structural($old)) {
                 throw new \LogicException('Existing structural streams cannot be replaced through object-stream members.');
             }
-            if ($old === null && $context->identifier($object)->generationNumber->value !== 0) {
+            if ($old === null && $context->identifier($object)->generationNumber->value !== 0 && !$lifecycle->reusedNumber($number)) {
                 throw new \LogicException('New objects start with generation zero.');
             }
             $effective[$number] = $old === null ? new RevisionObject($context->identifier($object), $object) : $old->replacedBy($object);
@@ -158,10 +166,16 @@ final class IncrementalWriter
                 throw new \LogicException('Object streams require the inherited cross-reference-stream format.');
             }
             $container = $context->identifier($object);
+            if ($container->objectNumber->value < $previous->size->integer()) {
+                throw new \LogicException('New object-stream containers require new numbers, never historical live or free numbers (7.5.7).');
+            }
             if ($container->generationNumber->value !== 0) {
                 throw new \LogicException('An object stream must have generation zero.');
             }
             foreach ($object->embeddedEntries() as $index => $member) {
+                if ($lifecycle->reusedNumber($member->objectNumber->value) || $previous->wasReusedNumber($member->objectNumber->value)) {
+                    throw new \LogicException('A reused object number cannot become a compressed member, even an unused generation-zero hole (7.5.7).');
+                }
                 if ($previous->encryption !== null && ($member->value === $previous->encryption->dictionary()
                     || ($member->value instanceof DictionaryType && $context->isByteRangeSignature($member->value)))) {
                     throw new \LogicException('Encryption and byte-range signature dictionaries cannot be in encrypted object streams.');
@@ -181,6 +195,9 @@ final class IncrementalWriter
         $bytes = $previous->bytes;
         $spans = [];
         foreach ($previous->spans() as $span) {
+            if ($lifecycle->releasedNumber($span->identifier->objectNumber->value)) {
+                continue;
+            }
             $spans[$span->identifier->objectNumber->value] = $span;
         }
         foreach (array_keys($compressed) as $number) {
@@ -219,9 +236,9 @@ final class IncrementalWriter
             $placeholder = new CrossReferenceSection(
                 $fullSize,
                 $previous->size,
-                $previous->freeListHead,
+                $lifecycle->freeList->head(),
                 $this->limits,
-                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(0))]
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(0)), $lifecycle->freeList->changesFrom($previous->freeList)]
             );
             $fallback = (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
             $fallbackTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($extras->entries(), false));
@@ -230,9 +247,9 @@ final class IncrementalWriter
             $section = new CrossReferenceSection(
                 $fullSize,
                 $previous->size,
-                $previous->freeListHead,
+                $lifecycle->freeList->head(),
                 $this->limits,
-                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset))]
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset)), $lifecycle->freeList->changesFrom($previous->freeList)]
             );
             $xref = new CrossReferenceStream($fullSize, $root, $trailer, ...$section->entries());
             $context->register($xref, $identifier);
@@ -249,14 +266,14 @@ final class IncrementalWriter
         } elseif ($previous->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier($firstAvailable);
             $entries[] = new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($offset));
-            $section = new CrossReferenceSection(new IntegerType($firstAvailable->increment()->value), $previous->size, $previous->freeListHead, $this->limits, ...$entries);
+            $section = new CrossReferenceSection(new IntegerType($firstAvailable->increment()->value), $previous->size, $lifecycle->freeList->head(), $this->limits, ...[...$entries, $lifecycle->freeList->changesFrom($previous->freeList)]);
             $xref = new CrossReferenceStream($section->size, $root, $extras, ...$section->entries());
             $context->register($xref, $identifier);
             $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
             $spans[$identifier->objectNumber->value] = new ObjectByteSpan($identifier, new ByteOffset(strlen($bytes)), strlen($xrefBytes));
             $bytes .= $xrefBytes;
         } else {
-            $section = new CrossReferenceSection(new IntegerType($size), $previous->size, $previous->freeListHead, $this->limits, ...$entries);
+            $section = new CrossReferenceSection(new IntegerType($size), $previous->size, $lifecycle->freeList->head(), $this->limits, ...[...$entries, $lifecycle->freeList->changesFrom($previous->freeList)]);
             $traditional = [];
             foreach ($section->entries() as $entry) {
                 if ($entry instanceof CrossReferenceStreamInUseEntry) {
@@ -275,6 +292,18 @@ final class IncrementalWriter
                 ? $effective[$number]->replacedBy($value, $context->serializedSnapshot($value, $context->identifier($object)))
                 : new RevisionObject($context->identifier($object), $value, $object, $context->serializedSnapshot($value, $context->identifier($object)));
         }
+        $effectiveCompressed = $previous->compressedObjects();
+        foreach ($lifecycle->retiredObjects as $retired) {
+            unset($effectiveCompressed[$retired->object->identifier->objectNumber->value]);
+        }
+        foreach ($section->entries() as $entry) {
+            if ($entry instanceof CrossReferenceStreamCompressedEntry) {
+                $effectiveCompressed[$entry->number()] = $entry;
+            } elseif ($entry->number() !== 0) {
+                unset($effectiveCompressed[$entry->number()]);
+            }
+        }
+        $freeList = $lifecycle->freeList->withSection($section->size, ...$section->entries());
         return new FileRevision(
             $bytes,
             $previous->header,
@@ -284,7 +313,7 @@ final class IncrementalWriter
             $trailer,
             $previous->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...array_values($effective), ...array_values($spans), ...$context->references(), ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
+            ...[...array_values($effective), ...array_values($spans), ...$context->references(), ...$lifecycle->retiredObjects, ...array_values($effectiveCompressed), $freeList, ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
         );
     }
 

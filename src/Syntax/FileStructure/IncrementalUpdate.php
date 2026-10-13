@@ -11,17 +11,21 @@ use PDF\Syntax\Object\IndirectReference;
 /** ISO 32000-1, 7.5.6: explicitly staged objects appended to a generated revision. */
 final readonly class IncrementalUpdate implements \Stringable
 {
+    /** @var list<ReleaseIndirectObject|ReuseObjectNumber> */
+    public array $objectOperations;
     public function __construct(
         public FileRevision $previous,
         public FileBody $body,
         public ?IndirectReference $root = null,
         public ?DictionaryType $trailerEntries = null,
+        ReleaseIndirectObject|ReuseObjectNumber ...$objectOperations,
     ) {
         foreach (['Size', 'Root', 'Prev', 'XRefStm', 'Encrypt'] as $managed) {
             if ($trailerEntries?->has($managed)) {
                 throw new \InvalidArgumentException('Managed or unsupported incremental trailer entry: ' . $managed);
             }
         }
+        $this->objectOperations = array_values($objectOperations);
     }
 
     public function toRevision(): FileRevision

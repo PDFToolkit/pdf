@@ -11,8 +11,8 @@ use PDF\Syntax\Object\IntegerType;
  * One complete initial index or sparse incremental section (ISO 32000-1, 7.5.4).
  *
  * New unused numbers are linked ahead of the previous free list. Previous numbers
- * are omitted unless supplied as changed objects. Deletion and reuse require a
- * separate model: callers supply live records, never free-list modifications.
+ * are omitted unless supplied as changed objects. An explicit FreeListDelta
+ * carries the validated lifecycle plan's changed historical links/generations.
  */
 final readonly class CrossReferenceSection
 {
@@ -25,7 +25,7 @@ final readonly class CrossReferenceSection
         public IntegerType $firstNewObjectNumber = new IntegerType(1),
         public IntegerType $previousFreeListHead = new IntegerType(0),
         public CrossReferenceLimits $limits = new CrossReferenceLimits(),
-        CrossReferenceStreamEntry ...$entries,
+        CrossReferenceStreamEntry|FreeListDelta ...$entries,
     ) {
         if ($size->value < 1 || $size->value > $limits->maximumEntries->value) {
             throw new \InvalidArgumentException('Cross-reference Size exceeds the configured entry capacity.');
@@ -38,6 +38,20 @@ final readonly class CrossReferenceSection
         }
         $records = [];
         foreach ($entries as $entry) {
+            if ($entry instanceof FreeListDelta) {
+                foreach ($entry->entries as $free) {
+                    $number = $free->number();
+                    if ($number >= $firstNewObjectNumber->value || isset($records[$number])) {
+                        throw new \InvalidArgumentException('Explicit free-list changes affect unique historical numbers only.');
+                    }
+                    $records[$number] = $free;
+                }
+            }
+        }
+        foreach ($entries as $entry) {
+            if ($entry instanceof FreeListDelta) {
+                continue;
+            }
             $number = $entry->number();
             if (!$entry instanceof CrossReferenceStreamInUseEntry && !$entry instanceof CrossReferenceStreamCompressedEntry) {
                 throw new \InvalidArgumentException('A cross-reference section accepts only live object records.');

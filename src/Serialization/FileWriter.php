@@ -21,6 +21,7 @@ use PDF\Syntax\FileStructure\CrossReferenceSection;
 use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\RevisionObject;
 use PDF\Syntax\FileStructure\ObjectByteSpan;
+use PDF\Syntax\FileStructure\FreeListState;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\FileStructure\HybridReferenceObjects;
@@ -240,7 +241,10 @@ final class FileWriter
             $trailerSnapshot,
             $file->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...$objects, ...$spans, ...$context->references(), ...($this->encryption === null ? [] : [$this->encryption])],
+            ...[...$objects, ...$spans, ...$context->references(),
+                ...array_values(array_filter($section->entries(), fn ($entry): bool => $entry instanceof CrossReferenceStreamCompressedEntry)),
+                new FreeListState($section->size, ...array_values(array_filter($section->entries(), fn ($entry): bool => $entry instanceof CrossReferenceStreamFreeEntry))),
+                ...($this->encryption === null ? [] : [$this->encryption])],
         );
     }
 

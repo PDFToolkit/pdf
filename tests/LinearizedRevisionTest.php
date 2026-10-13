@@ -118,6 +118,32 @@ final class LinearizedRevisionTest extends TestCase
         (new IncrementalWriter())->serialize(new IncrementalUpdate($revision, new FileBody(new IndirectObject($wrong, $revision->binding($catalog)->identifier))));
     }
 
+    public function testStandaloneIndirectStreamCapturesItsEmissionWithoutPriorDiscovery(): void
+    {
+        $stream = new StreamObject('Standalone stream', new DictionaryType(new Entry(new NameType('Label'), new LiteralString('Standalone dictionary'))));
+        $context = new SerializationContext();
+        $bytes = $context->serializeIndirect($stream);
+        self::assertStringContainsString("\nstream\nStandalone stream\nendstream", $bytes);
+        self::assertSame('1 0', (string) $context->knownIdentifier($stream));
+        $snapshot = $context->serializedSnapshot($stream)->value;
+        self::assertInstanceOf(RevisionStreamSnapshot::class, $snapshot);
+        self::assertSame('Standalone stream', $snapshot->encodedBytes);
+        $length = $snapshot->dictionary()->get('Length');
+        self::assertInstanceOf(IntegerType::class, $length);
+        self::assertSame(17, $length->integer());
+    }
+
+    public function testUnboundStreamBodySerializationDoesNotInventARevisionEmission(): void
+    {
+        $stream = new StreamObject('Body only');
+        $context = new SerializationContext();
+        self::assertStringContainsString("\nstream\nBody only\nendstream", $stream->toPdf($context));
+        self::assertNull($context->knownIdentifier($stream));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('actual recorded emission');
+        $context->serializedSnapshot($stream);
+    }
+
     #[DataProvider('formats')]
     public function testRestagingAnOriginalLeafRetainsItsEmittedInheritedValues(CrossReferenceFormat $format): void
     {

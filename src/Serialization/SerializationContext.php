@@ -11,6 +11,8 @@ use PDF\Syntax\FileStructure\RevisionStreamSnapshot;
 use PDF\Syntax\FileStructure\RevisionValueSnapshot;
 use PDF\Syntax\FileStructure\SerializedRevisionValue;
 use PDF\Syntax\FileStructure\RevisionReference;
+use PDF\Syntax\FileStructure\RetiredObjectGeneration;
+use PDF\Syntax\FileStructure\FreeListState;
 use PDF\Syntax\FileStructure\FileBody;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
@@ -55,23 +57,46 @@ final class SerializationContext
     private ?ObjectIdentifier $containingIdentifier = null;
     private int $encryptionSuppression = 0;
     private readonly bool $remapping;
-    /** @var array<int, RevisionStreamSnapshot> */
+    /** @var array<string, RevisionStreamSnapshot> Emissions are scoped to the full number/generation pair. */
     private array $streamEmissions = [];
     /** @var \SplObjectStorage<IndirectReference, ObjectIdentifier> */
     private \SplObjectStorage $referenceAliases;
+    /** @var \SplObjectStorage<BasicType, ObjectIdentifier> */
+    private \SplObjectStorage $retiredAliases;
+    private readonly ?FreeListState $freeList;
 
-    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|RevisionReference|FileEncryption|DocumentMetadataExemption|ObjectIdentifierRemapping ...$existingObjects)
+    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|RevisionReference|RetiredObjectGeneration|FreeListState|FileEncryption|DocumentMetadataExemption|ObjectIdentifierRemapping ...$existingObjects)
     {
         $this->identifiers = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
         $this->historical = new \SplObjectStorage();
         $this->referenceAliases = new \SplObjectStorage();
+        $this->retiredAliases = new \SplObjectStorage();
         $this->firstNewNumber = $firstNewNumber->value;
         $this->nextNumber = $this->firstNewNumber;
         $encryption = null;
         $metadata = null;
         $remapping = false;
+        $freeList = null;
         foreach ($existingObjects as $record) {
+            if ($record instanceof FreeListState) {
+                if ($freeList !== null || $record->size->value !== $firstNewNumber->value) {
+                    throw new \InvalidArgumentException('A historical free index has the exact preceding Size and occurs once.');
+                }
+                $freeList = $record;
+                continue;
+            }
+            if ($record instanceof RetiredObjectGeneration) {
+                foreach ($record->object->aliases as $alias) {
+                    if ($this->identifiers->offsetExists($alias)) {
+                        throw new \InvalidArgumentException('A retired alias cannot also belong to another current or retired generation.');
+                    }
+                    $this->identifiers[$alias] = $record->object->identifier;
+                    $this->retiredAliases[$alias] = $record->object->identifier;
+                    $this->historical->offsetSet($alias);
+                }
+                continue;
+            }
             if ($record instanceof RevisionReference) {
                 if ($this->referenceAliases->offsetExists($record->reference)) {
                     throw new \InvalidArgumentException('Historical reference instances are bound once.');
@@ -122,6 +147,7 @@ final class SerializationContext
         $this->encryption = $encryption;
         $this->metadataExemption = $metadata;
         $this->remapping = $remapping;
+        $this->freeList = $freeList;
     }
 
     /** Discover explicit identifiers before assigning automatic numbers. */
@@ -146,7 +172,9 @@ final class SerializationContext
      */
     private function discover(array $roots, array $values): void
     {
-        $seen = [];
+        // entries() may create temporary arrays/dictionaries. Keep those values
+        // alive throughout discovery so PHP cannot recycle an earlier object ID.
+        $seen = new \SplObjectStorage();
         $targets = [];
         $visit = function (BasicType $value) use (&$visit, &$seen, &$targets): void {
             if ($value instanceof IndirectReference) {
@@ -161,10 +189,10 @@ final class SerializationContext
                 $visit($value->target());
                 return;
             }
-            if (isset($seen[spl_object_id($value)])) {
+            if ($seen->offsetExists($value)) {
                 return;
             }
-            $seen[spl_object_id($value)] = true;
+            $seen->offsetSet($value);
             if ($value instanceof ObjectStream) {
                 if ($this->remapping) {
                     throw new \LogicException('Embedded object numbers require an explicit object-stream remapping plan.');
@@ -218,6 +246,9 @@ final class SerializationContext
 
     public function register(BasicType $object, ?ObjectIdentifier $identifier = null): ObjectIdentifier
     {
+        if ($this->retiredAliases->offsetExists($object)) {
+            throw new \LogicException('A retired construction alias cannot be registered as a live object again.');
+        }
         if ($object instanceof IndirectReference) {
             throw new \InvalidArgumentException('Indirect objects cannot contain references as their entire value.');
         }
@@ -260,6 +291,9 @@ final class SerializationContext
     {
         $identifier = $object->identifier;
         $number = $identifier->objectNumber->value;
+        if ($this->retiredAliases->offsetExists($object->value)) {
+            throw new \LogicException('A retired construction alias cannot be staged as a live object again.');
+        }
         if ($object->value instanceof IndirectReference || $identifier->generationNumber->value === 65535) {
             throw new \InvalidArgumentException('A staged object requires a live indirect value.');
         }
@@ -280,6 +314,20 @@ final class SerializationContext
         return $identifier;
     }
 
+    /** A reuse is authorized only against the preceding effective free index. */
+    public function stageReused(IndirectObject $object): ObjectIdentifier
+    {
+        $free = $this->freeList?->entry($object->identifier->objectNumber)
+            ?? throw new \LogicException('Explicit reuse requires a historical free index.');
+        $number = $object->identifier->objectNumber->value;
+        if ($free->generation->value === 65535 || (string) $free->generation !== (string) $object->identifier->generationNumber
+            || isset($this->reservedIdentifiers[$number]) || $this->knownIdentifier($object->value) !== null) {
+            throw new \LogicException('A reuse uses its exact free generation and a new identity.');
+        }
+        $this->reservedIdentifiers[$number] = $object->identifier;
+        return $this->stage($object);
+    }
+
     public function isHistorical(BasicType $object): bool
     {
         return $this->historical->offsetExists($object);
@@ -293,6 +341,14 @@ final class SerializationContext
             if ($known === null || (string) $known !== (string) $identifier) {
                 throw new \LogicException('A historical reference must retain its actual emitted target identifier.');
             }
+            return $identifier;
+        }
+        if ($this->retiredAliases->offsetExists($reference->target())) {
+            $identifier = $this->retiredAliases[$reference->target()];
+            if ($reference->identifier !== null && (string) $reference->identifier !== (string) $identifier) {
+                throw new \LogicException('An obsolete reference retains its retired generation, never the reused generation.');
+            }
+            $this->referenceAliases[$reference] = $identifier;
             return $identifier;
         }
         $identifier = $this->register($reference->target(), $this->remapping ? null : $reference->identifier);
@@ -320,7 +376,7 @@ final class SerializationContext
     }
     public function identifier(BasicType $object): ObjectIdentifier
     {
-        return $this->register($object);
+        return $this->knownIdentifier($object) ?? $this->register($object);
     }
 
     /** Inspect an existing identity without allocating or discovering another object. */
@@ -334,20 +390,22 @@ final class SerializationContext
     {
         $identifier = $this->containingIdentifier ?? $this->knownIdentifier($this->indirectValue ?? $stream);
         if ($identifier === null) {
-            throw new \LogicException('A stream emission belongs to a known containing indirect identifier.');
+            // A public toPdf() call may render only the unbound stream body.
+            // There is no file-scoped indirect emission to snapshot in that case.
+            return;
         }
         $frozen = (new RevisionValueSnapshot($this))->capture($dictionary);
         if (!$frozen instanceof DictionaryType) {
             throw new \LogicException('An emitted stream dictionary must freeze as a dictionary.');
         }
-        $this->streamEmissions[$identifier->objectNumber->value] = new RevisionStreamSnapshot($frozen, $encoded);
+        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded);
     }
 
     public function serializedSnapshot(BasicType $value, ?ObjectIdentifier $identifier = null): SerializedRevisionValue
     {
         $identifier ??= $this->knownIdentifier($value);
         if ($value instanceof StreamObject) {
-            $emitted = $identifier === null ? null : ($this->streamEmissions[$identifier->objectNumber->value] ?? null);
+            $emitted = $identifier === null ? null : ($this->streamEmissions[(string) $identifier] ?? null);
             return new SerializedRevisionValue($emitted ?? throw new \LogicException('A stream snapshot requires its actual recorded emission.'));
         }
         return new SerializedRevisionValue((new RevisionValueSnapshot($this))->capture($value));
@@ -363,6 +421,10 @@ final class SerializationContext
     /** A normalized copy may use its containing object's identifier without acquiring a second identity. */
     public function serializeIndirect(BasicType $object, ?ObjectIdentifier $containingIdentifier = null): string
     {
+        // A standalone indirect stream has no earlier discovery pass. Bind it
+        // before encoding/capturing so its emission and encrypted dictionary
+        // strings share one identifier. Explicit proxies retain the supplied ID.
+        $containingIdentifier ??= $object instanceof StreamObject ? $this->identifier($object) : null;
         $previous = $this->indirectValue;
         $previousIdentifier = $this->containingIdentifier;
         $this->indirectValue = $object;
