@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-13
+
+Integration fixes for development checkouts and documentation builds. The production object model and API are unchanged from 0.2.0.
+
+### Fixed
+
+- Require the optional modules' stable 0.1 series for development and lock their published 0.1.0 tags, replacing the commits used to prepare their initial releases.
+- Identify the core development branch and validation checkouts as `0.2.x-dev`, so the modules' stable `^0.2` core constraint resolves against the current checkout.
+- Pin the shared API documentation and tutorial sources to the published module commits and update the displayed stable core version.
+
 ## [0.2.0] - 2026-10-13
 
 The PHP 8.3-compatible core and its separately versioned optional modules. This minor release includes API changes described below; the published 0.1 tags keep their PHP 8.5 requirement.
@@ -84,7 +94,8 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.1
 [0.2.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.0
 [0.1.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.1
 [0.1.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.0

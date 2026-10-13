@@ -22,9 +22,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "dev-master",
-        "pdftoolkit/pdf-images": "dev-master",
-        "pdftoolkit/pdf-reader": "dev-master",
+        "pdftoolkit/pdf-fonts": "^0.1",
+        "pdftoolkit/pdf-images": "^0.1",
+        "pdftoolkit/pdf-reader": "^0.1",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
@@ -66,6 +66,11 @@
             "@format:check"
         ],
         "example": "@php examples/hello-world.php"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
     },
     "repositories": [
         {

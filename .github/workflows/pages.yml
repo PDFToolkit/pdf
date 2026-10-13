@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: dev-master
+  COMPOSER_ROOT_VERSION: 0.2.x-dev
 
 concurrency:
   group: documentation-${{ github.ref }}

@@ -1,7 +1,7 @@
 # Specification model and coverage
 
 The authoritative source for this revision is the `PDF32000_2008.pdf` already
-committed to the repository: ISO 32000-1:2008, PDF 1.7. Core release 0.2.0 and
+committed to the repository: ISO 32000-1:2008, PDF 1.7. Core release 0.2.1 and
 optional module releases 0.1.0 require PHP 8.3 or later; the older core 0.1 tags
 retain their PHP 8.5 requirement. These PHP versions are independent of the PDF
 format version. Implementing PDF 2.0 requires a separate specification

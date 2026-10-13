@@ -14,7 +14,7 @@ La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dan
 
 ## Installation
 
-La version stable **0.2.0** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
+La version stable **0.2.1** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
@@ -55,10 +55,11 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=dev-master` avant `composer install`. Ses modules de
-développement sont encore fixés à leurs commits validés précédant leurs premiers
-tags ; cette variable identifie le core utilisé par leurs tests. Leurs versions
-publiées seront intégrées dans la prochaine version corrective du core.
+`COMPOSER_ROOT_VERSION=0.2.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.2 attendue par les modules. Les
+dépendances de développement utilisent les modules stables 0.1, dont les versions
+et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
+également cette variable pour les branches, les tags et les pull requests.
 
 ## Construction objet par objet
 

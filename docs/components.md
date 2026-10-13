@@ -2,7 +2,7 @@
 
 Ce guide explique les familles d'objets, leurs responsabilités et leur composition. La [référence API exhaustive](https://pdftoolkit.github.io/pdf/reference/index.html) donne ensuite les signatures de chaque classe, interface, enum, méthode et propriété. Les [tutoriels](tutorials/README.md) montrent des documents complets, leurs instructions PDF et leur résultat visuel ; les [recettes](recipes/README.md) combinent plusieurs familles pour un usage concret.
 
-La documentation publiée depuis `master` suit le code de développement. La dernière version stable du core est **0.2.0** ; les trois modules optionnels commencent à **0.1.0**. Pour consulter exactement l'API du core publié, utiliser le [code du tag v0.2.0](https://github.com/PDFToolkit/pdf/tree/v0.2.0). Avant 1.0, les nouvelles versions mineures peuvent modifier les noms et signatures pour améliorer le modèle ; les versions correctives préservent l'API de leur série.
+La documentation publiée depuis `master` suit le code de développement. La dernière version stable du core est **0.2.1** ; les trois modules optionnels commencent à **0.1.0**. Pour consulter exactement l'API du core publié, utiliser le [code du tag v0.2.1](https://github.com/PDFToolkit/pdf/tree/v0.2.1). Avant 1.0, les nouvelles versions mineures peuvent modifier les noms et signatures pour améliorer le modèle ; les versions correctives préservent l'API de leur série.
 
 Le format décrit est **PDF 1.7, ISO 32000-1:2008**. La version PHP minimale, PHP 8.3, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
 
