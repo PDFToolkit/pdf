@@ -61,6 +61,23 @@ $file->writeTo('hello-world.pdf');
 
 L'exemple complet, avec les imports et les métadonnées, se trouve dans [`examples/hello-world.php`](examples/hello-world.php).
 
+## Tutoriels et recettes
+
+Le [parcours de tutoriels](docs/tutorials/README.md) accompagne chaque script d'une explication en français, d'un aperçu et de variantes à essayer. Les commentaires du code relient les objets aux instructions et structures du PDF.
+
+| Sujet | Ce que l'exemple explique |
+| --- | --- |
+| [Premier document](docs/tutorials/01-first-document.md) | Police, ressources, contenu, page, catalogue et informations documentaires. |
+| [Pages et texte](docs/tutorials/02-pages-and-text.md) | Héritage des ressources, plusieurs pages, positions et interligne. |
+| [Dessin](docs/tutorials/03-graphics.md) | Couleurs, chemins, courbes et transformations de l'état graphique. |
+| [Navigation](docs/tutorials/04-navigation.md) | Signets hiérarchiques et destinations vers les pages. |
+| [Liens](docs/tutorials/05-links.md) | Annotations cliquables internes et actions URI. |
+| [Images](docs/tutorials/06-images.md) | Image XObject, image inline, octets RGB et filtres. |
+| [Dégradé](docs/tutorials/07-gradient.md) | Fonction PDF de type 2 et shading axial. |
+| [Objets compressés](docs/tutorials/08-object-stream.md) | Flux de contenu, conteneur d'objets et références croisées. |
+
+La [recette de tableau](docs/recipes/table.md) assemble ces notions dans une présentation concrète. La [collection de recettes](docs/recipes/README.md) explique aussi comment proposer de nouveaux exemples.
+
 ## Identité et responsabilités
 
 - Les valeurs PDF sont des objets. Les chaînes représentent des octets ; `TextString` réalise explicitement l'encodage du texte Unicode.

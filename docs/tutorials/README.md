@@ -1,0 +1,77 @@
+# Tutoriels : construire un PDF objet par objet
+
+Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent l'API du même checkout que cette documentation.
+
+Le parcours s'inspire de l'organisation des [tutoriels FPDF](https://www.fpdf.org/en/tutorial/index.php) et de sa [collection de scripts](https://www.fpdf.org/en/script/index.php). Ici, les objets du format restent visibles : une police est une ressource, une page appartient à un arbre et une ligne de texte est une séquence d'opérateurs.
+
+## Préparer le dépôt
+
+Il faut PHP 8.5 et les extensions `ctype`, `iconv` et `zlib`. Depuis la racine d'un clone :
+
+```sh
+composer install
+php examples/hello-world.php
+```
+
+Le script écrit `examples/hello-world.pdf` et affiche son chemin. Ouvrir ce fichier dans un lecteur PDF permet de comparer le résultat au code. Tous les scripts acceptent un chemin de sortie comme premier argument :
+
+```sh
+php examples/hello-world.php mon-premier-document.pdf
+```
+
+Le dossier parent du chemin choisi doit déjà exister. Les scripts chargent `vendor/autoload.php` ; ils peuvent être exécutés depuis un autre dossier en donnant leur chemin complet. Les PDF générés dans `examples/` sont ignorés par Git.
+
+## Parcours
+
+| Étape | Résultat et notions | Code complet |
+| --- | --- | --- |
+| [01. Premier document](01-first-document.md) | Une phrase, une police, une page, un catalogue et un titre documentaire. | [hello-world.php](../../examples/hello-world.php) |
+| [02. Pages et texte](02-pages-and-text.md) | Plusieurs pages, ressources partagées, héritage, positions et interligne. | [pages-and-text.php](../../examples/pages-and-text.php) |
+| [03. Dessin et transformations](03-graphics.md) | Couleurs, chemins, courbes, état graphique et matrices. | [graphics.php](../../examples/graphics.php) |
+| [04. Signets et destinations](04-navigation.md) | Un plan hiérarchique et des destinations vers les pages. | [navigation.php](../../examples/navigation.php) |
+| [05. Liens cliquables](05-links.md) | Annotations avec destination interne et action URI. | [links.php](../../examples/links.php) |
+| [06. Images](06-images.md) | Le même motif en image XObject et en image incorporée au contenu. | [images.php](../../examples/images.php) |
+| [07. Dégradé et fonction](07-gradient.md) | Une fonction de type 2 alimente un shading axial. | [gradient.php](../../examples/gradient.php) |
+| [08. Objets compressés](08-object-stream.md) | Filtres, flux d'objets et flux de références croisées. | [object-stream.php](../../examples/object-stream.php) |
+
+Les leçons 03 à 07 peuvent se lire dans l'ordre des sujets qui vous intéressent, après le premier document. La dernière leçon concerne l'organisation du fichier plutôt que sa mise en page.
+
+## Quelques repères avant de lire le code
+
+| Objet ou terme | Rôle |
+| --- | --- |
+| `NameType('F1')` | Le nom PDF `/F1`. Dans une ressource de police, c'est une clé locale choisie par l'auteur. |
+| `NumericType(72)` | Un nombre PDF. Dans l'espace utilisateur par défaut, 72 unités correspondent à un pouce. |
+| `LiteralString` | Des octets destinés à une chaîne PDF. Pour `Tj`, la police et son encodage déterminent les glyphes. |
+| `TextString` | Une chaîne documentaire, avec encodage Unicode explicite lorsque nécessaire, utilisée par exemple pour un titre ou un signet. |
+| `Entry` | Une clé `NameType` et une valeur PDF dans un dictionnaire. Les entrées spécialisées expriment des contraintes supplémentaires. |
+| `IndirectReference` | Une référence vers une instance d'objet. Le writer détermine son identifiant dans le fichier. |
+| `ContentStreams` | La suite des opérateurs qui décrivent le dessin ou le texte d'une page. |
+| `StreamObject` | Un flux d'octets avec son dictionnaire et ses éventuels filtres. Sa longueur est calculée à l'écriture. |
+| `ResourceDictionary` | Les ressources nommées que les opérateurs peuvent utiliser : polices, images, shadings, etc. |
+| `PageTreeNode` / `DocumentCatalog` | L'arbre des pages et le point d'entrée du document. |
+
+Une page neuve utilise normalement une origine en bas à gauche et un axe vertical orienté vers le haut. Une matrice ou une rotation de page peut changer la relation entre ces coordonnées et le résultat affiché. Les exemples montrent leurs coordonnées explicitement.
+
+`with()` construit une nouvelle valeur : il faut conserver son retour. Les arbres de pages et de signets s'assemblent avec `addKid()` et `addItem()`, qui rattachent un enfant à un seul parent. Cette différence de responsabilité est détaillée dans [l'architecture](../architecture.md).
+
+## Recettes et contributions
+
+La [collection de recettes](../recipes/README.md) commence par un [tableau](../recipes/table.md) combinant texte, rectangles et traits. Elle montre comment construire une présentation concrète avec les objets déjà étudiés. Les positions sont calculées dans le script ; le cœur de la bibliothèque reste le modèle PDF.
+
+Pour proposer un exemple, ajouter un script autonome dans `examples/`, un guide et une entrée dans cet index. Le guide doit expliquer le résultat attendu, les objets employés, les paramètres à modifier et les limites. Un exemple communautaire peut créditer son auteur et citer ses sources. Les fichiers présents ici sont les exemples du projet ; cette liste pourra accueillir les contributions au fil des pull requests.
+
+En local, avec qpdf installé :
+
+```sh
+qpdf --check examples/hello-world.pdf
+qpdf --qdf --object-streams=disable examples/hello-world.pdf document-lisible.pdf
+```
+
+La seconde commande réécrit le PDF dans une forme utile pour examiner ses objets. Un contrôle syntaxique doit être complété par l'ouverture du document : un PDF valide peut encore avoir un texte hors de la page ou une mauvaise mise en page.
+
+## Aller vers la norme
+
+Les guides citent les sections de [PDF 1.7 / ISO 32000-1:2008](../../PDF32000_2008.pdf). La [couverture de la spécification](../specification.md) distingue les définitions disponibles des traitements réellement implémentés. Les polices incorporées, le retour automatique à la ligne, le chiffrement et les mises à jour incrémentales ne sont pas des fonctions fournies par ces tutoriels.
+
+[Commencer par le premier document](01-first-document.md) · [Retour au README](../../README.md)

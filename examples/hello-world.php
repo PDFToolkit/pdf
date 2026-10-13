@@ -30,15 +30,25 @@ use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\StringObject\LiteralString;
 
-require dirname(__DIR__) . '/tests/bootstrap.php';
+require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Every name, number, dictionary entry, operator and reference is an object.
+// Tutoriel 01 : docs/tutorials/01-first-document.md.
+// Ce fichier construit un graphe d'objets PDF, puis confie son écriture au writer.
+
+// 1. Déclarer une police et lui donner un nom local dans les ressources de page.
+// /F1 est le nom utilisé par Tf ; /Helvetica est le nom de la police standard.
+// La référence vise l'instance de police. Son numéro sera attribué à l'écriture.
 $helvetica = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(
     new Font(new DictionaryType(
         new Entry(new NameType('F1'), new IndirectReference($helvetica)),
     )),
 );
+// 2. Décrire le texte avec des instructions PDF : BT, Tf, Td, Tj, ET.
+// BT/ET encadrent l'objet texte. Tf sélectionne /F1 à 18 unités ; Td déplace
+// l'origine du texte à (72, 720). Dans cet espace de page, y augmente vers le haut
+// et une unité vaut par défaut 1/72 de pouce. Tj reçoit des octets, ici en ASCII.
+// ContentStreams conserve les opérateurs ; StreamObject en fait un flux PDF.
 $contents = new StreamObject(new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(18)),
@@ -46,13 +56,19 @@ $contents = new StreamObject(new ContentStreams(
     new ShowText(new LiteralString('Super ! Le PDF est construit objet par objet.')),
     new EndTextObject(),
 ));
+// 3. Assembler la page : /MediaBox est un rectangle [x_min y_min x_max y_max].
+// 612 x 792 correspond au format Letter. La page relie ressources et contenu.
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(612), new NumericType(792)),
     $resources,
     $contents,
 );
+// 4. Attacher la page à l'arbre /Pages, puis relier sa racine au /Catalog.
+// Le graphe calcule /Parent, /Kids et /Count ; on ne les remplit pas à la main.
 $pages = (new PageTreeNode())->addKid($page);
 $catalog = new DocumentCatalog($pages);
+// 5. Ajouter un titre documentaire dans /Info. TextString encode explicitement
+// ce texte Unicode ; cette chaîne ne représente pas les glyphes affichés par Tj.
 $information = new DocumentInformation(new Title(new TextString('Un PDF entièrement objet')));
 $file = new FileStructure(
     new FileHeader('1.7'),
@@ -60,6 +76,9 @@ $file = new FileStructure(
     new IndirectReference($catalog),
     new DictionaryType(new Entry(new NameType('Info'), new IndirectReference($information))),
 );
+// 6. Écrire le fichier. Le writer parcourt les références, attribue les numéros,
+// mesure les octets des flux et produit la table xref ainsi que le trailer.
+// Le premier argument permet de choisir la destination depuis la commande CLI.
 $path = $argv[1] ?? __DIR__ . '/hello-world.pdf';
 $file->writeTo($path);
 echo $path . PHP_EOL;

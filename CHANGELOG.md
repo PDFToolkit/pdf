@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- A French tutorial series with explained scripts, rendered previews, experiments and PDF specification references: first document, pages and text, graphics, navigation, links, images, gradients and compressed objects.
+- A practical table recipe and guidance for contributing further examples.
+
 ### Changed
 
 - Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
