@@ -5115,5 +5115,994 @@
         }
       ]
     }
-  ]
+  ],
+  "audit": {
+    "baselineRelease": "0.3.0",
+    "date": "2026-10-13",
+    "baselineAssessmentPreserved": true,
+    "readingRule": "Original table/algorithm/prose/implementation-note/source-anomaly entries above describe the 0.3.0 evidence. CurrentDevelopment records verified additions and remaining source procedures without overwriting that baseline.",
+    "sourcePreservation": "The retained original 140-page PDF remains byte-exact; physical source page numbers and anomalies are preserved."
+  },
+  "currentDevelopment": {
+    "baselineAuditPreserved": true,
+    "baselineRelease": "0.3.0",
+    "date": "2026-10-13",
+    "targetRelease": "0.4.0",
+    "status": "release-candidate-evidence",
+    "allSourceMechanismsImplemented": false,
+    "allSemanticConstraintsValidated": false,
+    "currentAlgorithmIntegration": [
+      {
+        "algorithm": "3.1a",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            15,
+            16,
+            22
+          ],
+          "clause": "3.5.1"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.2",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            18,
+            19
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.2a",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            19
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.8",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            20
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.9",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            20
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.10",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            20,
+            21
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.11",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            21
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.12",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            21
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "3.13",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            21
+          ],
+          "clause": "3.5.2"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      },
+      {
+        "algorithm": "public-key-256-digest",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            21
+          ],
+          "clause": "3.5.3"
+        },
+        "baselineAlgorithmStatusPreserved": "implemented-and-validated",
+        "currentStatus": "implemented-and-validated-native-cryptographic-procedure",
+        "currentIntegration": "Explicit historical R2/R3/R4 and Adobe R5 password operations, public-key CMS envelopes/filters and encrypted initial/incremental/native-linearized writing are now integrated for the stated variants.",
+        "evidence": [
+          "tools/validate_adobe_encryption.py",
+          "tools/validate_iso_security.py",
+          "tools/validate_public_key_security.py",
+          "tools/validate_linearization.py"
+        ],
+        "boundary": "This does not implement modern R6 outside these retained references, external encrypted PDF parsing or certificate-trust policy."
+      }
+    ],
+    "unreleasedChanges": [
+      {
+        "mechanism": "iso-standard-security-handler",
+        "relatedMechanisms": [
+          "iso-crypt-filter-selection",
+          "crypt-filter",
+          "iso-encryption-overview"
+        ],
+        "title": "Historical ISO password handlers, explicit crypt selection and encrypted revisions",
+        "writingStatus": "executable-and-validated-subset",
+        "implementationPaths": [
+          "src/Security/HistoricalStandardSecurityHandler.php",
+          "src/Security/HistoricalStandardEncryption.php",
+          "src/Security/Rc4Cipher.php",
+          "src/Security/HistoricalStandardKeyDerivation.php",
+          "src/Security/StandardCryptFilters.php",
+          "src/Security/OpenSslAes128Backend.php",
+          "src/Security/FileEncryption.php",
+          "src/Serialization/SerializationContext.php",
+          "src/Syntax/FileStructure/FileRevision.php",
+          "src/Serialization/IncrementalWriter.php"
+        ],
+        "implementedBehavior": [
+          "ISO algorithms 1-7 for R=2/3/4: password entries, file-key derivation, authentication and RC4/AESV2 data encryption.",
+          "Explicit StrF/StmF/EFF, named filters, Identity and document metadata exemption.",
+          "Encrypted incremental revisions retain their encryption dictionary/file key and original byte ranges.",
+          "Historical Adobe R=5 remains explicitly available; it is a separate inherited supplement mechanism."
+        ],
+        "semanticConstraints": [
+          "PDFDocEncoding password bytes and length/key/permission bounds are explicit.",
+          "ISO 7.4.10 and Algorithm 1: streams with an explicit Crypt specifier use the selected key as-is; implicit legacy streams derive the object key.",
+          "Only effective document Metadata is exempt when EncryptMetadata=false; page/other Metadata and ordinary strings remain encrypted.",
+          "Encrypt identity replacement, compressed members aliasing that identifier, incompatible file IDs and plaintext trailer strings are rejected.",
+          "R=2 requires PDF 1.1; feature availability follows effective header/catalog version."
+        ],
+        "validation": {
+          "tests": [
+            "tests/HistoricalSecurityHandlerTest.php",
+            "tests/SecuritySerializationTest.php",
+            "tests/AdobeEncryptionTest.php"
+          ],
+          "fixture": "tools/fixtures/iso_encryption.php",
+          "oracle": "tools/validate_iso_security.py",
+          "independentResult": "68 PDFs: 34 initial and 34 incremental, historical key-length boundaries, RC4/AESV2, explicit/default/Identity/EFF selectors and metadata. Independent source-correct named-stream key checks and unmodified pyHanko native filtering are distinguished from unsupported reader cases."
+        },
+        "remainingWorkOrBoundary": [
+          "Historical mechanisms are exposed explicitly; modern R=6 is outside these two retained documents.",
+          "qpdf legacy named-Crypt decryption applies a per-object key in cases where the retained ISO requires the explicit key as-is; that interop limitation is recorded and never converted into a false source-conformance claim.",
+          "External PDF reading, credential UI and a security-default policy belong to consumers/other packages."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "iso-standard-security-handler",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.3",
+                  "pdfPage": 66,
+                  "title": "Standard Security Handler"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "iso-crypt-filter-selection",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.5",
+                  "pdfPage": 75,
+                  "title": "Crypt Filters"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "crypt-filter",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.4.10",
+                  "pdfPage": 46,
+                  "title": "Crypt Filter"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "iso-encryption-overview",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.1",
+                  "pdfPage": 63,
+                  "title": "General"
+                },
+                {
+                  "clause": "7.6.2",
+                  "pdfPage": 65,
+                  "title": "General Encryption Algorithm"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": []
+      },
+      {
+        "mechanism": "public-key-security-handler",
+        "relatedMechanisms": [
+          "iso-crypt-filter-selection"
+        ],
+        "title": "CMS recipient encryption with explicit source interpretations",
+        "writingStatus": "executable-and-validated-subset",
+        "implementationPaths": [
+          "src/Security/PublicKeySecurityHandler.php",
+          "src/Security/PublicKeyEncryption.php",
+          "src/Security/LegacyPublicKeyEncryption.php",
+          "src/Security/PublicKeyRecipient.php",
+          "src/Security/PublicKeyCryptFilter.php",
+          "src/Security/OpenSslCmsEnvelopeBackend.php",
+          "src/Security/CmsEnvelopeBackend.php"
+        ],
+        "implementedBehavior": [
+          "s3/s4/s5 recipient envelopes, RC4/AESV2/AESV3 content, independent filter seeds/keys and recipient sets.",
+          "Initial/incremental writing for traditional, stream and hybrid xrefs; attachment-only/default/named selections.",
+          "Explicit permission byte-order interpretation distinguishes retained ISO 2008 wording from later corrected interoperability."
+        ],
+        "semanticConstraints": [
+          "DER/CMS recipient data, seed length, permission values, default filter names, CF selections and containing object keys are checked.",
+          "Explicit Crypt named streams follow the selected key-as-is rule.",
+          "EncryptMetadata selection and effective document identity remain consistent across revisions.",
+          "CMS and X.509 material/backends are explicit objects; no network lookup or hidden trust decision."
+        ],
+        "validation": {
+          "tests": [
+            "tests/PublicKeySecurityHandlerTest.php"
+          ],
+          "fixture": "tools/fixtures/public_key_encryption.php",
+          "oracle": "tools/validate_public_key_security.py",
+          "independentResult": "96 PDFs: 3 xref formats × 2 explicit permission byte orders × 8 cipher/filter variants × initial/incremental. ASN1Crypto/PyCA check envelope recipients, RSA/AES content, seeds, permissions and digests; unmodified pyHanko verifies actual default crypt-filter keys/decryption without imposing unrelated PDF 2.0 policy."
+        },
+        "remainingWorkOrBoundary": [
+          "A conforming consumer still determines recipient selection, key custody and certificate trust.",
+          "External CMS transport algorithms and certificate validation are explicit backend capabilities, not claimed because a PDF crypt dictionary exists."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "public-key-security-handler",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.4",
+                  "pdfPage": 72,
+                  "title": "Public-Key Security Handlers"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "iso-crypt-filter-selection",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.6.5",
+                  "pdfPage": 75,
+                  "title": "Crypt Filters"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": []
+      },
+      {
+        "mechanism": "digital-signature-finalization",
+        "relatedMechanisms": [
+          "signature-interoperability",
+          "signature-fields"
+        ],
+        "title": "Native PDF signature reservations and cryptographic finalization",
+        "writingStatus": "executable-and-validated-subset",
+        "implementationPaths": [
+          "src/Document/Signatures/",
+          "src/Security/OpenSslSignatureBackend.php",
+          "src/Syntax/FileStructure/FileRevision.php"
+        ],
+        "implementedBehavior": [
+          "Reserve fixed Contents and ByteRange, freeze exact byte spans before signing and fill the reservation without shifting any bytes.",
+          "Native adbe.x509.rsa_sha1, adbe.pkcs7.detached and adbe.pkcs7.sha1 containers with explicit backend algorithms.",
+          "Successive signatures over initial and incremental revisions, with original ranges preserved, including encrypted files.",
+          "Signature-field/certificate relationships and unsupported mandatory seed/lock requests are validated or explicitly rejected."
+        ],
+        "semanticConstraints": [
+          "Contents is excluded from the actual signed ranges and signature bytes are not encrypted as ordinary string data.",
+          "Reservation size/overlap/file scope, actual backend key/algorithm bounds and feature version are explicit.",
+          "Table 257 backend gates: RSA up to 1024 bits requires PDF 1.3; 1025-4096 requires 1.5; DSA up to 4096 and SHA256 CMS require 1.6. Unsupported key algorithms and larger keys are explicitly rejected.",
+          "A completed DER/CMS container, public-key verification and digest checks prove actual emitted cryptographic integrity; declared policy facts alone do not.",
+          "Required unimplemented seed/lock orchestration causes rejection rather than silently ignoring the requirement."
+        ],
+        "validation": {
+          "tests": [
+            "tests/SignatureWritingTest.php",
+            "tests/SignaturePolicyObjectsTest.php",
+            "tests/SignatureAlgorithmVersionTest.php"
+          ],
+          "algorithmVersionUnitResult": {
+            "tests": 42,
+            "assertions": 59,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "combinedSignatureUnitResult": {
+            "tests": 154,
+            "assertions": 331,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "fixture": "tools/fixtures/pdf_signatures.php",
+          "oracle": "tools/validate_pdf_signatures.py",
+          "independentResult": "108 PDFs and 162 signed byte ranges: 6 security cases × 3 xref layouts × 3 ISO formats × initial/incremental. qpdf checks the plaintext semantic view; ASN.1/PyCA verify the original encrypted or clear byte ranges, actual digests, PKCS#1/CMS values, incremental preservation and tamper failure. CMS backends use their declared SHA256 digest by default; adbe.pkcs7.sha1 still encapsulates the required SHA1 digest of PDF ranges and RSA_SHA1 is tested separately."
+        },
+        "remainingWorkOrBoundary": [
+          "Certificate trust, revocation, timestamp authority and key custody remain explicit external policies.",
+          "Full seed orchestration, first-certification uniqueness and DocMDP/FieldMDP/UR effective revision comparison remain open; native policy objects are not a certification of those behaviors."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "digital-signature-finalization",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.1",
+                  "pdfPage": 474,
+                  "title": "General"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "signature-interoperability",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.3",
+                  "pdfPage": 482,
+                  "title": "Signature Interoperability"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "signature-fields",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.4.5",
+                  "pdfPage": 454,
+                  "title": "Signature Fields"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": []
+      },
+      {
+        "mechanism": "signature-transforms",
+        "relatedMechanisms": [],
+        "title": "Typed signature transforms, locks and seed constraints",
+        "writingStatus": "native-model-and-conditional-validation-orchestration-incomplete",
+        "implementationPaths": [
+          "src/Document/Signatures/Policies/"
+        ],
+        "implementedBehavior": [
+          "Native DocMDP, FieldMDP and UR/UR3 parameter/reference construction.",
+          "Typed signature/certificate seed flags, format preference, complete field names, certificate facts and completed-signature evidence contracts.",
+          "Explicit conservative detection/rejection of mandatory constraints without an available orchestration."
+        ],
+        "semanticConstraints": [
+          "No duplicate transform methods or invalid UR mixture; FieldMDP Data must bind to the effective catalog/AcroForm.",
+          "Mandatory bits, Reasons, parser/digest choices, certificate Subject/Issuer/SubjectDN/KeyUsage/OID facts and Adobe extension thresholds are validated.",
+          "Timestamp/revocation evidence must validate the actual completed signature; unavailable evidence fails instead of inventing a trusted result."
+        ],
+        "validation": {
+          "tests": [
+            "tests/SignaturePolicyObjectsTest.php"
+          ],
+          "unitResult": {
+            "tests": 96,
+            "assertions": 189,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "independentBoundary": "These policy-object tests do not prove cryptographic integrity by themselves. That evidence is in tools/validate_pdf_signatures.py."
+        },
+        "remainingWorkOrBoundary": [
+          "Required orchestration remains incomplete: bind seeds to the actual selected backend/certificate/appearance/signature values and verify post-signature evidence.",
+          "Analyze effective frozen revisions and authorize only the changes permitted by an authenticated DocMDP/FieldMDP/UR signature; a caller-supplied list of changes is insufficient.",
+          "Construction/audit of legal-attestation catalog declarations remains separate work."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "signature-transforms",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.8.2",
+                  "pdfPage": 478,
+                  "title": "Transform Methods"
+                },
+                {
+                  "clause": "12.8.4",
+                  "pdfPage": 484,
+                  "title": "Permissions"
+                },
+                {
+                  "clause": "12.8.5",
+                  "pdfPage": 485,
+                  "title": "Legal Content Attestations"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": [
+          {
+            "document": "adobe-supplement-iso32000-2008-extension-level-3",
+            "filename": "adobe_supplement_iso32000.pdf",
+            "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+            "pdfPages": [
+              43,
+              44,
+              45
+            ],
+            "clause": "8.6.3"
+          }
+        ]
+      },
+      {
+        "mechanism": "acroform-graph",
+        "relatedMechanisms": [
+          "button-fields",
+          "text-and-choice-fields",
+          "annotation-appearances",
+          "form-actions-and-named-pages",
+          "fdf-format",
+          "xfa-packets"
+        ],
+        "title": "Native AcroForm fields, widget graphs, supplied appearances and FDF writing",
+        "writingStatus": "executable-and-validated-subset",
+        "implementationPaths": [
+          "src/Document/Forms/"
+        ],
+        "implementedBehavior": [
+          "Hierarchical fields, inheritable field values and qualified names; separate or explicitly merged widgets.",
+          "Button/radio/checkbox/pushbutton, text/choice/signature field values and flags, DR/DA/default resources.",
+          "Supplied N/R/D appearances with explicit states; widget AS selects an existing state.",
+          "Native minimal or traditional-xref FDF, hierarchical values, selected-field export, named page templates and icon fit matrices.",
+          "Explicit XFA packet streams/alternating arrays and Adobe barcode field/PMD contracts."
+        ],
+        "semanticConstraints": [
+          "Field Parent/Kids and widget P/Annots belong to the effective catalog page tree.",
+          "Choice option domains/indices, Unicode MaxLen/comb/RichText, inherited flags and button on-state/Opt rules are checked.",
+          "AS is required whenever any N/R/D appearance is stateful; unknown selection is rejected through the actual writer.",
+          "FDF constraints prohibit PDF-only layouts, object streams/incremental generations and malformed page/annotation declarations.",
+          "No implicit appearance regeneration, file read, SubmitForm request or JavaScript evaluation."
+        ],
+        "validation": {
+          "tests": [
+            "tests/AcroFormObjectsTest.php",
+            "tests/FdfObjectsTest.php"
+          ],
+          "acroFormUnitResult": {
+            "tests": 73,
+            "assertions": 120,
+            "php": [
+              "8.3.35",
+              "8.4.26",
+              "8.5.11"
+            ]
+          },
+          "example": "examples/acroform-fields.php",
+          "fixture": "tools/fixtures/acroform_fields.php",
+          "oracle": "tools/validate_forms.py",
+          "independentResult": "Strict pypdf checks six terminal fields, seven widgets, states/resources/locks and matching native minimal/traditional FDF graphs; qpdf and rendered appearances were inspected."
+        },
+        "remainingWorkOrBoundary": [
+          "Automatic text layout/appearance synthesis, event execution, XFA XML/HTML/CSS processing and external barcode codecs are consumer/module behaviors.",
+          "All remaining annotation families, page/navigation/media graphs and signature orchestration need further native semantic models."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "acroform-graph",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.1",
+                  "pdfPage": 438,
+                  "title": "General"
+                },
+                {
+                  "clause": "12.7.2",
+                  "pdfPage": 439,
+                  "title": "Interactive Form Dictionary"
+                },
+                {
+                  "clause": "12.7.3",
+                  "pdfPage": 440,
+                  "title": "Field Dictionaries"
+                },
+                {
+                  "clause": "12.7.4.1",
+                  "pdfPage": 447,
+                  "title": "General"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "button-fields",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.4.2",
+                  "pdfPage": 447,
+                  "title": "Button Fields"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "text-and-choice-fields",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.4.3",
+                  "pdfPage": 450,
+                  "title": "Text Fields"
+                },
+                {
+                  "clause": "12.7.4.4",
+                  "pdfPage": 452,
+                  "title": "Choice Fields"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "annotation-appearances",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.5.5",
+                  "pdfPage": 395,
+                  "title": "Appearance Streams"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "form-actions-and-named-pages",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.5",
+                  "pdfPage": 459,
+                  "title": "Form Actions"
+                },
+                {
+                  "clause": "12.7.6",
+                  "pdfPage": 464,
+                  "title": "Named Pages"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "fdf-format",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.7",
+                  "pdfPage": 464,
+                  "title": "Forms Data Format"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "xfa-packets",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "12.7.8",
+                  "pdfPage": 472,
+                  "title": "XFA Forms"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": [
+          {
+            "document": "adobe-supplement-iso32000-2008-extension-level-3",
+            "filename": "adobe_supplement_iso32000.pdf",
+            "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+            "pdfPages": [
+              43,
+              44,
+              45
+            ],
+            "clause": "8.6.3"
+          },
+          {
+            "document": "adobe-supplement-iso32000-2008-extension-level-3",
+            "filename": "adobe_supplement_iso32000.pdf",
+            "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+            "pdfPages": [
+              39,
+              45,
+              46,
+              47
+            ],
+            "clause": "8.6.3"
+          },
+          {
+            "document": "adobe-supplement-iso32000-2008-extension-level-3",
+            "filename": "adobe_supplement_iso32000.pdf",
+            "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+            "pdfPages": [
+              23,
+              48
+            ],
+            "clause": "8.6.7"
+          }
+        ]
+      },
+      {
+        "mechanism": "pdf-version-gates",
+        "relatedMechanisms": [
+          "document-catalogue",
+          "page-tree"
+        ],
+        "title": "Effective document version and shared graph validation",
+        "writingStatus": "executable-and-validated-subset",
+        "implementationPaths": [
+          "src/Document/DocumentGraphValidation.php",
+          "src/Syntax/FileStructure/EffectivePdfVersion.php",
+          "src/Document/VersionedComponent.php",
+          "src/Specification/Requirement.php",
+          "src/Syntax/FileStructure/RevisionValueSnapshot.php"
+        ],
+        "implementedBehavior": [
+          "Effective PDF version is the maximum of FileHeader and the actual Catalog.Version.",
+          "Initial/incremental/linearized writers validate native CatalogComponent/VersionedComponent relationships and generated schema entry versions.",
+          "Direct mutable dictionary/array values are deep-frozen in revision snapshots while real indirect aliases remain linked by their logical identifiers.",
+          "Generated inheritance/provenance corrections preserve original source text."
+        ],
+        "semanticConstraints": [
+          "Document-specific page/widget/structure/optional-content/font subset ownership is checked against the effective graph.",
+          "Twenty-two extractor metadata flags are corrected for source entries saying not inheritable; native model does not mistake those for inherited values.",
+          "The five public static production factories present in the 0.3.0 architecture audit were removed. Stateless private implementation helpers are not described as public object factories."
+        ],
+        "validation": {
+          "tests": [
+            "tests/NativeFontObjectsTest.php",
+            "tests/HybridReferenceTest.php",
+            "tests/SecuritySerializationTest.php",
+            "tests/SignatureWritingTest.php",
+            "tests/AcroFormObjectsTest.php"
+          ],
+          "independentBoundary": "These graph/version/snapshot tests establish the stated native contracts; they do not certify every conditional clause represented by a generated dictionary."
+        },
+        "remainingWorkOrBoundary": [
+          "Conditional schemas, numeric/geometry bounds and cross-object semantics in the remaining families still need native models and independent evidence.",
+          "Generic BasicType/raw-content escape hatches remain explicit; successful serialization alone does not prove semantic conformance."
+        ],
+        "inheritedIsoMechanismEvidence": [
+          {
+            "mechanism": "pdf-version-gates",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "6",
+                  "pdfPage": 18,
+                  "title": "Version Designations"
+                },
+                {
+                  "clause": "I",
+                  "pdfPage": 735,
+                  "title": "Annex I"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "document-catalogue",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.7.1",
+                  "pdfPage": 78,
+                  "title": "General"
+                },
+                {
+                  "clause": "7.7.2",
+                  "pdfPage": 79,
+                  "title": "Document Catalog"
+                },
+                {
+                  "clause": "7.7.4",
+                  "pdfPage": 88,
+                  "title": "Name Dictionary"
+                }
+              ]
+            }
+          },
+          {
+            "mechanism": "page-tree",
+            "source": {
+              "document": "PDF32000_2008.pdf",
+              "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+              "clauses": [
+                {
+                  "clause": "7.7.3",
+                  "pdfPage": 83,
+                  "title": "Page Tree"
+                }
+              ]
+            }
+          }
+        ],
+        "supplementSourceEvidence": [
+          {
+            "document": "adobe-supplement-iso32000-2008-extension-level-3",
+            "filename": "adobe_supplement_iso32000.pdf",
+            "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+            "pdfPages": [
+              6,
+              7,
+              23,
+              24,
+              25,
+              26
+            ],
+            "clause": "3.6.4"
+          }
+        ]
+      }
+    ],
+    "remainingNativeSourceProcedures": [
+      {
+        "procedure": "Mandatory signature seed/lock orchestration and authenticated transform revision analysis",
+        "source": {
+          "document": "adobe-supplement-iso32000-2008-extension-level-3",
+          "filename": "adobe_supplement_iso32000.pdf",
+          "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+          "pdfPages": [
+            43,
+            44,
+            45
+          ],
+          "clause": "8.6.3"
+        },
+        "inheritedIsoClauses": [
+          "12.8.2",
+          "12.8.3"
+        ],
+        "status": "native-policy-objects-available-orchestration-incomplete"
+      },
+      {
+        "procedure": "Barcode prepared-data division among associated widgets and full-widget AP.N construction",
+        "source": {
+          "clause": "8.6.3",
+          "pdfPages": [
+            45,
+            46,
+            47
+          ]
+        },
+        "status": "partial-native-procedure-external-symbology-codec-required",
+        "existingEvidence": "DataPrep compression and module width remain independently verified baseline primitives; field/widget/PMD contracts are added. No barcode appearance encoder is claimed."
+      },
+      {
+        "procedure": "Geospatial/2D measurement and RichMedia/native navigation graphs",
+        "status": "generated-definitions-present-native-graph-semantics-incomplete"
+      },
+      {
+        "procedure": "Remaining conditional requirements and source-specific semantics beyond dictionary schemas",
+        "status": "ongoing-source-family-audit"
+      }
+    ],
+    "readerRenderingAndExternalBoundaries": [
+      "External PDF parsing (including still-missing hybrid/encrypted support in pdf-reader) belongs to the separately released reader package.",
+      "Image/font format conversion, ICC profiles, barcode symbologies, XFA/XML/HTML/JavaScript, media and 3D runtimes are separately specified processors or optional modules.",
+      "Rendering, visual reading order/reflow, PDF/UA conformance, screen/print device behavior and cryptographic trust/revocation/timestamp policy are not inferred from model/schema presence."
+    ],
+    "isoCoverage": "../iso32000-1/coverage.json",
+    "coverageConclusion": "All supplement dictionary/table definitions are inventoried. Its cryptographic procedures now have wider executable writer integration; seed orchestration, barcode appearance procedures and other native semantics remain incomplete. Product/consumer/external-standard behavior is separately identified."
+  }
 }
