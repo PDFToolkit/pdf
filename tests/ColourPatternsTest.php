@@ -387,7 +387,7 @@ final class ColourPatternsTest extends TestCase
 
     public function testStencilFontCannotHideAColouredTypeThreeGlyph(): void
     {
-        $glyph = new StreamObject(new ContentStreams(new \PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidth(new NumericType(1), new NumericType(0))));
+        $glyph = new StreamObject(new \PDF\Syntax\ContentStreamsResources\Type3GlyphContentStream(new \PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidth(new NumericType(1), new NumericType(0)), new SetNonstrokingRGBColor(new NumericType(1), new NumericType(0), new NumericType(0))));
         $font = new DictionaryType(new Entry(new NameType('Subtype'), new NameType('Type3')), new Entry(new NameType('CharProcs'), new DictionaryType(new Entry(new NameType('A'), new IndirectReference($glyph)))));
         $resources = new ResourceDictionary(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
         $this->expectException(\InvalidArgumentException::class);
@@ -396,7 +396,7 @@ final class ColourPatternsTest extends TestCase
 
     public function testStencilFontAcceptsExplicitTypedStencilGlyphs(): void
     {
-        $glyph = new StreamObject(new ContentStreams(new \PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidthAndBoundingBox(new NumericType(1), new NumericType(0), new NumericType(0), new NumericType(0), new NumericType(1), new NumericType(1)), new AppendRectangle(new NumericType(0), new NumericType(0), new NumericType(1), new NumericType(1)), new FillPathNonzero()));
+        $glyph = new StreamObject(new \PDF\Syntax\ContentStreamsResources\Type3GlyphContentStream(new \PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidthAndBoundingBox(new NumericType(1), new NumericType(0), new NumericType(0), new NumericType(0), new NumericType(1), new NumericType(1)), new AppendRectangle(new NumericType(0), new NumericType(0), new NumericType(1), new NumericType(1)), new FillPathNonzero()));
         $font = new DictionaryType(new Entry(new NameType('Subtype'), new NameType('Type3')), new Entry(new NameType('CharProcs'), new DictionaryType(new Entry(new NameType('A'), new IndirectReference($glyph)))));
         $resources = new ResourceDictionary(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
         $tile = new TilingPattern(new ContentStreams(new \PDF\Syntax\ContentStreamsResources\Operators\SetTextFontAndSize(new NameType('F1'), new NumericType(12))), PaintType::Uncoloured, TilingType::NoDistortion, $this->box(), new NumericType(8), new NumericType(8), $resources);

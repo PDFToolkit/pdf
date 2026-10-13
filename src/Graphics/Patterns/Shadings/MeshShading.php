@@ -14,8 +14,13 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
 
 /** Actual encoded type 4–7 shading stream with immutable, validated stream dictionary. */
-abstract class MeshShading extends StreamObject implements ShadingObject
+abstract class MeshShading extends StreamObject implements ShadingObject, \PDF\Document\VersionedComponent
 {
+    public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
+    {
+        $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF13, 'Mesh shading stream');
+    }
+
     protected function __construct(private readonly int $type, private readonly ColourSpace $space, string $bytes, TableDefinition $definition, MeshFormat $format, ?ShadingFunctions $functions, ShadingOptions $options, ?IntegerType $verticesPerRow, Filter ...$filters)
     {
         $format->validate($space, $functions);

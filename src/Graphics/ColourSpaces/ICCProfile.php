@@ -16,8 +16,13 @@ use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StreamObject;
 
 /** PDF profile embedding (table 66, pages 157–159); ICC payload validation belongs to the profile supplier. */
-final class ICCProfile extends StreamObject
+final class ICCProfile extends StreamObject implements \PDF\Document\VersionedComponent
 {
+    public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
+    {
+        $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF13, 'ICC profile stream');
+    }
+
     public readonly Range $componentRanges;
 
     public function __construct(

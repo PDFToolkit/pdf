@@ -16,8 +16,13 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 
 /** Type 2 pattern with a real shading object and explicit pattern matrix/graphics state (page 189). */
-final class ShadingPattern extends SchemaDictionary
+final class ShadingPattern extends SchemaDictionary implements \PDF\Document\VersionedComponent
 {
+    public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
+    {
+        $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF13, 'Shading pattern');
+    }
+
     public const string TABLE = '76';
 
     public function __construct(public readonly ShadingObject $shading, Matrix $matrix = new Matrix(), ?DictionaryType $graphicsState = null)

@@ -13,8 +13,13 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 
 /** Validated common declarations for function-based PDF shading dictionaries. */
-abstract class ShadingDictionary extends SchemaDictionary implements ShadingObject
+abstract class ShadingDictionary extends SchemaDictionary implements ShadingObject, \PDF\Document\VersionedComponent
 {
+    public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
+    {
+        $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF13, 'Shading dictionary');
+    }
+
     protected function __construct(private readonly int $type, private readonly ColourSpace $space, TableDefinition $definition, ShadingOptions $options, Entry ...$entries)
     {
         if (in_array($space->family(), [ColourSpaceFamily::Pattern, ColourSpaceFamily::Indexed], true)) {

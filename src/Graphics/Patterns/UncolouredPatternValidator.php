@@ -10,12 +10,15 @@ use PDF\Syntax\ContentStreamsResources\Operators\InvokeXObject;
 use PDF\Syntax\ContentStreamsResources\Operators\SetGraphicsStateParameters;
 use PDF\Syntax\ContentStreamsResources\Operators\SetTextFontAndSize;
 use PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidthAndBoundingBox;
+use PDF\Syntax\ContentStreamsResources\Operators\SetGlyphWidth;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\Object\BooleanType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
+use PDF\Syntax\Object\ArrayType;
+use PDF\Syntax\Object\NumericType;
 
 /** Verifies stencil cells and invoked forms/masks without parsing external content formats (8.7.3.3). */
 final readonly class UncolouredPatternValidator
@@ -72,9 +75,14 @@ final readonly class UncolouredPatternValidator
                     // character selection from an external font encoding parser.
                     foreach ($procedures->entries() as $entry) {
                         $glyph = $this->target($entry->value);
-                        if (!$glyph instanceof StreamObject || !$glyph->data instanceof ContentStreams || !($glyph->data->operators[0] ?? null) instanceof SetGlyphWidthAndBoundingBox) {
-                            throw new \InvalidArgumentException('A Type 3 stencil font requires typed glyphs beginning with d1.');
+                        if (!$glyph instanceof StreamObject || !$glyph->data instanceof ContentStreams) {
+                            throw new \InvalidArgumentException('Type 3 glyphs in a verified stencil pattern require typed content.');
                         }
+                        $metrics = $glyph->data->operators[0] ?? null;
+                        if (!$metrics instanceof SetGlyphWidth && !$metrics instanceof SetGlyphWidthAndBoundingBox) {
+                            throw new \InvalidArgumentException('A Type 3 glyph requires typed d0/d1 metrics.');
+                        }
+                        $glyph->data->validate();
                         $this->visit($glyph->data, $own instanceof DictionaryType ? $own : $resources, $active);
                     }
                 }
@@ -87,10 +95,7 @@ final readonly class UncolouredPatternValidator
                 }
                 $subtype = $object->dictionary()->get('Subtype');
                 if ($subtype instanceof NameType && $subtype->value === 'Image') {
-                    $mask = $object->dictionary()->get('ImageMask');
-                    if (!$mask instanceof BooleanType || !$mask->value) {
-                        throw new \InvalidArgumentException('An uncoloured pattern may paint only stencil image XObjects.');
-                    }
+                    $this->image($object, $active);
                 } elseif ($subtype instanceof NameType && $subtype->value === 'Form' && $object->data instanceof ContentStreams) {
                     $own = $this->target($object->dictionary()->get('Resources'));
                     $this->visit($object->data, $own instanceof DictionaryType ? $own : $resources, $active);
@@ -104,5 +109,36 @@ final readonly class UncolouredPatternValidator
     private function target(?BasicType $object): ?BasicType
     {
         return $object instanceof IndirectReference ? $object->target() : $object;
+    }
+
+    /** @param array<int, true> $active */
+    private function image(StreamObject $image, array $active): void
+    {
+        $id = spl_object_id($image);
+        if (isset($active[$id]) || count($active) > 256) {
+            throw new \InvalidArgumentException('Stencil alternate-image recursion exceeds its construction limit or forms a cycle.');
+        }
+        $active[$id] = true;
+        $dictionary = $image->dictionary();
+        $mask = $dictionary->get('ImageMask');
+        $bits = $dictionary->get('BitsPerComponent');
+        $subtype = $dictionary->get('Subtype');
+        if (!$subtype instanceof NameType || $subtype->value !== 'Image' || !$mask instanceof BooleanType || !$mask->value || $dictionary->has('ColorSpace') || $dictionary->has('Mask') || ($bits !== null && (!$bits instanceof NumericType || $bits->value != 1))) {
+            throw new \InvalidArgumentException('An uncoloured pattern may paint only valid stencil image XObjects.');
+        }
+        $alternates = $this->target($dictionary->get('Alternates'));
+        if ($alternates !== null && !$alternates instanceof ArrayType) {
+            throw new \InvalidArgumentException('Stencil image alternatives require an explicit array.');
+        }
+        if ($alternates instanceof ArrayType) {
+            foreach ($alternates->items as $alternate) {
+                $alternate = $this->target($alternate);
+                $target = $alternate instanceof DictionaryType ? $this->target($alternate->get('Image')) : null;
+                if (!$target instanceof StreamObject) {
+                    throw new \InvalidArgumentException('Stencil image alternatives must resolve to image streams.');
+                }
+                $this->image($target, $active);
+            }
+        }
     }
 }

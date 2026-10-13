@@ -110,7 +110,7 @@ final class ImageObjectsTest extends TestCase
     public function testUnsupportedSampleDepthIsRejected(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new SampleLayout(DeviceColorSpace::RGB, 16);
+        new SampleLayout(DeviceColorSpace::RGB, 3);
     }
 
     public function testAlphaDimensionsAndColorSpaceAreValidated(): void

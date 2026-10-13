@@ -10,7 +10,7 @@ final readonly class SampledImage
     public function __construct(public ImageSamples $samples, public ?ImageSamples $alpha = null)
     {
         if ($alpha !== null && (
-            $alpha->layout->colorSpace !== DeviceColorSpace::Gray
+            $alpha->layout->space()->family() !== \PDF\Graphics\ColourSpaces\ColourSpaceFamily::DeviceGray
             || $alpha->dimensions->width !== $samples->dimensions->width
             || $alpha->dimensions->height !== $samples->dimensions->height
         )) {

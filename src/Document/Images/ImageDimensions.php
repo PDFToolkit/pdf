@@ -21,10 +21,21 @@ final readonly class ImageDimensions
 
     public function sampleBytes(SampleLayout $layout): int
     {
-        $components = $layout->colorSpace->components();
-        if ($this->pixels() > intdiv(PHP_INT_MAX, $components)) {
+        $rowBytes = $this->rowBytes($layout);
+        if ($rowBytes > intdiv(PHP_INT_MAX, $this->height)) {
             throw new \InvalidArgumentException('Image sample byte count exceeds the integer range.');
         }
-        return $this->pixels() * $components;
+        return $rowBytes * $this->height;
+    }
+
+    /** Rows start on byte boundaries; unused low bits of the last byte are padding. */
+    public function rowBytes(SampleLayout $layout): int
+    {
+        $bitsPerPixel = $layout->components() * $layout->bitsPerComponent;
+        if ($this->width > intdiv(PHP_INT_MAX, $bitsPerPixel)) {
+            throw new \InvalidArgumentException('Image row bit count exceeds the integer range.');
+        }
+        $rowBits = $this->width * $bitsPerPixel;
+        return intdiv($rowBits, 8) + ($rowBits % 8 === 0 ? 0 : 1);
     }
 }
