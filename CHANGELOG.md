@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-14
+
+### Fixed
+
+- Mark the editable text and choice appearances in the AcroForm example with
+  `/Tx BMC ... EMC`, so a viewer replaces the existing variable text instead of
+  appending another value. Keep borders outside the replaceable section and
+  scope clipping and graphics state inside it (ISO 12.7.3.3, physical page 444;
+  Adobe supplement page 121, note 119).
+- Draw the choice list as its two actual display labels and selected rows,
+  retaining `FR`/`BE` as exported data. Apply the same variable-text structure
+  to the reference field in the signature-policy example.
+- Explain editing and appearance replacement in the AcroForm tutorial. Add
+  independent parsed-stream regression checks and repeated replacement evidence;
+  absence of the marker remains a permitted fallback for generic appearances.
+
 ## [0.5.0] - 2026-10-13
 
 Immutable revision histories, native object generations, navigation, attachments,
@@ -190,7 +206,8 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.1
 [0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
 [0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
 [0.3.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.3.0
