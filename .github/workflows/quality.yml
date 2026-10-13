@@ -23,6 +23,7 @@ jobs:
           python-version: '3.13'
       - run: composer validate --strict
       - run: composer install --no-interaction --prefer-dist
+      - run: composer audit --locked
       - run: composer check
       - run: python tools/generate_specification.py --check
       - run: sudo apt-get update && sudo apt-get install -y qpdf

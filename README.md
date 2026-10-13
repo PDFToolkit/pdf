@@ -12,7 +12,7 @@ La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dan
 
 PHP 8.5 et les extensions `ctype`, `iconv` et `zlib` sont nécessaires.
 
-La version est identifiée par le tag Git `v0.1.0`. Avec le dépôt déclaré comme source Composer :
+La version corrective est identifiée par le tag Git `v0.1.1`. Avec le dépôt déclaré comme source Composer :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf
@@ -83,6 +83,10 @@ Les implémentations exécutables couvrent les objets fondamentaux, l'écriture 
 Les moteurs de chiffrement et de signature, l'incorporation et le sous-ensemble de polices, les codecs d'image spécialisés, les mises à jour incrémentales et la linéarisation restent à implémenter. Les dictionnaires concernés peuvent être construits ; cela ne réalise pas ces traitements. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les options de sécurité et de mise à jour qu'il ne sait pas exécuter.
 
 Le writer assemble actuellement le fichier en mémoire. Un lecteur PDF, un moteur de rendu et une API de mise en page ne font pas partie de cette bibliothèque de création.
+
+## Sécurité
+
+La [politique de sécurité](SECURITY.md) décrit les signalements privés et les frontières de confiance. La version `0.1.1` contient les correctifs de sécurité de la série `0.1` ; les nouvelles évolutions de l'API et les tutoriels progressifs se trouvent sur `master`.
 
 ## Génération des définitions
 

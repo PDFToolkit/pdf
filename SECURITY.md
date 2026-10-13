@@ -1,0 +1,22 @@
+# Security policy
+
+## Reporting a vulnerability
+
+Use [GitHub private vulnerability reporting](https://github.com/roukmoute/pdf/security/advisories/new) to report a suspected vulnerability. Include the affected version, a minimal reproduction, expected behaviour and the observed impact. Avoid real credentials, customer data and public exploit reports before a fix can be prepared.
+
+Security fixes are applied to `master`. The published `0.1` series receives the security fixes identified in the October 2026 review through version `0.1.1`; upgrade from `0.1.0`. New API development remains on `master`.
+
+## Trust boundaries
+
+This library constructs PDF objects and serializes documents. Its object graph and PHP extensions are application code. It is not a PDF reader or a sanitizer for arbitrary PDF content.
+
+- Supply untrusted text as `LiteralString` or `TextString` where appropriate, and names as `NameType`. Do not interpolate request data into raw content-stream strings.
+- Choose output paths in the application. `writeTo()` rejects stream URIs, empty paths and NUL bytes, but does not confine paths to a directory or defend a directory controlled by another user.
+- Keep generated documents in locations where the server will not execute their bytes as PHP or another program. PDF streams may contain arbitrary bytes.
+- Authorize links, JavaScript, launch actions, attachments and external file specifications according to the application's policy. The PDF model can represent these features explicitly.
+- Bound input size, image dimensions, graph depth, pages, filters, output size, execution time and memory for services processing user data. The writer currently builds the file in memory.
+- Keep PHP and its native extensions current. `composer audit --locked` checks known advisories for Composer packages, including development dependencies; it does not audit the PHP runtime or operating system.
+
+The runtime does not include uploaded font definitions, fetch image URLs, invoke a shell, deserialize PHP objects or execute PDF calculator programs. Custom implementations of `BasicType`, `Operator` or `Filter`, and the development generators, must be trusted code.
+
+See [the security review on master](https://github.com/roukmoute/pdf/blob/master/docs/security.md) for the checked surfaces, regression coverage and remaining application responsibilities.
