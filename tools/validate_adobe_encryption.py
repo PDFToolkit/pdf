@@ -5,12 +5,12 @@ This validator uses public, non-secret 'user'/'owner' fixture passwords. R=5 is
 selected only to test the historical supplement; qpdf's modern default is R=6.
 """
 import argparse
+from bisect import bisect_right
 import hashlib
 import json
 from pathlib import Path
 import random
 import re
-import stringprep
 import subprocess
 import unicodedata
 
@@ -20,6 +20,34 @@ from pypdf.generic import IndirectObject
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests/Fixtures/adobe-encryption"
+
+
+def reference_rfc_tables():
+    """Independent block parser: the oracle does not call the table generator."""
+    source = (ROOT / "resources/security-unicode32/rfc3454.txt").read_text(encoding="utf-8")
+    names = ["A.1", "B.1", "C.1.2", "C.2.1", "C.2.2", "C.3", "C.4", "C.5", "C.6", "C.7", "C.8", "C.9", "D.1", "D.2"]
+    result = {}
+    for name in names:
+        block = re.search(rf"----- Start Table {re.escape(name)} -----(.*?)----- End Table {re.escape(name)} -----", source, re.DOTALL)
+        assert block is not None, f"Missing RFC table {name}"
+        intervals = []
+        for match in re.finditer(r"^\s*([0-9A-F]{4,6})(?:-([0-9A-F]{4,6}))?(?=;|\s*$)", block[1], re.MULTILINE):
+            low = int(match[1], 16)
+            intervals.append((low, int(match[2], 16) if match[2] else low))
+        intervals.sort()
+        assert intervals, f"Empty RFC table {name}"
+        result[name] = ([low for low, _ in intervals], intervals)
+    return result
+
+
+REFERENCE_RFC_TABLES = reference_rfc_tables()
+
+
+def reference_contains(name, char):
+    starts, intervals = REFERENCE_RFC_TABLES[name]
+    point = ord(char)
+    index = bisect_right(starts, point) - 1
+    return index >= 0 and point <= intervals[index][1]
 
 
 def run(command, *, expected=0):
@@ -192,15 +220,13 @@ def validate_written_files(args, output):
 
 
 def reference_saslprep(value):
-    mapped = "".join(" " if stringprep.in_table_c12(char) else char for char in value if not stringprep.in_table_b1(char))
+    mapped = "".join(" " if reference_contains("C.1.2", char) else char for char in value if not reference_contains("B.1", char))
     result = unicodedata.ucd_3_2_0.normalize("NFKC", mapped)
-    forbidden = [stringprep.in_table_a1, stringprep.in_table_c12, stringprep.in_table_c21, stringprep.in_table_c22,
-                 stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5, stringprep.in_table_c6,
-                 stringprep.in_table_c7, stringprep.in_table_c8, stringprep.in_table_c9]
-    if any(test(char) for char in result for test in forbidden):
+    forbidden = ["A.1", "C.1.2", "C.2.1", "C.2.2", "C.3", "C.4", "C.5", "C.6", "C.7", "C.8", "C.9"]
+    if any(reference_contains(table, char) for char in result for table in forbidden):
         return dict(invalid=True)
-    if any(stringprep.in_table_d1(char) for char in result):
-        if any(stringprep.in_table_d2(char) for char in result) or not stringprep.in_table_d1(result[0]) or not stringprep.in_table_d1(result[-1]):
+    if any(reference_contains("D.1", char) for char in result):
+        if any(reference_contains("D.2", char) for char in result) or not reference_contains("D.1", result[0]) or not reference_contains("D.1", result[-1]):
             return dict(invalid=True)
     return dict(value=result.encode("utf-8").hex())
 
@@ -208,7 +234,9 @@ def reference_saslprep(value):
 def validate_saslprep(args, output):
     ucd = unicodedata.ucd_3_2_0
     samples = ["", "I\u00adX", "\u00aa", "\u2168", "\u06271\u0628", "\u06271", "a\u0315\u0300"]
-    samples += [chr(point) for point in range(0x110000) if ucd.decomposition(chr(point)) or ucd.combining(chr(point))]
+    # Cover every Hangul syllable explicitly. decomposition() started exposing
+    # algorithmic Hangul in newer Python patch releases; corpus size stays fixed.
+    samples += [chr(point) for point in range(0x110000) if 0xac00 <= point <= 0xd7a3 or ucd.decomposition(chr(point)) or ucd.combining(chr(point))]
     tables = json.loads((ROOT / "resources/security-unicode32/unicode-3.2-saslprep.json").read_text(encoding="utf-8"))
     for name in ["mappedToNothing", "nonAsciiSpace", "unassigned", "prohibited", "randAL", "leftToRight"]:
         for first, last in tables[name]:

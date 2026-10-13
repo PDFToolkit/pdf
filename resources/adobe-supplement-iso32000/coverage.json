@@ -327,7 +327,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -411,7 +411,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -446,7 +446,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -481,7 +481,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -517,7 +517,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -552,7 +552,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -587,7 +587,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }
@@ -622,7 +622,7 @@
         "unitTests": "tests/AdobeEncryptionTest.php",
         "unitResult": "73 tests, 157 assertions on PHP 8.3.35",
         "independentValidator": "tools/validate_adobe_encryption.py",
-        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 13,572 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
+        "independentResult": "Four written table/xref-stream PDFs, two qpdf-produced credential vectors, user and owner authentication, incorrect passwords, all 256 byte values, dictionaries, content/object streams, document-level metadata exemptions with page metadata still encrypted, signature container Contents, and 24,744 Unicode 3.2 SASLprep cases. Independent trailer probes reject eight direct or nested string cases in both xref formats; two referenced strings remain encrypted and decrypt to their expected values with pypdf in qpdf-valid files.",
         "knownAnswerSource": "NIST SP 800-38A, Appendix F.1.5 ECB-AES256 and F.2.5 CBC-AES256",
         "compatibilityNotice": "R=5 is retained as an explicitly selected historical compatibility mechanism; it is not a recommended modern document security default."
       }

@@ -1,30 +1,54 @@
 #!/usr/bin/env python3
 """Reproduce the Unicode 3.2 data used by RFC 4013; no host Unicode version leaks in.
 
-Python's documented stringprep tables and unicodedata.ucd_3_2_0 are the sources.
-The generated JSON is shipped with the library; Python is a maintainer tool only.
+Retained RFC 3454 character ranges and unicodedata.ucd_3_2_0 are the sources.
+No host stringprep classification is used. Python is a maintainer tool only.
 """
 import argparse
 import json
 from pathlib import Path
-import stringprep
+import re
 import unicodedata
 
 
-def ranges(predicate):
-    result = []
-    start = end = None
-    for point in range(0x110000):
-        if predicate(chr(point)):
-            if start is None:
-                start = point
-            end = point
-        elif start is not None:
-            result.append([start, end])
-            start = end = None
-    if start is not None:
-        result.append([start, end])
-    return result
+def compact_ranges(parts):
+    merged = []
+    for first, last in sorted(parts):
+        if merged and first <= merged[-1][1] + 1:
+            merged[-1][1] = max(last, merged[-1][1])
+        else:
+            merged.append([first, last])
+    return merged
+
+
+def rfc_tables():
+    """Read normative ranges as data, independent of Python's stringprep fixes."""
+    source = Path(__file__).resolve().parents[1] / "resources/security-unicode32/rfc3454.txt"
+    tables = {}
+    name = None
+    for line in source.read_text(encoding="utf-8").splitlines():
+        start = re.fullmatch(r"\s*----- Start Table ([A-D](?:\.\d+)+) -----\s*", line)
+        if start:
+            name = start[1]
+            tables[name] = []
+            continue
+        end = re.fullmatch(r"\s*----- End Table ([A-D](?:\.\d+)+) -----\s*", line)
+        if end:
+            if name != end[1]:
+                raise ValueError("Inconsistent RFC character table boundary.")
+            name = None
+            continue
+        row = re.match(r"^\s*([0-9A-F]{4,6})(?:-([0-9A-F]{4,6}))?(?=;|\s*$)", line)
+        if name is not None and row:
+            first = int(row[1], 16)
+            last = int(row[2], 16) if row[2] else first
+            if first > last or last > 0x10ffff:
+                raise ValueError("Invalid RFC character table range.")
+            tables[name].append([first, last])
+    required = ["A.1", "B.1", "C.1.2", "C.2.1", "C.2.2", "C.3", "C.4", "C.5", "C.6", "C.7", "C.8", "C.9", "D.1", "D.2"]
+    if name is not None or any(not tables.get(key) for key in required):
+        raise ValueError("The retained RFC is missing a required SASLprep character table.")
+    return {key: compact_ranges(tables[key]) for key in required}
 
 
 def build():
@@ -34,7 +58,10 @@ def build():
     composition = {}
     for point in range(0x110000):
         character = chr(point)
-        raw = ucd.decomposition(character)
+        # Newer Python patch releases expose algorithmic Hangul decompositions
+        # here; older releases returned ''. PHP implements these syllables
+        # algorithmically, so never duplicate them in the generated data.
+        raw = "" if 0xac00 <= point <= 0xd7a3 else ucd.decomposition(character)
         if raw:
             parts = raw.split()
             compatible = parts[0].startswith("<")
@@ -49,17 +76,15 @@ def build():
         rank = ucd.combining(character)
         if rank:
             combining[str(point)] = rank
-    prohibited = [stringprep.in_table_c12, stringprep.in_table_c21, stringprep.in_table_c22,
-                  stringprep.in_table_c3, stringprep.in_table_c4, stringprep.in_table_c5,
-                  stringprep.in_table_c6, stringprep.in_table_c7, stringprep.in_table_c8,
-                  stringprep.in_table_c9]
+    tables = rfc_tables()
+    prohibited = compact_ranges([part for name, parts in tables.items() if name.startswith("C.") for part in parts])
     return dict(unicodeVersion="3.2.0", profile="RFC 4013 / RFC 3454", decomposition=decomposition,
                 combining=combining, composition=composition,
-                mappedToNothing=ranges(stringprep.in_table_b1),
-                nonAsciiSpace=ranges(stringprep.in_table_c12),
-                unassigned=ranges(stringprep.in_table_a1),
-                prohibited=ranges(lambda char: any(test(char) for test in prohibited)),
-                randAL=ranges(stringprep.in_table_d1), leftToRight=ranges(stringprep.in_table_d2))
+                mappedToNothing=tables["B.1"],
+                nonAsciiSpace=tables["C.1.2"],
+                unassigned=tables["A.1"],
+                prohibited=prohibited,
+                randAL=tables["D.1"], leftToRight=tables["D.2"])
 
 
 def main():

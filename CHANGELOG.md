@@ -19,6 +19,7 @@ Adobe PDF 1.7 extension level 3, preserving the supplied specification and compo
 
 - Enforce direct extension declarations throughout the object graph, as required by ISO 7.12.1, and correctly validate array-first unions and indirect array members. Record source inconsistencies as explicit, page-backed implementation decisions.
 - Reject direct trailer strings outside `/ID` during encrypted serialization. Respect only the catalog metadata exemption; keep page and image metadata encrypted. Prevent double encryption of content and object streams, invalid signature exemptions and unsupported encrypted revision snapshots.
+- Reproduce Unicode tables across Python versions using the retained RFC 3454 character ranges and an explicit exclusion of algorithmic Hangul decompositions, which the PHP normalizer already handles separately.
 
 ### Compatibility and scope
 
