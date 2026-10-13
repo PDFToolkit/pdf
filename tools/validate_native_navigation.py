@@ -141,6 +141,52 @@ def validate_vectors(path):
         assert all(math.isclose(actual, target, abs_tol=1e-10, rel_tol=1e-10) for actual, target in zip(case["view"], expected))
     assert len(vectors["labels"]) == 55 and len(vectors["views"]) == 10
     validate_revisions(vectors["revisions"])
+    validate_closed_outlines(vectors["closed_outlines"])
+
+
+def validate_closed_outlines(encoded):
+    # Read emitted dictionaries independently of the PHP builder's expanded state.
+    assert set(encoded) == {"Table", "Stream", "Hybrid"}
+    for format_name, value in encoded.items():
+        payload = base64.b64decode(value, validate=True)
+        reader = PdfReader(BytesIO(payload), strict=True)
+        assert len(reader.pages) == 1
+        xref_offset = int(payload.rsplit(b"startxref\n", 1)[1].splitlines()[0])
+        assert payload[xref_offset:].startswith(b"xref\n") == (format_name != "Stream")
+        assert ("/XRefStm" in reader.trailer) == (format_name == "Hybrid")
+        outline_reference = reader.trailer["/Root"].raw_get("/Outlines")
+        outline = outline_reference.get_object()
+        assert outline["/Type"] == "/Outlines" and "/Count" not in outline
+        first_reference, last_reference = outline.raw_get("/First"), outline.raw_get("/Last")
+        first, last = first_reference.get_object(), last_reference.get_object()
+        assert first["/Title"] == "first closed" and last["/Title"] == "last closed"
+        assert identity(first_reference) != identity(last_reference)
+        assert identity(first.raw_get("/Parent")) == identity(outline_reference)
+        assert identity(last.raw_get("/Parent")) == identity(outline_reference)
+        assert identity(first.raw_get("/Next")) == identity(last_reference)
+        assert identity(last.raw_get("/Prev")) == identity(first_reference)
+        assert "/Prev" not in first and "/Next" not in last
+        assert first["/Count"] == -2 and last["/Count"] == -1
+        for item in (first, last):
+            assert identity(item["/Dest"][0]) == identity(reader.pages[0].indirect_reference)
+            assert item["/Dest"][1] == "/Fit"
+
+        hidden_reference = first.raw_get("/First")
+        hidden = hidden_reference.get_object()
+        assert identity(first.raw_get("/Last")) == identity(hidden_reference)
+        assert identity(hidden.raw_get("/Parent")) == identity(first_reference)
+        assert hidden["/Title"] == "hidden open" and hidden["/Count"] == 1
+        assert "/Prev" not in hidden and "/Next" not in hidden
+        grandchild_reference = hidden.raw_get("/First")
+        grandchild = grandchild_reference.get_object()
+        assert identity(hidden.raw_get("/Last")) == identity(grandchild_reference)
+        assert identity(grandchild.raw_get("/Parent")) == identity(hidden_reference)
+        assert grandchild["/Title"] == "hidden grandchild" and "/Count" not in grandchild
+        last_child_reference = last.raw_get("/First")
+        last_child = last_child_reference.get_object()
+        assert identity(last.raw_get("/Last")) == identity(last_child_reference)
+        assert identity(last_child.raw_get("/Parent")) == identity(last_reference)
+        assert last_child["/Title"] == "another hidden child" and "/Count" not in last_child
 
 
 def validate_revisions(encoded):
@@ -180,4 +226,4 @@ def validate_revisions(encoded):
 if __name__ == "__main__":
     validate_pdf(Path(sys.argv[1]))
     validate_vectors(Path(sys.argv[2]))
-    print("Independent navigation oracle passed: 3 pages, labels, two article rings, named/explicit destinations, presentation links, 55 labels, 10 view calculations and 3 incremental revisions.")
+    print("Independent navigation oracle passed: 3 pages, labels, two article rings, named/explicit destinations, presentation links, 55 labels, 10 view calculations, 3 incremental revisions and closed outline roots in table/stream/hybrid files.")

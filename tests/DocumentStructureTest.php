@@ -268,4 +268,52 @@ final class DocumentStructureTest extends TestCase
         self::assertSame(2, $open->get('Count')->value);
         self::assertSame(-1, $closed->get('Count')->value);
     }
+
+    public function testClosedOutlineRootOmitsCountButRetainsItsVisibleItems(): void
+    {
+        $hiddenOpen = (new OutlineItem(new TextString('hidden open')))
+            ->addItem(new OutlineItem(new TextString('hidden grandchild')));
+        $first = (new OutlineItem(new TextString('first closed'), null, false))->addItem($hiddenOpen);
+        $last = (new OutlineItem(new TextString('last closed'), null, false))
+            ->addItem(new OutlineItem(new TextString('another hidden child')));
+        $root = (new OutlineDictionary())->addItem($first)->addItem($last);
+
+        self::assertFalse($root->has('Count'));
+        self::assertSame($first, $root->get('First')->target());
+        self::assertSame($last, $root->get('Last')->target());
+        self::assertSame($last, $first->get('Next')->target());
+        self::assertSame($first, $last->get('Prev')->target());
+        self::assertSame(-2, $first->get('Count')->value);
+        self::assertSame(-1, $last->get('Count')->value);
+        self::assertSame(1, $hiddenOpen->get('Count')->value);
+    }
+
+    public function testOpenOutlineRootCountsVisibleNestedAndSiblingItems(): void
+    {
+        $nestedOpen = (new OutlineItem(new TextString('nested open')))
+            ->addItem(new OutlineItem(new TextString('first grandchild')))
+            ->addItem(new OutlineItem(new TextString('second grandchild')));
+        $nestedClosed = (new OutlineItem(new TextString('nested closed'), null, false))
+            ->addItem(new OutlineItem(new TextString('hidden grandchild')));
+        $open = (new OutlineItem(new TextString('open')))->addItem($nestedOpen)->addItem($nestedClosed);
+        $closedSibling = (new OutlineItem(new TextString('closed sibling'), null, false))
+            ->addItem(new OutlineItem(new TextString('hidden sibling child')));
+        $root = (new OutlineDictionary())->addItem($open)->addItem($closedSibling);
+
+        self::assertSame(6, $root->get('Count')->value);
+        self::assertSame(4, $open->get('Count')->value);
+        self::assertSame(2, $nestedOpen->get('Count')->value);
+        self::assertSame(-1, $nestedClosed->get('Count')->value);
+        self::assertSame(-1, $closedSibling->get('Count')->value);
+    }
+
+    public function testEmptyOutlineRootOmitsLinksAndCount(): void
+    {
+        $root = new OutlineDictionary();
+
+        self::assertSame('Outlines', $root->get('Type')->value);
+        self::assertFalse($root->has('First'));
+        self::assertFalse($root->has('Last'));
+        self::assertFalse($root->has('Count'));
+    }
 }

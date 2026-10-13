@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 use PDF\Document\Destinations as D;
 use PDF\Document\Navigation as N;
+use PDF\Document\OutlineDictionary;
+use PDF\Document\OutlineItem;
 use PDF\Document\ResourceDictionary;
 use PDF\FileStructure;
 use PDF\Syntax\DataStructure\Rectangle;
+use PDF\Syntax\DataStructure\TextString;
 use PDF\Syntax\DocumentStructure\PageTree\PageObject;
 use PDF\Syntax\DocumentStructure\PageTree\PageTreeNode;
 use PDF\Syntax\DocumentStructure\DocumentCatalog;
@@ -14,6 +17,7 @@ use PDF\Syntax\DocumentStructure\NameDictionary;
 use PDF\Syntax\DataStructure\NameTree;
 use PDF\Syntax\DataStructure\NameTreeEntry;
 use PDF\Syntax\FileStructure\FileBody;
+use PDF\Syntax\FileStructure\CrossReferenceFormat;
 use PDF\Syntax\FileStructure\FileHeader;
 use PDF\Syntax\FileStructure\IncrementalUpdate;
 use PDF\Syntax\Object\DictionaryType;
@@ -74,4 +78,20 @@ $lastSecond = $frozen($one, $second)->without('B');
 $newCatalog = $catalog->without('Threads');
 $two = (new IncrementalUpdate($one, new FileBody(new IndirectObject($newFirst, $one->binding($first)->identifier), new IndirectObject($lastSecond, $one->binding($second)->identifier), new IndirectObject($newCatalog, $one->root->identifier ?? throw new LogicException('A serialized root needs its identifier.')))))->toRevision();
 $revisions = ['base' => base64_encode($base->bytes), 'replacement' => base64_encode($one->bytes), 'removal' => base64_encode($two->bytes)];
-echo json_encode(['page_box' => [0, 0, 100, 200], 'content_bounds' => [-50, 10, 80, 250], 'viewport' => [200, 200], 'current' => [9, 99, 3], 'views' => $views, 'labels' => $labels, 'revisions' => $revisions], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . PHP_EOL;
+// PDF32000_2008.pdf Table 152, physical p.376, and pdf_17_errata.pdf p.10:
+// closed top-level items remain visible, but hidden open descendants do not require root Count.
+$closedOutlines = [];
+foreach (CrossReferenceFormat::cases() as $format) {
+    $outlinePage = new PageObject($box, new ResourceDictionary());
+    $outlinePages = (new PageTreeNode())->addKid($outlinePage);
+    $hiddenOpen = (new OutlineItem(new TextString('hidden open')))
+        ->addItem(new OutlineItem(new TextString('hidden grandchild'), new D\Fit($outlinePage)));
+    $closedFirst = (new OutlineItem(new TextString('first closed'), new D\Fit($outlinePage), false))->addItem($hiddenOpen);
+    $closedLast = (new OutlineItem(new TextString('last closed'), new D\Fit($outlinePage), false))
+        ->addItem(new OutlineItem(new TextString('another hidden child'), new D\Fit($outlinePage)));
+    $outline = (new OutlineDictionary())->addItem($closedFirst)->addItem($closedLast);
+    $outlineCatalog = new DocumentCatalog($outlinePages, new Entry(new NameType('Outlines'), new IndirectReference($outline)));
+    $closedOutlines[$format->name] = base64_encode((new FileStructure(new FileHeader(), new FileBody($outlineCatalog), crossReferenceFormat: $format))->toPdf());
+}
+
+echo json_encode(['page_box' => [0, 0, 100, 200], 'content_bounds' => [-50, 10, 80, 250], 'viewport' => [200, 200], 'current' => [9, 99, 3], 'views' => $views, 'labels' => $labels, 'revisions' => $revisions, 'closed_outlines' => $closedOutlines], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . PHP_EOL;

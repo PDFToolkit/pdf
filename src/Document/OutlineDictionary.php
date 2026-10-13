@@ -40,7 +40,11 @@ final class OutlineDictionary extends DictionaryType implements OutlineParent
         if ($this->children !== []) {
             yield new Entry(new NameType('First'), new IndirectReference($this->children[0]));
             yield new Entry(new NameType('Last'), new IndirectReference($this->children[array_key_last($this->children)]));
-            yield new Entry(new NameType('Count'), new IntegerType(array_sum(array_map(static fn (OutlineItem $item): int => 1 + ($item->expanded ? $item->visibleDescendantCount() : 0), $this->children))));
+            // PDF32000_2008.pdf Table 152, physical p.376, and pdf_17_errata.pdf p.10:
+            // visible top-level items alone do not require Count when all are closed.
+            if (array_filter($this->children, static fn (OutlineItem $item): bool => $item->expanded) !== []) {
+                yield new Entry(new NameType('Count'), new IntegerType(array_sum(array_map(static fn (OutlineItem $item): int => 1 + ($item->expanded ? $item->visibleDescendantCount() : 0), $this->children))));
+            }
         }
     }
 
