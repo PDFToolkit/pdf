@@ -27,6 +27,11 @@ final readonly class PdfDocEncodedPassword
         return $this->value . substr($padding, 0, 32 - strlen($this->value));
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->value === '';
+    }
+
     /** @return array{value: string} */
     public function __debugInfo(): array
     {
