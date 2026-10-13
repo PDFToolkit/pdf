@@ -176,6 +176,12 @@ Les objets de graphe doivent être configurés avant l'écriture. Modifier l'arb
 
 `FileStructure::toPdf()` retourne les octets du fichier. `writeTo()` les écrit dans un chemin de fichier choisi par l'application. Ces opérations construisent le document en mémoire ; la limite de mémoire de l'application reste donc un élément du dimensionnement.
 
+### Révisions et identités historiques
+
+[`FileRevision`](../src/Syntax/FileStructure/FileRevision.php) est l'instantané produit par `FileStructure::toRevision()`. Ses octets restent figés. Ses [`RevisionObject`](../src/Syntax/FileStructure/RevisionObject.php) conservent la valeur effective, les alias d'identité et une copie des entrées du dictionnaire au moment de l'écriture. Un builder mutable n'est donc pas reparcouru lorsqu'une référence historique est réutilisée.
+
+[`IncrementalUpdate`](../src/Syntax/FileStructure/IncrementalUpdate.php) compose la révision précédente, un `FileBody` de modifications explicites et d'éventuelles entrées de trailer. [`IncrementalWriter`](../src/Serialization/IncrementalWriter.php) ajoute les nouveaux objets, garde les numéros des remplacements, hérite le trailer et produit `/Prev`. [`CrossReferenceSection`](../src/Syntax/FileStructure/CrossReferenceSection.php) représente les enregistrements de cette section ; [`CrossReferenceLimits`](../src/Syntax/FileStructure/CrossReferenceLimits.php) borne la capacité cumulée. Voir le [tutoriel des révisions](tutorials/11-incremental-update.md).
+
 | Composant | Représentation PDF |
 | --- | --- |
 | [`CrossReferenceFormat`](../src/Syntax/FileStructure/CrossReferenceFormat.php) | Choix explicite entre table et stream. |
@@ -203,6 +209,12 @@ La suite de filtres est donnée dans l'ordre du décodage. Les encodages s'appli
 [`EncodedData`](../src/Syntax/Filters/EncodedData.php) déclare des données **déjà encodées**, avec un [`FilterName`](../src/Syntax/Filters/FilterName.php). Il peut, par exemple, déclarer des octets JPEG associés à `DCTDecode`. Il ne lit pas d'image, n'applique pas de codec et ne convertit pas un bitmap en JPEG. Il doit être le dernier filtre de décodage et recevoir des données binaires ; le traitement `Crypt` exige une prise en charge de la sécurité du document.
 
 Le [tutoriel images](tutorials/06-images.md) compare une image XObject réutilisable et une inline image. Une [`InlineImage`](../src/Syntax/ContentStreamsResources/Operators/InlineImage.php) regroupe `BI`, `ID` et `EI` en un objet atomique ; les restrictions sur son dictionnaire et ses octets évitent une délimitation ambiguë.
+
+### Fichiers JPEG et PNG
+
+Les composants de [`Document\Images`](../src/Document/Images) reçoivent un [`ImageFileBytes`](../src/Document/Images/ImageFileBytes.php), sans lire de chemin ni d'URL. [`ImageImportLimits`](../src/Document/Images/ImageImportLimits.php) borne les octets, pixels, dimensions et chunks. [`PngImageDecoder`](../src/Document/Images/PngImageDecoder.php) reconstruit des [`ImageSamples`](../src/Document/Images/ImageSamples.php) : les échantillons couleur et alpha restent distincts. [`JpegImageReader`](../src/Document/Images/JpegImageReader.php) inspecte la structure et les couleurs d'un [`JpegImage`](../src/Document/Images/JpegImage.php), puis conserve ses données DCT.
+
+[`ImageXObjectFactory`](../src/Document/Images/ImageXObjectFactory.php) compose le dictionnaire normalisé de la table 89 et ses flux. Il crée un `/SMask` indirect pour l'alpha et fournit les paramètres DCT ou Flate appropriés. Il ne choisit ni le nom de ressource ni la matrice de peinture. Le [tutoriel des fichiers image](tutorials/10-image-files.md) montre ces opérations et les modes supportés.
 
 ## 6. Instructions de contenu, dessin et texte
 
@@ -294,7 +306,11 @@ Réutiliser la même instance de police, d'image ou de shading par référence p
 
 [`StandardFont`](../src/Document/Fonts/StandardFont.php) enumère les quatorze polices Type 1 standard. [`Type1Font`](../src/Document/Fonts/Type1Font.php) construit leur dictionnaire `/Type /Font`, `/Subtype /Type1` et `/BaseFont`, tout en permettant des entrées supplémentaires explicites. Les trois champs gérés ne peuvent être remplacés ou supprimés.
 
-Les autres tables de polices, descripteurs, CMaps et encodages existent dans le modèle généré. Leur définition ne fournit pas encore les traitements d'incorporation, de création de sous-ensembles ou de correspondance complète entre texte Unicode et glyphes. Les exemples emploient des encodages qu'ils expliquent et des polices adaptées.
+Pour une fonte incorporée, [`FontProgram`](../src/Document/Fonts/TrueType/FontProgram.php) décrit un TrueType statique et ses tables. [`CharacterMap`](../src/Document/Fonts/TrueType/CharacterMap.php) associe des valeurs Unicode à des CID distincts ; [`TextEncoder`](../src/Document/Fonts/TrueType/TextEncoder.php) produit les codes à deux octets attendus par Identity-H. Les Unicode distincts restent séparés même s'ils pointent le même glyphe, afin de préserver leur extraction.
+
+[`CIDFontProgram`](../src/Document/Fonts/TrueType/CIDFontProgram.php) prépare le programme complet pour FontFile2, avec les tables et checksums appropriés au CIDFont. [`FontDescriptor`](../src/Document/Fonts/FontDescriptor.php), [`CIDFontType2`](../src/Document/Fonts/CIDFontType2.php) et [`Type0Font`](../src/Document/Fonts/Type0Font.php) composent les dictionnaires normalisés. [`CIDToGIDMap`](../src/Document/Fonts/TrueType/CIDToGIDMap.php), les largeurs et [`ToUnicodeCMap`](../src/Document/Fonts/TrueType/ToUnicodeCMap.php) donnent leurs correspondances propres. Le [tutoriel TrueType et Unicode](tutorials/09-embedded-font.md) montre le graphe complet.
+
+Les autres tables de polices, CMaps et encodages existent dans le modèle généré. Le sous-ensemble de glyphes, les écritures verticales et la composition des scripts complexes ne sont pas fournis par cette incorporation. Les polices et leurs droits d'utilisation restent explicitement choisis par l'application.
 
 ### `/Info` et metadata streams
 
@@ -373,7 +389,7 @@ Les définitions conservent les informations nécessaires pour remonter à la no
 
 Ces objets ne chargent pas de JSON à l'exécution. Les inventaires sous [`resources/iso32000-1`](../resources/iso32000-1) servent aux outils de génération et de vérification. Les classes générées se construisent avec leurs définitions immuables. La [documentation de spécification](specification.md) explique la génération reproductible et la correction documentée de `/Prev`.
 
-Une classe de dictionnaire d'encryption, de signature, de font descriptor, de multimédia ou de structure balisée décrit des entrées du format. Elle ne réalise pas l'algorithme de chiffrement, la signature, l'incorporation d'une police, la lecture multimédia ou la conformité d'une structure balisée. La référence API documente les objets disponibles ; la couverture annoncée reste celle de leurs comportements effectivement implémentés.
+Une classe de dictionnaire d'encryption, de signature, de font descriptor, de multimédia ou de structure balisée décrit des entrées du format. Les traitements sont portés par leurs mécanismes dédiés lorsqu'ils existent, comme le programme TrueType et l'incorporation CID. La présence d'un dictionnaire ne réalise pas le chiffrement, la signature, la lecture multimédia ou la conformité d'une structure balisée. La référence API documente les objets disponibles ; la couverture annoncée reste celle de leurs comportements effectivement implémentés.
 
 ## 12. Choisir un composant et poursuivre
 

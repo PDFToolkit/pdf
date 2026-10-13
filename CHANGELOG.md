@@ -4,6 +4,10 @@
 
 ### Added
 
+- Explicit static TrueType/CID font incorporation with Unicode character maps, metric objects, FontFile2, descriptors, Identity-H Type0 fonts, CIDToGIDMap, widths and ToUnicode streams.
+- Bounded JPEG inspection and PNG decoding into image objects, including PNG alpha soft masks and explicit Adobe CMYK decoding semantics.
+- Frozen file revisions and incremental updates with historical identity aliases, absolute xref offsets, trailer inheritance and changing file identifiers, including replacements of compressed members.
+- Dedicated tutorials and rendered PDF examples for fonts, image files and incremental revisions.
 - A French GitHub Pages documentation site with a searchable reference of every PHP component, specification constraints and source links, tutorials with generated PDF downloads and browser previews, and automated link and PDF validation before deployment.
 - A French tutorial series with explained scripts, rendered previews, experiments and PDF specification references: first document, pages and text, graphics, navigation, links, images, gradients and compressed objects.
 - A practical table recipe and guidance for contributing further examples.
@@ -17,6 +21,9 @@
 
 ### Fixed
 
+- Emit free cross-reference records for unused object numbers instead of omitting initial gaps; bound cumulative cross-reference capacity before allocating records.
+- Preserve historical reference types and dictionary Type values across incremental replacements; reject reuse of old free numbers, generation changes and replacement of old structural streams.
+- Discover references in direct trailer values without writing unnecessary orphan indirect objects.
 - Require indirect references for catalog `Dests`, `Outlines` and `Threads`, as specified in table 28. Their specialized entry constructors still check the reference targets.
 
 ### Removed

@@ -55,6 +55,13 @@ Ouvrir [localhost:8000](http://localhost:8000/) pour vérifier la navigation, la
 
 `tools/check_site.py` vérifie l'inventaire des pages, les fichiers liés, les ancres, l'unicité des identifiants, la présence d'un titre principal, l'index de recherche et les couples PDF/source. Les références au code utilisent le commit fourni par `--revision`.
 
+Les deux workflows installent aussi le lecteur indépendant verrouillé dans `tools/validation-requirements.txt`. `tools/validate_mechanisms.py` contrôle l'extraction Unicode, les tables du programme de fonte incorporé, les échantillons JPEG/PNG et leur alpha, ainsi que chacune des trois révisions du nouvel exemple. Pour exécuter ces contrôles localement :
+
+```sh
+python -m pip install --require-hashes -r tools/validation-requirements.txt
+python tools/validate_mechanisms.py _build/pdfs
+```
+
 ## Publication
 
 Le workflow `.github/workflows/pages.yml` construit le site pour les pull requests et à chaque push sur `master`. Il génère les PDF avec PHP 8.5, les valide avec `qpdf`, rend toutes leurs pages avec Poppler, vérifie le site, puis publie l'artefact sur GitHub Pages uniquement depuis `master`. Les permissions d'écriture Pages et d'identité sont réservées au job de déploiement.

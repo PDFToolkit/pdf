@@ -77,6 +77,9 @@ Le [parcours de tutoriels](docs/tutorials/README.md) accompagne chaque script d'
 | [Images](docs/tutorials/06-images.md) | Image XObject, image inline, octets RGB et filtres. |
 | [Dégradé](docs/tutorials/07-gradient.md) | Fonction PDF de type 2 et shading axial. |
 | [Objets compressés](docs/tutorials/08-object-stream.md) | Flux de contenu, conteneur d'objets et références croisées. |
+| [Police TrueType et Unicode](docs/tutorials/09-embedded-font.md) | Programme incorporé, CID, largeurs et correspondance ToUnicode. |
+| [Images JPEG et PNG](docs/tutorials/10-image-files.md) | Couleurs, décodage PNG, JPEG conservé et masque de transparence. |
+| [Révisions incrémentales](docs/tutorials/11-incremental-update.md) | Remplacements explicites, octets historiques conservés et chaînage des xref. |
 
 La [recette de tableau](docs/recipes/table.md) assemble ces notions dans une présentation concrète. La [collection de recettes](docs/recipes/README.md) explique aussi comment proposer de nouveaux exemples.
 
@@ -101,7 +104,7 @@ Les implémentations exécutables couvrent les objets fondamentaux, l'écriture 
 
 **La présence d'une définition n'est pas une déclaration de conformité complète.** Le catalogue valide les types, références exigées, exigences inconditionnelles et certaines formes de valeurs. Les conditions, relations entre dictionnaires et règles de version qui ne disposent pas encore d'une validation spécialisée restent dans leurs définitions et dans le document de couverture.
 
-Les moteurs de chiffrement et de signature, l'incorporation et le sous-ensemble de polices, les codecs d'image spécialisés, les mises à jour incrémentales et la linéarisation restent à implémenter. Les dictionnaires concernés peuvent être construits ; cela ne réalise pas ces traitements. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les options de sécurité et de mise à jour qu'il ne sait pas exécuter.
+L'incorporation de TrueType statique, l'encodage Unicode via CID et ToUnicode, l'import JPEG/PNG et les révisions incrémentales de fichiers générés disposent de mécanismes dédiés et de tutoriels. Les limites détaillées figurent dans [la couverture](docs/specification.md). Les moteurs de chiffrement et de signature, le sous-ensemble de polices, les scripts complexes, les codecs d'image supplémentaires, l'import de PDF externes et la linéarisation restent à implémenter. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les traitements de sécurité qu'il ne sait pas exécuter.
 
 Le writer assemble actuellement le fichier en mémoire. Un lecteur PDF, un moteur de rendu et une API de mise en page ne font pas partie de cette bibliothèque de création.
 

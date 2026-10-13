@@ -46,7 +46,30 @@ standard has an implemented, independently verified semantic model. Encryption,
 signature generation, rendering, font subsetting, image codecs, tagged PDF
 semantics, multimedia playback and linearization require dedicated implementations
 and interoperability tests. Named dictionary classes alone do not implement
-those algorithms.
+those algorithms. The implemented image and font mechanisms below cover explicit
+subsets of those domains rather than every format and script.
+
+## Implemented mechanisms beyond the syntax model
+
+| Mechanism | Executable behavior | Explicit limits |
+| --- | --- | --- |
+| TrueType incorporation | Static sfnt/glyf validation, Unicode cmap 4/12, metrics, full-glyph CIDFont program, FontFile2, FontDescriptor, CIDFontType2, Identity-H Type0 font, CIDToGIDMap, widths and ToUnicode. | No font collections, CFF/variable fonts, glyph subsetting, vertical writing, kerning or complex-script shaping. FontFile2 uses a derived CIDFontProgram with cmap removed as required by 9.9; the invalidated DSIG is also removed. The original font's embedding permissions are checked. |
+| JPEG incorporation | Marker/frame/table validation, baseline and progressive eight-bit grayscale/RGB JPEG, Adobe CMYK transform zero and explicit DCTDecode parameters. Original DCT bytes are preserved. | No entropy decoding or JPEG encoding; the reader decodes the coefficients. ICC, YCCK and ambiguous colour semantics are rejected. EXIF orientation is not applied. |
+| PNG decoding | CRC/framing/order checks, bounded zlib decoding, all five scanline filters, eight-bit grayscale/RGB/indexed/alpha samples and tRNS, separate PDF soft-mask stream. | Static non-interlaced PNG only; other depths, APNG and embedded colour profiles are rejected. Ancillary colour metadata does not create calibrated PDF spaces. Import limits are explicit objects. |
+| Incremental revisions | Frozen FileRevision snapshots, explicit replacements/additions, historical identity aliases, absolute offsets, chained Prev, inherited trailer entries, renewed changing file ID, tables or streams and new object-stream containers. | Generated revisions only, inherited xref format, no external PDF parser, deletion/reuse, hybrid references, encrypted updates, signatures or linearization. Replacements retain the PDF object family and existing dictionary Type. Old bytes are preserved, so updates cannot erase confidential old content. |
+
+The initial writer emits free records for every unused object number below Size.
+Incremental sections emit changed records and newly introduced free holes, keeping
+the previous free-list chain. CrossReferenceLimits caps cumulative Size at 100,000
+entries by default, before allocating gap records; applications can supply an
+explicit capacity to a writer. New objects have generation zero, while a live
+replacement retains its existing generation.
+
+The tutorials for [embedded fonts](tutorials/09-embedded-font.md),
+[image files](tutorials/10-image-files.md) and
+[incremental updates](tutorials/11-incremental-update.md) explain their object
+graphs and include executable documents. None of these mechanisms adds an
+application-global registry or automatic layout engine.
 
 ## Rebuilding the source inventory
 

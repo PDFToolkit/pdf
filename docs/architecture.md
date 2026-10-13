@@ -44,4 +44,10 @@ Les tests PHPUnit vérifient des comportements et des contre-exemples ; des lect
 
 Une bibliothèque de confort peut transformer ses propres objets de mise en page en ce modèle. Une nouvelle entrée normalisée peut recevoir un type spécialisé et sa validation, en conservant la définition et sa source. Un nouveau filtre doit réaliser l'encodage qu'il déclare ; un nom de filtre ou une définition de dictionnaire ne suffit pas à revendiquer un codec.
 
-Les futurs traitements de sécurité, signatures et mises à jour devront disposer d'objets et de services explicites. Ils ne doivent pas introduire d'état partagé entre documents.
+Les polices TrueType se composent d'un programme, de tables et métriques, d'une correspondance caractère/CID, d'un programme CIDFont incorporable, d'un descripteur, d'une fonte CID et d'une fonte Type0. L'encodage du texte et ToUnicode restent des objets séparés. Le programme fournit des octets ; il ne sélectionne pas une police système et ne compose pas les scripts complexes.
+
+Les lecteurs d'images reçoivent un `ImageFileBytes`. Le PNG devient des échantillons couleur et éventuellement alpha ; le JPEG conserve des données DCT inspectées. `ImageXObjectFactory` compose leurs dictionnaires et leurs flux. Les noms de ressources et matrices de peinture restent explicites. Les limites de lecture sont fournies par un `ImageImportLimits`.
+
+`FileRevision` fige les octets et les liaisons d'identité d'un document. `RevisionObject` conserve ses alias historiques et une copie des entrées de son dictionnaire, pour ne pas reparcourir un builder mutable après écriture. `IncrementalUpdate` sélectionne les changements dans un `FileBody` ; `IncrementalWriter` ajoute les nouveaux octets, hérite le trailer et relie les sections xref. Une référence historique ne déclenche pas de nouvelle sérialisation. Les conteneurs structuraux anciens sont conservés et les membres compressés remplacés utilisent un nouveau conteneur ou un objet autonome.
+
+Les futurs traitements de sécurité et de signatures devront également disposer d'objets et de services explicites. Ils ne doivent pas introduire d'état partagé entre documents.

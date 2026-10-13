@@ -33,8 +33,11 @@ Le dossier parent du chemin choisi doit déjà exister. Les scripts chargent `ve
 | [06. Images](06-images.md) | Le même motif en image XObject et en image incorporée au contenu. | [images.php](../../examples/images.php) |
 | [07. Dégradé et fonction](07-gradient.md) | Une fonction de type 2 alimente un shading axial. | [gradient.php](../../examples/gradient.php) |
 | [08. Objets compressés](08-object-stream.md) | Filtres, flux d'objets et flux de références croisées. | [object-stream.php](../../examples/object-stream.php) |
+| [09. Police TrueType et Unicode](09-embedded-font.md) | Programme incorporé, CID, largeurs et correspondance ToUnicode. | [embedded-font.php](../../examples/embedded-font.php) |
+| [10. Images JPEG et PNG](10-image-files.md) | Inspection JPEG, décodage PNG, échantillons et transparence. | [image-files.php](../../examples/image-files.php) |
+| [11. Révisions incrémentales](11-incremental-update.md) | Conservation des octets, remplacements et chaînage des xref. | [incremental-update.php](../../examples/incremental-update.php) |
 
-Les leçons 03 à 07 peuvent se lire dans l'ordre des sujets qui vous intéressent, après le premier document. La dernière leçon concerne l'organisation du fichier plutôt que sa mise en page.
+Les leçons 03 à 07 peuvent se lire dans l'ordre des sujets qui vous intéressent, après le premier document. Les leçons 08 et 11 concernent l'organisation du fichier ; les leçons 09 et 10 ajoutent des programmes de police et des fichiers image réels au graphe.
 
 ## Quelques repères avant de lire le code
 
@@ -72,6 +75,6 @@ La seconde commande réécrit le PDF dans une forme utile pour examiner ses obje
 
 ## Aller vers la norme
 
-Les guides citent les sections de [PDF 1.7 / ISO 32000-1:2008](../../PDF32000_2008.pdf). La [couverture de la spécification](../specification.md) distingue les définitions disponibles des traitements réellement implémentés. Les polices incorporées, le retour automatique à la ligne, le chiffrement et les mises à jour incrémentales ne sont pas des fonctions fournies par ces tutoriels.
+Les guides citent les sections de [PDF 1.7 / ISO 32000-1:2008](../../PDF32000_2008.pdf). La [couverture de la spécification](../specification.md) distingue les définitions disponibles des traitements réellement implémentés. Le sous-ensemble de polices, la composition de scripts complexes, le retour automatique à la ligne, le chiffrement, les signatures et l'import de PDF externes restent hors de ce parcours.
 
 [Commencer par le premier document](01-first-document.md) · [Retour au README](../../README.md)
