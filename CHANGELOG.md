@@ -4,11 +4,14 @@
 
 ### Added
 
+- A security policy, private vulnerability reporting, a documented security review and regression coverage for hostile PDF values, shared graphs, numeric limits and file output.
 - A French tutorial series with explained scripts, rendered previews, experiments and PDF specification references: first document, pages and text, graphics, navigation, links, images, gradients and compressed objects.
 - A practical table recipe and guidance for contributing further examples.
 
 ### Changed
 
+- Audit locked Composer dependencies for known security advisories in CI.
+- Restrict `writeTo()` to native filesystem paths, reject empty/NUL paths and stream URIs, and report write failures without leaking the destination path.
 - Run PHPStan on examples and generate and validate every example with qpdf in CI.
 - Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
 - Rename the catalog entry `Extension` to `Extensions`, matching the PDF key. These API changes have no compatibility aliases.
@@ -16,6 +19,9 @@
 
 ### Fixed
 
+- Reject ambiguous inline-image `EI` sequences accepted without preceding whitespace by tolerant readers.
+- Use checked integer arithmetic for inline-image sizes and cross-reference identifier bounds.
+- Validate shared direct operand graphs once per identity while retaining active-cycle detection.
 - Require indirect references for catalog `Dests`, `Outlines` and `Threads`, as specified in table 28. Their specialized entry constructors still check the reference targets.
 
 ### Removed

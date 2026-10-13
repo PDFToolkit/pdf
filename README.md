@@ -101,6 +101,10 @@ Les moteurs de chiffrement et de signature, l'incorporation et le sous-ensemble 
 
 Le writer assemble actuellement le fichier en mémoire. Un lecteur PDF, un moteur de rendu et une API de mise en page ne font pas partie de cette bibliothèque de création.
 
+## Sécurité
+
+La [politique de sécurité](SECURITY.md) décrit les signalements privés et les frontières de confiance. La [revue de sécurité](docs/security.md) explique les protections de sérialisation et les responsabilités de l'application pour les chemins, les actions PDF et les limites de ressources.
+
 ## Génération des définitions
 
 Les ressources structurées et les classes générées sont versionnées. La génération est reproductible à partir de ces ressources ; elle n'a pas besoin de relire le PDF à l'exécution de la bibliothèque.
