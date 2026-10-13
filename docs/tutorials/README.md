@@ -1,6 +1,6 @@
 # Tutoriels : construire et lire un PDF objet par objet
 
-Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent le core **0.4.0** et les modules **0.1.2**, avec les révisions exactes fixées dans le `composer.lock` de ce checkout.
+Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent le core **0.5.0** et les modules **0.1.3**, avec les révisions exactes fixées dans le `composer.lock` de ce checkout.
 
 Les leçons 09 et 10 utilisent les modules optionnels `pdftoolkit/pdf-fonts` et
 `pdftoolkit/pdf-images`, installés comme dépendances de développement dans ce
@@ -19,7 +19,7 @@ composer install
 php examples/hello-world.php
 ```
 
-La leçon 20 demande aussi l'extension `openssl`, utilisée par son backend de
+Les leçons 20 et 26 demandent aussi l'extension `openssl`, utilisée par son backend de
 signature. Le certificat et la clé de démonstration sont des fixtures publiques
 de test ; le guide explique comment fournir une identité et une politique de
 confiance propres à l'application.
@@ -62,6 +62,10 @@ présente le PDF d'entrée, ses trois pages et les objets lus.
 | [20. Signatures](20-signed-document.md) | ByteRange, réservation et CMS détaché. | [signed-document.php](../../examples/signed-document.php) |
 | [21. Images, transparence et calques](21-native-graphics.md) | Échantillons, masques, groupes et visibilité. | [native-graphics.php](../../examples/native-graphics.php) |
 | [22. Fontes natives](22-native-fonts.md) | Type3, fontes simples et métriques verticales. | [native-fonts.php](../../examples/native-fonts.php) |
+| [23. Navigation native](23-native-navigation.md) | Labels, articles, cadrages et présentation. | [native-navigation.php](../../examples/native-navigation.php) |
+| [24. Fichiers incorporés](24-embedded-files.md) | EF, RF, métadonnées et collections. | [embedded-files.php](../../examples/embedded-files.php) |
+| [25. Générations des objets](25-object-lifecycle.md) | Suppression, liste libre et réutilisation. | [object-lifecycle.php](../../examples/object-lifecycle.php) |
+| [26. Politique de signature](26-signature-field-policy.md) | Champ, seeds, verrou et résultat effectivement signé. | [signature-field-policy.php](../../examples/signature-field-policy.php) |
 
 Les leçons 03 à 07 peuvent se lire dans l'ordre des sujets qui vous intéressent, après le premier document. Les leçons 08 et 11 concernent l'organisation du fichier ; les leçons 09 et 10 ajoutent des programmes de police et des fichiers image réels au graphe. La leçon 12 consulte les structures d'un PDF existant avec les objets du lecteur.
 

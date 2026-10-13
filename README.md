@@ -14,15 +14,15 @@ Les références sont les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supp
 
 ## Installation
 
-Le core **0.4** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
+Le core **0.5** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require 'roukmoute/pdf:^0.4'
+composer require 'roukmoute/pdf:^0.5'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.md) et le
-[guide de migration 0.4](docs/migration-0.4.md). Pour suivre les développements
+[guide de migration 0.5](docs/migration-0.5.md). Pour suivre les développements
 après cette série, remplacer la contrainte stable par `dev-master`.
 
 ## Modules optionnels
@@ -33,7 +33,7 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.2**, compatible avec les séries 0.2, 0.3 et 0.4 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.3**, compatible avec les séries 0.2, 0.3, 0.4 et 0.5 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
@@ -57,8 +57,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.4.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.4 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.5.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.5 attendue par les modules. Les
 dépendances de développement utilisent les modules stables 0.1, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.

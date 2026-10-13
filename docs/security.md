@@ -88,10 +88,21 @@ dans les fixtures sont publiques et exclusivement destinées aux tests.
 
 Le backend natif contrôle les algorithmes et les tailles de clés de la table 257
 sur la version PDF effective. Les messages CMS utilisent SHA-256 ; l'API PHP
-OpenSSL employée n'offre pas une sélection complète de condensats. Les seeds
-obligatoires et les verrous de champs sont refusés tant que leur orchestration
-n'a pas été implémentée. Une chaîne de certificats déclarée pour une signature
-PKCS#1 doit commencer par le certificat effectivement utilisé par ce backend.
+OpenSSL employée n'offre pas une sélection complète de condensats. L'orchestration
+`SignatureFieldSigning` applique les seeds, verrous, certificats et apparences
+réellement écrits, puis vérifie mathématiquement le résultat avant de remplir
+la réservation. Une exigence de digest ou de preuve indisponible reste refusée.
+La signature simple refuse les politiques qui demandent ce contrat dédié.
+Une chaîne de certificats déclarée pour une signature PKCS#1 doit commencer par
+le certificat effectivement utilisé par ce backend.
+
+Les tests de [vérification des résultats](../tests/SignatureOutputVerificationTest.php),
+de [politique de champ](../tests/SignatureFieldPolicySigningTest.php) et de
+[permissions historiques](../tests/SignaturePermissionHistoryTest.php) couvrent
+les sorties altérées, les certificats divergents, les faits rejoués, les verrous
+et les permissions. L'[oracle de politiques](../tools/validate_signature_field_policies.py)
+vérifie huit PDF et neuf signatures RSA/DSA sans modifier les lecteurs.
+La comparaison générale des modifications autorisées par MDP/UR demeure distincte.
 
 Les tests [AdobeEncryptionTest](../tests/AdobeEncryptionTest.php) et le validateur
 [validate_adobe_encryption.py](../tools/validate_adobe_encryption.py) couvrent le

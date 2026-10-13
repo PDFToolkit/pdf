@@ -36,10 +36,12 @@ format PKCS#1 proposé. Son API ne permet pas de choisir tous les condensats
 contrôlés : ce backend CMS demande PDF 1.6 ; une clé RSA de plus de 1 024 bits
 demande au moins PDF 1.5. Le catalogue peut relever la version du header.
 
-Les seeds obligatoires et les verrous de champs nécessitent une orchestration
-dédiée encore à terminer. La signature les refuse explicitement au lieu de
-les ignorer. Les objets de politique existent, mais ne prouvent pas à eux seuls
-que les modifications d'une révision respectent DocMDP ou FieldMDP.
+Les seeds obligatoires et les verrous de champs utilisent l'orchestration
+`SignatureFieldSigning` présentée dans [la leçon 26](26-signature-field-policy.md).
+Cette API vérifie les politiques écrites et le résultat cryptographique réel ;
+la signature simple de cette leçon refuse les exigences qui demandent ce contrat.
+La comparaison générale des modifications d'une révision selon DocMDP, FieldMDP
+ou UR reste un mécanisme distinct.
 
 La vérification mathématique et la confiance sont distinctes. Certificats,
 révocation, horodatage et permissions des révisions demandent leurs contrôles.

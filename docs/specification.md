@@ -5,7 +5,7 @@ committed to the repository: ISO 32000-1:2008, PDF 1.7. The additional
 `adobe_supplement_iso32000.pdf` describes Adobe ExtensionLevel 3; its [separate
 coverage and source catalogue](adobe-supplement.md) preserve the distinction
 between ISO definitions, Adobe extensions and Acrobat implementation notes.
-Core series 0.4 and optional module releases 0.1.2 require PHP 8.3 or later; the older core 0.1 tags
+Core series 0.5 and optional module releases 0.1.3 require PHP 8.3 or later; the older core 0.1 tags
 retain their PHP 8.5 requirement. These PHP versions are independent of the PDF
 format version. Implementing PDF 2.0 requires a separate specification
 and explicit version-specific definitions.
@@ -84,7 +84,10 @@ the core, which has no production dependency on them. See the
 | PDF images — core | Explicit dimensions, sample layouts, colour spaces, Decode, image stencils, colour-key/explicit/soft masks and declarations of encoded image data. | Encoded data and its colour/alpha semantics are caller-declared. External codecs and file inspection belong to optional converters. |
 | JPEG conversion — pdf-images | Marker/frame/table validation, baseline and progressive eight-bit grayscale/RGB JPEG and Adobe CMYK transform zero into a core DCTImage. Original DCT bytes are preserved. | No entropy decoding or JPEG encoding; the reader decodes the coefficients. ICC, YCCK and ambiguous colour semantics are rejected. EXIF orientation is not applied. |
 | PNG conversion — pdf-images | CRC/framing/order checks, bounded zlib decoding, all five scanline filters, eight-bit grayscale/RGB/indexed/alpha samples and tRNS into core sample objects. | Static non-interlaced PNG only; other depths, APNG and embedded colour profiles are rejected. Ancillary colour metadata does not create calibrated PDF spaces. Import limits are explicit objects. |
-| Incremental revisions | Frozen FileRevision snapshots, explicit replacements/additions, aliases, offsets, Prev, inherited trailer entries and file identifiers. Encryption operations are preserved; signatures can be finalized in an appended revision. | Generated revisions only. The mechanism inventory tracks additional xref and free-object variants. Replacements retain the existing object family and dictionary Type; old bytes remain, so updates cannot erase confidential content. |
+| Incremental revisions | Exact frozen FileRevision snapshots and timeline, additions/replacements, linked free lists, release/reuse, retired generations and aliases, offsets and Prev, ordinary/stream/hybrid xrefs, encrypted variants and updates after initial linearization. | Generated revisions only. Replacing a live value retains its object family and dictionary Type; a new identity reusing a free number may have a different type. Old bytes remain, so updates cannot erase confidential content. |
+| Navigation | Page labels, explicit and named destinations, viewport calculations, article rings and page drawing order, transitions and presentation sequences. | Native graph and arithmetic are checked against the effective catalog; a viewer renders and animates their presentation. |
+| Files and collections | Supplied embedded bytes, Size/MD5 metadata, Mac information, EF/RF/CI, attachment name trees and typed collection schemas/items/sorts; external-stream declarations. | No implicit filesystem/URL loading, platform conversion or collection UI execution. |
+| Signature field policies | Written seeds/locks, actual certificate/digest/backend/appearance choices, verified output before finalization and intrinsic historical signing permissions. | Full authenticated revision-difference analysis and UR authority/intersection remain open; timestamp, revocation and PKI trust need explicit external components. |
 | External PDF reading — pdf-reader | PDF 1.0–1.7 object syntax, traditional and stream xrefs, Prev revisions, object streams, explicit reference resolution, encoded stream retention and bounded Flate/ASCIIHex/ASCII85/RunLength decoding with eight-bit TIFF/PNG predictors. Ordered page-tree traversal checks counts, parents and unique identities; effective Resources, MediaBox, CropBox and Rotate preserve PDF objects. Page-local Contents streams are resolved separately in order. | No PDF 2.0, encrypted documents, hybrid XRefStm, repair, content interpretation, rendering or text extraction. Unknown codecs can be retained encoded but cannot be decoded. Page traversal does not inspect all resource contents. Contents inspection does not concatenate or decode streams. Reading does not implement import or remapping into the writer. |
 
 The initial writer emits free records for every unused object number below Size.
@@ -92,7 +95,9 @@ Incremental sections emit changed records and newly introduced free holes, keepi
 the previous free-list chain. CrossReferenceLimits caps cumulative Size at 100,000
 entries by default, before allocating gap records; applications can supply an
 explicit capacity to a writer. New objects have generation zero, while a live
-replacement retains its existing generation.
+replacement retains its existing generation. Release increments the free generation,
+reuse uses that stored generation, and generation 65535 is permanent. A number
+from the free list cannot create a new ObjStm container or compressed member.
 
 The tutorials for [embedded fonts](tutorials/09-embedded-font.md),
 [image files](tutorials/10-image-files.md) and

@@ -59,13 +59,29 @@ les mécanismes vérifiés et le travail restant, plutôt qu'un chiffre de compl
 | Références hybrides | Table classique et flux xref auxiliaire, références historiques, objets comprimés et lecture par lecteurs anciens et récents. |
 | Linéarisation | Ordonnancement natif, indices de pages et ressources partagées, vignettes et pièces jointes, objets comprimés, trois formats xref et variantes chiffrées. |
 
+## Constructions natives ajoutées dans la version 0.5.0
+
+| Famille | Constructions et vérifications |
+| --- | --- |
+| Historique exact | `FileRevision.previous`, snapshots des références remappées, dictionnaires réellement écrits et octets de flux encodés issus du même appel, avant chiffrement. |
+| Révisions après linéarisation | Snapshot initial exploitable et mises à jour préservant les octets, les plages d'indices et `/Prev` ; 90 historiques, soit 270 PDF indépendants. |
+| Liste libre et générations | Suppression, réutilisation, trous initiaux, générations retirées, saturation 65535 et restrictions ObjStm ; 90 historiques, soit 450 PDF indépendants sous les trois PHP. |
+| Navigation | Labels, huit modes de destination et cadrages, espaces nom/chaîne distincts, articles et anneaux de beads, transitions et séquences ; 77 tests et un oracle de trois pages, 55 labels, 10 cadrages et trois révisions. |
+| Fichiers et collections | Octets incorporés, Size/MD5, métadonnées Mac, EF/RF/CI, arbres de pièces jointes, schémas et items typés, préfixes et directions de tri ; 90 historiques, soit 180 PDF indépendants. |
+| Politiques de champs signés | Seeds écrits, choix du backend/digest/certificat, verrous copiés, apparences effectives et preuves requises. Vérification mathématique du résultat avant finalisation ; huit PDF et neuf signatures RSA/DSA dans l'oracle permanent. |
+| Permissions historiques de signature | Première certification, unicité, cardinalité UR, P1 historique, sélection FieldMDP des descendants et absence d'élévation de permission Adobe pour une nouvelle signature de champ. |
+| Graphe effectif | Ressources, boxes et rotation héritées des pages, ordre et limites des arbres de noms, générations inexistantes et relations natives contrôlées sur les snapshots. |
+
 Ces ajouts ne constituent pas encore une déclaration de couverture complète.
-Les inventaires conservent notamment la libération et la réutilisation des
-numéros d'objets, les mises à jour après linéarisation, l'orchestration des
-politiques de signature et les règles de versions, de ressources et de graphe qui
-doivent encore être vérifiées systématiquement. Plusieurs familles de navigation,
-d'annotations, de fichiers associés et de fonctions demandent aussi des
-constructions et des contrôles supplémentaires au-delà de leurs dictionnaires.
+La comparaison générale des modifications authentifiées permises par DocMDP,
+FieldMDP et UR reste ouverte : pages, contenu, ressources partagées, annotations,
+valeurs héritées et instanciation de templates demandent une analyse propre.
+Les autres priorités sont les familles d'annotations et leurs relations, les
+mesures 2D/géospatiales, les graphes multimédia/RichMedia, certaines règles de
+fonctions et les procédures de préparation des apparences de codes-barres.
+Les conditions, seuils de versions et ressources doivent aussi continuer à être
+audités famille par famille. Les inventaires distinguent ces travaux des
+constructions et preuves déjà livrées.
 
 ## Frontière du core
 

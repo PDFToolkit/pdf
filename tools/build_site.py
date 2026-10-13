@@ -24,6 +24,7 @@ GUIDES = [
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
     ('docs/architecture.md', 'guides/architecture.html', 'Architecture', 'Guides'),
     ('docs/packages.md', 'guides/modules.html', 'Core et modules optionnels', 'Guides'),
+    ('docs/migration-0.5.md', 'guides/migration-0-5.html', 'Migration vers le core 0.5', 'Guides'),
     ('docs/migration-0.4.md', 'guides/migration-0-4.html', 'Migration vers le core 0.4', 'Guides'),
     ('docs/specification.md', 'guides/couverture.html', 'Couverture de la norme', 'Guides'),
     ('docs/security.md', 'guides/securite.html', 'Sécurité', 'Guides'),
@@ -56,6 +57,10 @@ LESSONS = [
     ('20-signed-document', '20-signatures', 'Signatures PDF', 'signed-document', 'Réservation Contents, ByteRange et signature CMS explicite.'),
     ('21-native-graphics', '21-images-transparence-calques', 'Images, transparence et calques', 'native-graphics', 'Profondeurs, masques, groupes, ExtGState et contenu optionnel.'),
     ('22-native-fonts', '22-fontes-natives', 'Fontes natives et écriture verticale', 'native-fonts', 'Type3, fontes simples, programmes PDF et métriques verticales.'),
+    ('23-native-navigation', '23-navigation-native', 'Navigation, articles et présentation', 'native-navigation', 'Labels, cadrages, anneaux de lecture et séquences.'),
+    ('24-embedded-files', '24-fichiers-incorpores', 'Fichiers incorporés et collections', 'embedded-files', 'Octets, métadonnées, EF/RF/CI et présentation de collection.'),
+    ('25-object-lifecycle', '25-generations-objets', 'Suppression et générations', 'object-lifecycle', 'Liste libre, réutilisation et identités historiques.'),
+    ('26-signature-field-policy', '26-politique-signature', 'Politique du champ signé', 'signature-field-policy', 'Seeds, verrou, apparence et preuve du résultat effectivement signé.'),
 ]
 EXTERNAL_EXAMPLES = {
     'reading-pages': {
@@ -135,6 +140,13 @@ class Site:
         self.pdf_pages = {}
         self.base = '/' + base.strip('/') + '/' if base.strip('/') else '/'
         self.revision = revision
+        releases = re.findall(r'^## \[(\d+\.\d+\.\d+)\]', (root / 'CHANGELOG.md').read_text(encoding='utf-8'), re.M)
+        if not releases:
+            raise ValueError('The documentation needs a numbered changelog release.')
+        self.release = releases[0]
+        locked = json.loads((root / 'composer.lock').read_text(encoding='utf-8'))
+        module_versions = {item['version'].removeprefix('v') for item in locked['packages-dev'] if item['name'] in MODULE_GROUPS}
+        self.module_versions = ', '.join(sorted(module_versions))
         inventory = json.loads(api.read_text(encoding='utf-8'))
         self.packages = {item['name']: item for item in inventory['packages']}
         self.components = inventory['components']
@@ -288,7 +300,7 @@ class Site:
 <button id="menu-button" class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button></header>
 <div class="site-shell"><aside id="site-nav" class="sidebar" aria-label="Documentation">{self.sidebar(route)}<p class="sidebar-version">Documentation de <strong>master</strong><br>PHP 8.3+ · PDF 1.7</p></aside>
 <main id="main" data-root="{e(self.base)}">{header}<div class="content-grid"><article class="prose">{body}</article>{toc_html}</div>
-<footer class="site-footer"><span>PDF · ISO 32000-1:2008 · Adobe ExtensionLevel 3 · MIT</span><span>Référence de master · <a href="{REPOSITORY}/commit/{e(self.revision)}">{e(self.revision[:7])}</a> · <a href="{REPOSITORY}/releases/tag/v0.3.0">Stable 0.3.0</a></span></footer></main></div></body></html>'''
+<footer class="site-footer"><span>PDF · ISO 32000-1:2008 · Adobe ExtensionLevel 3 · MIT</span><span>Référence de master · <a href="{REPOSITORY}/commit/{e(self.revision)}">{e(self.revision[:7])}</a> · <a href="{REPOSITORY}/releases/tag/v{e(self.release)}">Version {e(self.release)}</a></span></footer></main></div></body></html>'''
         self.write(route, html)
 
     def rewrite_link(self, source: str, href: str) -> str:
@@ -453,7 +465,7 @@ class Site:
 <section><p class="eyebrow">Apprendre avec les objets</p><h2>Construire un document et explorer ses pages</h2><p>Chaque tutoriel relie les explications aux objets PHP et au PDF créé ou lu. Consultez ses pages, le script et le résultat de son exécution.</p>{self.tutorial_cards()}</section>
 <section><h2>Un core PDF, des modules au choix</h2><p>Le core représente les objets et les mécanismes de la norme Adobe. La lecture de PDF externes et la conversion de fichiers image ou de fontes sont des dépendances optionnelles : chaque module dépend du core.</p><p><a href="{e(self.url('guides/modules.html'))}">Choisir les packages et comprendre leur frontière →</a></p></section>
 <section><h2>Trois chemins pour explorer le projet</h2><div class="cards"><a class="card" href="{e(self.url('guides/composants.html'))}"><div class="card-body"><h3>Comprendre les responsabilités</h3><p>Valeurs, graphes, ressources, fonctions et écriture : comment les familles se composent.</p></div></a><a class="card" href="{e(self.url('reference/index.html'))}"><div class="card-body"><h3>Consulter la référence</h3><p>Les signatures et l’héritage de chaque composant, avec les sources et les tableaux de la norme.</p></div></a><a class="card" href="{e(self.url('recipes/table.html'))}"><div class="card-body"><h3>Assembler un exemple pratique</h3><p>Un tableau explicite : cellules, couleurs, grille et positionnement du texte.</p></div></a></div></section>
-<aside class="callout"><strong>Core stable 0.3.0 · Modules stables 0.1.1.</strong> Cette documentation suit master ; les changements après ces versions figurent dans les changelogs. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
+<aside class="callout"><strong>Core {e(self.release)} · Modules {e(self.module_versions)}.</strong> Cette documentation suit master ; les changements après ces versions figurent dans les changelogs. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
         self.page('index.html', 'Le format PDF, objet par objet', 'Accueil', body)
 
     def spec_entries(self, table: str, seen: set[str] | None = None) -> list[dict]:
