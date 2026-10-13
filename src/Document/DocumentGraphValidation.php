@@ -52,6 +52,8 @@ final class DocumentGraphValidation
         $visitedPages = [];
         $graph = new DocumentGraphContext($this->context, $this->catalog, ...array_values($this->effective));
         $this->visitPages($pageReferences, null, $pages, $visitedPages, $graph);
+        (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         /** @var list<array{BasicType, bool}> $pending */
         $pending = [[$this->catalog, true], ...array_map(static fn (BasicType $value): array => [$value, true], array_values($this->context->objects()))];
         // Unchanged objects still participate in file-scoped subset uniqueness and graph relationships.
@@ -67,6 +69,23 @@ final class DocumentGraphValidation
             }
             $dictionary = $this->dictionary($value);
             $type = $dictionary?->get('Type');
+            if ($dictionary !== null && $type instanceof NameType && $type->value === 'Filespec') {
+                (new \PDF\Document\Files\FileSpecificationRules())->validate($dictionary, $graph);
+                $version->require(PdfVersion::PDF11, 'File specifications');
+                foreach (['EF' => PdfVersion::PDF13, 'RF' => PdfVersion::PDF13, 'UF' => PdfVersion::PDF17, 'CI' => PdfVersion::PDF17, 'Desc' => PdfVersion::PDF16, 'V' => PdfVersion::PDF12] as $key => $minimum) {
+                    if ($graph->entry($dictionary, $key) !== null) {
+                        $version->require($minimum, 'File specification /' . $key);
+                    }
+                }
+                $ci = $graph->entry($dictionary, 'CI');
+                if ($ci !== null && (!$ci instanceof IndirectReference || $graph->dictionary($ci) === null)) {
+                    throw new \InvalidArgumentException('File specification CI requires an indirect collection-item dictionary.');
+                }
+            }
+            if ($dictionary !== null && $type instanceof NameType && $type->value === 'Filespec'
+                && ($graph->entry($dictionary, 'EF') !== null || $graph->entry($dictionary, 'RF') !== null) && !$indirect) {
+                throw new \InvalidArgumentException('A file specification containing EF or RF must be indirectly referenced.');
+            }
             if ($seen->offsetExists($value)) {
                 continue;
             }
