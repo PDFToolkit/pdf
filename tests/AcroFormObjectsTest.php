@@ -343,6 +343,75 @@ final class AcroFormObjectsTest extends TestCase
         (new SignatureField($this->fieldName('y')))->addWidget($widget);
     }
 
+    public function testStreamNormalWithRolloverStatesRequiresAs(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $rollover = new AppearanceStates(new AppearanceState(new NameType('Hover'), $this->stream()));
+        $this->widget($field, new WidgetAppearance($this->stream(), rollover: $rollover));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('N, R or D');
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+    }
+
+    public function testStreamNormalWithDownStatesRequiresAs(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $down = new AppearanceStates(new AppearanceState(new NameType('Pressed'), $this->stream()));
+        $this->widget($field, new WidgetAppearance($this->stream(), down: $down));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('N, R or D');
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+    }
+
+    public function testStreamNormalAllowsAsForRolloverAndDownStateDictionaries(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $normal = $this->stream();
+        $rollover = new AppearanceStates(new AppearanceState(new NameType('Selected'), $this->stream()));
+        $down = new AppearanceStates(new AppearanceState(new NameType('Selected'), $this->stream()));
+        $appearance = new WidgetAppearance($normal, $rollover, $down);
+        $widget = $this->widget($field, $appearance, new NameType('Selected'));
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+        self::assertTrue($appearance->requiresState());
+        self::assertSame($normal, $appearance->get('N')->target());
+        self::assertSame($rollover, $appearance->get('R'));
+        self::assertSame($down, $appearance->get('D'));
+        self::assertSame('Selected', $widget->get('AS')->value);
+    }
+
+    public function testStatefulNormalAndStreamAlternativesStillValidateNormalSelection(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $normal = new AppearanceStates(new AppearanceState(new NameType('Selected'), $this->stream()));
+        $appearance = new WidgetAppearance($normal, $this->stream(), $this->stream());
+        $widget = $this->widget($field, $appearance, new NameType('Selected'));
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+        self::assertTrue($appearance->requiresState());
+        self::assertSame('Selected', $widget->get('AS')->value);
+    }
+
+    public function testRolloverAndDownStateKeysNeedNotMatchNormalStateKeys(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $normal = new AppearanceStates(new AppearanceState(new NameType('Selected'), $this->stream()));
+        $rollover = new AppearanceStates(new AppearanceState(new NameType('Hover'), $this->stream()));
+        $down = new AppearanceStates(new AppearanceState(new NameType('Pressed'), $this->stream()));
+        $widget = $this->widget($field, new WidgetAppearance($normal, $rollover, $down), new NameType('Selected'));
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+        // ISO12.5.5 permits a reader to display nothing when a branch has no such AS.
+        self::assertSame('Selected', $widget->state->value);
+    }
+
+    public function testAsIsOptionalWhenAllAppearanceBranchesAreStreams(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $appearance = new WidgetAppearance($this->stream(), $this->stream(), $this->stream());
+        $widget = $this->widget($field, $appearance, new NameType('Unused'));
+        (new AcroForm($this->tree()->addRoot($field)))->validate();
+        self::assertFalse($appearance->requiresState());
+        self::assertSame('Unused', $widget->get('AS')->value);
+    }
+
     public function testWidgetRequiresItsPageAnnotsMembership(): void
     {
         $field = new SignatureField($this->fieldName('x'));
@@ -665,6 +734,36 @@ final class AcroFormObjectsTest extends TestCase
         $file = new FileStructure(new FileHeader('1.7'), new FileBody($catalog), new IndirectReference($catalog));
         $this->expectException(\InvalidArgumentException::class);
         $file->toPdf();
+    }
+
+    public function testActualFileWriterRejectsMissingAsOnRolloverStates(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $appearance = new WidgetAppearance($this->stream(), new AppearanceStates(new AppearanceState(new NameType('Hover'), $this->stream())));
+        $widget = new WidgetAnnotation($this->box(), $appearance);
+        $page = new PageObject($this->box(), new ResourceDictionary(), null, new Entry(new NameType('Annots'), new ArrayType(new IndirectReference($widget))));
+        $widget->bindToPage($page);
+        $field->addWidget($widget);
+        $form = new AcroForm($this->tree()->addRoot($field));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new AcroFormEntry(new IndirectReference($form)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('N, R or D');
+        (new FileStructure(new FileHeader('1.7'), new FileBody($catalog), new IndirectReference($catalog)))->toPdf();
+    }
+
+    public function testActualFileWriterAcceptsStreamNormalAndStatefulDownAppearance(): void
+    {
+        $field = new TextField($this->fieldName('x'));
+        $appearance = new WidgetAppearance($this->stream(), down: new AppearanceStates(new AppearanceState(new NameType('Pressed'), $this->stream())));
+        $widget = new WidgetAnnotation($this->box(), $appearance, new NameType('Pressed'));
+        $page = new PageObject($this->box(), new ResourceDictionary(), null, new Entry(new NameType('Annots'), new ArrayType(new IndirectReference($widget))));
+        $widget->bindToPage($page);
+        $field->addWidget($widget);
+        $form = new AcroForm($this->tree()->addRoot($field));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new AcroFormEntry(new IndirectReference($form)));
+        $bytes = (new FileStructure(new FileHeader('1.7'), new FileBody($catalog), new IndirectReference($catalog)))->toPdf();
+        self::assertStringContainsString('/AS /Pressed', $bytes);
+        self::assertStringContainsString('/Pressed', $bytes);
     }
 
     public function testAdobeSignatureLockPermissionsRequireCatalogExtensionDeclaration(): void

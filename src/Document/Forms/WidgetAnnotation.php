@@ -90,12 +90,13 @@ final class WidgetAnnotation extends SchemaDictionary
         if (!$listed) {
             throw new \InvalidArgumentException('A widget must belong to its page Annots array.');
         }
+        if ($this->appearance?->requiresState() && $this->state === null) {
+            throw new \InvalidArgumentException('Any state dictionary in N, R or D requires an AS appearance state.');
+        }
         if ($this->appearance?->normal instanceof AppearanceStates) {
             if ($this->state === null || !$this->appearance->normal->has($this->state)) {
                 throw new \InvalidArgumentException('A stateful appearance needs an AS selecting an existing normal state.');
             }
-        } elseif ($this->state !== null) {
-            throw new \InvalidArgumentException('AS requires a state dictionary in the normal appearance.');
         }
         if ($this->appearance === null && $this->parentField->tree()?->needAppearances->value !== true) {
             throw new \InvalidArgumentException('Supply a widget appearance or explicitly request NeedAppearances.');
