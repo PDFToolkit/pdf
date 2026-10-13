@@ -42,7 +42,16 @@ LESSONS = [
     ('09-embedded-font', '09-police-incorporee', 'Police TrueType et Unicode', 'embedded-font', 'Programme incorporé, CID, métriques et correspondance Unicode.'),
     ('10-image-files', '10-images-jpeg-png', 'Images JPEG et PNG', 'image-files', 'Fichiers image, couleurs, échantillons et transparence.'),
     ('11-incremental-update', '11-revisions-incrementales', 'Révisions incrémentales', 'incremental-update', 'Octets conservés, remplacements explicites et chaînage des xref.'),
+    ('12-reading-pages', '12-lire-pages-pdf', 'Lire les pages d’un PDF externe', 'reading-pages', 'Arbre vérifié, attributs hérités et flux décodés explicitement.'),
 ]
+EXTERNAL_EXAMPLES = {
+    'reading-pages': {
+        'package': 'pdftoolkit/pdf-reader',
+        'source': 'examples/pages.php',
+        'input': 'tests/Fixtures/page-tree/classic.pdf',
+        'expectedPages': 3,
+    },
+}
 GROUPS = [
     ('objets', 'Objets et références'), ('fichier', 'Écriture et fichier'),
     ('contenu', 'Contenu, texte et graphisme'), ('document', 'Structure documentaire'),
@@ -133,6 +142,35 @@ class Site:
             route = f'tutorials/{slug}.html'
             self.pages.append((f'docs/tutorials/{source}.md', route, title, 'Tutoriels'))
             self.examples[example] = route
+        if not set(EXTERNAL_EXAMPLES) <= set(self.examples):
+            raise ValueError('Every external example needs a documented site page')
+        self.example_sources = {}
+        for example, route in self.examples.items():
+            external = EXTERNAL_EXAMPLES.get(example)
+            package_name = external['package'] if external else 'roukmoute/pdf'
+            package = self.packages.get(package_name)
+            if package is None:
+                raise ValueError('Missing example source package: ' + package_name)
+            source = external['source'] if external else f'examples/{example}.php'
+            directory = root / 'vendor' / package_name if external else root
+            record = {
+                'kind': 'input' if external else 'generated',
+                'package': package_name,
+                'page': route,
+                'source': source,
+                'sourceUrl': self.source_url(source, owner=package),
+                'path': directory / source,
+            }
+            if external:
+                if not package['optional'] or not re.fullmatch(r'[0-9a-f]{40}', package['revision'] or ''):
+                    raise ValueError('External examples need an installed package pinned to a commit')
+                record.update(
+                    input=external['input'],
+                    inputPath=directory / external['input'],
+                    inputSourceUrl=self.source_url(external['input'], owner=package),
+                    expectedPages=external['expectedPages'],
+                )
+            self.example_sources[example] = record
         self.markdown_routes = {source: route for source, route, _, _ in self.pages}
         resources = root / 'resources' / 'iso32000-1'
         self.metadata = json.loads((resources / 'metadata.json').read_text(encoding='utf-8'))
@@ -224,11 +262,22 @@ class Site:
     def rewrite_link(self, source: str, href: str) -> str:
         parsed = urlsplit(href)
         if parsed.netloc == 'github.com':
-            match = re.fullmatch(r'/PDFToolkit/(pdf-fonts|pdf-images|pdf-reader)/blob/(?:master|[0-9a-f]{40})/(src/.*)', parsed.path)
-            if match and not parsed.fragment:
-                item = self.by_package_source.get(('pdftoolkit/' + match.group(1), match.group(2)))
-                if item:
+            match = re.fullmatch(r'/PDFToolkit/(pdf-fonts|pdf-images|pdf-reader)/blob/(?:master|[0-9a-f]{40})/(.+)', parsed.path)
+            if match:
+                package_name, path = 'pdftoolkit/' + match.group(1), match.group(2)
+                item = self.by_package_source.get((package_name, path))
+                if item and not parsed.fragment:
                     return self.url(self.routes[item['name']])
+                for name, record in self.example_sources.items():
+                    if record['package'] == package_name and not parsed.fragment:
+                        if record['source'] == path:
+                            return self.url(self.examples[name]) + '#code-source'
+                        if record.get('input') == path:
+                            return self.url(f'examples/{name}.pdf')
+                package = self.packages.get(package_name)
+                if package:
+                    fragment = '#' + parsed.fragment if parsed.fragment else ''
+                    return self.source_url(path, owner=package) + fragment
         if parsed.netloc == 'pdftoolkit.github.io' and parsed.path.startswith('/pdf/'):
             return self.url(parsed.path[len('/pdf/'):]) + ('#' + parsed.fragment if parsed.fragment else '')
         if parsed.scheme or parsed.netloc or not parsed.path:
@@ -304,30 +353,53 @@ class Site:
         return html, flatten(renderer.toc_tokens)
 
     def example_panel(self, example: str) -> str:
-        code = (self.root / 'examples' / f'{example}.php').read_text(encoding='utf-8')
+        record = self.example_sources[example]
+        code = record['path'].read_text(encoding='utf-8')
         pdf = self.url(f'examples/{example}.pdf')
         source = self.url(f'examples/{example}.php.txt')
         pages = self.pdf_pages[example]
+        is_input = record['kind'] == 'input'
+        pdf_label = 'PDF d’entrée' if is_input else 'Résultat PDF'
+        heading = 'Voir le PDF d’entrée' if is_input else 'Voir le résultat PDF'
+        source_name = Path(record['source']).name
         page_images = ''.join(
             f'<figure class="pdf-page"><a href="{e(self.url("assets/pdf-pages/" + image["file"]))}" target="_blank" rel="noopener" aria-label="Agrandir la page {number} sur {len(pages)}">'
-            f'<img src="{e(self.url("assets/pdf-pages/" + image["file"]))}" alt="Résultat PDF {e(example)} : page {number} sur {len(pages)}" width="{image["width"]}" height="{image["height"]}" loading="lazy"></a>'
+            f'<img src="{e(self.url("assets/pdf-pages/" + image["file"]))}" alt="{pdf_label} {e(example)} : page {number} sur {len(pages)}" width="{image["width"]}" height="{image["height"]}" loading="lazy"></a>'
             f'<figcaption>Page {number} sur {len(pages)}</figcaption></figure>'
             for number, image in enumerate(pages, 1)
         )
-        return f'''<section class="pdf-panel" id="resultat-pdf"><h2>Voir le résultat PDF</h2>
-<p>Ce fichier a été généré avec le code de cette documentation. Toutes ses pages sont reproduites ci-dessous ; ouvrir le PDF pour utiliser ses liens et ses signets.</p>
-<div class="pdf-actions"><a class="button" href="{e(pdf)}" target="_blank" rel="noopener">Ouvrir le PDF ↗</a><a class="button secondary" href="{e(pdf)}" download>Télécharger</a><a class="button secondary" href="{e(source)}" download="{e(example)}.php">Télécharger le code PHP</a></div>
+        description = (
+            'Ce PDF est l’entrée du lecteur : une fixture originale créée avec pypdf et qpdf, indépendamment du writer PHP. '
+            'Ses trois pages sont reproduites ci-dessous ; le résultat de la lecture figure ensuite dans la sortie console.'
+            if is_input else
+            'Ce fichier a été généré avec le code de cette documentation. Toutes ses pages sont reproduites ci-dessous ; ouvrir le PDF pour utiliser ses liens et ses signets.'
+        )
+        provenance = f'<p>Code de <code>{e(record["package"])}</code> · <a href="{e(record["sourceUrl"])}">Consulter la source au commit documenté ↗</a>'
+        if is_input:
+            provenance += f' · <a href="{e(record["inputSourceUrl"])}">Origine du PDF d’entrée ↗</a>'
+        provenance += '</p>'
+        console = ''
+        if is_input:
+            result = (self.pdfs / (example + '.txt')).read_text(encoding='utf-8')
+            console = f'''<section class="source-panel" id="resultat-lecture"><h2>Résultat de la lecture</h2>
+<p>Sortie réelle du script exécuté sur le PDF d’entrée pendant la construction de cette documentation.
+<a href="{e(self.url(f"examples/{example}.txt"))}" download>Télécharger la sortie console</a>.</p>
+<pre><code class="language-text">{e(result)}</code></pre></section>'''
+        return f'''<section class="pdf-panel" id="resultat-pdf"><h2>{heading}</h2>
+<p>{description}</p>
+<div class="pdf-actions"><a class="button" href="{e(pdf)}" target="_blank" rel="noopener">Ouvrir le PDF ↗</a><a class="button secondary" href="{e(pdf)}" download>Télécharger</a><a class="button secondary" href="{e(source)}" download="{e(source_name)}">Télécharger le code PHP</a></div>
 <div class="pdf-pages" role="region" aria-label="Aperçu des {len(pages)} pages du PDF {e(example)}" tabindex="0">{page_images}</div>
 <details class="pdf-native"><summary>Utiliser le lecteur PDF du navigateur</summary>
 <p class="search-hint">Ce lecteur dépend du navigateur. Si le document ne s’affiche pas, utiliser « Ouvrir le PDF » ou « Télécharger ».</p>
-<iframe class="pdf-viewer" src="{e(pdf)}#view=FitH" title="Résultat PDF : {e(example)}" loading="lazy"></iframe>
+<iframe class="pdf-viewer" src="{e(pdf)}#view=FitH" title="{pdf_label} : {e(example)}" loading="lazy"></iframe>
 </details></section>
-<section class="source-panel" id="code-source"><h2>Code source complet</h2><details><summary>Lire le script commenté : {e(example)}.php</summary><pre><code class="language-php">{e(code)}</code></pre></details></section>'''
+{console}<section class="source-panel" id="code-source"><h2>Code source complet</h2>{provenance}<details><summary>Lire le script commenté : {e(source_name)}</summary><pre><code class="language-php">{e(code)}</code></pre></details></section>'''
 
     def tutorial_cards(self) -> str:
         html = '<div class="cards">'
         for i, (_, slug, title, example, text) in enumerate(LESSONS, 1):
-            html += f'<a class="card" href="{e(self.url("tutorials/" + slug + ".html"))}"><div class="card-preview"><img src="{e(self.url("assets/previews/" + example + ".png"))}" alt="Aperçu : {e(title)}" loading="lazy"></div><div class="card-body"><span class="eyebrow">Tutoriel {i:02d}</span><h3>{e(title)}</h3><p>{e(text)}</p><span class="card-link">Lire et voir le PDF →</span></div></a>'
+            preview = 'assets/pdf-pages/' + self.pdf_pages[example][0]['file'] if example in EXTERNAL_EXAMPLES else 'assets/previews/' + example + '.png'
+            html += f'<a class="card" href="{e(self.url("tutorials/" + slug + ".html"))}"><div class="card-preview"><img src="{e(self.url(preview))}" alt="Aperçu : {e(title)}" loading="lazy"></div><div class="card-body"><span class="eyebrow">Tutoriel {i:02d}</span><h3>{e(title)}</h3><p>{e(text)}</p><span class="card-link">Lire et voir le PDF →</span></div></a>'
         return html + '</div>'
 
     def component_cards(self, components: list[dict]) -> str:
@@ -344,7 +416,7 @@ class Site:
     def home(self) -> None:
         body = f'''<section class="hero"><div class="hero-copy"><p class="eyebrow">PHP 8.3+ · PDF 1.7 · ISO 32000-1</p><h1>Le format PDF.<br>Objet par objet.</h1><p class="hero-description">Comprendre les structures, composer les objets, maîtriser les octets. Une documentation pour explorer le format et construire vos propres fichiers PDF.</p><div class="pdf-actions"><a class="button" href="{e(self.url('tutorials/01-premier-document.html'))}">Créer mon premier PDF →</a><a class="button secondary" href="{e(self.url('reference/index.html'))}">Explorer les composants</a></div></div><div class="hero-visual" aria-label="Du catalogue à la page"><div class="graph-card"><span class="badge">01 / point d’entrée</span><code>DocumentCatalog</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">02 / arbre du document</span><code>PageTreeNode</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">03 / contenu & ressources</span><code>PageObject</code><span class="graph-leaves">StreamObject · ResourceDictionary</span></div></div></section>
 <div class="stats"><div class="stat"><strong>{number(len(self.components))}</strong><span>composants documentés</span></div><div class="stat"><strong>{self.metadata['dictionary_table_count']}</strong><span>dictionnaires normalisés</span></div><div class="stat"><strong>{len(self.examples)}</strong><span>exemples PDF à explorer</span></div><div class="stat"><strong>{self.metadata['operator_count']}</strong><span>tokens d’opérateurs PDF</span></div></div>
-<section><p class="eyebrow">Apprendre en construisant</p><h2>Du premier texte aux révisions du document</h2><p>Chaque tutoriel relie les explications aux objets PHP et au document produit. Ouvrez le résultat, modifiez le script et observez ce qui change.</p>{self.tutorial_cards()}</section>
+<section><p class="eyebrow">Apprendre avec les objets</p><h2>Construire un document et explorer ses pages</h2><p>Chaque tutoriel relie les explications aux objets PHP et au PDF créé ou lu. Consultez ses pages, le script et le résultat de son exécution.</p>{self.tutorial_cards()}</section>
 <section><h2>Un core PDF, des modules au choix</h2><p>Le core représente les objets et les mécanismes de la norme Adobe. La lecture de PDF externes et la conversion de fichiers image ou de fontes sont des dépendances optionnelles : chaque module dépend du core.</p><p><a href="{e(self.url('guides/modules.html'))}">Choisir les packages et comprendre leur frontière →</a></p></section>
 <section><h2>Trois chemins pour explorer le projet</h2><div class="cards"><a class="card" href="{e(self.url('guides/composants.html'))}"><div class="card-body"><h3>Comprendre les responsabilités</h3><p>Valeurs, graphes, ressources, fonctions et écriture : comment les familles se composent.</p></div></a><a class="card" href="{e(self.url('reference/index.html'))}"><div class="card-body"><h3>Consulter la référence</h3><p>Les signatures et l’héritage de chaque composant, avec les sources et les tableaux de la norme.</p></div></a><a class="card" href="{e(self.url('recipes/table.html'))}"><div class="card-body"><h3>Assembler un exemple pratique</h3><p>Un tableau explicite : cellules, couleurs, grille et positionnement du texte.</p></div></a></div></section>
 <aside class="callout"><strong>Cette documentation suit master.</strong> La version stable 0.1.1 reçoit les correctifs de sécurité ; les évolutions d’API présentées ici sont celles du code en développement. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
@@ -509,14 +581,29 @@ class Site:
         examples.mkdir(parents=True, exist_ok=True)
         expected = set(self.examples)
         actual = {path.stem for path in (self.root / 'examples').glob('*.php')}
-        if actual != expected:
-            raise ValueError('Every example needs a documented site page: ' + str(actual ^ expected))
+        core_examples = expected - set(EXTERNAL_EXAMPLES)
+        if actual != core_examples:
+            raise ValueError('Every writer example needs a documented site page: ' + str(actual ^ core_examples))
         for example in sorted(expected):
+            record = self.example_sources[example]
             source_pdf = self.pdfs / (example + '.pdf')
             if not source_pdf.is_file() or not source_pdf.read_bytes().startswith(b'%PDF-'):
                 raise ValueError('Generate the example PDF first: ' + example)
             shutil.copyfile(source_pdf, examples / source_pdf.name)
-            shutil.copyfile(self.root / 'examples' / (example + '.php'), examples / (example + '.php.txt'))
+            if not record['path'].is_file():
+                raise ValueError('Missing example source in its package: ' + example)
+            shutil.copyfile(record['path'], examples / (example + '.php.txt'))
+            record['sourceSha256'] = hashlib.sha256(record['path'].read_bytes()).hexdigest()
+            record['pdfSha256'] = hashlib.sha256(source_pdf.read_bytes()).hexdigest()
+            if record['kind'] == 'input':
+                if not record['inputPath'].is_file() or source_pdf.read_bytes() != record['inputPath'].read_bytes():
+                    raise ValueError('The reader example PDF must preserve its original input: ' + example)
+                console_path = self.pdfs / (example + '.txt')
+                if not console_path.is_file() or not console_path.read_text(encoding='utf-8').strip():
+                    raise ValueError('Run the reader example and retain its console result first: ' + example)
+                shutil.copyfile(console_path, examples / console_path.name)
+                record['console'] = f'examples/{example}.txt'
+                record['consoleSha256'] = hashlib.sha256(console_path.read_bytes()).hexdigest()
             images = {}
             for image in self.pdf_previews.glob(example + '-*.png'):
                 match = re.fullmatch(re.escape(example) + r'-(\d+)\.png', image.name)
@@ -528,6 +615,8 @@ class Site:
                 images[number] = image
             if not images or sorted(images) != list(range(1, len(images) + 1)):
                 raise ValueError('Render every PDF page in sequence first: ' + example)
+            if record['kind'] == 'input' and len(images) != record['expectedPages']:
+                raise ValueError('Render every page of the external input PDF: ' + example)
             self.pdf_pages[example] = []
             for number, image in sorted(images.items()):
                 with image.open('rb') as stream:
@@ -551,13 +640,18 @@ class Site:
             example = next((name for name, target in self.examples.items() if target == route), None)
             if example:
                 body += self.example_panel(example)
-                toc += [{'id': 'resultat-pdf', 'name': 'Résultat PDF', 'level': 2}, {'id': 'code-source', 'name': 'Code source', 'level': 2}]
+                if example in EXTERNAL_EXAMPLES:
+                    toc += [{'id': 'resultat-pdf', 'name': 'PDF d’entrée', 'level': 2}, {'id': 'resultat-lecture', 'name': 'Résultat de la lecture', 'level': 2}]
+                else:
+                    toc += [{'id': 'resultat-pdf', 'name': 'Résultat PDF', 'level': 2}]
+                toc += [{'id': 'code-source', 'name': 'Code source', 'level': 2}]
             self.page(route, title, category, body, toc)
         self.api_pages()
         self.page('404.html', 'Page introuvable', 'Documentation', f'<p>Cette adresse ne correspond pas à une page publiée.</p><p><a href="{e(self.url("reference/index.html"))}">Rechercher un composant</a> ou <a href="{e(self.url("index.html"))}">revenir à l’accueil</a>.</p>')
         (self.output / '.nojekyll').write_text('')
         packages = [dict(package, revision=package['revision'] or self.revision, components=sum(item['package'] == name for item in self.components)) for name, package in self.packages.items()]
-        manifest = {'basePath': self.base, 'revision': self.revision, 'packages': packages, 'components': len(self.components), 'examples': sorted(expected), 'pdfPages': {example: ['assets/pdf-pages/' + image['file'] for image in images] for example, images in self.pdf_pages.items()}, 'pages': sorted(route for route in self.written if route.endswith('.html'))}
+        sources = {example: {key: value for key, value in record.items() if key not in {'path', 'inputPath'}} for example, record in self.example_sources.items()}
+        manifest = {'basePath': self.base, 'revision': self.revision, 'packages': packages, 'components': len(self.components), 'examples': sorted(expected), 'exampleSources': sources, 'pdfPages': {example: ['assets/pdf-pages/' + image['file'] for image in images] for example, images in self.pdf_pages.items()}, 'pages': sorted(route for route in self.written if route.endswith('.html'))}
         (self.output / 'site-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(f'Built {len(manifest["pages"])} pages, {len(self.components)} API components and {len(expected)} PDF examples into {self.output}')
 

@@ -1,12 +1,14 @@
 """Check all generated documentation links, API coverage and PDF downloads."""
 
 import argparse
+import hashlib
+from html import escape
 from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
 import struct
-from urllib.parse import unquote, urlsplit
+from urllib.parse import quote, unquote, urlsplit
 
 
 class Document(HTMLParser):
@@ -97,15 +99,62 @@ def check(root):
         expected_source = package['repository'] + '/blob/' + package['revision'] + '/src/'
         if not item['sourceUrl'].startswith(expected_source) or item['sourceUrl'] not in documents[item['url']].links:
             errors.append('Incorrect API declaration source link: ' + item['title'])
-    for name in manifest['examples']:
+    examples = manifest['examples']
+    sources = manifest.get('exampleSources', {})
+    if len(set(examples)) != len(examples) or set(sources) != set(examples):
+        errors.append('Example source inventory must cover every example exactly once')
+    if set(manifest.get('pdfPages', {})) != set(examples):
+        errors.append('Rendered page inventory must cover every example exactly once')
+    for name in examples:
         pdf = root / 'examples' / (name + '.pdf')
         if not pdf.is_file() or not pdf.read_bytes().startswith(b'%PDF-'):
             errors.append('Missing PDF download: ' + name)
-        if not (root / 'examples' / (name + '.php.txt')).is_file():
+        source = root / 'examples' / (name + '.php.txt')
+        if not source.is_file():
             errors.append('Missing source download: ' + name)
+        record = sources.get(name, {})
+        package = packages.get(record.get('package'))
+        page = record.get('page')
+        if package is None or page not in documents:
+            errors.append('Missing example package or documented page: ' + name)
+        else:
+            source_path = record.get('source', '')
+            expected_source = package['repository'] + '/blob/' + package['revision'] + '/' + quote(source_path, safe='/')
+            if record.get('sourceUrl') != expected_source or expected_source not in documents[page].links:
+                errors.append('Incorrect example source link: ' + name)
+            if source.is_file() and hashlib.sha256(source.read_bytes()).hexdigest() != record.get('sourceSha256'):
+                errors.append('Example source bytes do not match their inventory: ' + name)
+            if pdf.is_file() and hashlib.sha256(pdf.read_bytes()).hexdigest() != record.get('pdfSha256'):
+                errors.append('Example PDF bytes do not match their inventory: ' + name)
+            if record.get('kind') == 'generated':
+                if package['name'] != 'roukmoute/pdf' or source_path != f'examples/{name}.php':
+                    errors.append('Generated example must retain its core writer source: ' + name)
+            elif record.get('kind') == 'input':
+                input_path = record.get('input', '')
+                expected_input = package['repository'] + '/blob/' + package['revision'] + '/' + quote(input_path, safe='/')
+                if not package['optional'] or not input_path.startswith('tests/Fixtures/') or '..' in Path(input_path).parts:
+                    errors.append('External input must belong to its pinned optional package: ' + name)
+                if record.get('inputSourceUrl') != expected_input or expected_input not in documents[page].links:
+                    errors.append('Incorrect input PDF source link: ' + name)
+                if 'resultat-lecture' not in documents[page].ids:
+                    errors.append('Missing reader console result panel: ' + name)
+                console_path = f'examples/{name}.txt'
+                console = root / console_path
+                if record.get('console') != console_path or not console.is_file():
+                    errors.append('Missing reader console download: ' + name)
+                else:
+                    result = console.read_text(encoding='utf-8')
+                    if not result.strip() or hashlib.sha256(console.read_bytes()).hexdigest() != record.get('consoleSha256'):
+                        errors.append('Reader console result does not match its inventory: ' + name)
+                    if escape(result, quote=True) not in (root / page).read_text(encoding='utf-8'):
+                        errors.append('Reader console result is missing or incorrectly escaped: ' + name)
+            else:
+                errors.append('Unknown example source kind: ' + name)
         previews = manifest.get('pdfPages', {}).get(name, [])
         if not previews:
             errors.append('Missing rendered PDF pages: ' + name)
+        if record.get('kind') == 'input' and len(previews) != record.get('expectedPages'):
+            errors.append('Missing pages from the external input preview: ' + name)
         for page_number, preview in enumerate(previews, start=1):
             expected = f'assets/pdf-pages/{name}-{page_number}.png'
             if preview != expected:

@@ -48,6 +48,14 @@ jobs:
             qpdf --check "$output"
             pdftoppm -r 96 -png "$output" "_build/pdf-pages/$name"
           done
+      - name: Read and render the independent input PDF
+        run: |
+          module=vendor/pdftoolkit/pdf-reader
+          output=_build/pdfs/reading-pages.pdf
+          cp "$module/tests/Fixtures/page-tree/classic.pdf" "$output"
+          qpdf --check "$output"
+          php "$module/examples/pages.php" "$output" > _build/pdfs/reading-pages.txt
+          pdftoppm -r 96 -png "$output" _build/pdf-pages/reading-pages
       - name: Verify mechanism semantics with an independent reader
         run: python tools/validate_mechanisms.py _build/pdfs
       - name: Build and check the documentation
