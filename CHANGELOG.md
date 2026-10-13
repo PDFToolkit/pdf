@@ -64,7 +64,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 ### Requirements and compatibility
 
 - PHP 8.5 or later, with `ctype`, `iconv` and `zlib`.
-- The 0.x API may change before 1.0 and replaces the unfinished PHP 7.4 prototype.
+- The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
 [Unreleased]: https://github.com/roukmoute/pdf/compare/v0.1.1...HEAD

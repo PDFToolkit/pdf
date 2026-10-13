@@ -6,7 +6,7 @@ Cette bibliothèque représente la syntaxe et les structures du format, jusque d
 
 La [documentation en ligne](https://roukmoute.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
 
-La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0` ; elle ne garantit pas la compatibilité avec l'ancien prototype PHP 7.4. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
+La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0`. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
 
 La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dans ce dépôt. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
 
