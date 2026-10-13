@@ -20,8 +20,23 @@ final class NumberTree extends DictionaryType
     private array $children = [];
     private bool $isRoot = true;
 
-    public function __construct(NumberTreeEntry ...$entries)
+    public function __construct(NumberTreeEntry|NumberTreeChildren ...$entries)
     {
+        parent::__construct();
+        if (count($entries) === 1 && $entries[0] instanceof NumberTreeChildren) {
+            $this->pairs = [];
+            foreach ($entries[0]->trees as $kid) {
+                $child = clone $kid;
+                $child->isRoot = false;
+                $this->children[] = $child;
+            }
+            return;
+        }
+        foreach ($entries as $entry) {
+            if (!$entry instanceof NumberTreeEntry) {
+                throw new \InvalidArgumentException('A branch Kids collection cannot be mixed with leaf entries.');
+            }
+        }
         usort($entries, static fn (NumberTreeEntry $a, NumberTreeEntry $b): int => $a->key->value <=> $b->key->value);
         foreach ($entries as $index => $entry) {
             if ($index > 0 && $entries[$index - 1]->key->value === $entry->key->value) {
@@ -29,31 +44,6 @@ final class NumberTree extends DictionaryType
             }
         }
         $this->pairs = $entries;
-        parent::__construct();
-    }
-
-    public static function branch(self ...$kids): self
-    {
-        if ($kids === []) {
-            throw new \InvalidArgumentException('A number-tree branch needs at least one child.');
-        }
-        foreach ($kids as $kid) {
-            if ($kid->firstKey() === null) {
-                throw new \InvalidArgumentException('An empty number tree cannot be a branch child.');
-            }
-        }
-        usort($kids, static fn (self $a, self $b): int => $a->requireFirstKey()->value <=> $b->requireFirstKey()->value);
-        $tree = new self();
-        foreach ($kids as $index => $kid) {
-            if ($index > 0 && $kids[$index - 1]->requireLastKey()->value >= $kid->requireFirstKey()->value) {
-                throw new \InvalidArgumentException('Number-tree child ranges must not overlap.');
-            }
-            $child = clone $kid;
-            $child->isRoot = false;
-            $tree->children[] = $child;
-        }
-
-        return $tree;
     }
 
     public function firstKey(): ?IntegerType

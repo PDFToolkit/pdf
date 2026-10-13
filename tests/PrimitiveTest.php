@@ -13,6 +13,7 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\StringObject\HexadecimalDigits;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 use PDF\Syntax\Object\StringObject\LiteralString;
 use PHPUnit\Framework\TestCase;
@@ -31,8 +32,9 @@ final class PrimitiveTest extends TestCase
     {
         self::assertSame('(a\\(b\\)\\\\\\n\\000\\377)', (string) new LiteralString("a(b)\\\n\0\xff"));
         self::assertSame('<ABCD>', (string) new HexadecimalString("\xab\xcd"));
-        self::assertSame('<ABC0>', (string) HexadecimalString::fromHex('a b c'));
-        self::assertSame('<>', (string) HexadecimalString::fromHex(''));
+        self::assertSame('<ABC0>', (string) new HexadecimalString(new HexadecimalDigits('a b c')));
+        self::assertSame('<>', (string) new HexadecimalString(new HexadecimalDigits('')));
+        self::assertSame('<30>', (string) new HexadecimalString(new HexadecimalDigits('30')));
     }
 
     public function testNumbersNeverUseExponentOrLocaleNotation(): void

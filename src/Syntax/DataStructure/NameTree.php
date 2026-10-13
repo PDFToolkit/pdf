@@ -20,8 +20,23 @@ final class NameTree extends DictionaryType
     private array $children = [];
     private bool $isRoot = true;
 
-    public function __construct(NameTreeEntry ...$entries)
+    public function __construct(NameTreeEntry|NameTreeChildren ...$entries)
     {
+        parent::__construct();
+        if (count($entries) === 1 && $entries[0] instanceof NameTreeChildren) {
+            $this->pairs = [];
+            foreach ($entries[0]->trees as $kid) {
+                $child = clone $kid;
+                $child->isRoot = false;
+                $this->children[] = $child;
+            }
+            return;
+        }
+        foreach ($entries as $entry) {
+            if (!$entry instanceof NameTreeEntry) {
+                throw new \InvalidArgumentException('A branch Kids collection cannot be mixed with leaf entries.');
+            }
+        }
         usort($entries, static fn (NameTreeEntry $a, NameTreeEntry $b): int => strcmp($a->key->value, $b->key->value));
         foreach ($entries as $index => $entry) {
             if ($index > 0 && $entries[$index - 1]->key->value === $entry->key->value) {
@@ -29,31 +44,6 @@ final class NameTree extends DictionaryType
             }
         }
         $this->pairs = $entries;
-        parent::__construct();
-    }
-
-    public static function branch(self ...$kids): self
-    {
-        if ($kids === []) {
-            throw new \InvalidArgumentException('A name-tree branch needs at least one child.');
-        }
-        foreach ($kids as $kid) {
-            if ($kid->firstKey() === null) {
-                throw new \InvalidArgumentException('An empty name tree cannot be a branch child.');
-            }
-        }
-        usort($kids, static fn (self $a, self $b): int => strcmp($a->requireFirstKey()->value, $b->requireFirstKey()->value));
-        $tree = new self();
-        foreach ($kids as $index => $kid) {
-            if ($index > 0 && strcmp($kids[$index - 1]->requireLastKey()->value, $kid->requireFirstKey()->value) >= 0) {
-                throw new \InvalidArgumentException('Name-tree child ranges must not overlap.');
-            }
-            $child = clone $kid;
-            $child->isRoot = false;
-            $tree->children[] = $child;
-        }
-
-        return $tree;
     }
 
     public function firstKey(): ?StringType

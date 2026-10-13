@@ -12,8 +12,10 @@ use PDF\Document\ResourceDictionary;
 use PDF\FileStructure;
 use PDF\Syntax\DataStructure\Date;
 use PDF\Syntax\DataStructure\NameTree;
+use PDF\Syntax\DataStructure\NameTreeChildren;
 use PDF\Syntax\DataStructure\NameTreeEntry;
 use PDF\Syntax\DataStructure\NumberTree;
+use PDF\Syntax\DataStructure\NumberTreeChildren;
 use PDF\Syntax\DataStructure\NumberTreeEntry;
 use PDF\Syntax\DataStructure\Rectangle;
 use PDF\Syntax\DataStructure\TextString;
@@ -138,7 +140,7 @@ final class DocumentStructureTest extends TestCase
         );
         self::assertSame('a', $left->get('Names')->items[0]->value);
         $right = new NameTree(new NameTreeEntry(new LiteralString('z'), new IntegerType(3)));
-        $root = NameTree::branch($right, $left);
+        $root = new NameTree(new NameTreeChildren($right, $left));
         self::assertFalse($root->has('Limits'));
         $child = $root->get('Kids')->items[0]->target();
         self::assertSame('a', $child->get('Limits')->items[0]->value);
@@ -158,10 +160,10 @@ final class DocumentStructureTest extends TestCase
     public function testNumberTreeRejectsOverlappingChildRanges(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        NumberTree::branch(
+        new NumberTree(new NumberTreeChildren(
             new NumberTree(new NumberTreeEntry(new IntegerType(0), new LiteralString('a')), new NumberTreeEntry(new IntegerType(5), new LiteralString('b'))),
             new NumberTree(new NumberTreeEntry(new IntegerType(4), new LiteralString('c'))),
-        );
+        ));
     }
 
     public function testNumberTreeSortsNumerically(): void

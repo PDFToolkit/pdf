@@ -71,7 +71,7 @@ final class ContentStreamsTest extends TestCase
                     NameType::class => [new NameType('N'), '/N'],
                     StringType::class => [new LiteralString('sample'), '(sample)'],
                     ArrayType::class => [new ArrayType(new LiteralString('sample'), new NumericType(-50)), '[(sample) -50]'],
-                    Matrix::class => [Matrix::identity(), '1 0 0 1 0 0'],
+                    Matrix::class => [new Matrix(), '1 0 0 1 0 0'],
                     LineCapStyle::class => [LineCapStyle::Round, '1'],
                     LineJoinStyle::class => [LineJoinStyle::Bevel, '2'],
                     RenderingIntent::class => [RenderingIntent::Perceptual, '/Perceptual'],
@@ -142,7 +142,7 @@ final class ContentStreamsTest extends TestCase
         yield 'showing outside text' => [new ContentStreams(new Op\ShowText(new LiteralString('x')))];
         yield 'path inside text' => [new ContentStreams(new Op\BeginTextObject(), new Op\MoveTo(new NumericType(0), new NumericType(0)), new Op\EndTextObject())];
         yield 'save inside text' => [new ContentStreams(new Op\BeginTextObject(), new Op\SaveGraphicsState(), new Op\RestoreGraphicsState(), new Op\EndTextObject())];
-        yield 'matrix inside text' => [new ContentStreams(new Op\BeginTextObject(), new Op\ConcatenateMatrix(Matrix::identity()), new Op\EndTextObject())];
+        yield 'matrix inside text' => [new ContentStreams(new Op\BeginTextObject(), new Op\ConcatenateMatrix(new Matrix()), new Op\EndTextObject())];
         yield 'line without a current point' => [new ContentStreams(new Op\LineTo(new NumericType(0), new NumericType(1)), new Op\StrokePath())];
         yield 'unfinished path' => [new ContentStreams(new Op\MoveTo(new NumericType(0), new NumericType(0)))];
         yield 'state operator inside path' => [new ContentStreams(new Op\MoveTo(new NumericType(0), new NumericType(0)), new Op\SetLineWidth(new NumericType(2)), new Op\StrokePath())];
@@ -199,7 +199,7 @@ final class ContentStreamsTest extends TestCase
 
     public function testDashPatternRules(): void
     {
-        self::assertSame('[] 0 d', (string) new Op\SetLineDashPattern(LineDashPattern::solid()));
+        self::assertSame('[] 0 d', (string) new Op\SetLineDashPattern(new LineDashPattern()));
         $this->expectException(\InvalidArgumentException::class);
         new LineDashPattern(new ArrayType(new NumericType(0), new NumericType(0)), new NumericType(0));
     }
