@@ -83,6 +83,13 @@ python tools/validate_adobe_supplement.py _build/pdfs
 python tools/validate_adobe_encryption.py --php php --qpdf qpdf
 ```
 
+Les deux workflows fixent qpdf **12.4.2** depuis son binaire Linux officiel,
+avec vérification SHA-256. Les contrôles de chiffrement nécessitent au moins
+qpdf 12.1 : les versions antérieures traitent incorrectement les métadonnées
+de page et d'image lorsque seules celles du catalogue sont exclues du
+chiffrement. Cette correction est décrite dans les
+[notes officielles qpdf 12.1](https://qpdf.readthedocs.io/en/stable/release-notes.html).
+
 ## Publication
 
 Le workflow `.github/workflows/pages.yml` construit le site pour les pull requests et à chaque push sur `master`. Il génère les treize PDF avec PHP 8.3, copie l'entrée du lecteur depuis son module verrouillé, les valide avec `qpdf` et rend leurs vingt et une pages avec Poppler. Il exécute aussi le script de lecture sur cette entrée. Il vérifie le site et les deux documents de référence, puis publie l'artefact sur GitHub Pages uniquement depuis `master`. Les permissions d'écriture Pages et d'identité sont réservées au job de déploiement.

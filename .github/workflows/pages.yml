@@ -36,7 +36,8 @@ jobs:
       - run: composer audit --locked
       - run: python -m pip install --require-hashes -r tools/site-requirements.txt
       - run: python -m pip install --require-hashes -r tools/validation-requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y qpdf poppler-utils
+      - uses: ./.github/actions/setup-qpdf
+      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Export the API and generate validated PDF examples
         run: |
           mkdir -p _build/pdfs _build/pdf-pages

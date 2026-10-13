@@ -38,7 +38,7 @@ jobs:
       - run: python tools/generate_adobe_supplement.py --check
       - run: python tools/build_saslprep_tables.py --check
       - run: python -m pip install --require-hashes -r tools/validation-requirements.txt
-      - run: sudo apt-get update && sudo apt-get install -y qpdf
+      - uses: ./.github/actions/setup-qpdf
       - name: Generate and validate every example
         run: |
           mkdir -p /tmp/pdf-examples
