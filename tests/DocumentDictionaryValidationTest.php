@@ -102,7 +102,7 @@ final class DocumentDictionaryValidationTest extends TestCase
         $resources = new ResourceDictionary(new Entry(new NameType($key), $existing));
         $this->expectException(\InvalidArgumentException::class);
         try {
-            (void) $resources->with(new Entry(new NameType($key), $value));
+            $replacement = $resources->with(new Entry(new NameType($key), $value));
         } finally {
             self::assertSame($existing, $resources->get($key));
         }

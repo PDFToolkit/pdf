@@ -9,14 +9,14 @@
         "source": "https://github.com/roukmoute/pdf"
     },
     "require": {
-        "php": "^8.5",
+        "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-zlib": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "phpunit/phpunit": "^13.4",
+        "phpunit/phpunit": "^12.0",
         "phpstan/phpstan": "^2.1"
     },
     "license": "MIT",
@@ -28,6 +28,9 @@
     ],
     "minimum-stability": "stable",
     "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
         "preferred-install": {
             "*": "dist"
         },

@@ -56,13 +56,22 @@ final readonly class ObjectTypeConstraint
             throw new \InvalidArgumentException('This dictionary entry shall be /' . $this->fixedName . '.');
         }
         if ($this->specificationType === 'rectangle') {
-            if (!$target instanceof ArrayType || count($target) !== 4 || !array_all($target->items, static fn (BasicType $item): bool => $item instanceof NumericType)) {
+            if (!$target instanceof ArrayType || count($target) !== 4) {
                 throw new \InvalidArgumentException('A rectangle requires four direct numbers.');
+            }
+            foreach ($target->items as $item) {
+                if (!$item instanceof NumericType) {
+                    throw new \InvalidArgumentException('A rectangle requires four direct numbers.');
+                }
             }
         }
         if ($target instanceof ArrayType) {
-            if ($this->directArrayElements && array_any($target->items, static fn (BasicType $item): bool => $item instanceof IndirectReference)) {
-                throw new \InvalidArgumentException('This array requires direct elements.');
+            if ($this->directArrayElements) {
+                foreach ($target->items as $item) {
+                    if ($item instanceof IndirectReference) {
+                        throw new \InvalidArgumentException('This array requires direct elements.');
+                    }
+                }
             }
             if (str_starts_with(strtolower($this->specificationType), 'array of ')) {
                 $memberType = match (strtolower($this->specificationType)) {
