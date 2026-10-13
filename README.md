@@ -4,9 +4,24 @@ Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.5.
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
+La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0` ; elle ne garantit pas la compatibilité avec l'ancien prototype PHP 7.4. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
+
 La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dans ce dépôt. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
 
-## Installation et vérifications
+## Installation
+
+PHP 8.5 et les extensions `ctype`, `iconv` et `zlib` sont nécessaires.
+
+La version est identifiée par le tag Git `v0.1.0`. Avec le dépôt déclaré comme source Composer :
+
+```sh
+composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf
+composer require roukmoute/pdf:^0.1
+```
+
+## Développement et vérifications
+
+Depuis un clone du dépôt :
 
 ```sh
 composer install
@@ -15,7 +30,7 @@ php examples/hello-world.php hello-world.pdf
 php examples/object-stream.php object-stream.pdf
 ```
 
-Le code de production dépend uniquement de PHP, `iconv` et `zlib`. PHPUnit, PHPStan et PHP-CS-Fixer sont des dépendances de développement verrouillées dans `composer.lock`. Les tests échouent aussi sur les dépréciations et avertissements PHP.
+Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit, PHPStan et PHP-CS-Fixer sont des dépendances de développement verrouillées dans `composer.lock`. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 ## Construction objet par objet
 

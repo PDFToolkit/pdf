@@ -1,3 +1,7 @@
 * text=auto eol=lf
 *.pdf binary
 *.png binary
+/PDF32000_2008.pdf export-ignore
+/.github export-ignore
+/.cache export-ignore
+/vendor export-ignore
