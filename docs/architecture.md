@@ -1,5 +1,10 @@
 # Architecture
 
+Cette architecture décrit le core **0.4.0** et les modules optionnels **0.1.2**.
+Le [guide des composants](components.md) présente leurs objets concrets ; la
+[couverture](coverage.md) distingue constructions natives, règles vérifiées et
+travail restant dans les deux références conservées.
+
 ## Domaine PDF
 
 Le namespace `PDF\Syntax` suit les termes de la référence. `BasicType` est le contrat des valeurs PDF. Les sous-types représentent les huit familles d'objets ; les objets indirects et leurs références ont des classes distinctes. Les classes spécialisées, comme `Rectangle`, ajoutent des contraintes à ces valeurs sans convertir leur contenu en scalaires PHP.
@@ -32,17 +37,64 @@ Les cycles indirects, comme les liens `Parent`/`Kids`, sont permis. Les cycles d
 
 Les arbres de pages et plans sont assemblés par des builders qui contrôlent le rattachement à un seul parent. Les champs structurels ne peuvent pas être remplacés ou supprimés par une entrée générique. Les arbres de noms et nombres trient leurs clés et vérifient les intervalles de leurs descendants.
 
+Les arbres de champs et de structure logique suivent la même règle de propriété.
+Un widget appartient à son champ et à une page ; un contenu marqué appartient à
+ses éléments et à son contexte de page ou de forme. Les identités permettent de
+dériver les liens ParentTree/IDTree et de contrôler les références. Les groupes
+de contenu optionnel ont leurs propres objets, configurations et états de
+document ; deux groupes de même nom restent deux identités différentes.
+
+Les constructeurs de valeurs restent immuables. Les builders qui assemblent un
+graphe possèdent explicitement leur état local ; ils ne servent pas de registres
+globaux et ne sélectionnent pas des pages ou ressources à la place de l'appelant.
+
+## Mécanismes natifs
+
+Les composants spécialisés composent les définitions PDF avec leurs contraintes
+couplées : dimensions et composantes d'images, espaces et fonctions de teinte,
+coordonnées et bits des maillages, programmes Type3, codespaces et CMaps, états
+de champs, classes et attributs de structure. Les flux produits contiennent les
+octets du mécanisme, par exemple un mesh, LZW ou des indices de linéarisation.
+Une simple déclaration de dictionnaire conserve un rôle distinct.
+
+Les fonctions arithmétiques PDF disponibles reçoivent des objets explicites :
+transformation de couleurs calibrées, quantification Decode, précomposition
+Matte, mélange local ou évaluation des conditions de visibilité. Elles ne
+constituent pas un moteur de rendu, une mise en page ou une analyse de format
+externe. Un profil ICC, programme de police ou média demeure une donnée fournie.
+
 ## Écriture
 
-`FileWriter` et les objets `CrossReferenceTable`, `CrossReferenceStream` et `ObjectStream` portent la représentation du fichier. Le format de références croisées est choisi par un objet enum `CrossReferenceFormat`. Les flux d'objets demandent le format stream et PDF 1.5 au minimum.
+`FileWriter` et les objets `CrossReferenceTable`, `CrossReferenceStream` et `ObjectStream` portent la représentation du fichier. Le format de références croisées est choisi par un objet enum `CrossReferenceFormat` : table, stream ou hybride. Les flux d'objets demandent des références stream ou hybrides et PDF 1.5 au minimum.
 
 Le sérialiseur compte des octets, pas des caractères Unicode. Le header utilise le tiret ASCII prescrit, les chaînes échappent leur syntaxe, les noms échappent leurs octets, et les nombres n'utilisent jamais de notation exponentielle. La longueur d'un flux est calculée après l'application des filtres.
 
 Les membres d'un flux d'objets reçoivent des entrées de type 2 dans le flux de références et ne sont pas écrits une seconde fois comme objets autonomes. `startxref` vise le début réel de la section de références.
 
+`LinearizedWriter` planifie les dépendances, l'ordre physique et les tables
+d'indices de l'annexe F. `SignatureWriter` prépare une révision dont les
+ByteRange sont fixes avant le calcul cryptographique, puis la signature remplit
+sa réservation. Le chiffrement des chaînes et flux passe par un `FileEncryption`
+et ses backends explicitement choisis. Les offsets sont ceux des octets écrits,
+avec les filtres, réservations et paramètres de sécurité applicables.
+
 ## Validation
 
 Les constructeurs refusent les états localement invalides. Les validations de graphe interviennent au moment de la sérialisation, lorsque les parents et ressources peuvent être établis. Les contraintes conditionnelles de la norme ne sont pas présentées comme automatiquement couvertes tant qu'une validation et un test dédiés ne les prennent pas en charge.
+
+`DocumentGraphValidation` traverse le graphe réel du writer, y compris les
+dictionnaires de flux et opérandes typés. Le contrat `CatalogComponent` permet
+à un composant de vérifier ses relations avec le catalogue ; `VersionedComponent`
+contrôle les fonctions sélectionnées contre la version PDF effective du header
+et du catalogue. Les déclarations Adobe et identités de sous-ensemble de fontes
+font aussi l'objet de contrôles au niveau du document. La validation s'appuie
+sur les valeurs effectives figées lorsqu'une révision est réutilisée.
+
+Ces contrats couvrent les familles et conditions annoncées, sans prétendre
+vérifier chaque phrase de la norme. Les tests de graphe ne sont pas une
+certification PDF/UA ; une signature valide ne remplace pas la politique de
+confiance du certificat. Les [inventaires](coverage.md) conservent ces frontières
+et les contraintes ouvertes.
 
 Les tests PHPUnit vérifient des comportements et des contre-exemples ; des lecteurs indépendants contrôlent aussi les fichiers produits. L'analyse PHPStan au niveau 8 et le format PSR-12 font partie de `composer check`.
 
@@ -60,4 +112,9 @@ Dans `pdftoolkit/pdf-reader`, `DocumentReader` lit un `FileBytes` avec des budge
 
 `FileRevision` fige les octets et les liaisons d'identité d'un document. `RevisionObject` conserve ses alias historiques et une copie des entrées de son dictionnaire, pour ne pas reparcourir un builder mutable après écriture. `IncrementalUpdate` sélectionne les changements dans un `FileBody` ; `IncrementalWriter` ajoute les nouveaux octets, hérite le trailer et relie les sections xref. Une référence historique ne déclenche pas de nouvelle sérialisation. Les conteneurs structuraux anciens sont conservés et les membres compressés remplacés utilisent un nouveau conteneur ou un objet autonome.
 
-Les futurs traitements de sécurité et de signatures devront également disposer d'objets et de services explicites. Ils ne doivent pas introduire d'état partagé entre documents.
+Les handlers par mot de passe et certificat, identités, permissions et signatures
+possèdent leurs objets dans `PDF\Security` et `PDF\Document\Signatures`. Les
+backends OpenSSL sont choisis explicitement ; le core n'effectue pas de recherche
+automatique de certificats ou de clés sur le disque ou le réseau. La lecture de
+fichiers externes, la composition de texte, les moteurs ICC/XFA/3D/multimédia et
+la confiance des certificats conservent leurs responsabilités propres.

@@ -18,11 +18,13 @@ import markdown
 
 REPOSITORY = 'https://github.com/PDFToolkit/pdf'
 GUIDES = [
+    ('docs/coverage.md', 'guides/mecanismes.html', 'Couverture des deux références', 'Guides'),
     ('docs/adobe-supplement.md', 'guides/supplement-adobe.html', 'Supplément Adobe et extensions', 'Guides'),
     ('README.md', 'guides/demarrer.html', 'Démarrer', 'Guides'),
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
     ('docs/architecture.md', 'guides/architecture.html', 'Architecture', 'Guides'),
     ('docs/packages.md', 'guides/modules.html', 'Core et modules optionnels', 'Guides'),
+    ('docs/migration-0.4.md', 'guides/migration-0-4.html', 'Migration vers le core 0.4', 'Guides'),
     ('docs/specification.md', 'guides/couverture.html', 'Couverture de la norme', 'Guides'),
     ('docs/security.md', 'guides/securite.html', 'Sécurité', 'Guides'),
     ('SECURITY.md', 'guides/signalements.html', 'Signaler une vulnérabilité', 'Guides'),
@@ -45,6 +47,15 @@ LESSONS = [
     ('11-incremental-update', '11-revisions-incrementales', 'Révisions incrémentales', 'incremental-update', 'Octets conservés, remplacements explicites et chaînage des xref.'),
     ('12-reading-pages', '12-lire-pages-pdf', 'Lire les pages d’un PDF externe', 'reading-pages', 'Arbre vérifié, attributs hérités et flux décodés explicitement.'),
     ('13-adobe-extensions', '13-extensions-adobe', 'Extensions Adobe et numérotation Bates', 'adobe-extensions', 'Déclaration des extensions, artefacts et numéros documentaires.'),
+    ('14-acroform-fields', '14-champs-acroform', 'Champs et apparences AcroForm', 'acroform-fields', 'Arbres de champs, widgets, valeurs et apparences.'),
+    ('15-tagged-structure', '15-structure-logique', 'Structure logique et contenu balisé', 'tagged-structure', 'Ordre de lecture, MCID, ParentTree et liens vers les annotations.'),
+    ('16-linearization', '16-linearisation', 'Linéarisation', 'linearized', 'Ordre physique des objets, dépendances et indices binaires.'),
+    ('17-colours-patterns', '17-couleurs-motifs', 'Couleurs, motifs et dégradés', 'colours-patterns', 'Espaces couleur, cellules répétées et sept types de shading.'),
+    ('18-cmaps', '18-cmaps', 'CMaps et Unicode', 'cmap-font', 'Encodage composé, CID, UseCMap et extraction Unicode.'),
+    ('19-filters-predictors', '19-filtres-predicteurs', 'Filtres et prédicteurs', 'filters-predictors', 'LZW et prédiction TIFF/PNG des lignes avant compression.'),
+    ('20-signed-document', '20-signatures', 'Signatures PDF', 'signed-document', 'Réservation Contents, ByteRange et signature CMS explicite.'),
+    ('21-native-graphics', '21-images-transparence-calques', 'Images, transparence et calques', 'native-graphics', 'Profondeurs, masques, groupes, ExtGState et contenu optionnel.'),
+    ('22-native-fonts', '22-fontes-natives', 'Fontes natives et écriture verticale', 'native-fonts', 'Type3, fontes simples, programmes PDF et métriques verticales.'),
 ]
 EXTERNAL_EXAMPLES = {
     'reading-pages': {
@@ -61,7 +72,7 @@ GROUPS = [
     ('norme', 'Modèle de norme'), ('dictionnaires', 'Dictionnaires normalisés'),
     ('entrees', 'Entrées normalisées'), ('definitions', 'Définitions normalisées'),
     ('adobe', 'Extensions Adobe : dictionnaires, entrées et définitions'),
-    ('securite', 'Chiffrement historique et préparation des mots de passe'),
+    ('securite', 'Chiffrement, certificats et signatures'),
     ('polices-externes', 'Module optionnel : fontes externes'),
     ('images-externes', 'Module optionnel : images externes'),
     ('lecture', 'Module optionnel : lecture de PDF'),
@@ -104,7 +115,7 @@ def group_for(component: dict) -> str:
         return 'norme'
     if path.startswith('src/Syntax/Object/'):
         return 'objets'
-    if path.startswith(('src/Serialization/', 'src/Syntax/FileStructure/')) or path == 'src/FileStructure.php':
+    if path.startswith(('src/Serialization/', 'src/Syntax/FileStructure/', 'src/Syntax/Linearization/')) or path == 'src/FileStructure.php':
         return 'fichier'
     if path.startswith(('src/Graphics/', 'src/Text/', 'src/Syntax/ContentStreamsResources/')):
         return 'contenu'
@@ -421,7 +432,7 @@ class Site:
     def tutorial_cards(self) -> str:
         html = '<div class="cards">'
         for i, (_, slug, title, example, text) in enumerate(LESSONS, 1):
-            preview = 'assets/pdf-pages/' + self.pdf_pages[example][0]['file'] if example in EXTERNAL_EXAMPLES else 'assets/previews/' + example + '.png'
+            preview = 'assets/pdf-pages/' + self.pdf_pages[example][0]['file']
             html += f'<a class="card" href="{e(self.url("tutorials/" + slug + ".html"))}"><div class="card-preview"><img src="{e(self.url(preview))}" alt="Aperçu : {e(title)}" loading="lazy"></div><div class="card-body"><span class="eyebrow">Tutoriel {i:02d}</span><h3>{e(title)}</h3><p>{e(text)}</p><span class="card-link">Lire et voir le PDF →</span></div></a>'
         return html + '</div>'
 

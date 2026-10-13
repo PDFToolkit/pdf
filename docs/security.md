@@ -27,7 +27,10 @@ pour la lecture de fichiers externes ; cette revue du générateur ne s'y substi
 | Dépendances | Aucun avis connu ni paquet abandonné signalé par `composer audit --locked` lors de la revue. Ce contrôle est exécuté à chaque CI. |
 | Chiffrement historique Adobe R=5 | Vecteurs AES officiels, fixtures qpdf et déchiffrement indépendant des chaînes et flux, avec mots de passe utilisateur/propriétaire et rejets des mauvais mots de passe. Vérification des longueurs après filtres et chiffrement, de l'absence de double chiffrement et des exceptions structurelles. |
 | Préparation des mots de passe | SASLprep/NFKC Unicode 3.2 figé, comparé à un oracle indépendant : mappings, caractères interdits et non assignés, règles bidirectionnelles et troncation après normalisation. |
-| Frontière du writer chiffré | Refus des chaînes directes dans le trailer hors identifiants, des overrides Crypt et des révisions incrémentales chiffrées. Les métadonnées de page et d'image restent chiffrées ; seule la métadonnée du catalogue peut être exclue explicitement. Les signatures ont une exception de Contents contrôlée, sans création de signature. |
+| Chiffrement ISO R=2/3/4 | Algorithmes 1–7, credentials utilisateur/propriétaire, RC4 et AESV2, clés de 40 à 128 bits, filtres implicites et explicites et révisions incrémentales. Les filtres Crypt explicites utilisent leur clé directement selon 7.4.10 ; les flux implicites utilisent la dérivation par objet. |
+| Chiffrement par certificats | Messages CMS, regroupement des destinataires, formats s3/s4/s5 et clés distinctes pour le document et les pièces jointes. Vérification indépendante des données CMS, des clés et du déchiffrement. L'ordre des octets des permissions est un choix explicite. |
+| Frontière du writer chiffré | Chaînes directes du trailer hors ID refusées ; dictionnaire Encrypt et xref conservés en clair. Seule la métadonnée du catalogue peut être exemptée ; son remplacement suit la liaison effective de la révision. Une nouvelle identité PHP ne permet pas de remplacer Encrypt dans un flux d'objets. |
+| Signatures | ByteRange fixé avant signature, réservation Contents à capacité explicite, contrôle des délimiteurs et remplissage sans déplacement des offsets. Les trois formats ISO sont contrôlés par une vérification indépendante des condensats, des messages CMS et des signatures RSA. |
 
 Le rejet explicite des stream URIs est un durcissement du contrat de `writeTo()`, pas la correction d'une exécution PHP démontrée : `LOCK_EX` bloquait déjà les wrappers usuels sur le PHP 8.5 vérifié. Une destination native peut encore suivre un lien symbolique ou désigner un partage réseau selon le système. L'application doit contrôler son emplacement et ses permissions.
 
@@ -62,6 +65,33 @@ Les contrôles numériques évitent les débordements identifiés ; la validatio
 Les tests [SecuritySerializationTest](../tests/SecuritySerializationTest.php), [SecurityLimitsTest](../tests/SecurityLimitsTest.php) et [FileOutputTest](../tests/FileOutputTest.php) couvrent les charges d'injection, les 256 valeurs d'octet, les terminateurs inline, les bornes numériques, les graphes partagés et les sorties. [ImageObjectsTest](../tests/ImageObjectsTest.php), [CrossReferenceSectionTest](../tests/CrossReferenceSectionTest.php) et [IncrementalUpdateTest](../tests/IncrementalUpdateTest.php) couvrent les invariants PDF du core. Les régressions de décodage des images sont dans [ImageImportTest du module](https://github.com/PDFToolkit/pdf-images/blob/master/tests/ImageImportTest.php). Les validations TrueType restent dans [les tests du module de fontes](https://github.com/PDFToolkit/pdf-fonts/tree/master/tests). Des lectures indépendantes avec pypdf ont confirmé les vecteurs binaires et la reproduction de l'ambiguïté inline. qpdf contrôle tous les exemples en CI.
 
 Cette revue n'est pas un audit des lecteurs PDF, de PHP, du serveur HTTP ou d'une future bibliothèque de mise en page. Les fichiers de définition générés expriment les contraintes de la norme ; ils ne forment pas une politique générale d'assainissement des documents.
+
+La revue croisée des nouveaux mécanismes a identifié deux défauts dans les versions
+de développement : une exemption de métadonnées attachée à une ancienne identité
+et un remplacement de Encrypt par un membre de flux d'objets. Les tests
+[EncryptedRevisionInvariantTest](../tests/EncryptedRevisionInvariantTest.php)
+vérifient leurs corrections, y compris le contenu XML effectivement écrit.
+
+Les validateurs [ISO](../tools/validate_iso_security.py),
+[certificats](../tools/validate_public_key_security.py) et
+[signatures](../tools/validate_pdf_signatures.py) sont des dépendances de
+développement, avec versions et empreintes verrouillées. Chaque oracle précise
+les limites de son lecteur : qpdf 12.4.2 dérive aussi une clé par objet pour un
+Crypt explicite ; pyHanko vérifie la règle ISO sans modifier ses algorithmes.
+Pour certains anciens RC4, pypdf utilise son propre fournisseur général afin
+d'accepter toutes les longueurs entières autorisées.
+
+Une signature mathématique ne prouve pas la confiance dans le signataire.
+La politique de certificats, la révocation, l'horodatage et l'interprétation des
+modifications autorisées demandent des contrôles distincts. Les clés privées
+dans les fixtures sont publiques et exclusivement destinées aux tests.
+
+Le backend natif contrôle les algorithmes et les tailles de clés de la table 257
+sur la version PDF effective. Les messages CMS utilisent SHA-256 ; l'API PHP
+OpenSSL employée n'offre pas une sélection complète de condensats. Les seeds
+obligatoires et les verrous de champs sont refusés tant que leur orchestration
+n'a pas été implémentée. Une chaîne de certificats déclarée pour une signature
+PKCS#1 doit commencer par le certificat effectivement utilisé par ce backend.
 
 Les tests [AdobeEncryptionTest](../tests/AdobeEncryptionTest.php) et le validateur
 [validate_adobe_encryption.py](../tools/validate_adobe_encryption.py) couvrent le

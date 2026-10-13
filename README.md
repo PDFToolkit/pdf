@@ -14,14 +14,16 @@ Les références sont les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supp
 
 ## Installation
 
-La version stable **0.3.0** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Le backend de chiffrement historique AES-256 est optionnel et nécessite `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
+Le core **0.4** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require 'roukmoute/pdf:^0.3'
+composer require 'roukmoute/pdf:^0.4'
 ```
 
-Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les modifications d'API figurent dans le [changelog](CHANGELOG.md), dont les validations des déclarations d'extension introduites en 0.3.0. Pour suivre les développements après cette version, remplacer la contrainte stable par `dev-master`.
+Les modifications d'API figurent dans le [changelog](CHANGELOG.md) et le
+[guide de migration 0.4](docs/migration-0.4.md). Pour suivre les développements
+après cette série, remplacer la contrainte stable par `dev-master`.
 
 ## Modules optionnels
 
@@ -31,7 +33,7 @@ Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les mo
 | [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.1**, compatible avec les séries 0.2 et 0.3 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.2**, compatible avec les séries 0.2, 0.3 et 0.4 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
@@ -55,8 +57,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.3.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.3 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.4.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.4 attendue par les modules. Les
 dépendances de développement utilisent les modules stables 0.1, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.
@@ -131,7 +133,7 @@ Les implémentations exécutables couvrent les objets fondamentaux, l'écriture 
 
 **La présence d'une définition n'est pas une déclaration de conformité complète.** Le catalogue valide les types, références exigées, exigences inconditionnelles et certaines formes de valeurs. Les conditions, relations entre dictionnaires et règles de version qui ne disposent pas encore d'une validation spécialisée restent dans leurs définitions et dans le document de couverture.
 
-Le core compose les objets de polices CID, les correspondances Unicode, les images, leurs masques et les révisions incrémentales de fichiers générés. Les modules optionnels fournissent l'analyse TrueType, la conversion JPEG/PNG et la lecture de PDF externes. Les limites de chaque mécanisme figurent dans [la couverture](docs/specification.md). Les moteurs de chiffrement et de signature, le sous-ensemble de polices, les scripts complexes, l'import d'un graphe externe vers le writer et la linéarisation restent à implémenter. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les traitements de sécurité qu'il ne sait pas exécuter.
+Le core compose les objets de polices, les CMaps, les images et leurs masques, les formulaires, la structure balisée et les révisions incrémentales. Il écrit aussi les filtres, le chiffrement explicitement choisi, les signatures par plages d'octets, les références hybrides et la linéarisation. Les modules optionnels fournissent l'analyse TrueType, la conversion JPEG/PNG et la lecture de PDF externes. Les mécanismes vérifiés et les règles restantes figurent dans [l'inventaire de couverture](docs/coverage.md). La fabrication de sous-ensembles de programmes de police, les scripts complexes et l'import avec remappage d'un graphe externe demandent des composants dédiés. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Les obligations de sécurité non prises en charge sont refusées.
 
 Le writer assemble actuellement le fichier en mémoire. Le lecteur est fourni par `pdftoolkit/pdf-reader`. Un moteur de rendu et une API de mise en page ne font pas partie du core.
 

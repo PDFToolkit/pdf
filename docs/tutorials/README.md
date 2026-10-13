@@ -1,6 +1,6 @@
 # Tutoriels : construire et lire un PDF objet par objet
 
-Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent le core 0.2 et les modules 0.1, avec les révisions exactes fixées dans le `composer.lock` de ce checkout.
+Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent le core **0.4.0** et les modules **0.1.2**, avec les révisions exactes fixées dans le `composer.lock` de ce checkout.
 
 Les leçons 09 et 10 utilisent les modules optionnels `pdftoolkit/pdf-fonts` et
 `pdftoolkit/pdf-images`, installés comme dépendances de développement dans ce
@@ -18,6 +18,11 @@ Il faut PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Depu
 composer install
 php examples/hello-world.php
 ```
+
+La leçon 20 demande aussi l'extension `openssl`, utilisée par son backend de
+signature. Le certificat et la clé de démonstration sont des fixtures publiques
+de test ; le guide explique comment fournir une identité et une politique de
+confiance propres à l'application.
 
 Le script écrit `examples/hello-world.pdf` et affiche son chemin. Ouvrir ce fichier dans un lecteur PDF permet de comparer le résultat au code. Les scripts de génération sous `examples/` acceptent un chemin de sortie comme premier argument :
 
@@ -48,8 +53,24 @@ présente le PDF d'entrée, ses trois pages et les objets lus.
 | [11. Révisions incrémentales](11-incremental-update.md) | Conservation des octets, remplacements et chaînage des xref. | [incremental-update.php](../../examples/incremental-update.php) |
 | [12. Lire un PDF externe](12-reading-pages.md) | Arbre vérifié, valeurs héritées et flux de contenu inspectés puis décodés. | [pages.php du module lecteur](https://github.com/PDFToolkit/pdf-reader/blob/master/examples/pages.php) |
 | [13. Extensions Adobe et numérotation Bates](13-adobe-extensions.md) | Déclaration des extensions, propriétés d'artefact et pied de page Bates. | [adobe-extensions.php](../../examples/adobe-extensions.php) |
+| [14. Champs AcroForm](14-acroform-fields.md) | Arbre, valeurs, widgets et apparences. | [acroform-fields.php](../../examples/acroform-fields.php) |
+| [15. Structure logique](15-tagged-structure.md) | Contenu marqué, ParentTree, IDTree et annotations. | [tagged-structure.php](../../examples/tagged-structure.php) |
+| [16. Linéarisation](16-linearization.md) | Dépendances, ordre physique et indices binaires. | [linearized.php](../../examples/linearized.php) |
+| [17. Couleurs et motifs](17-colours-patterns.md) | Espaces, cellules répétées et sept dégradés. | [colours-patterns.php](../../examples/colours-patterns.php) |
+| [18. CMaps](18-cmaps.md) | UseCMap, CID et correspondances Unicode. | [cmap-font.php](../../examples/cmap-font.php) |
+| [19. Filtres et prédicteurs](19-filters-predictors.md) | Compression LZW, prédiction TIFF et PNG. | [filters-predictors.php](../../examples/filters-predictors.php) |
+| [20. Signatures](20-signed-document.md) | ByteRange, réservation et CMS détaché. | [signed-document.php](../../examples/signed-document.php) |
+| [21. Images, transparence et calques](21-native-graphics.md) | Échantillons, masques, groupes et visibilité. | [native-graphics.php](../../examples/native-graphics.php) |
+| [22. Fontes natives](22-native-fonts.md) | Type3, fontes simples et métriques verticales. | [native-fonts.php](../../examples/native-fonts.php) |
 
 Les leçons 03 à 07 peuvent se lire dans l'ordre des sujets qui vous intéressent, après le premier document. Les leçons 08 et 11 concernent l'organisation du fichier ; les leçons 09 et 10 ajoutent des programmes de police et des fichiers image réels au graphe. La leçon 12 consulte les structures d'un PDF existant avec les objets du lecteur.
+
+Les leçons 14 et 15 construisent les relations des formulaires et du contenu
+balisé. Les leçons 16 et 20 montrent deux écritures spécialisées : organiser les
+octets pour la linéarisation et réserver les plages d'une signature. Les leçons
+17 à 19, 21 et 22 approfondissent les couleurs, maillages, CMaps, filtres, images,
+transparence et fontes natives. Chaque objet PDF et ses ressources restent
+assemblés explicitement dans le script.
 
 ## Quelques repères avant de lire le code
 
@@ -87,6 +108,15 @@ La seconde commande réécrit le PDF dans une forme utile pour examiner ses obje
 
 ## Aller vers la norme
 
-Les guides citent les sections de [PDF 1.7 / ISO 32000-1:2008](../../PDF32000_2008.pdf). La [couverture de la spécification](../specification.md) distingue les définitions disponibles des traitements réellement implémentés. Le sous-ensemble de polices, la composition de scripts complexes, le retour automatique à la ligne, le chiffrement, les signatures et l'import de PDF externes restent hors de ce parcours.
+Les guides citent les sections de [PDF 1.7 / ISO 32000-1:2008](../../PDF32000_2008.pdf)
+et du [supplément Adobe](../../adobe_supplement_iso32000.pdf). La
+[couverture](../coverage.md) distingue les définitions, constructions et règles
+effectivement vérifiées. Les signatures font partie du parcours ; les objets de
+[chiffrement](../components.md) disposent de leur propre
+documentation. La création de sous-ensembles de programmes de fonte, la
+composition de scripts complexes, le retour automatique à la ligne et l'import
+avec remappage d'un PDF externe restent à construire. Les aperçus démontrent le
+rendu des exemples ; ils ne certifient pas la conformité complète d'un document,
+son accessibilité ou la confiance d'un certificat.
 
 [Commencer par le premier document](01-first-document.md) · [Retour au README](../../README.md)

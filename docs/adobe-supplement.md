@@ -49,7 +49,8 @@ contrôlent aussi le domaine des membres.
 
 La présence des schémas permet de construire ces structures dans un PDF. Elle ne
 fournit pas un moteur de lecture multimédia, Flash ou 3D, un codec barcode, un moteur
-XFA, une transformation géodésique ni une signature cryptographique. Les exigences
+XFA ni une transformation géodésique. Les signatures ont une construction et des
+backends explicites indépendants des schémas. Les exigences
 conditionnelles et les relations sémantiques qui n'ont pas encore de mécanisme
 spécialisé restent identifiées dans les descriptions et la couverture.
 
@@ -132,23 +133,38 @@ remplacent pas un contrôle d'accès sur les octets déchiffrés. Avec
 `EncryptMetadata(false)`, seule la métadonnée du catalogue reste en clair, les
 métadonnées de page et d'image restent chiffrées. Les chaînes directes du trailer
 hors `/ID` sont refusées : une donnée privée supplémentaire doit appartenir à un
-objet indirect chiffré. `revision()` refuse ce handler, car il ne produit pas de
-snapshot destiné à une révision incrémentale chiffrée.
+objet indirect chiffré. `revision()` conserve l'opération de chiffrement dans un
+snapshot propre au document ; `IncrementalUpdate` la réutilise en préservant les
+anciens octets, le dictionnaire Encrypt et le premier identifiant du fichier.
 
 R=5 est un format historique dont la dérivation des mots de passe n'offre pas les
 protections des révisions modernes. AES-CBC ne garantit pas l'authenticité du
 contenu. Cette API sert à l'interopérabilité avec la spécification conservée ;
-elle ne constitue pas un réglage de sécurité moderne par défaut. La bibliothèque
-ne génère pas de signatures et ne produit pas de révisions incrémentales chiffrées.
+elle ne constitue pas un réglage de sécurité moderne par défaut.
 
 `HistoricalStandardKeyDerivation` (R=2 à R=4) et
 `HistoricalPublicKey256KeyDerivation` sont des primitives séparées du writer R=5.
 La première reçoit des octets de mot de passe déjà encodés en PDFDocEncoding ;
 la seconde reçoit les octets CMS déjà produits, dans leur ordre explicite.
-Elles ne fournissent ni un writer RC4/AES-128 ni un parseur CMS ou un handler
-complet à certificats. Pour R=2 à R=4, le padding à 32 octets est conservé depuis
+`HistoricalStandardSecurityHandler` fournit désormais les opérations complètes
+R=2 à R=4 ; `PublicKeySecurityHandler` compose les destinataires CMS et les clés
+de filtres des formats s3/s4/s5. Les backends OpenSSL sont choisis explicitement,
+avec des octets de certificats et de clés fournis par l'appelant. Le core ne
+cherche aucun fichier de clé ni ne décide de la confiance dans un certificat.
+Pour R=2 à R=4, le padding à 32 octets est conservé depuis
 ISO 7.6.3.3, algorithme 2 (pages 69–70), bien que la reformulation Adobe de
 l'étape 1 l'omette : les vecteurs qpdf vérifient cette décision d'interopérabilité.
+
+Les filtres Crypt explicites suivent ISO 7.4.10 : leur clé n'est pas modifiée
+par l'identifiant de l'objet. Pour les permissions publiques, le texte de 2008
+indique l'ordre peu significatif d'abord ; une clarification ultérieure indique
+l'ordre inverse. `PublicKeyPermissionByteOrder` rend ce choix obligatoire.
+La formulation originale reste conservée ; la
+[clarification publiée](https://pdf-issues.pdfa.org/32000-2-2020/clause07.html)
+est une référence distincte.
+
+Le [guide de couverture](coverage.md) distingue les constructions natives
+des comportements de lecteur et standards externes qui restent séparés.
 
 ## Erreurs de source et comportement d'Acrobat
 

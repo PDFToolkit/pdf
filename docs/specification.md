@@ -5,7 +5,7 @@ committed to the repository: ISO 32000-1:2008, PDF 1.7. The additional
 `adobe_supplement_iso32000.pdf` describes Adobe ExtensionLevel 3; its [separate
 coverage and source catalogue](adobe-supplement.md) preserve the distinction
 between ISO definitions, Adobe extensions and Acrobat implementation notes.
-Core release 0.3.0 and optional module releases 0.1.1 require PHP 8.3 or later; the older core 0.1 tags
+Core series 0.4 and optional module releases 0.1.2 require PHP 8.3 or later; the older core 0.1 tags
 retain their PHP 8.5 requirement. These PHP versions are independent of the PDF
 format version. Implementing PDF 2.0 requires a separate specification
 and explicit version-specific definitions.
@@ -47,24 +47,26 @@ additional behavior and constraints.
 
 This is an inventory and a low-level object construction model. It is not a
 claim that every algorithm or every valid document allowed by the 756-page
-standard has an implemented, independently verified semantic model. Signature
-generation, rendering, font subsetting, image codecs, tagged PDF
-semantics, multimedia playback and linearization require dedicated implementations
-and interoperability tests. Named dictionary classes alone do not implement
-those algorithms. The implemented image and font mechanisms below cover explicit
-subsets of those domains rather than every format and script.
+standard has an implemented, independently verified semantic model. Native
+signing, tagging, compression, colour/shading and linearization now have executable
+models and independent validations. Remaining variants, constraints and external
+processors are tracked in the [mechanism coverage guide](coverage.md) and its
+source inventory. Named dictionary classes alone do not implement algorithms.
+Rendering, external image/font conversion, script execution and multimedia playback
+retain separate responsibilities.
 
 The additional [historical AES-256 revision 5 backend](adobe-supplement.md)
 implements the algorithms of the retained Adobe supplement with explicit
 credentials, permissions, SASLprep Unicode 3.2 and writer integration. This is
-an opt-in legacy protocol; it does not implement every encryption revision or
-public-key security handler, and AES-CBC does not authenticate file contents.
+an opt-in legacy protocol. The ISO R=2/3/4 and public-key s3/s4/s5 handlers
+also have explicit writer operations. AES-CBC does not authenticate file contents.
 
 The supplement also has separately validated historical R=2–R=4 key derivation,
 an ordered public-key recipient digest, 3D unit mapping and barcode data
 preparation/module-width calculation. Their APIs state their exact inputs and
-limits. They do not imply CMS processing, public-key encryption, media rendering
-or barcode symbology encoding. See the [supplement guide](adobe-supplement.md)
+limits. Native CMS backends and public-key operations are composed explicitly;
+media rendering and barcode symbology encoding still require external processors.
+See the [supplement guide](adobe-supplement.md)
 and its versioned coverage inventory for each algorithm's status.
 
 ## Implemented mechanisms beyond the syntax model
@@ -77,12 +79,12 @@ the core, which has no production dependency on them. See the
 
 | Mechanism | Executable behavior | Explicit limits |
 | --- | --- | --- |
-| PDF fonts — core | FontFile2 bytes, explicit FontDescriptor metrics, CIDFontType2, Identity-H Type0 font, CharacterMap and mappings, CIDToGIDMap, widths and ToUnicode. | The core does not inspect TrueType tables or select font files. Applications or optional converters supply the program bytes and PDF values. |
+| PDF fonts — core | Explicit font programs and metrics, simple and composite fonts, encodings, horizontal/vertical CID widths, CMaps, UseCMap and Unicode mappings. | The core receives normalized programs and values; external font parsing, subsetting and shaping need their own processors. |
 | TrueType conversion — pdf-fonts | Static sfnt/glyf validation, Unicode cmap 4/12, metrics, full-glyph CIDFont program and conversion factories producing core font objects. | No font collections, CFF/variable fonts, glyph subsetting, vertical writing, kerning or complex-script shaping. The derived CIDFontProgram removes cmap as required by 9.9 and the invalidated DSIG. The original font's embedding permissions are checked. |
-| PDF images — core | Explicit dimensions, device spaces, sample layouts, colour/alpha samples and DCTImage data; normalized XObject dictionaries, DCTDecode parameters and soft-mask streams. | The core does not inspect an external image-file format. Encoded DCT data is a caller-declared representation. |
+| PDF images — core | Explicit dimensions, sample layouts, colour spaces, Decode, image stencils, colour-key/explicit/soft masks and declarations of encoded image data. | Encoded data and its colour/alpha semantics are caller-declared. External codecs and file inspection belong to optional converters. |
 | JPEG conversion — pdf-images | Marker/frame/table validation, baseline and progressive eight-bit grayscale/RGB JPEG and Adobe CMYK transform zero into a core DCTImage. Original DCT bytes are preserved. | No entropy decoding or JPEG encoding; the reader decodes the coefficients. ICC, YCCK and ambiguous colour semantics are rejected. EXIF orientation is not applied. |
 | PNG conversion — pdf-images | CRC/framing/order checks, bounded zlib decoding, all five scanline filters, eight-bit grayscale/RGB/indexed/alpha samples and tRNS into core sample objects. | Static non-interlaced PNG only; other depths, APNG and embedded colour profiles are rejected. Ancillary colour metadata does not create calibrated PDF spaces. Import limits are explicit objects. |
-| Incremental revisions | Frozen FileRevision snapshots, explicit replacements/additions, historical identity aliases, absolute offsets, chained Prev, inherited trailer entries, renewed changing file ID, tables or streams and new object-stream containers. | Generated revisions only, inherited xref format, no external PDF parser, deletion/reuse, hybrid references, encrypted updates, signatures or linearization. Replacements retain the PDF object family and existing dictionary Type. Old bytes are preserved, so updates cannot erase confidential old content. |
+| Incremental revisions | Frozen FileRevision snapshots, explicit replacements/additions, aliases, offsets, Prev, inherited trailer entries and file identifiers. Encryption operations are preserved; signatures can be finalized in an appended revision. | Generated revisions only. The mechanism inventory tracks additional xref and free-object variants. Replacements retain the existing object family and dictionary Type; old bytes remain, so updates cannot erase confidential content. |
 | External PDF reading — pdf-reader | PDF 1.0–1.7 object syntax, traditional and stream xrefs, Prev revisions, object streams, explicit reference resolution, encoded stream retention and bounded Flate/ASCIIHex/ASCII85/RunLength decoding with eight-bit TIFF/PNG predictors. Ordered page-tree traversal checks counts, parents and unique identities; effective Resources, MediaBox, CropBox and Rotate preserve PDF objects. Page-local Contents streams are resolved separately in order. | No PDF 2.0, encrypted documents, hybrid XRefStm, repair, content interpretation, rendering or text extraction. Unknown codecs can be retained encoded but cannot be decoded. Page traversal does not inspect all resource contents. Contents inspection does not concatenate or decode streams. Reading does not implement import or remapping into the writer. |
 
 The initial writer emits free records for every unused object number below Size.
