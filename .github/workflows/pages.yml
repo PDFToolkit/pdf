@@ -1,4 +1,4 @@
-name: Documentation
+name: Documentation compatibility
 
 on:
   push:
@@ -9,66 +9,33 @@ on:
 permissions:
   contents: read
 
-env:
-  COMPOSER_ROOT_VERSION: 0.5.x-dev
-
 concurrency:
   group: documentation-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   build:
-    name: Build with PHP 8.3
+    name: Preserve existing documentation addresses
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: shivammathur/setup-php@v2
+      - name: Check out validated compatibility tools
+        uses: actions/checkout@v6
         with:
-          php-version: '8.3'
-          extensions: ctype, iconv, zlib, openssl
-          tools: composer:v2
-          coverage: none
+          repository: PDFToolkit/pdftoolkit.github.io
+          ref: 2ce4a81f61fb12b93c0e414e2b98bff0fe8aff6e
+          path: _docs
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
-      - run: composer install --no-interaction --prefer-dist
-      - run: composer check-platform-reqs
-      - run: composer audit --locked
-      - run: python -m pip install --require-hashes -r tools/site-requirements.txt
-      - run: python -m pip install --require-hashes -r tools/public-key-validation-requirements.txt
-      - name: Verify retained archival Adobe references and portfolio attachments
-        run: python tools/validate_adobe_references.py
-      - uses: ./.github/actions/setup-qpdf
-      - run: sudo apt-get update && sudo apt-get install -y poppler-utils
-      - name: Export the API and generate validated PDF examples
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Preserve published downloads and redirect HTML navigation
         run: |
-          mkdir -p _build/pdfs _build/pdf-pages
-          php tools/export_api.php _build/api.json
-          for example in examples/*.php; do
-            name=$(basename "$example" .php)
-            output="_build/pdfs/$name.pdf"
-            php "$example" "$output"
-            qpdf --check "$output"
-            pdftoppm -r 96 -png "$output" "_build/pdf-pages/$name"
-          done
-      - name: Read and render the independent input PDF
-        run: |
-          module=vendor/pdftoolkit/pdf-reader
-          output=_build/pdfs/reading-pages.pdf
-          cp "$module/tests/Fixtures/page-tree/classic.pdf" "$output"
-          qpdf --check "$output"
-          php "$module/examples/pages.php" "$output" > _build/pdfs/reading-pages.txt
-          pdftoppm -r 96 -png "$output" _build/pdf-pages/reading-pages
-      - name: Verify mechanism semantics with an independent reader
-        run: python tools/validate_mechanisms.py _build/pdfs
-      - name: Verify Adobe extension semantics
-        run: python tools/validate_adobe_supplement.py _build/pdfs
-      - name: Verify native source mechanisms with independent oracles
-        run: python tools/validate_source_mechanisms.py _build/pdfs --php php --qpdf qpdf
-      - name: Build and check the documentation
-        run: |
-          python tools/build_site.py --api _build/api.json --pdf-dir _build/pdfs --pdf-preview-dir _build/pdf-pages --output _site --base-path /pdf --revision "$GITHUB_SHA"
-          python tools/check_site.py _site
+          python _docs/tools/build_legacy_site.py --site-url https://pdftoolkit.github.io/ --legacy-manifest _docs/resources/legacy-site-manifest.json --legacy-base /pdf --output _site
+          python _docs/tools/check_legacy_site.py _site
       - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
@@ -85,6 +52,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/configure-pages@v5
-      - name: Publish the documentation
+      - name: Publish compatibility pages and original download bytes
         id: deployment
         uses: actions/deploy-pages@v4
