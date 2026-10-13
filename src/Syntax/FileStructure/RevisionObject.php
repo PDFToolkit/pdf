@@ -22,6 +22,7 @@ final readonly class RevisionObject
     /** @var list<BasicType> */
     public array $aliases;
     public ?DictionaryType $dictionary;
+    public BasicType $snapshot;
     public string $objectKind;
 
     public function __construct(public ObjectIdentifier $identifier, public BasicType $value, BasicType ...$aliases)
@@ -38,9 +39,10 @@ final readonly class RevisionObject
         }
         $this->aliases = array_values($identities);
         $dictionary = $value instanceof DictionaryType ? $value : ($value instanceof StreamObject ? $value->dictionary() : null);
-        // Freeze the top-level dictionary entries, including structural references.
-        // Never ask a historical mutable builder to recreate these entries later.
-        $this->dictionary = $dictionary === null ? null : new DictionaryType(...iterator_to_array($dictionary->entries(), false));
+        $capture = new RevisionValueSnapshot();
+        $frozen = $dictionary === null ? null : $capture->capture($dictionary);
+        $this->dictionary = $frozen instanceof DictionaryType ? $frozen : null;
+        $this->snapshot = $value instanceof StreamObject ? $value : $capture->capture($value);
         $this->objectKind = match (true) {
             $value instanceof StreamObject => 'stream',
             $value instanceof DictionaryType => 'dictionary',

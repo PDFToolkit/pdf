@@ -133,6 +133,27 @@ final class IncrementalUpdateTest extends TestCase
         self::assertStringContainsString('/Value 999', substr($two->bytes, strlen($one->bytes)));
     }
 
+    public function testRevisionFreezesMutableDirectContainersInsideArrays(): void
+    {
+        $direct = new class () extends DictionaryType {
+            public int $number = 1;
+            public function entries(): iterable
+            {
+                yield new Entry(new NameType('Value'), new IntegerType($this->number));
+            }
+        };
+        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('Private'), new ArrayType($direct, $direct)));
+        $base = (new FileStructure(new FileHeader(), new FileBody($catalog)))->toRevision();
+        $direct->number = 999;
+        $snapshot = $base->binding($catalog)->dictionary->get('Private');
+        self::assertInstanceOf(ArrayType::class, $snapshot);
+        self::assertSame(1, $snapshot->items[0]->get('Value')->value);
+        self::assertSame($snapshot->items[0], $snapshot->items[1]);
+        $next = (new IncrementalUpdate($base, new FileBody(new LiteralString('unrelated delta'))))->toRevision();
+        self::assertStringStartsWith($base->bytes, $next->bytes);
+        self::assertSame(1, $next->binding($catalog)->dictionary->get('Private')->items[0]->get('Value')->value);
+    }
+
     public function testChangedRootIsValidatedUsingItsEffectiveReplacement(): void
     {
         $base = $this->base(CrossReferenceFormat::Table);

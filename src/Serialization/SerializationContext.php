@@ -16,8 +16,12 @@ use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\StringType;
-use PDF\Syntax\FileStructure\CrossReferenceStream;
-use PDF\Security\HistoricalRevision5Encryption;
+use PDF\Syntax\FileStructure\CrossReferenceStreamObject;
+use PDF\Security\FileEncryption;
+use PDF\Security\StreamCryptFilter;
+use PDF\Syntax\Linearization\ObjectIdentifierRemapping;
+use PDF\Syntax\Filters\Filter;
+use PDF\Syntax\Filters\Crypt;
 use PDF\Security\DocumentMetadataExemption;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\Object\DictionaryObject\Entry;
@@ -40,12 +44,14 @@ final class SerializationContext
     /** @var array<int, ObjectIdentifier> */
     private array $reservedIdentifiers = [];
     private readonly int $firstNewNumber;
-    private readonly ?HistoricalRevision5Encryption $encryption;
-    private readonly ?DocumentMetadataExemption $metadataExemption;
+    private readonly ?FileEncryption $encryption;
+    private ?DocumentMetadataExemption $metadataExemption;
     private ?BasicType $indirectValue = null;
+    private ?ObjectIdentifier $containingIdentifier = null;
     private int $encryptionSuppression = 0;
+    private readonly bool $remapping;
 
-    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|HistoricalRevision5Encryption|DocumentMetadataExemption ...$existingObjects)
+    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|FileEncryption|DocumentMetadataExemption|ObjectIdentifierRemapping ...$existingObjects)
     {
         $this->identifiers = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
@@ -54,7 +60,15 @@ final class SerializationContext
         $this->nextNumber = $this->firstNewNumber;
         $encryption = null;
         $metadata = null;
+        $remapping = false;
         foreach ($existingObjects as $record) {
+            if ($record instanceof ObjectIdentifierRemapping) {
+                if ($remapping) {
+                    throw new \InvalidArgumentException('Object identifier remapping is selected once per context.');
+                }
+                $remapping = true;
+                continue;
+            }
             if ($record instanceof DocumentMetadataExemption) {
                 if ($metadata !== null) {
                     throw new \InvalidArgumentException('Only one document-level metadata stream can be exempted.');
@@ -62,7 +76,7 @@ final class SerializationContext
                 $metadata = $record;
                 continue;
             }
-            if ($record instanceof HistoricalRevision5Encryption) {
+            if ($record instanceof FileEncryption) {
                 if ($encryption !== null) {
                     throw new \InvalidArgumentException('One serialization context can use only one file encryption operation.');
                 }
@@ -82,14 +96,15 @@ final class SerializationContext
                 $this->historical->offsetSet($alias);
             }
         }
-        if ($encryption !== null && $this->reservedIdentifiers !== []) {
-            throw new \LogicException('Encrypted incremental serialization is not implemented.');
+        if ($remapping && $this->reservedIdentifiers !== []) {
+            throw new \LogicException('Initial-file identifier remapping cannot reuse revision snapshots.');
         }
-        if ($metadata !== null && ($encryption === null || $encryption->dictionary->encryptMetadata->value)) {
+        if ($metadata !== null && ($encryption === null || $encryption->metadata()->value)) {
             throw new \LogicException('A document metadata exemption requires EncryptMetadata=false.');
         }
         $this->encryption = $encryption;
         $this->metadataExemption = $metadata;
+        $this->remapping = $remapping;
     }
 
     /** Discover explicit identifiers before assigning automatic numbers. */
@@ -123,7 +138,7 @@ final class SerializationContext
                     return;
                 }
                 $targets[spl_object_id($value->target())] = $value->target();
-                if ($value->identifier !== null) {
+                if ($value->identifier !== null && !$this->remapping) {
                     $this->register($value->target(), $value->identifier);
                 }
                 $visit($value->target());
@@ -134,6 +149,9 @@ final class SerializationContext
             }
             $seen[spl_object_id($value)] = true;
             if ($value instanceof ObjectStream) {
+                if ($this->remapping) {
+                    throw new \LogicException('Embedded object numbers require an explicit object-stream remapping plan.');
+                }
                 foreach ($value->embeddedEntries() as $member) {
                     $this->stage(new IndirectObject($member->value, $member->identifier()));
                     $visit($member->value);
@@ -161,7 +179,11 @@ final class SerializationContext
         };
         foreach ($roots as $root) {
             if ($root instanceof IndirectObject) {
-                $this->stage($root);
+                if ($this->remapping) {
+                    $this->register($root->value);
+                } else {
+                    $this->stage($root);
+                }
                 $root = $root->value;
             }
             if (!$root instanceof IndirectReference) {
@@ -248,7 +270,7 @@ final class SerializationContext
 
     public function reference(IndirectReference $reference): ObjectIdentifier
     {
-        return $this->register($reference->target(), $reference->identifier);
+        return $this->register($reference->target(), $this->remapping ? null : $reference->identifier);
     }
     public function referenceTo(BasicType $target): IndirectReference
     {
@@ -271,15 +293,29 @@ final class SerializationContext
         }
         return $this->guarded($object);
     }
-    public function serializeIndirect(BasicType $object): string
+    /** A normalized copy may use its containing object's identifier without acquiring a second identity. */
+    public function serializeIndirect(BasicType $object, ?ObjectIdentifier $containingIdentifier = null): string
     {
         $previous = $this->indirectValue;
+        $previousIdentifier = $this->containingIdentifier;
         $this->indirectValue = $object;
+        $this->containingIdentifier = $containingIdentifier;
         try {
             return $this->guarded($object);
         } finally {
             $this->indirectValue = $previous;
+            $this->containingIdentifier = $previousIdentifier;
         }
+    }
+
+    /** Select the effective root metadata after incremental bindings have been staged. */
+    public function excludeDocumentMetadata(DocumentMetadataExemption $exemption): void
+    {
+        if ($this->encryption === null || $this->encryption->metadata()->value
+            || ($this->metadataExemption !== null && $this->metadataExemption->stream !== $exemption->stream)) {
+            throw new \LogicException('One document metadata exemption requires EncryptMetadata=false.');
+        }
+        $this->metadataExemption = $exemption;
     }
 
     /** Signature container Contents stay clear; this also matches qpdf's signature handling. */
@@ -327,27 +363,43 @@ final class SerializationContext
     }
 
     /** Stream encoders run before encryption; xref and excluded metadata bytes stay clear. */
+    /** @return list<Filter> */
+    public function streamFilters(StreamObject $stream): array
+    {
+        if ($stream === $this->metadataExemption?->stream && (new StreamCryptFilter())->explicit($stream) === null) {
+            return [new Crypt(), ...$stream->filters];
+        }
+        return $this->encryption?->streamFilters($stream) ?? $stream->filters;
+    }
+
+    /** Stream encoders run before encryption; xref and excluded metadata bytes stay clear. */
     public function encryptStream(StreamObject $stream, string $bytes): string
     {
-        if (!$this->encrypting() || $stream instanceof CrossReferenceStream) {
-            return $bytes;
+        $explicit = (new StreamCryptFilter())->explicit($stream);
+        if ($explicit !== null && $stream instanceof CrossReferenceStreamObject) {
+            throw new \LogicException('Cross-reference streams cannot use a Crypt filter.');
         }
-        foreach ($stream->filters as $filter) {
-            if ($filter->name()->value === 'Crypt') {
-                throw new \LogicException('Explicit stream Crypt filters are not supported by the historical R=5 writer.');
+        if (!$this->encrypting() || $stream instanceof CrossReferenceStreamObject) {
+            if ($explicit !== null && $explicit->value !== 'Identity' && $this->encryption === null) {
+                throw new \LogicException('A named Crypt filter requires a file security operation.');
             }
+            return $bytes;
         }
         if ($this->indirectValue === $this->metadataExemption?->stream) {
+            if ($explicit !== null && $explicit->value !== 'Identity') {
+                throw new \LogicException('Excluded document metadata cannot declare an encrypting Crypt filter.');
+            }
             return $bytes;
         }
-        return $this->encryption?->encrypt($bytes) ?? $bytes;
+        $identifier = $this->containingIdentifier ?? $this->identifier($this->indirectValue ?? throw new \LogicException('An encrypted stream must belong to an indirect object.'));
+        return $this->encryption?->encryptStream($bytes, $identifier, $stream) ?? $bytes;
     }
 
     private function encrypting(): bool
     {
         return $this->encryption !== null && $this->encryptionSuppression === 0 && $this->indirectValue !== null
-            && !$this->indirectValue instanceof CrossReferenceStream
-            && $this->indirectValue !== $this->encryption->dictionary->dictionary();
+            && !$this->indirectValue instanceof CrossReferenceStreamObject
+            && $this->indirectValue !== $this->encryption->dictionary();
     }
     private function guarded(BasicType $object): string
     {
@@ -357,7 +409,8 @@ final class SerializationContext
         $this->active->offsetSet($object);
         try {
             if ($object instanceof StringType && $this->encrypting()) {
-                return '<' . strtoupper(bin2hex($this->encryption?->encrypt($object->value) ?? $object->value)) . '>';
+                $identifier = $this->containingIdentifier ?? $this->identifier($this->indirectValue ?? throw new \LogicException('An encrypted string must belong to an indirect object.'));
+                return '<' . strtoupper(bin2hex($this->encryption?->encryptString($object->value, $identifier) ?? $object->value)) . '>';
             }
             return $object->toPdf($this);
         } finally {

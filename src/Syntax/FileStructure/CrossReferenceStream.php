@@ -21,7 +21,7 @@ use PDF\Syntax\Object\StringType;
  * ISO 32000-1, 7.5.8. Records are sorted by object number. Widths are computed
  * from the largest field values; no floating point or platform-endian packing.
  */
-final class CrossReferenceStream extends StreamObject
+final class CrossReferenceStream extends StreamObject implements CrossReferenceStreamObject
 {
     /** @var list<CrossReferenceStreamEntry> */
     private readonly array $records;

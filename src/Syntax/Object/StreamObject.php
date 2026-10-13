@@ -55,10 +55,11 @@ class StreamObject implements BasicType
     {
         $bytes = $context->encryptStream($this, $this->bytes($context));
         $dictionary = $this->dictionary()->with(new Entry(new NameType('Length'), new StreamExtent($bytes)));
-        if ($this->filters !== []) {
-            $names = array_map(static fn (Filter $filter): NameType => $filter->name(), $this->filters);
+        $filters = $context->streamFilters($this);
+        if ($filters !== []) {
+            $names = array_map(static fn (Filter $filter): NameType => $filter->name(), $filters);
             $dictionary = $dictionary->with(new Entry(new NameType('Filter'), count($names) === 1 ? $names[0] : new ArrayType(...$names)));
-            $parameters = array_map(static fn (Filter $filter): BasicType => $filter->parameters() ?? new NullType(), $this->filters);
+            $parameters = array_map(static fn (Filter $filter): BasicType => $filter->parameters() ?? new NullType(), $filters);
             if (array_filter($parameters, static fn (BasicType $value): bool => !$value instanceof NullType) !== []) {
                 $dictionary = $dictionary->with(new Entry(new NameType('DecodeParms'), count($parameters) === 1 ? $parameters[0] : new ArrayType(...$parameters)));
             }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PDF\Serialization;
 
 use PDF\FileStructure;
+use PDF\Document\DocumentGraphValidation;
 use PDF\Syntax\FileStructure\ByteOffset;
 use PDF\Syntax\FileStructure\CrossReferenceEntry;
 use PDF\Syntax\FileStructure\CrossReferenceTable;
@@ -19,6 +20,11 @@ use PDF\Syntax\FileStructure\CrossReferenceLimits;
 use PDF\Syntax\FileStructure\CrossReferenceSection;
 use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\RevisionObject;
+use PDF\Syntax\FileStructure\ObjectByteSpan;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
+use PDF\Syntax\FileStructure\HybridReferenceObjects;
+use PDF\Syntax\FileStructure\HybridCrossReferenceSection;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectObject;
 use PDF\Syntax\Object\IndirectReference;
@@ -29,7 +35,8 @@ use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\StringType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
-use PDF\Security\HistoricalRevision5Encryption;
+use PDF\Security\FileEncryption;
+use PDF\Security\FileIdentifier;
 use PDF\Security\DocumentMetadataExemption;
 use PDF\Syntax\Object\StreamObject;
 
@@ -38,26 +45,21 @@ final class FileWriter
 {
     public function __construct(
         private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(),
-        private readonly ?HistoricalRevision5Encryption $encryption = null,
+        private readonly ?FileEncryption $encryption = null,
     ) {
     }
 
     public function serialize(FileStructure $file): string
     {
-        $result = $this->write($file);
-        return $result instanceof FileRevision ? $result->bytes : $result;
+        return $this->write($file)->bytes;
     }
 
     public function revision(FileStructure $file): FileRevision
     {
-        if ($this->encryption !== null) {
-            throw new \LogicException('Encrypted revision snapshots and incremental writing are not implemented. Use serialize().');
-        }
-        $result = $this->write($file);
-        return $result instanceof FileRevision ? $result : throw new \LogicException('An encrypted file cannot produce a revision snapshot.');
+        return $this->write($file);
     }
 
-    private function write(FileStructure $file): FileRevision|string
+    private function write(FileStructure $file): FileRevision
     {
         $root = $file->root ?? $this->findRoot($file);
         $catalog = $root->target();
@@ -75,10 +77,10 @@ final class FileWriter
         $trailerEntries = $file->trailerEntries;
         if ($this->encryption !== null) {
             $this->validateEncryptionFile($file, $catalog);
-            $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('Encrypt'), new IndirectReference($this->encryption->dictionary->dictionary())));
+            $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('Encrypt'), new IndirectReference($this->encryption->dictionary())));
         }
         $security = $this->encryption === null ? [] : [$this->encryption];
-        if ($this->encryption !== null && !$this->encryption->dictionary->encryptMetadata->value && $catalog->has('Metadata')) {
+        if ($this->encryption !== null && !$this->encryption->metadata()->value && $catalog->has('Metadata')) {
             $metadata = $catalog->get('Metadata');
             if (!$metadata instanceof IndirectReference || !$metadata->target() instanceof StreamObject) {
                 throw new \LogicException('Catalog Metadata must reference the document-level metadata stream.');
@@ -87,6 +89,7 @@ final class FileWriter
         }
         $context = new SerializationContext(new ObjectNumber(), ...$security);
         $context->prepareFile($file->body, $root, $trailerEntries);
+        (new DocumentGraphValidation($context, $catalog))->validate($file->header);
         foreach ($context->objects() as $object) {
             if ($context->identifier($object)->generationNumber->value !== 0) {
                 throw new \LogicException('Objects in an initial file start with generation zero.');
@@ -101,7 +104,7 @@ final class FileWriter
                 throw new \LogicException('An object stream must have generation zero.');
             }
             foreach ($object->embeddedEntries() as $index => $member) {
-                if ($this->encryption !== null && $member->value === $this->encryption->dictionary->dictionary()) {
+                if ($this->encryption !== null && $member->value === $this->encryption->dictionary()) {
                     throw new \LogicException('An encryption dictionary cannot be embedded in an object stream.');
                 }
                 if ($this->encryption !== null && $member->value instanceof DictionaryType && $context->isByteRangeSignature($member->value)) {
@@ -118,13 +121,16 @@ final class FileWriter
                 );
             }
         }
-        if ($compressed !== [] && $file->crossReferenceFormat !== CrossReferenceFormat::Stream) {
+        $hybrid = $file->crossReferenceFormat === CrossReferenceFormat::Hybrid ? new HybridReferenceObjects($context, $catalog) : null;
+        $compressed = $hybrid?->compressedEntries() ?? $compressed;
+        if ($compressed !== [] && $file->crossReferenceFormat === CrossReferenceFormat::Table) {
             throw new \LogicException('Object streams require a cross-reference stream.');
         }
-        if ($file->crossReferenceFormat === CrossReferenceFormat::Stream && version_compare($file->header->version->value, '1.5', '<')) {
-            throw new \LogicException('Cross-reference streams require PDF 1.5 or later.');
+        if ($file->crossReferenceFormat !== CrossReferenceFormat::Table) {
+            (new EffectivePdfVersion($file->header, $catalog))->require(PdfVersion::PDF15, 'Cross-reference streams');
         }
         $text = (string) $file->header;
+        $spans = [];
         $entries = array_values($compressed);
         $written = array_fill_keys(array_keys($compressed), true);
         do {
@@ -132,7 +138,10 @@ final class FileWriter
             foreach ($pending as $number => $object) {
                 $identifier = $context->identifier($object);
                 $entries[] = new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(strlen($text)), $identifier->generationNumber);
-                $text .= (new IndirectObject($object, $identifier))->toPdf($context);
+                $value = $hybrid?->serializedValue($object) ?? $object;
+                $objectBytes = $identifier . " obj\n" . $context->serializeIndirect($value, $identifier) . "\nendobj\n";
+                $spans[] = new ObjectByteSpan($identifier, new ByteOffset(strlen($text)), strlen($objectBytes));
+                $text .= $objectBytes;
                 $written[$number] = true;
             }
         } while (array_diff_key($context->objects(), $written) !== []);
@@ -142,20 +151,56 @@ final class FileWriter
             throw new \LogicException('The document must contain indirect objects.');
         }
         $maximumNumber = max($numbers);
-        $reservedNumbers = $file->crossReferenceFormat === CrossReferenceFormat::Stream ? 2 : 1;
+        $reservedNumbers = $file->crossReferenceFormat === CrossReferenceFormat::Table ? 1 : 2;
         if ($maximumNumber > PHP_INT_MAX - $reservedNumbers) {
             throw new \OverflowException('Not enough object number space to serialize this file.');
         }
         $size = $maximumNumber + 1;
+        if ($hybrid !== null) {
+            $identifier = new ObjectIdentifier(new ObjectNumber($size));
+            $fullSize = new IntegerType($size + 1);
+            $placeholder = new CrossReferenceSection(
+                $fullSize,
+                new IntegerType(1),
+                new IntegerType(0),
+                $this->limits,
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(0))]
+            );
+            $fallback = (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
+            $mainTrailer = new FileTrailer($fullSize, $root, ...($trailerEntries === null ? [] : iterator_to_array($trailerEntries->entries(), false)));
+            $text .= $fallback . "trailer\n" . $context->serialize($mainTrailer) . "\nstartxref\n" . $xrefOffset . "\n%%EOF\n";
+            $auxiliaryOffset = strlen($text);
+            $section = new CrossReferenceSection(
+                $fullSize,
+                new IntegerType(1),
+                new IntegerType(0),
+                $this->limits,
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset))]
+            );
+            $xref = new CrossReferenceStream($fullSize, $root, $trailerEntries, ...$section->entries());
+            $context->register($xref, $identifier);
+            $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
+            $spans[] = new ObjectByteSpan($identifier, new ByteOffset($auxiliaryOffset), strlen($xrefBytes));
+            $text .= $xrefBytes;
+            $updateOffset = strlen($text);
+            $extras = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('Prev'), new IntegerType($xrefOffset)))
+                ->with(new Entry(new NameType('XRefStm'), new IntegerType($auxiliaryOffset)));
+            $updateTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($extras->entries(), false));
+            $bytes = $text . (new HybridCrossReferenceSection($section, $identifier->objectNumber))->update()
+                . "trailer\n" . $context->serialize($updateTrailer) . "\nstartxref\n" . $updateOffset . "\n%%EOF\n";
+            return $this->snapshot($file, $context, $bytes, $updateOffset, $section, $trailerEntries, $spans, $hybrid);
+        }
         if ($file->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
             $entries[] = new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($xrefOffset));
             $section = new CrossReferenceSection(new IntegerType($size + 1), new IntegerType(1), new IntegerType(0), $this->limits, ...$entries);
             $xref = new CrossReferenceStream($section->size, $root, $trailerEntries, ...$section->entries());
             $context->register($xref, $identifier);
-            $bytes = $text . (new IndirectObject($xref, $identifier))->toPdf($context)
+            $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
+            $spans[] = new ObjectByteSpan($identifier, new ByteOffset(strlen($text)), strlen($xrefBytes));
+            $bytes = $text . $xrefBytes
                 . "startxref\n" . $xrefOffset . "\n%%EOF\n";
-            return $this->encryption === null ? $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries) : $bytes;
+            return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans);
         }
         $section = new CrossReferenceSection(new IntegerType($size), new IntegerType(1), new IntegerType(0), $this->limits, ...$entries);
         $traditional = [];
@@ -169,14 +214,15 @@ final class FileWriter
         $trailer = new FileTrailer(new IntegerType($size), $root, ...($trailerEntries === null ? [] : iterator_to_array($trailerEntries->entries(), false)));
         $bytes = $text . new CrossReferenceTable(...$traditional) . "trailer\n" . $context->serialize($trailer)
             . "\nstartxref\n" . $xrefOffset . "\n%%EOF\n";
-        return $this->encryption === null ? $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries) : $bytes;
+        return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans);
     }
 
-    private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries): FileRevision
+    /** @param list<ObjectByteSpan> $spans */
+    private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null): FileRevision
     {
         $objects = [];
         foreach ($context->objects() as $object) {
-            $objects[] = new RevisionObject($context->identifier($object), $object);
+            $objects[] = new RevisionObject($context->identifier($object), $hybrid?->serializedValue($object) ?? $object, $object);
         }
         $root = $file->root ?? $this->findRoot($file);
         return new FileRevision(
@@ -188,28 +234,19 @@ final class FileWriter
             $trailerEntries ?? new DictionaryType(),
             $file->crossReferenceFormat,
             $section->freeListHead(),
-            ...$objects,
+            ...[...$objects, ...$spans, ...($this->encryption === null ? [] : [$this->encryption])],
         );
     }
 
-    /** The encrypted API requires explicit ExtensionLevel 3 and two 16-byte file IDs. */
+    /** File identifiers and trailer plaintext boundaries are shared by the security handlers. */
     private function validateEncryptionFile(FileStructure $file, DictionaryType $catalog): void
     {
-        if ($file->header->version->value !== '1.7') {
-            throw new \LogicException('Historical R=5 encryption requires a PDF 1.7 header and Adobe extension level 3.');
-        }
-        $extensions = $catalog->get('Extensions');
-        $adobe = $extensions instanceof DictionaryType ? $extensions->get('ADBE') : null;
-        $base = $adobe instanceof DictionaryType ? $adobe->get('BaseVersion') : null;
-        $level = $adobe instanceof DictionaryType ? $adobe->get('ExtensionLevel') : null;
-        if (!$base instanceof NameType || $base->value !== '1.7' || !$level instanceof IntegerType || $level->value < 3) {
-            throw new \LogicException('Historical R=5 encryption requires explicit /Extensions /ADBE /BaseVersion /1.7 /ExtensionLevel 3 or greater.');
-        }
         $id = $file->trailerEntries?->get('ID');
         if (!$id instanceof ArrayType || count($id->items) !== 2 || !$id->items[0] instanceof StringType || !$id->items[1] instanceof StringType
             || strlen($id->items[0]->value) !== 16 || strlen($id->items[1]->value) !== 16) {
             throw new \LogicException('The encrypted writer requires an explicit trailer ID with two direct 16-byte strings.');
         }
+        $this->encryption?->validateFile($file->header, $catalog, new FileIdentifier($id->items[0]));
         // Trailer dictionaries and cross-reference stream dictionaries stay clear.
         // Arbitrary strings must therefore live in an encrypted indirect object.
         $pending = [];
