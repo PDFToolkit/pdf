@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: 0.3.x-dev
+  COMPOSER_ROOT_VERSION: 0.4.x-dev
 
 concurrency:
   group: documentation-${{ github.ref }}
@@ -35,7 +35,7 @@ jobs:
       - run: composer check-platform-reqs
       - run: composer audit --locked
       - run: python -m pip install --require-hashes -r tools/site-requirements.txt
-      - run: python -m pip install --require-hashes -r tools/validation-requirements.txt
+      - run: python -m pip install --require-hashes -r tools/public-key-validation-requirements.txt
       - uses: ./.github/actions/setup-qpdf
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Export the API and generate validated PDF examples
@@ -61,6 +61,8 @@ jobs:
         run: python tools/validate_mechanisms.py _build/pdfs
       - name: Verify Adobe extension semantics
         run: python tools/validate_adobe_supplement.py _build/pdfs
+      - name: Verify native source mechanisms with independent oracles
+        run: python tools/validate_source_mechanisms.py _build/pdfs --php php --qpdf qpdf
       - name: Build and check the documentation
         run: |
           python tools/build_site.py --api _build/api.json --pdf-dir _build/pdfs --pdf-preview-dir _build/pdf-pages --output _site --base-path /pdf --revision "$GITHUB_SHA"

@@ -22,14 +22,14 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.1",
-        "pdftoolkit/pdf-images": "^0.1.1",
-        "pdftoolkit/pdf-reader": "^0.1.1",
+        "pdftoolkit/pdf-fonts": "^0.1.2",
+        "pdftoolkit/pdf-images": "^0.1.2",
+        "pdftoolkit/pdf-reader": "^0.1.2",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
     "suggest": {
-        "ext-openssl": "Required only for the explicitly selected historical AES-256 revision 5 backend."
+        "ext-openssl": "Required only for explicitly selected AES and CMS encryption or signature backends."
     },
     "license": "MIT",
     "authors": [
@@ -72,7 +72,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     },
     "repositories": [
