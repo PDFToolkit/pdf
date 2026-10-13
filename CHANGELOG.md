@@ -2,6 +2,40 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-13
+
+Native writing mechanisms with explicit object construction, independent interoperability checks and a coverage inventory that separates definitions from algorithms and semantic rules. PHP 8.3 remains the minimum version.
+
+### Added
+
+- Construct AcroForm fields, widgets, appearances and FDF; tagged structures, MCID/MCR/OBJR relationships, ParentTree and IDTree.
+- Construct calibrated and special colour spaces, patterns and all seven shading types, including native binary meshes; sampled images, masks, transparency, blending, halftones and optional-content configurations.
+- Model native font families, explicit font programs, horizontal and vertical CID metrics, encoding vectors and CMaps. Scope subset-name uniqueness to each document.
+- Encode LZW with both EarlyChange values and TIFF/PNG predictors across the permitted sample depths. Validate transitions, resets and decoded bytes independently.
+- Write ISO R=2/3/4 password encryption and explicit CMS recipient encryption with per-filter keys. Preserve encrypted incremental revisions, metadata exemptions and recipient permissions.
+- Sign fixed byte ranges using the three ISO signature formats. Model intrinsic seed, certificate, DocMDP, FieldMDP and usage-rights policies; reject required policies whose orchestration remains unsupported.
+- Write hybrid cross references and native Annex F linearization, including shared resources, thumbnails, embedded files, object streams and encrypted variants.
+- Add nine explained tutorials with generated PDFs, searchable component documentation and reproducible validations using qpdf, pypdf, pyHanko, ASN.1 and cryptographic checks.
+- Add source-backed coverage inventories for both retained PDFs; distinguish complete dictionary definitions from remaining native semantics and external processors.
+
+### Changed
+
+- Replace the five remaining production static factories with explicit value objects and constructors. See [the migration guide](docs/migration-0.4.md).
+- Encode text strings in PDFDocEncoding when representable, otherwise UTF-16BE with a BOM; expose explicit subset-font names and normalized sample layouts.
+- Lock development documentation modules to their published 0.1.2 releases, which accept core `^0.2 || ^0.3 || ^0.4`; production dependencies remain limited to PHP extensions.
+
+### Fixed
+
+- Preserve source constraints for attribute orientation, padding, shading functions and continued tables without discarding printed provenance.
+- Freeze direct revision containers, resolve effective bindings and reject structural references to pages outside the effective page tree.
+- Prevent object-stream replacements of Encrypt and stale metadata exemptions; apply explicit Crypt keys directly as required by ISO 7.4.10.
+- Require widget appearance state for every stateful appearance branch. Enforce native signature algorithm and key-size version requirements before signing.
+
+### Scope
+
+- This release does not claim complete implementation of both source documents. Free-object reuse, revisions after linearization, signature-policy orchestration and further graph, annotation and resource semantics remain tracked in [the coverage inventory](docs/coverage.md).
+- External PDF parsing, image/font conversion, rendering, XFA, JavaScript execution, media codecs, geodetic transforms and certificate trust remain separate responsibilities.
+
 ## [0.3.0] - 2026-10-13
 
 Adobe PDF 1.7 extension level 3, preserving the supplied specification and composing its definitions with the ISO object model. PHP 8.3 remains the minimum version.
