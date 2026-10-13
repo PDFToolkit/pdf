@@ -2,9 +2,9 @@
 
 Ce guide explique les familles d'objets, leurs responsabilités et leur composition. La [référence API exhaustive](https://pdftoolkit.github.io/pdf/reference/index.html) donne ensuite les signatures de chaque classe, interface, enum, méthode et propriété. Les [tutoriels](tutorials/README.md) montrent des documents complets, leurs instructions PDF et leur résultat visuel ; les [recettes](recipes/README.md) combinent plusieurs familles pour un usage concret.
 
-La documentation publiée depuis `master` suit le code de développement. La dernière version stable du core est **0.2.1** ; les trois modules optionnels commencent à **0.1.0**. Pour consulter exactement l'API du core publié, utiliser le [code du tag v0.2.1](https://github.com/PDFToolkit/pdf/tree/v0.2.1). Avant 1.0, les nouvelles versions mineures peuvent modifier les noms et signatures pour améliorer le modèle ; les versions correctives préservent l'API de leur série.
+La documentation publiée depuis `master` suit le code de développement. La dernière version stable du core est **0.3.0** ; les trois modules optionnels sont publiés en **0.1.1** et acceptent les séries 0.2 et 0.3 du core. Pour consulter exactement l'API du core publié, utiliser le [code du tag v0.3.0](https://github.com/PDFToolkit/pdf/tree/v0.3.0). Avant 1.0, les nouvelles versions mineures peuvent modifier les noms et signatures pour améliorer le modèle ; les versions correctives préservent l'API de leur série.
 
-Le format décrit est **PDF 1.7, ISO 32000-1:2008**. La version PHP minimale, PHP 8.3, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
+Le format décrit est **PDF 1.7, ISO 32000-1:2008**, avec le [supplément Adobe, niveau d'extension 3](adobe-supplement.md). Les deux PDF de référence sont conservés dans le dépôt. La version PHP minimale, PHP 8.3, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
 
 ## Comment lire le modèle
 
@@ -393,7 +393,7 @@ Les définitions conservent les informations nécessaires pour remonter à la no
 
 | Composant | Informations portées |
 | --- | --- |
-| [`SourceReference`](../src/Specification/SourceReference.php) | Standard, tableau, clause éventuelle, page physique du PDF et empreinte du document source. |
+| [`SourceReference`](../src/Specification/SourceReference.php) | Standard, tableau, clause éventuelle, nom du document, page physique du PDF et empreinte du document source. |
 | [`Requirement`](../src/Specification/Requirement.php) | Exigence de présence, avec son caractère inconditionnel ou conditionnel. |
 | [`ObjectTypeConstraint`](../src/Specification/ObjectTypeConstraint.php) | Familles de valeurs, règles d'objet direct ou indirect et autres contraintes de type prises en charge. |
 | [`EntryDefinition`](../src/Specification/EntryDefinition.php) | Nom, type, présence, description et source d'une entrée. |
@@ -402,6 +402,10 @@ Les définitions conservent les informations nécessaires pour remonter à la no
 | [`Catalogue`](../src/Specification/Catalogue.php) | Collection immuable de définitions choisies et construite par l'appelant. |
 
 Ces objets ne chargent pas de JSON à l'exécution. Les inventaires sous [`resources/iso32000-1`](../resources/iso32000-1) servent aux outils de génération et de vérification. Les classes générées se construisent avec leurs définitions immuables. La [documentation de spécification](specification.md) explique la génération reproductible et la correction documentée de `/Prev`.
+
+Le namespace `PDF\Specification\Adobe` compose les définitions ISO et les ajouts du supplément. Chaque entrée conserve sa propre origine. Les objets `DeveloperPrefix`, `DeveloperExtension`, `DeveloperExtensionEntry` et `DeveloperExtensions` construisent la déclaration d'extension du catalogue ; toutes ses valeurs sont directes, conformément à ISO 7.12.1. `BatesArtifact` représente la pagination Bates et `WindowDimension` des dimensions résolues et cohérentes. Le [tutoriel 13](tutorials/13-adobe-extensions.md) montre la déclaration et la pagination dans un PDF complet.
+
+`PDF\Security` fournit un mécanisme explicite pour le Standard Security Handler historique R=5 du supplément : préparation SASLprep Unicode 3.2, credentials, permissions et chiffrement AES-256 des chaînes et flux. `FileWriter` reçoit l'objet de chiffrement construit par l'application. Le backend OpenSSL est optionnel. Le [guide Adobe](adobe-supplement.md#chiffrement-historique-aes-256) explique les exigences de fichier et les limites de ce protocole.
 
 Une classe de dictionnaire d'encryption, de signature, de font descriptor, de multimédia ou de structure balisée décrit des entrées du format. Les traitements sont portés par leurs mécanismes dédiés lorsqu'ils existent, comme le programme TrueType et l'incorporation CID. La présence d'un dictionnaire ne réalise pas le chiffrement, la signature, la lecture multimédia ou la conformité d'une structure balisée. La référence API documente les objets disponibles ; la couverture annoncée reste celle de leurs comportements effectivement implémentés.
 

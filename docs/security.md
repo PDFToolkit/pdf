@@ -25,6 +25,9 @@ pour la lecture de fichiers externes ; cette revue du générateur ne s'y substi
 | Révisions | Réservations des anciens numéros, conservation des générations et des alias ; remplacement de conteneurs structuraux refusé même à travers un nouveau flux d'objets. Les métadonnées du catalogue et de l'arbre de pages sont contrôlées sur les valeurs effectives. Les anciens octets demeurent dans le fichier : une update ne permet pas d'effacer un secret. |
 | Sortie fichier | Validation du chemin avant sérialisation, refus des URI de streams, exception d'écriture sans divulgation du chemin. Une erreur de validation du graphe intervient avant l'ouverture de la destination existante. |
 | Dépendances | Aucun avis connu ni paquet abandonné signalé par `composer audit --locked` lors de la revue. Ce contrôle est exécuté à chaque CI. |
+| Chiffrement historique Adobe R=5 | Vecteurs AES officiels, fixtures qpdf et déchiffrement indépendant des chaînes et flux, avec mots de passe utilisateur/propriétaire et rejets des mauvais mots de passe. Vérification des longueurs après filtres et chiffrement, de l'absence de double chiffrement et des exceptions structurelles. |
+| Préparation des mots de passe | SASLprep/NFKC Unicode 3.2 figé, comparé à un oracle indépendant : mappings, caractères interdits et non assignés, règles bidirectionnelles et troncation après normalisation. |
+| Frontière du writer chiffré | Refus des chaînes directes dans le trailer hors identifiants, des overrides Crypt et des révisions incrémentales chiffrées. Les métadonnées de page et d'image restent chiffrées ; seule la métadonnée du catalogue peut être exclue explicitement. Les signatures ont une exception de Contents contrôlée, sans création de signature. |
 
 Le rejet explicite des stream URIs est un durcissement du contrat de `writeTo()`, pas la correction d'une exécution PHP démontrée : `LOCK_EX` bloquait déjà les wrappers usuels sur le PHP 8.5 vérifié. Une destination native peut encore suivre un lien symbolique ou désigner un partage réseau selon le système. L'application doit contrôler son emplacement et ses permissions.
 
@@ -59,5 +62,13 @@ Les contrôles numériques évitent les débordements identifiés ; la validatio
 Les tests [SecuritySerializationTest](../tests/SecuritySerializationTest.php), [SecurityLimitsTest](../tests/SecurityLimitsTest.php) et [FileOutputTest](../tests/FileOutputTest.php) couvrent les charges d'injection, les 256 valeurs d'octet, les terminateurs inline, les bornes numériques, les graphes partagés et les sorties. [ImageObjectsTest](../tests/ImageObjectsTest.php), [CrossReferenceSectionTest](../tests/CrossReferenceSectionTest.php) et [IncrementalUpdateTest](../tests/IncrementalUpdateTest.php) couvrent les invariants PDF du core. Les régressions de décodage des images sont dans [ImageImportTest du module](https://github.com/PDFToolkit/pdf-images/blob/master/tests/ImageImportTest.php). Les validations TrueType restent dans [les tests du module de fontes](https://github.com/PDFToolkit/pdf-fonts/tree/master/tests). Des lectures indépendantes avec pypdf ont confirmé les vecteurs binaires et la reproduction de l'ambiguïté inline. qpdf contrôle tous les exemples en CI.
 
 Cette revue n'est pas un audit des lecteurs PDF, de PHP, du serveur HTTP ou d'une future bibliothèque de mise en page. Les fichiers de définition générés expriment les contraintes de la norme ; ils ne forment pas une politique générale d'assainissement des documents.
+
+Les tests [AdobeEncryptionTest](../tests/AdobeEncryptionTest.php) et le validateur
+[validate_adobe_encryption.py](../tools/validate_adobe_encryption.py) couvrent le
+protocole historique R=5. Ce protocole est sélectionné explicitement pour
+l'interopérabilité : sa dérivation de mot de passe est ancienne et AES-CBC
+n'authentifie pas le contenu. La préparation SASLprep ne renforce pas un mot de
+passe faible. Le [guide Adobe](adobe-supplement.md) précise les mécanismes
+effectivement disponibles et leurs limites.
 
 [Politique et signalements privés](../SECURITY.md) · [Architecture](architecture.md) · [Couverture de la norme](specification.md)

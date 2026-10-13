@@ -166,6 +166,13 @@ def check(root):
                 errors.append('Missing PNG preview: ' + expected)
             elif min(struct.unpack('>II', header[16:24])) <= 0:
                 errors.append('Invalid PNG dimensions: ' + expected)
+    specifications = manifest.get('specificationSources', [])
+    if {item['source'] for item in specifications} != {'PDF32000_2008.pdf', 'adobe_supplement_iso32000.pdf'}:
+        errors.append('The documentation must retain both original specification sources')
+    for source in specifications:
+        target = root / source['download']
+        if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != source['sha256']:
+            errors.append('Missing or modified specification source: ' + source['source'])
     if errors:
         raise ValueError('\n'.join(errors[:40]) + f'\n{len(errors)} documentation errors')
     print(f'Checked {len(pages)} HTML pages, {len(index)} API records, all local anchors and {len(manifest["examples"])} PDF/source pairs')

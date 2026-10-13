@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: 0.2.x-dev
+  COMPOSER_ROOT_VERSION: 0.3.x-dev
 
 concurrency:
   group: documentation-${{ github.ref }}
@@ -25,7 +25,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          extensions: ctype, iconv, zlib
+          extensions: ctype, iconv, zlib, openssl
           tools: composer:v2
           coverage: none
       - uses: actions/setup-python@v6
@@ -58,6 +58,8 @@ jobs:
           pdftoppm -r 96 -png "$output" _build/pdf-pages/reading-pages
       - name: Verify mechanism semantics with an independent reader
         run: python tools/validate_mechanisms.py _build/pdfs
+      - name: Verify Adobe extension semantics
+        run: python tools/validate_adobe_supplement.py _build/pdfs
       - name: Build and check the documentation
         run: |
           python tools/build_site.py --api _build/api.json --pdf-dir _build/pdfs --pdf-preview-dir _build/pdf-pages --output _site --base-path /pdf --revision "$GITHUB_SHA"

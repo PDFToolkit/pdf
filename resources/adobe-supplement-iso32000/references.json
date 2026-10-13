@@ -1,0 +1,484 @@
+{
+  "documents": [
+    {
+      "id": "iso32000-1-2008",
+      "filename": "PDF32000_2008.pdf",
+      "title": "ISO 32000-1:2008",
+      "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+      "pdfPages": 756,
+      "role": "Base PDF 1.7 object and mechanism specification"
+    },
+    {
+      "id": "adobe-supplement-iso32000-2008-extension-level-3",
+      "filename": "adobe_supplement_iso32000.pdf",
+      "title": "Adobe Supplement to the ISO 32000, BaseVersion 1.7, ExtensionLevel 3, June 2008, Edition 1.0",
+      "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+      "pdfPages": 140,
+      "role": "Separate Adobe extension definitions and Adobe product implementation notes"
+    }
+  ],
+  "externalSpecifications": [
+    {
+      "id": "prc",
+      "title": "Adobe PRC Format Specification version 7298, Geometry Compression Level 2, Tesselation Compression Level 2",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          11,
+          56,
+          58,
+          102
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External 3D payload format; not fully specified in the supplement",
+      "status": "external-reference"
+    },
+    {
+      "id": "ecma363",
+      "title": "ECMA-363 Universal 3D File Format, first and third editions",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          11,
+          55,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External 3D payload format",
+      "status": "external-reference"
+    },
+    {
+      "id": "xfa",
+      "title": "XML Forms Architecture versions 2.5 and 2.6",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          12,
+          42,
+          48,
+          102
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External XML rich-text, templates, datasets and forms specifications",
+      "status": "external-reference"
+    },
+    {
+      "id": "actionscrip-api",
+      "title": "Acrobat ActionScript API Reference",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          30,
+          37,
+          102,
+          130
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External runtime API; not a PHP-core runtime",
+      "status": "external-reference"
+    },
+    {
+      "id": "nav",
+      "title": "Acrobat Navigator File Format and Navigator Template Format",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          34,
+          102,
+          130
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External container and UI resources",
+      "status": "external-reference"
+    },
+    {
+      "id": "ucf",
+      "title": "Universal Container Format",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          33,
+          36,
+          87,
+          102,
+          130
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External abstract container and file naming format",
+      "status": "external-reference"
+    },
+    {
+      "id": "flex2",
+      "title": "Flex 2 Developer Guide",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          35,
+          102
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External SWF module runtime",
+      "status": "external-reference"
+    },
+    {
+      "id": "flashvars",
+      "title": "Using FlashVars to pass variables to a SWF, TechNote tn_16417",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          90,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External formatted parameter convention",
+      "status": "external-reference"
+    },
+    {
+      "id": "barcode-data-matrix",
+      "title": "ISO/IEC 16022 Data Matrix bar code symbology",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          47,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External barcode encoding algorithm",
+      "status": "external-reference"
+    },
+    {
+      "id": "barcode-pdf417",
+      "title": "ISO/IEC 15438 PDF417 bar code symbology",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          47,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External barcode encoding algorithm",
+      "status": "external-reference"
+    },
+    {
+      "id": "barcode-qr-code",
+      "title": "ISO/IEC 18004 QR Code 2005 bar code symbology",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          47,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External barcode encoding algorithm",
+      "status": "external-reference"
+    },
+    {
+      "id": "rfc3454",
+      "title": "RFC 3454 Stringprep",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          19,
+          20,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "Unicode preparation profile dependency",
+      "status": "external-reference"
+    },
+    {
+      "id": "rfc4013",
+      "title": "RFC 4013 SASLprep",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          19,
+          20,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "Unicode 3.2 mappings, NFKC, prohibited output and bidirectional checks; preparation is not just UTF-8 validation",
+      "status": "external-reference"
+    },
+    {
+      "id": "rfc3986",
+      "title": "RFC 3986 URI Generic Syntax",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          36,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External relative URI syntax",
+      "status": "external-reference"
+    },
+    {
+      "id": "rfc3987",
+      "title": "RFC 3987 Internationalized Resource Identifiers",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          36,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External relative IRI syntax",
+      "status": "external-reference"
+    },
+    {
+      "id": "rfc4122",
+      "title": "RFC 4122 UUID URN Namespace",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          103,
+          132
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External identifier convention",
+      "status": "external-reference"
+    },
+    {
+      "id": "ogc-wkt",
+      "title": "OpenGIS Coordinate Transformation Services document 01-009",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          51,
+          52,
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External WKT syntax and coordinate transformation algorithms",
+      "status": "external-reference"
+    },
+    {
+      "id": "epsg",
+      "title": "EPSG coordinate reference database",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          51,
+          52
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External geographic/projected coordinate system registry",
+      "status": "external-reference"
+    },
+    {
+      "id": "unicode35",
+      "title": "UTS 35 Locale Data Markup Language",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          36,
+          104
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External locale syntax",
+      "status": "external-reference"
+    },
+    {
+      "id": "unicode21",
+      "title": "Unicode Technical Report 21 case normalization",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          33
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "External case normalization for sibling folder/file names",
+      "status": "external-reference"
+    },
+    {
+      "id": "fips140",
+      "title": "FIPS PUB 140-2 Security Requirements for Cryptographic Modules",
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          103
+        ],
+        "clause": "Bibliography"
+      },
+      "scope": "Bibliographical reference; no claim of cryptographic module certification",
+      "status": "external-reference"
+    }
+  ],
+  "externalRuntimeAPIs": [
+    {
+      "names": [
+        "INavigatorHost.navigatorColorPalette",
+        "INavigatorHost.getLocalizedString"
+      ],
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          30,
+          37
+        ],
+        "clause": "8.2.4"
+      },
+      "scope": "Navigator host ActionScript API"
+    },
+    {
+      "names": [
+        "ExternalInterface.call",
+        "multimedia_loadSettingsString",
+        "multimedia_saveSettingsString"
+      ],
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          91
+        ],
+        "clause": "9.6.1"
+      },
+      "scope": "Flash settings runtime bridge"
+    },
+    {
+      "names": [
+        "multimedia_getState",
+        "multimedia_setState",
+        "StateEvent"
+      ],
+      "source": {
+        "document": "adobe-supplement-iso32000-2008-extension-level-3",
+        "filename": "adobe_supplement_iso32000.pdf",
+        "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+        "pdfPages": [
+          93,
+          94
+        ],
+        "clause": "9.6.1"
+      },
+      "scope": "Flash/3D state save/load runtime bridge"
+    }
+  ],
+  "reviewedExternalClarifications": [
+    {
+      "title": "RFC 4013 SASLprep profile",
+      "url": "https://www.rfc-editor.org/info/rfc4013/",
+      "locator": "Sections 2.1–2.5",
+      "details": "Unicode 3.2 preparation includes mapping, NFKC, prohibited characters, bidirectional checks and unassigned code points."
+    },
+    {
+      "title": "qpdf PDF Encryption documentation",
+      "url": "https://qpdf.readthedocs.io/en/stable/encryption.html",
+      "locator": "Relationship between R and V, R=5 row",
+      "details": "Revision 5 is retained for compatibility testing. It must not be presented as a recommended modern document security default."
+    },
+    {
+      "title": "NIST SP 800-38A block-cipher modes",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf",
+      "locator": "Appendices F.1.5 and F.2.5",
+      "details": "Independent published ECB-AES256 and CBC-AES256 known-answer blocks used in the cryptographic backend tests. This is vector validation, not cryptographic-module certification."
+    },
+    {
+      "title": "RFC 3454 Stringprep tables and bidirectional checks",
+      "url": "https://www.rfc-editor.org/rfc/rfc3454.txt",
+      "locator": "Section 6 and appendices A–D",
+      "details": "The fixed Unicode 3.2 unassigned, mapping, prohibited and bidirectional tables underpin historical R=5 SASLprep rather than the runtime Unicode version."
+    },
+    {
+      "title": "RFC 4013 verified erratum 1812",
+      "url": "https://errata.rfc-editor.org/eid1812/",
+      "locator": "Section 2.3",
+      "details": "The prohibited-character requirement applies to output after mapping and normalization."
+    },
+    {
+      "title": "ISO legacy password padding inherited by the supplement",
+      "source": {
+        "document": "iso32000-1-2008",
+        "filename": "PDF32000_2008.pdf",
+        "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+        "pdfPages": [
+          69,
+          70
+        ],
+        "clause": "7.6.3.3, Algorithm 2"
+      },
+      "details": "The supplement step 1 wording does not repeat the mandatory 32-byte padding/truncation. Four independent qpdf-derived keys confirm retaining the ISO rule."
+    },
+    {
+      "title": "ISO ordered public-key digest inputs",
+      "source": {
+        "document": "iso32000-1-2008",
+        "filename": "PDF32000_2008.pdf",
+        "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+        "pdfPages": [
+          74,
+          75
+        ],
+        "clause": "7.6.4.3"
+      },
+      "details": "The supplement replaces SHA-1 with SHA-256 for 256-bit keys. The inherited ordered inputs are the 20-byte seed, encoded recipient envelopes and optional clear-metadata suffix; a digest primitive does not implement CMS."
+    }
+  ]
+}

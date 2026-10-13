@@ -18,6 +18,7 @@ import markdown
 
 REPOSITORY = 'https://github.com/PDFToolkit/pdf'
 GUIDES = [
+    ('docs/adobe-supplement.md', 'guides/supplement-adobe.html', 'Supplément Adobe et extensions', 'Guides'),
     ('README.md', 'guides/demarrer.html', 'Démarrer', 'Guides'),
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
     ('docs/architecture.md', 'guides/architecture.html', 'Architecture', 'Guides'),
@@ -43,6 +44,7 @@ LESSONS = [
     ('10-image-files', '10-images-jpeg-png', 'Images JPEG et PNG', 'image-files', 'Fichiers image, couleurs, échantillons et transparence.'),
     ('11-incremental-update', '11-revisions-incrementales', 'Révisions incrémentales', 'incremental-update', 'Octets conservés, remplacements explicites et chaînage des xref.'),
     ('12-reading-pages', '12-lire-pages-pdf', 'Lire les pages d’un PDF externe', 'reading-pages', 'Arbre vérifié, attributs hérités et flux décodés explicitement.'),
+    ('13-adobe-extensions', '13-extensions-adobe', 'Extensions Adobe et numérotation Bates', 'adobe-extensions', 'Déclaration des extensions, artefacts et numéros documentaires.'),
 ]
 EXTERNAL_EXAMPLES = {
     'reading-pages': {
@@ -58,6 +60,8 @@ GROUPS = [
     ('fonctions', 'Fonctions PDF'), ('filtres', 'Filtres'), ('lexique', 'Conventions lexicales'),
     ('norme', 'Modèle de norme'), ('dictionnaires', 'Dictionnaires normalisés'),
     ('entrees', 'Entrées normalisées'), ('definitions', 'Définitions normalisées'),
+    ('adobe', 'Extensions Adobe : dictionnaires, entrées et définitions'),
+    ('securite', 'Chiffrement historique et préparation des mots de passe'),
     ('polices-externes', 'Module optionnel : fontes externes'),
     ('images-externes', 'Module optionnel : images externes'),
     ('lecture', 'Module optionnel : lecture de PDF'),
@@ -88,6 +92,10 @@ def group_for(component: dict) -> str:
     if component['package'] in MODULE_GROUPS:
         return MODULE_GROUPS[component['package']]
     path = component['source']
+    if path.startswith('src/Security/'):
+        return 'securite'
+    if path.startswith('src/Specification/Adobe/'):
+        return 'adobe'
     if path.startswith('src/Specification/Definition/'):
         return 'definitions'
     if path.startswith('src/Specification/Dictionary/'):
@@ -186,6 +194,19 @@ class Site:
                 self.spec_by_name[entry['class']] = (item['table'], entry['name'])
                 self.entry_classes[(item['table'], entry['name'])] = entry['class']
         self.corrections = json.loads((resources / 'corrections.json').read_text(encoding='utf-8'))
+        adobe = root / 'resources' / 'adobe-supplement-iso32000'
+        self.adobe_metadata = json.loads((adobe / 'metadata.json').read_text(encoding='utf-8'))
+        self.adobe_tables = {item['id']: item for item in json.loads((adobe / 'dictionaries.json').read_text(encoding='utf-8'))}
+        self.adobe_classes = {item['table']: item for item in json.loads((adobe / 'classes.json').read_text(encoding='utf-8'))}
+        self.adobe_corrections = json.loads((adobe / 'corrections.json').read_text(encoding='utf-8'))
+        self.adobe_spec_by_name = {}
+        self.adobe_entry_classes = {}
+        for item in self.adobe_classes.values():
+            self.adobe_spec_by_name[item['class']] = (item['table'], None)
+            self.adobe_spec_by_name[item['definition_class']] = (item['table'], None)
+            for entry in item['entries']:
+                self.adobe_spec_by_name[entry['class']] = (item['table'], entry['name'])
+                self.adobe_entry_classes[(item['table'], entry['name'])] = entry['class']
         self.children = defaultdict(list)
         for item in self.components:
             if item['parent']:
@@ -225,7 +246,7 @@ class Site:
         groups = [
             ('Découvrir', [('index.html', 'Accueil'), ('guides/demarrer.html', 'Démarrer'), ('guides/modules.html', 'Core et modules'), ('guides/composants.html', 'Les composants'), ('guides/architecture.html', 'Architecture')]),
             ('Apprendre', [('tutorials/index.html', 'Tous les tutoriels'), *[(f'tutorials/{slug}.html', f'{i:02d}. {title}') for i, (_, slug, title, _, _) in enumerate(LESSONS, 1)], ('recipes/table.html', 'Recette : tableau')]),
-            ('Explorer', [('reference/index.html', 'Référence des composants'), ('guides/couverture.html', 'Couverture de la norme'), ('guides/securite.html', 'Sécurité'), ('guides/versions.html', 'Versions')]),
+            ('Explorer', [('reference/index.html', 'Référence des composants'), ('guides/couverture.html', 'Couverture de la norme'), ('guides/supplement-adobe.html', 'Supplément Adobe'), ('guides/securite.html', 'Sécurité'), ('guides/versions.html', 'Versions')]),
         ]
         html = ''
         for label, links in groups:
@@ -256,7 +277,7 @@ class Site:
 <button id="menu-button" class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button></header>
 <div class="site-shell"><aside id="site-nav" class="sidebar" aria-label="Documentation">{self.sidebar(route)}<p class="sidebar-version">Documentation de <strong>master</strong><br>PHP 8.3+ · PDF 1.7</p></aside>
 <main id="main" data-root="{e(self.base)}">{header}<div class="content-grid"><article class="prose">{body}</article>{toc_html}</div>
-<footer class="site-footer"><span>PDF · ISO 32000-1:2008 · MIT</span><span>Référence de master · <a href="{REPOSITORY}/commit/{e(self.revision)}">{e(self.revision[:7])}</a> · <a href="{REPOSITORY}/releases/tag/v0.2.1">Stable 0.2.1</a></span></footer></main></div></body></html>'''
+<footer class="site-footer"><span>PDF · ISO 32000-1:2008 · Adobe ExtensionLevel 3 · MIT</span><span>Référence de master · <a href="{REPOSITORY}/commit/{e(self.revision)}">{e(self.revision[:7])}</a> · <a href="{REPOSITORY}/releases/tag/v0.3.0">Stable 0.3.0</a></span></footer></main></div></body></html>'''
         self.write(route, html)
 
     def rewrite_link(self, source: str, href: str) -> str:
@@ -294,6 +315,8 @@ class Site:
                 return self.url(self.examples[example]) + '#code-source'
         if target.startswith('docs/tutorials/previews/'):
             return self.url('assets/previews/' + Path(target).name)
+        if target == 'adobe_supplement_iso32000.pdf':
+            return self.url('downloads/adobe-supplement-iso32000.pdf') + fragment
         if target == 'PDF32000_2008.pdf':
             return self.url('downloads/iso-32000-1.pdf') + fragment
         if (self.root / target).is_file():
@@ -415,11 +438,11 @@ class Site:
 
     def home(self) -> None:
         body = f'''<section class="hero"><div class="hero-copy"><p class="eyebrow">PHP 8.3+ · PDF 1.7 · ISO 32000-1</p><h1>Le format PDF.<br>Objet par objet.</h1><p class="hero-description">Comprendre les structures, composer les objets, maîtriser les octets. Une documentation pour explorer le format et construire vos propres fichiers PDF.</p><div class="pdf-actions"><a class="button" href="{e(self.url('tutorials/01-premier-document.html'))}">Créer mon premier PDF →</a><a class="button secondary" href="{e(self.url('reference/index.html'))}">Explorer les composants</a></div></div><div class="hero-visual" aria-label="Du catalogue à la page"><div class="graph-card"><span class="badge">01 / point d’entrée</span><code>DocumentCatalog</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">02 / arbre du document</span><code>PageTreeNode</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">03 / contenu & ressources</span><code>PageObject</code><span class="graph-leaves">StreamObject · ResourceDictionary</span></div></div></section>
-<div class="stats"><div class="stat"><strong>{number(len(self.components))}</strong><span>composants documentés</span></div><div class="stat"><strong>{self.metadata['dictionary_table_count']}</strong><span>dictionnaires normalisés</span></div><div class="stat"><strong>{len(self.examples)}</strong><span>exemples PDF à explorer</span></div><div class="stat"><strong>{self.metadata['operator_count']}</strong><span>tokens d’opérateurs PDF</span></div></div>
+<div class="stats"><div class="stat"><strong>{number(len(self.components))}</strong><span>composants documentés</span></div><div class="stat"><strong>{self.metadata['dictionary_table_count'] + self.adobe_metadata['dictionary_tables']}</strong><span>dictionnaires ISO et Adobe</span></div><div class="stat"><strong>{len(self.examples)}</strong><span>exemples PDF à explorer</span></div><div class="stat"><strong>{self.metadata['operator_count']}</strong><span>tokens d’opérateurs PDF</span></div></div>
 <section><p class="eyebrow">Apprendre avec les objets</p><h2>Construire un document et explorer ses pages</h2><p>Chaque tutoriel relie les explications aux objets PHP et au PDF créé ou lu. Consultez ses pages, le script et le résultat de son exécution.</p>{self.tutorial_cards()}</section>
 <section><h2>Un core PDF, des modules au choix</h2><p>Le core représente les objets et les mécanismes de la norme Adobe. La lecture de PDF externes et la conversion de fichiers image ou de fontes sont des dépendances optionnelles : chaque module dépend du core.</p><p><a href="{e(self.url('guides/modules.html'))}">Choisir les packages et comprendre leur frontière →</a></p></section>
 <section><h2>Trois chemins pour explorer le projet</h2><div class="cards"><a class="card" href="{e(self.url('guides/composants.html'))}"><div class="card-body"><h3>Comprendre les responsabilités</h3><p>Valeurs, graphes, ressources, fonctions et écriture : comment les familles se composent.</p></div></a><a class="card" href="{e(self.url('reference/index.html'))}"><div class="card-body"><h3>Consulter la référence</h3><p>Les signatures et l’héritage de chaque composant, avec les sources et les tableaux de la norme.</p></div></a><a class="card" href="{e(self.url('recipes/table.html'))}"><div class="card-body"><h3>Assembler un exemple pratique</h3><p>Un tableau explicite : cellules, couleurs, grille et positionnement du texte.</p></div></a></div></section>
-<aside class="callout"><strong>Core stable 0.2.1 · Modules stables 0.1.0.</strong> Cette documentation suit master ; les changements après ces versions figurent dans les changelogs. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
+<aside class="callout"><strong>Core stable 0.3.0 · Modules stables 0.1.1.</strong> Cette documentation suit master ; les changements après ces versions figurent dans les changelogs. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
         self.page('index.html', 'Le format PDF, objet par objet', 'Accueil', body)
 
     def spec_entries(self, table: str, seen: set[str] | None = None) -> list[dict]:
@@ -437,6 +460,14 @@ class Site:
         return list(entries.values())
 
     def spec_panel(self, component: dict) -> str:
+        adobe_spec = self.adobe_spec_by_name.get(component['name'])
+        if adobe_spec is None:
+            for constant in component['constants']:
+                if constant['name'] == 'TABLE' and constant['value'].strip("'\"") in self.adobe_tables:
+                    adobe_spec = (constant['value'].strip("'\""), None)
+                    break
+        if adobe_spec is not None:
+            return self.adobe_spec_panel(*adobe_spec)
         spec = self.spec_by_name.get(component['name'])
         if spec is None:
             for constant in component['constants']:
@@ -449,12 +480,13 @@ class Site:
             return ''
         table, key = spec
         record = self.tables[table]
-        page = record['pdf_pages'][0]
-        norm = self.url('downloads/iso-32000-1.pdf')
-        html = f'<section id="norme"><h2>Définition dans la norme</h2><p><strong>Tableau {e(table)}</strong> · {e(record["title"])}<br>ISO 32000-1:2008, §{e(record["section"])} · <a href="{e(norm)}#page={page}">page PDF {page} ↗</a></p>'
         entries = self.spec_entries(table)
         if key is not None:
             entries = [entry for entry in entries if entry['name'] == key]
+        page = entries[0]['pdf_page'] if key is not None and entries else record['pdf_pages'][0]
+        norm = self.url('downloads/iso-32000-1.pdf')
+        html = f'<section id="norme"><h2>Définition dans la norme</h2><p><strong>Tableau {e(table)}</strong> · {e(record["title"])}<br>ISO 32000-1:2008, §{e(record["section"])} · <a href="{e(norm)}#page={page}">page PDF {page} ↗</a></p>'
+        if key is not None:
             for entry in entries:
                 constraints = []
                 if entry['indirect']:
@@ -478,8 +510,78 @@ class Site:
             html += '</tbody></table></div>'
         for correction in self.corrections:
             if correction['table'] == table and (key is None or correction['entry'] == key):
-                html += f'<aside class="callout"><strong>Correction d’implémentation /{e(correction["entry"])}.</strong><p>{e(correction["rationale"])}</p><a href="{e(correction["evidence_url"])}">{e(correction["evidence_locator"])}</a></aside>'
+                evidence = correction['evidence_url']
+                if evidence.startswith('PDF32000_2008.pdf'):
+                    evidence = norm + evidence.removeprefix('PDF32000_2008.pdf')
+                html += f'<aside class="callout"><strong>Correction d’implémentation /{e(correction["entry"])}.</strong><p>{e(correction["rationale"])}</p><a href="{e(evidence)}">{e(correction["evidence_locator"])}</a></aside>'
         html += f'<p class="search-hint">Les descriptions conditionnelles restent traçables. La présence d’une définition ne réalise pas à elle seule un codec, une signature ou tous les traitements du format. <a href="{e(self.url("guides/couverture.html"))}">Lire la couverture.</a></p></section>'
+        return html
+
+    def adobe_spec_entries(self, table: str, seen: set | None = None) -> list[dict]:
+        seen = set() if seen is None else seen
+        if table in seen:
+            raise ValueError('Cyclic Adobe specification tables')
+        seen.add(table)
+        entries = {}
+        for common in self.adobe_classes[table]['iso_base_tables']:
+            for entry in self.spec_entries(common):
+                entries[entry['name']] = dict(entry, document='PDF32000_2008.pdf')
+        for common in self.adobe_classes[table]['adobe_base_tables']:
+            for entry in self.adobe_spec_entries(common, seen.copy()):
+                entries[entry['name']] = entry
+        record = self.adobe_tables[table]
+        for entry in [*record['entries'], *record.get('variable_entries', [])]:
+            entries[entry['name']] = dict(entry, table=table, section=record['section'], document='adobe_supplement_iso32000.pdf')
+        return list(entries.values())
+
+    def adobe_spec_panel(self, table: str, key: str | None) -> str:
+        record = self.adobe_tables[table]
+        url = self.url('downloads/adobe-supplement-iso32000.pdf')
+        entries = self.adobe_spec_entries(table)
+        if key is not None:
+            entries = [entry for entry in entries if entry['name'] == key]
+        page = record['pdf_pages'][0]
+        source = url
+        source_table = table
+        source_record = record
+        heading = 'Définition dans le supplément Adobe'
+        standard = 'PDF 1.7 · Adobe ExtensionLevel 3'
+        if key is not None and entries:
+            entry = entries[0]
+            page = entry['pdf_page']
+            source_table = entry['table']
+            if entry['document'] == 'adobe_supplement_iso32000.pdf':
+                source_record = self.adobe_tables[source_table]
+            else:
+                source = self.url('downloads/iso-32000-1.pdf')
+                source_record = self.tables[source_table]
+                heading = 'Définition dans la norme ISO'
+                standard = 'ISO 32000-1:2008'
+        html = f'<section id="norme"><h2>{heading}</h2><p><strong>Tableau {e(source_table)}</strong> · {e(source_record["title"])}<br>{standard} · §{e(source_record["section"])} · <a href="{e(source)}#page={page}">page PDF {page} ↗</a></p>'
+        if key is not None:
+            for entry in entries:
+                html += f'<p><span class="badge">/{e(entry["name"])}</span> <span class="badge">{e(entry["type"])}</span></p><p>{e(entry["description"])}</p><p><strong>Qualificateur :</strong> {e(entry["qualifier"] or "Non précisé")}</p>'
+        else:
+            html += '<div class="table-scroll"><table><thead><tr><th>Entrée</th><th>Type PDF</th><th>Exigence</th><th>Source</th></tr></thead><tbody>'
+            for entry in entries:
+                adobe = entry['document'] == 'adobe_supplement_iso32000.pdf'
+                classes = self.adobe_entry_classes if adobe else self.entry_classes
+                name = classes.get((entry['table'], entry['name']))
+                label = '/' + entry['name']
+                link = f'<a href="{e(self.url(self.routes[name]))}"><code>{e(label)}</code></a>' if name in self.routes else e(label)
+                source = url if adobe else self.url('downloads/iso-32000-1.pdf')
+                title = 'Adobe' if adobe else 'ISO'
+                html += f'<tr><td>{link}</td><td>{e(entry["type"])}</td><td>{e(entry["qualifier"] or "Non précisé")}</td><td><a href="{e(source)}#page={entry["pdf_page"]}">{title} · {e(entry["table"])} · p.{entry["pdf_page"]}</a></td></tr>'
+            html += '</tbody></table></div>'
+        for correction in self.adobe_corrections:
+            if correction['table'] == table and (key is None or correction['entry'] == key):
+                evidence = correction['evidence_url']
+                if evidence.startswith('adobe_supplement_iso32000.pdf'):
+                    evidence = url + evidence.removeprefix('adobe_supplement_iso32000.pdf')
+                elif evidence.startswith('PDF32000_2008.pdf'):
+                    evidence = self.url('downloads/iso-32000-1.pdf') + evidence.removeprefix('PDF32000_2008.pdf')
+                html += f'<aside class="callout"><strong>Correction /{e(correction["entry"])}.</strong><p>{e(correction["rationale"])}</p><a href="{e(evidence)}">{e(correction["evidence_locator"])}</a></aside>'
+        html += f'<p>Chaque entrée conserve sa source ISO ou Adobe. Les règles et traitements associés figurent dans <a href="{e(self.url("guides/supplement-adobe.html"))}">la couverture du supplément</a>.</p></section>'
         return html
 
     def method_html(self, method: dict, component: dict) -> str:
@@ -577,6 +679,7 @@ class Site:
         downloads = self.output / 'downloads'
         downloads.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(self.root / 'PDF32000_2008.pdf', downloads / 'iso-32000-1.pdf')
+        shutil.copyfile(self.root / 'adobe_supplement_iso32000.pdf', downloads / 'adobe-supplement-iso32000.pdf')
         examples = self.output / 'examples'
         examples.mkdir(parents=True, exist_ok=True)
         expected = set(self.examples)
@@ -652,6 +755,10 @@ class Site:
         packages = [dict(package, revision=package['revision'] or self.revision, components=sum(item['package'] == name for item in self.components)) for name, package in self.packages.items()]
         sources = {example: {key: value for key, value in record.items() if key not in {'path', 'inputPath'}} for example, record in self.example_sources.items()}
         manifest = {'basePath': self.base, 'revision': self.revision, 'packages': packages, 'components': len(self.components), 'examples': sorted(expected), 'exampleSources': sources, 'pdfPages': {example: ['assets/pdf-pages/' + image['file'] for image in images] for example, images in self.pdf_pages.items()}, 'pages': sorted(route for route in self.written if route.endswith('.html'))}
+        manifest['specificationSources'] = [
+            {'source': 'PDF32000_2008.pdf', 'download': 'downloads/iso-32000-1.pdf', 'sha256': self.metadata['sha256'], 'pdfPages': self.metadata['pdf_pages']},
+            {'source': self.adobe_metadata['document'], 'download': 'downloads/adobe-supplement-iso32000.pdf', 'sha256': self.adobe_metadata['document_sha256'], 'pdfPages': self.adobe_metadata['pdf_pages']},
+        ]
         (self.output / 'site-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(f'Built {len(manifest["pages"])} pages, {len(self.components)} API components and {len(expected)} PDF examples into {self.output}')
 

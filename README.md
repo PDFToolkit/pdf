@@ -10,18 +10,18 @@ La [documentation en ligne](https://pdftoolkit.github.io/pdf/) réunit les guide
 
 La série `0.x` est destinée aux développeurs qui souhaitent construire et explorer ce modèle. Avant la version `1.0`, une nouvelle version mineure peut modifier les noms et signatures ; les versions correctives conservent l'API de leur série. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
 
-La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dans ce dépôt. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
+Les références sont les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supplement_iso32000.pdf`, conservés dans ce dépôt. Le [guide du supplément](docs/adobe-supplement.md) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
 
 ## Installation
 
-La version stable **0.2.1** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
+La version stable **0.3.0** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Le backend de chiffrement historique AES-256 est optionnel et nécessite `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require 'roukmoute/pdf:^0.2'
+composer require 'roukmoute/pdf:^0.3'
 ```
 
-Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les modifications d'API de 0.2.0 figurent dans le [changelog](CHANGELOG.md). Pour suivre les développements après cette version, remplacer la contrainte stable par `dev-master`.
+Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les modifications d'API figurent dans le [changelog](CHANGELOG.md), dont les validations des déclarations d'extension introduites en 0.3.0. Pour suivre les développements après cette version, remplacer la contrainte stable par `dev-master`.
 
 ## Modules optionnels
 
@@ -31,7 +31,7 @@ Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les mo
 | [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.0**, compatible avec le core 0.2 et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.1**, compatible avec les séries 0.2 et 0.3 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
@@ -55,8 +55,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.2.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.2 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.3.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.3 attendue par les modules. Les
 dépendances de développement utilisent les modules stables 0.1, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.

@@ -1,8 +1,11 @@
 # Specification model and coverage
 
 The authoritative source for this revision is the `PDF32000_2008.pdf` already
-committed to the repository: ISO 32000-1:2008, PDF 1.7. Core release 0.2.1 and
-optional module releases 0.1.0 require PHP 8.3 or later; the older core 0.1 tags
+committed to the repository: ISO 32000-1:2008, PDF 1.7. The additional
+`adobe_supplement_iso32000.pdf` describes Adobe ExtensionLevel 3; its [separate
+coverage and source catalogue](adobe-supplement.md) preserve the distinction
+between ISO definitions, Adobe extensions and Acrobat implementation notes.
+Core release 0.3.0 and optional module releases 0.1.1 require PHP 8.3 or later; the older core 0.1 tags
 retain their PHP 8.5 requirement. These PHP versions are independent of the PDF
 format version. Implementing PDF 2.0 requires a separate specification
 and explicit version-specific definitions.
@@ -44,12 +47,25 @@ additional behavior and constraints.
 
 This is an inventory and a low-level object construction model. It is not a
 claim that every algorithm or every valid document allowed by the 756-page
-standard has an implemented, independently verified semantic model. Encryption,
-signature generation, rendering, font subsetting, image codecs, tagged PDF
+standard has an implemented, independently verified semantic model. Signature
+generation, rendering, font subsetting, image codecs, tagged PDF
 semantics, multimedia playback and linearization require dedicated implementations
 and interoperability tests. Named dictionary classes alone do not implement
 those algorithms. The implemented image and font mechanisms below cover explicit
 subsets of those domains rather than every format and script.
+
+The additional [historical AES-256 revision 5 backend](adobe-supplement.md)
+implements the algorithms of the retained Adobe supplement with explicit
+credentials, permissions, SASLprep Unicode 3.2 and writer integration. This is
+an opt-in legacy protocol; it does not implement every encryption revision or
+public-key security handler, and AES-CBC does not authenticate file contents.
+
+The supplement also has separately validated historical R=2–R=4 key derivation,
+an ordered public-key recipient digest, 3D unit mapping and barcode data
+preparation/module-width calculation. Their APIs state their exact inputs and
+limits. They do not imply CMS processing, public-key encryption, media rendering
+or barcode symbology encoding. See the [supplement guide](adobe-supplement.md)
+and its versioned coverage inventory for each algorithm's status.
 
 ## Implemented mechanisms beyond the syntax model
 

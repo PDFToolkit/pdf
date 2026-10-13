@@ -4,7 +4,7 @@
 
 Use [GitHub private vulnerability reporting](https://github.com/PDFToolkit/pdf/security/advisories/new) to report a suspected vulnerability. Include the affected version, a minimal reproduction, expected behaviour and the observed impact. Avoid real credentials, customer data and public exploit reports before a fix can be prepared.
 
-The current supported release is **0.2.1**, requiring PHP 8.3 or later. Security fixes are applied to its release series and to `master`. The older `0.1` series includes the fixes identified in the October 2026 review through version `0.1.1` and retains its PHP 8.5 requirement; upgrade from `0.1.0` to at least `0.1.1`, or migrate to the current series using the changelog.
+The current supported release is **0.3.0**, requiring PHP 8.3 or later. Security fixes are applied to its release series and to `master`. Earlier series retain their published requirements; consult the changelog when upgrading.
 
 ## Trust boundaries
 
@@ -22,3 +22,7 @@ External PDF reading is provided by [pdftoolkit/pdf-reader](https://github.com/P
 The runtime does not include uploaded font definitions, fetch image URLs, invoke a shell, deserialize PHP objects or execute PDF calculator programs. Custom implementations of `BasicType`, `Operator` or `Filter`, and the development generators, must be trusted code.
 
 See [the security review](docs/security.md) for the checked surfaces, regression coverage and remaining application responsibilities.
+
+## Historical encryption
+
+The Adobe supplement's revision 5 security handler is an explicit compatibility mechanism. Its fast password derivation is historical, and AES-CBC does not authenticate document content. It is not a modern security default. The optional OpenSSL backend requires an up-to-date PHP OpenSSL extension. The writer rejects unsupported crypt-filter overrides, encrypted incremental revisions and direct trailer strings outside the file identifier. Only the catalog metadata stream may be exempted through `EncryptMetadata`; page and image metadata remain encrypted. See [the Adobe supplement guide](docs/adobe-supplement.md) for the exact scope.

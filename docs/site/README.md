@@ -1,21 +1,21 @@
 # Construire la documentation
 
-Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/pdf/). Il documente la branche `master`. Le tag `v0.2.1` est la dernière version publiée du core ; les modules optionnels disposent chacun du tag `v0.1.0`. Les différences ultérieures avec `master` figurent dans les guides et le changelog.
+Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/pdf/). Il documente la branche `master`. Le tag `v0.3.0` est la dernière version publiée du core ; les modules optionnels disposent chacun du tag `v0.1.1`. Les différences ultérieures avec `master` figurent dans les guides et le changelog.
 
 ## Sources et génération
 
 Les guides et tutoriels restent dans les fichiers Markdown du dépôt. `tools/export_api.php` découvre les classes, interfaces, enums et traits de `src/` et des trois modules optionnels installés pour le développement. Il utilise `Composer\InstalledVersions` pour leurs chemins et `composer.lock` pour leurs commits de source, puis exporte signatures, propriétés, constantes et provenance par package. L'exporteur lit les expressions des paramètres par défaut dans le source sans instancier les objets qu'elles décrivent.
 
-`tools/build_site.py` assemble ces données et les métadonnées de `resources/iso32000-1/` pour créer une fiche par composant, les index par famille et la recherche. Les définitions de la norme conservent leurs contraintes, leur tableau et leur page de référence. Une définition de dictionnaire ne remplace pas l'implémentation d'un moteur de chiffrement, de signature ou de police ; voir le guide de couverture.
+`tools/build_site.py` assemble ces données et les métadonnées de `resources/iso32000-1/` et `resources/adobe-supplement-iso32000/` pour créer une fiche par composant, les index par famille et la recherche. Les définitions conservent leurs contraintes, leur tableau, leur document et leur page de référence. Les entrées composées distinguent les sources Adobe et ISO. Une définition de dictionnaire ne remplace pas l'implémentation d'un moteur de chiffrement, de signature ou de police ; voir le guide de couverture.
 
-Chaque script de `examples/` doit avoir une page de tutoriel ou de recette et un PDF. Le site présente les explications, un rendu de toutes les pages, le code complet et le PDF généré. Le PDF Adobe/ISO du dépôt est également accessible depuis les fiches de la norme, conformément à l'autorisation de redistribution du propriétaire du projet.
+Chaque script de `examples/` doit avoir une page de tutoriel ou de recette et un PDF. Le site présente les explications, un rendu de toutes les pages, le code complet et le PDF généré. Les PDF Adobe conservés dans le dépôt sont également accessibles depuis les fiches de la norme. Le manifeste `specificationSources` conserve leurs noms, empreintes SHA-256, nombres de pages et chemins de téléchargement ; le vérificateur compare les octets téléchargés aux originaux.
 
 Les exemples des modules sont déclarés séparément dans `EXTERNAL_EXAMPLES`
 du générateur. Le tutoriel 12 prend le script `examples/pages.php` et la fixture
 `tests/Fixtures/page-tree/classic.pdf` dans le module lecteur installé.
 Il publie les octets du PDF d'entrée, ses trois aperçus et la sortie console
 de la lecture. La provenance du script et de l'entrée utilise le commit du
-module fixé dans l'inventaire d'API ; le core conserve ses douze exemples
+module fixé dans l'inventaire d'API ; le core conserve ses treize exemples
 de génération.
 
 ## Construction locale
@@ -79,10 +79,12 @@ Le workflow qualité vérifie le projet et ses PDF d’exemple sous PHP 8.3, 8.4
 ```sh
 python -m pip install --require-hashes -r tools/validation-requirements.txt
 python tools/validate_mechanisms.py _build/pdfs
+python tools/validate_adobe_supplement.py _build/pdfs
+python tools/validate_adobe_encryption.py --php php --qpdf qpdf
 ```
 
 ## Publication
 
-Le workflow `.github/workflows/pages.yml` construit le site pour les pull requests et à chaque push sur `master`. Il génère les douze PDF avec PHP 8.3, copie l'entrée du lecteur depuis son module verrouillé, les valide avec `qpdf` et rend leurs vingt pages avec Poppler. Il exécute aussi le script de lecture sur cette entrée. Il vérifie le site, puis publie l'artefact sur GitHub Pages uniquement depuis `master`. Les permissions d'écriture Pages et d'identité sont réservées au job de déploiement.
+Le workflow `.github/workflows/pages.yml` construit le site pour les pull requests et à chaque push sur `master`. Il génère les treize PDF avec PHP 8.3, copie l'entrée du lecteur depuis son module verrouillé, les valide avec `qpdf` et rend leurs vingt et une pages avec Poppler. Il exécute aussi le script de lecture sur cette entrée. Il vérifie le site et les deux documents de référence, puis publie l'artefact sur GitHub Pages uniquement depuis `master`. Les permissions d'écriture Pages et d'identité sont réservées au job de déploiement.
 
 Les fichiers HTML et les PDF générés ne sont pas commités : ils sont produits depuis les sources du commit publié. Pour ajouter un exemple de génération, écrire le script, le tutoriel et son aperçu, puis déclarer sa route dans `tools/build_site.py`. La vérification échoue si un script du core n'a pas de page correspondante. Pour un exemple de module, déclarer également son package, ses chemins source/entrée et son nombre attendu de pages dans `EXTERNAL_EXAMPLES`, puis conserver sa sortie console et ses aperçus pendant la construction.

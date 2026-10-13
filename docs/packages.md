@@ -1,7 +1,7 @@
 # Core et modules optionnels
 
 PDFToolkit sépare le modèle PDF des traitements de fichiers externes. Le core
-**0.2.1** et les trois modules **0.1.0** utilisent PHP 8.3 ou supérieur et une CI
+**0.3.0** et les trois modules **0.1.1** utilisent PHP 8.3 ou supérieur et une CI
 sur PHP 8.3, 8.4 et 8.5.
 Le core conserve son nom Composer `roukmoute/pdf` après son transfert dans
 l'organisation ; les nouveaux modules utilisent le préfixe `pdftoolkit/`.
@@ -9,7 +9,7 @@ l'organisation ; les nouveaux modules utilisent le préfixe `pdftoolkit/`.
 ## La frontière du core
 
 Le [core](https://github.com/PDFToolkit/pdf) représente les objets et mécanismes
-décrits par **PDF 1.7 / ISO 32000-1:2008** : valeurs, références, dictionnaires,
+décrits par **PDF 1.7 / ISO 32000-1:2008** et le [supplément Adobe niveau 3](adobe-supplement.md) : valeurs, références, dictionnaires,
 flux, opérateurs, pages, polices, images, fonctions, écriture et révisions.
 Les définitions gardent leurs noms PDF et leurs références au document Adobe.
 
@@ -34,7 +34,7 @@ Le modèle objet est commun, sans copie parallèle des primitives ni registre gl
 ## Installer ce dont l'application a besoin
 
 Les packages sont distribués depuis GitHub, sans publication Packagist. Les
-contraintes stables sont `roukmoute/pdf:^0.2` pour le core et
+contraintes stables sont `roukmoute/pdf:^0.3` pour le core et
 `pdftoolkit/pdf-reader:^0.1`, `pdftoolkit/pdf-images:^0.1` ou
 `pdftoolkit/pdf-fonts:^0.1` pour les modules. Les anciens tags du core `v0.1.0`
 et `v0.1.1` conservent leur contrainte PHP 8.5.
@@ -43,7 +43,7 @@ Pour générer seulement des PDF :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
-composer require 'roukmoute/pdf:^0.2'
+composer require 'roukmoute/pdf:^0.3'
 ```
 
 Pour ajouter la lecture de PDF existants :
@@ -76,10 +76,16 @@ par les dépendances. Conserver le `composer.lock` de l'application pour fixer
 les versions et les révisions.
 
 Avant 1.0, une nouvelle version mineure peut changer les noms et signatures.
-Les contraintes `^0.2` et `^0.1` autorisent les correctifs de leur série et
+Les contraintes `^0.3` et `^0.1` autorisent les correctifs de leur série et
 écartent la version mineure suivante. Consulter les changelogs avant de changer
 de série. Pour travailler sur les développements à venir, demander explicitement
 `dev-master` pour les packages concernés.
+
+Les modules 0.1.1 acceptent les séries `^0.2 || ^0.3` du core. Une application
+qui reste sur 0.2 peut donc les mettre à jour ; pour utiliser les ajouts Adobe,
+elle doit demander explicitement `roukmoute/pdf:^0.3`. Le core conserve uniquement
+ses extensions PHP obligatoires `ctype`, `iconv` et `zlib`. Le backend AES-256
+optionnel nécessite aussi `openssl`.
 
 ## Lire un PDF externe
 
