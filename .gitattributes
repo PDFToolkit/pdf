@@ -4,6 +4,10 @@
 *.ttf binary
 *.jpg binary
 /PDF32000_2008.pdf export-ignore
+/pdf_17_errata.pdf export-ignore
+/pdf_reference.pdf export-ignore
+/pdf_reference1-7_addendum_redaction.pdf export-ignore
+/pdf_reference_1-7.pdf export-ignore
 /.github export-ignore
 /.cache export-ignore
 /vendor export-ignore

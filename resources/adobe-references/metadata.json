@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "role": "archival-reference",
+  "bibliographic_index": "https://pdfa.org/resource/pdf-specification-archive/",
+  "scope": "Historical Adobe PDF 1.7 references retained unchanged for comparison and provenance. Archival intake does not add generated definitions or claim new semantic implementation.",
+  "documents": [
+    {
+      "document": "pdf_17_errata.pdf",
+      "role": "archival-reference",
+      "title": "Errata for the PDF Reference, sixth edition, version 1.7",
+      "date": "October 2007",
+      "subject_pdf_version": "1.7",
+      "container_pdf_version": "1.4",
+      "bytes": 167466,
+      "document_sha256": "a4bc550b9aa2690bedd264cea5149e4f84b541734580206568bf06c9c46717b9",
+      "pdf_pages": 18,
+      "embedded_documents": []
+    },
+    {
+      "document": "pdf_reference.pdf",
+      "role": "archival-reference",
+      "title": "PDF Reference and Related Documentation",
+      "date": "April 2007",
+      "sdk_version": "8.1",
+      "container_pdf_version": "1.7",
+      "bytes": 16072714,
+      "document_sha256": "e7d1fd2df64e906f758bb33a4f80d4430388567d8cd5e4d7c4728aae6ee624a2",
+      "pdf_pages": 1,
+      "embedded_documents": [
+        {
+          "document": "PDF17Errata.pdf",
+          "role": "archival-reference",
+          "title": "Errata for the PDF Reference, sixth edition, version 1.7",
+          "date": "October 2007",
+          "bytes": 167466,
+          "document_sha256": "a4bc550b9aa2690bedd264cea5149e4f84b541734580206568bf06c9c46717b9",
+          "pdf_pages": 18,
+          "matches_document": "pdf_17_errata.pdf"
+        },
+        {
+          "document": "pdf_implementation.pdf",
+          "role": "archival-reference",
+          "title": "Acrobat Implementation of the PDF Specification",
+          "date": "April 2007",
+          "sdk_version": "8.1",
+          "bytes": 174230,
+          "document_sha256": "77fa628ffa69d50b6b53e2f9eea615aab809104db823f37e50a6ece1cdb52ee4",
+          "pdf_pages": 11,
+          "matches_document": null
+        },
+        {
+          "document": "pdf_reference.pdf",
+          "role": "archival-reference",
+          "title": "PDF Reference, version 1.7",
+          "edition": "Sixth edition",
+          "date": "November 2006",
+          "subject_pdf_version": "1.7",
+          "bytes": 32472771,
+          "document_sha256": "3377f6eae9d1bc117c8c47b32ea3177c4a36875d4581345a2ca5705315c60b68",
+          "pdf_pages": 1310,
+          "matches_document": "pdf_reference_1-7.pdf"
+        },
+        {
+          "document": "pdf_reference_addendum_redaction.pdf",
+          "role": "archival-reference",
+          "title": "PDF Redaction: Addendum for the PDF Reference, sixth edition, version 1.7",
+          "date": "November 2006",
+          "subject_pdf_version": "1.7",
+          "bytes": 108245,
+          "document_sha256": "49ffc2f192b2211f847c6d702077b6f729b594875595bd77f55214029f9d9a58",
+          "pdf_pages": 4,
+          "matches_document": "pdf_reference1-7_addendum_redaction.pdf"
+        }
+      ]
+    },
+    {
+      "document": "pdf_reference1-7_addendum_redaction.pdf",
+      "role": "archival-reference",
+      "title": "PDF Redaction: Addendum for the PDF Reference, sixth edition, version 1.7",
+      "date": "November 2006",
+      "subject_pdf_version": "1.7",
+      "container_pdf_version": "1.6",
+      "bytes": 108245,
+      "document_sha256": "49ffc2f192b2211f847c6d702077b6f729b594875595bd77f55214029f9d9a58",
+      "pdf_pages": 4,
+      "embedded_documents": []
+    },
+    {
+      "document": "pdf_reference_1-7.pdf",
+      "role": "archival-reference",
+      "title": "PDF Reference, version 1.7",
+      "edition": "Sixth edition",
+      "date": "November 2006",
+      "subject_pdf_version": "1.7",
+      "container_pdf_version": "1.6",
+      "bytes": 32472771,
+      "document_sha256": "3377f6eae9d1bc117c8c47b32ea3177c4a36875d4581345a2ca5705315c60b68",
+      "pdf_pages": 1310,
+      "embedded_documents": []
+    }
+  ]
+}
