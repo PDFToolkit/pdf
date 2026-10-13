@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-10-14
+
+### Fixed
+
+- Omit the outline root `Count` when all top-level items are explicitly closed,
+  including expanded descendants hidden beneath closed parents. Preserve the
+  existing visible total for an explicitly expanded top-level item, item-level
+  signed counts and sibling links (ISO Table 152, physical PDF page 376;
+  Adobe PDF 1.7 errata page 10).
+
+### Documentation and reference integrity
+
+- Retain the four supplied Adobe PDF 1.7 originals unchanged: the November 2006
+  reference, October 2007 errata, redaction addendum and Acrobat SDK 8.1 portfolio.
+  Record their fingerprints and the portfolio's four embedded sources, including
+  its three exact duplicates of the separately supplied documents.
+- Explain their usefulness, edition-specific differences and the distinction
+  between a `Redact` dictionary and destructive content removal. Archival intake
+  does not replace active ISO/Adobe definitions or claim a complete errata audit.
+- Add a documentation guide and validated downloads. Check source bytes, physical
+  pages and attachments independently in both CI workflows. Exclude the four new
+  reference PDFs from Composer distribution archives while preserving them in Git.
+- Keep PHP 8.3 as the minimum version and optional modules at their published
+  0.1.3 releases. No new production dependency or PDF 2.0 support is introduced.
+
 ## [0.5.1] - 2026-10-14
 
 ### Fixed
