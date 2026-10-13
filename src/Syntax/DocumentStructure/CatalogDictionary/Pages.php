@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\DocumentStructure\CatalogDictionary;
 
+use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\DocumentStructure\PageTree\PageTreeNode;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;

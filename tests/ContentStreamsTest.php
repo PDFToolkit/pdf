@@ -22,8 +22,6 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringObject\LiteralString;
 use PDF\Syntax\Object\StringType;
-use PDF\Text\Font;
-use PDF\Text\TextObject;
 use PDF\Text\TextRenderingMode;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -92,9 +90,14 @@ final class ContentStreamsTest extends TestCase
         self::assertSame(70, $count);
     }
 
-    public function testTextObjectEscapesBytesThroughTheStringOperand(): void
+    public function testTextOperatorsEscapeBytesThroughTheStringOperand(): void
     {
-        $object = new TextObject(new LiteralString('A (B) \\ C'), new Font(new NameType('F1'), new NumericType(12)));
+        $object = new ContentStreams(
+            new Op\BeginTextObject(),
+            new Op\SetTextFontAndSize(new NameType('F1'), new NumericType(12)),
+            new Op\ShowText(new LiteralString('A (B) \\ C')),
+            new Op\EndTextObject(),
+        );
         self::assertSame("BT\n/F1 12 Tf\n(A \\(B\\) \\\\ C) Tj\nET\n", (string) $object);
     }
 

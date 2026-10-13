@@ -6,6 +6,8 @@ Le namespace `PDF\Syntax` suit les termes de la référence. `BasicType` est le 
 
 Les arguments scalaires sont limités aux feuilles : une valeur numérique, une suite d'octets, un nom ou un booléen. Les compositions utilisent des objets. Une entrée de dictionnaire possède un `NameType` et un `BasicType` ; une instruction de contenu possède des opérandes typés.
 
+Chaque classe porte une responsabilité propre au modèle PDF. Les noms et les abstractions suivent la norme ; l'API peut évoluer pour respecter ce modèle, y compris par la suppression de classes issues du prototype. Les raccourcis de composition et les fonctions de mise en page appartiennent aux futures bibliothèques de confort.
+
 ## Définition et instance
 
 `PDF\Specification` sépare une définition de norme et un objet PDF. `SourceReference`, `Requirement`, `ObjectTypeConstraint`, `EntryDefinition` et `TableDefinition` sont des valeurs immuables. Les définitions générées sont construites par des instances, sans lecture JSON à l'exécution ni registre global.

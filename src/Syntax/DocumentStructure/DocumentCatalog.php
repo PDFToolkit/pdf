@@ -12,7 +12,7 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 
 /** The document's catalog dictionary (ISO 32000-1, table 28). */
-class DocumentCatalog extends DictionaryType
+final class DocumentCatalog extends DictionaryType
 {
     public function __construct(PageTreeNode|IndirectReference $pages, Entry ...$entries)
     {

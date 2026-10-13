@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Syntax\DocumentStructure\CatalogDictionary;
 
+use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
