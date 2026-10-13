@@ -16,6 +16,21 @@ Les fichiers originaux restent dans le dépôt. Les catalogues enregistrent leur
 SHA-256 et les numéros de pages physiques ; les corrections d'interprétation
 conservent la formulation imprimée et indiquent leur justification.
 
+La [référence Adobe de 2006, ses errata et l'addendum de caviardisation](adobe-references.md)
+sont également conservés, avec leur portfolio et un catalogue d'empreintes.
+Ce sont des sources de comparaison et d'audit ; leur archivage ne modifie pas
+les compteurs des deux inventaires actifs ni les statuts d'implémentation.
+
+Les définitions `Redact` existent dans le tableau ISO 192. L'application de la
+caviardisation, qui doit détruire le contenu et ses traces, reste un mécanisme
+à construire avec un processeur de contenu. Une annotation ou une mise à jour
+incrémentale ne constitue pas cette suppression.
+
+Dans la version 0.5.2, la comparaison avec les errata Adobe corrige aussi le
+`Count` de racine des signets tous explicitement fermés au premier niveau.
+Le [guide des références](adobe-references.md) détaille cette règle et les
+différences de contrats entre les éditions pour les digests de signature.
+
 ## Comment lire la couverture
 
 L'[inventaire ISO](../resources/iso32000-1/coverage.json) examine 98 familles de

@@ -173,6 +173,25 @@ def check(root):
         target = root / source['download']
         if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != source['sha256']:
             errors.append('Missing or modified specification source: ' + source['source'])
+    references = manifest.get('referenceSources', [])
+    expected_references = {
+        'pdf_17_errata.pdf', 'pdf_reference.pdf',
+        'pdf_reference1-7_addendum_redaction.pdf', 'pdf_reference_1-7.pdf',
+    }
+    if len(references) != len(expected_references) or {item['source'] for item in references} != expected_references:
+        errors.append('The documentation must retain all four original archival Adobe references')
+    guide = documents.get('guides/references-adobe.html')
+    for source in references:
+        download = 'downloads/adobe-references/' + source['source']
+        if source.get('role') != 'archival-reference' or source.get('download') != download:
+            errors.append('Incorrect archival reference role or download: ' + source['source'])
+            continue
+        target = root / download
+        if not target.is_file() or target.stat().st_size != source['bytes'] or hashlib.sha256(target.read_bytes()).hexdigest() != source['sha256']:
+            errors.append('Missing or modified archival reference: ' + source['source'])
+        expected_link = manifest['basePath'] + quote(download, safe='/')
+        if guide is None or not any(link.split('#', 1)[0] == expected_link for link in guide.links):
+            errors.append('The archival guide must link the original download: ' + source['source'])
     if errors:
         raise ValueError('\n'.join(errors[:40]) + f'\n{len(errors)} documentation errors')
     print(f'Checked {len(pages)} HTML pages, {len(index)} API records, all local anchors and {len(manifest["examples"])} PDF/source pairs')

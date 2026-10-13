@@ -20,6 +20,7 @@ REPOSITORY = 'https://github.com/PDFToolkit/pdf'
 GUIDES = [
     ('docs/coverage.md', 'guides/mecanismes.html', 'Couverture des deux références', 'Guides'),
     ('docs/adobe-supplement.md', 'guides/supplement-adobe.html', 'Supplément Adobe et extensions', 'Guides'),
+    ('docs/adobe-references.md', 'guides/references-adobe.html', 'Références Adobe conservées', 'Guides'),
     ('README.md', 'guides/demarrer.html', 'Démarrer', 'Guides'),
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
     ('docs/architecture.md', 'guides/architecture.html', 'Architecture', 'Guides'),
@@ -219,6 +220,8 @@ class Site:
         self.corrections = json.loads((resources / 'corrections.json').read_text(encoding='utf-8'))
         adobe = root / 'resources' / 'adobe-supplement-iso32000'
         self.adobe_metadata = json.loads((adobe / 'metadata.json').read_text(encoding='utf-8'))
+        archival = json.loads((root / 'resources/adobe-references/metadata.json').read_text(encoding='utf-8'))
+        self.reference_sources = {item['document']: item for item in archival['documents']}
         self.adobe_tables = {item['id']: item for item in json.loads((adobe / 'dictionaries.json').read_text(encoding='utf-8'))}
         self.adobe_classes = {item['table']: item for item in json.loads((adobe / 'classes.json').read_text(encoding='utf-8'))}
         self.adobe_corrections = json.loads((adobe / 'corrections.json').read_text(encoding='utf-8'))
@@ -342,6 +345,8 @@ class Site:
             return self.url('downloads/adobe-supplement-iso32000.pdf') + fragment
         if target == 'PDF32000_2008.pdf':
             return self.url('downloads/iso-32000-1.pdf') + fragment
+        if target in self.reference_sources:
+            return self.url('downloads/adobe-references/' + quote(target, safe='')) + fragment
         if (self.root / target).is_file():
             return self.source_url(target) + fragment
         if (self.root / target).is_dir():
@@ -703,6 +708,10 @@ class Site:
         downloads.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(self.root / 'PDF32000_2008.pdf', downloads / 'iso-32000-1.pdf')
         shutil.copyfile(self.root / 'adobe_supplement_iso32000.pdf', downloads / 'adobe-supplement-iso32000.pdf')
+        archival_downloads = downloads / 'adobe-references'
+        archival_downloads.mkdir(exist_ok=True)
+        for source in self.reference_sources:
+            shutil.copyfile(self.root / source, archival_downloads / source)
         examples = self.output / 'examples'
         examples.mkdir(parents=True, exist_ok=True)
         expected = set(self.examples)
@@ -781,6 +790,10 @@ class Site:
         manifest['specificationSources'] = [
             {'source': 'PDF32000_2008.pdf', 'download': 'downloads/iso-32000-1.pdf', 'sha256': self.metadata['sha256'], 'pdfPages': self.metadata['pdf_pages']},
             {'source': self.adobe_metadata['document'], 'download': 'downloads/adobe-supplement-iso32000.pdf', 'sha256': self.adobe_metadata['document_sha256'], 'pdfPages': self.adobe_metadata['pdf_pages']},
+        ]
+        manifest['referenceSources'] = [
+            {'source': item['document'], 'role': item['role'], 'download': 'downloads/adobe-references/' + item['document'], 'sha256': item['document_sha256'], 'bytes': item['bytes'], 'pdfPages': item['pdf_pages']}
+            for item in self.reference_sources.values()
         ]
         (self.output / 'site-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(f'Built {len(manifest["pages"])} pages, {len(self.components)} API components and {len(expected)} PDF examples into {self.output}')
