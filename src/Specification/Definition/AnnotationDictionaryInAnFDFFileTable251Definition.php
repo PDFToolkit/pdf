@@ -18,10 +18,10 @@ final readonly class AnnotationDictionaryInAnFDFFileTable251Definition extends T
     public function __construct()
     {
         parent::__construct(
-            new SourceReference('251', '12.7.8', 472),
+            new SourceReference('251', '12.7.7.3.4', 472),
             'Additional entry for annotation dictionaries in an FDF file',
             [
-                new EntryDefinition('Page', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Required for annotations in FDF files', false, false, false, null), new SourceReference('251', '12.7.8', 472), '(Required for annotations in FDF files) The ordinal page number on which this annotation shall appear, where page 0 is the first page.', false),
+                new EntryDefinition('Page', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Required for annotations in FDF files', false, false, false, null), new SourceReference('251', '12.7.7.3.4', 472), '(Required for annotations in FDF files) The ordinal page number on which this annotation shall appear, where page 0 is the first page.', false),
             ],
             [new AnnotationDictionaryTable164Definition()],
         );

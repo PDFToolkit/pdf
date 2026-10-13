@@ -9,15 +9,15 @@ namespace PDF\Specification\Dictionary\AdditionalStandardLayoutAttributesSpecifi
 use PDF\Specification\Definition\AdditionalStandardLayoutAttributesSpecificToBlockLevelStructureElementsContinuedTable344Definition;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\IndirectReference;
-use PDF\Syntax\Object\IntegerType;
+use PDF\Syntax\Object\NumericType;
 
-/** Table 344, /TPadding; PDF type: integer or array; Optional; inheritable; PDF 1.5. */
+/** Table 344, /TPadding; PDF type: number or array; Optional; inheritable; PDF 1.5. */
 final class TPaddingEntry extends \PDF\Specification\SchemaEntry
 {
     public const string TABLE = '344';
     public const string KEY = 'TPadding';
 
-    public function __construct(IntegerType|ArrayType|IndirectReference $value)
+    public function __construct(NumericType|ArrayType|IndirectReference $value)
     {
         parent::__construct((new AdditionalStandardLayoutAttributesSpecificToBlockLevelStructureElementsContinuedTable344Definition())->entry('TPadding'), $value);
     }

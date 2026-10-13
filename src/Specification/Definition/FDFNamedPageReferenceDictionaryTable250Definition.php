@@ -18,11 +18,11 @@ final readonly class FDFNamedPageReferenceDictionaryTable250Definition extends T
     public function __construct()
     {
         parent::__construct(
-            new SourceReference('250', '12.7.8', 472),
+            new SourceReference('250', '12.7.7.3.3', 472),
             'Entries in an FDF named page reference dictionary',
             [
-                new EntryDefinition('Name', new ObjectTypeConstraint('string', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('250', '12.7.8', 472), '(Required) The name of the referenced page.', false),
-                new EntryDefinition('F', new ObjectTypeConstraint('file specification', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('250', '12.7.8', 472), '(Optional) The file containing the named page. If this entry is absent, it shall be assumed that the page resides in the associated PDF file.', false),
+                new EntryDefinition('Name', new ObjectTypeConstraint('string', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('250', '12.7.7.3.3', 472), '(Required) The name of the referenced page.', false),
+                new EntryDefinition('F', new ObjectTypeConstraint('file specification', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('250', '12.7.7.3.3', 472), '(Optional) The file containing the named page. If this entry is absent, it shall be assumed that the page resides in the associated PDF file.', false),
             ],
             [],
         );

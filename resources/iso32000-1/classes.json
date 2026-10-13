@@ -1745,7 +1745,9 @@
     "title": "Additional Entries Specific to a Type 1 Shading Dictionary",
     "class": "PDF\\Specification\\Dictionary\\Type1ShadingDictionaryTable79",
     "definition_class": "PDF\\Specification\\Definition\\Type1ShadingDictionaryTable79Definition",
-    "common_tables": [],
+    "common_tables": [
+      "78"
+    ],
     "entries": [
       {
         "name": "Domain",
@@ -1769,7 +1771,9 @@
     "title": "Additional Entries Specific to a Type 2 Shading Dictionary",
     "class": "PDF\\Specification\\Dictionary\\Type2ShadingDictionaryTable80",
     "definition_class": "PDF\\Specification\\Definition\\Type2ShadingDictionaryTable80Definition",
-    "common_tables": [],
+    "common_tables": [
+      "78"
+    ],
     "entries": [
       {
         "name": "Coords",
@@ -1798,7 +1802,9 @@
     "title": "Additional Entries Specific to a Type 3 Shading Dictionary",
     "class": "PDF\\Specification\\Dictionary\\Type3ShadingDictionaryTable81",
     "definition_class": "PDF\\Specification\\Definition\\Type3ShadingDictionaryTable81Definition",
-    "common_tables": [],
+    "common_tables": [
+      "78"
+    ],
     "entries": [
       {
         "name": "Coords",

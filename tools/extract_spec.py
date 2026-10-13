@@ -50,11 +50,23 @@ def outline_entries(reader: PdfReader) -> list[dict]:
 
 
 def refresh_constraints(dictionaries: list[dict], corrections_path: Path) -> None:
+    # An adjacent later heading must not move a continued table into another
+    # normative clause. Physical PDF pages and original table prose stay intact.
+    source_clauses = {'229': '12.7.4.3', '249': '12.7.7.3.3', '250': '12.7.7.3.3',
+                      '251': '12.7.7.3.4', '349': '14.8.5.7'}
+    for dictionary in dictionaries:
+        if dictionary['id'] in source_clauses:
+            if dictionary['section'] != source_clauses[dictionary['id']]:
+                dictionary['extraction_section'] = dictionary['section']
+            dictionary['section'] = source_clauses[dictionary['id']]
     corrections = json.loads(corrections_path.read_text(encoding='utf-8')) if corrections_path.is_file() else []
     overrides = {(correction['table'], correction['entry']): correction for correction in corrections}
     for dictionary in dictionaries:
         for entry in [*dictionary['entries'], *dictionary['variable_entries']]:
             qualifier = entry['qualifier'] or ''
+            entry['inheritable'] = bool(re.search(r'\binheritable\b', qualifier, re.I) and not re.search(r'\b(?:not|non)[\s-]+inheritable\b', qualifier, re.I))
+            if 'type' in entry.get('source_constraints', {}):
+                entry['type'] = entry['source_constraints']['type']
             direct = dictionary['id'] == '17' or bool(re.search(r'(?:shall|must) not be an indirect reference|(?:shall|must) be a direct object', qualifier, re.I))
             indirect = not direct and bool(re.search(r'(?:shall|must) be an indirect reference', qualifier, re.I))
             entry['direct'] = direct
@@ -63,6 +75,8 @@ def refresh_constraints(dictionaries: list[dict], corrections_path: Path) -> Non
             entry['source_constraints'] = {key: entry[key] for key in ['direct', 'indirect', 'array_elements_direct']}
             override = overrides.get((dictionary['id'], entry['name']))
             if override:
+                if 'type' in override['constraints']:
+                    entry['source_constraints']['type'] = entry['type']
                 entry['implementation_correction'] = override
                 entry.update(override['constraints'])
             else:
@@ -205,7 +219,7 @@ def extract(source: Path, destination: Path, corrections_path: Path) -> None:
                         "qualifier": qualifier,
                         "required": bool(qualifier and re.match(r"Required(?:;|$)", qualifier, re.I)),
                         "conditional": bool(qualifier and re.search(r"\bif\b|otherwise", qualifier, re.I)),
-                        "inheritable": bool(qualifier and "inheritable" in qualifier.lower()),
+                        "inheritable": bool(qualifier and re.search(r'\binheritable\b', qualifier, re.I) and not re.search(r'\b(?:not|non)[\s-]+inheritable\b', qualifier, re.I)),
                         "indirect": bool(qualifier and "shall be an indirect reference" in qualifier.lower()),
                         "introduced_in": version.group(1) if version else None,
                         "pdf_page": grid["pdf_page"],

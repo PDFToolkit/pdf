@@ -18,10 +18,10 @@ final readonly class TextFieldTable229Definition extends TableDefinition
     public function __construct()
     {
         parent::__construct(
-            new SourceReference('229', '12.7.4.4', 452),
+            new SourceReference('229', '12.7.4.3', 452),
             'Additional entry specific to a text field',
             [
-                new EntryDefinition('MaxLen', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Optional; inheritable', false, false, true, null), new SourceReference('229', '12.7.4.4', 452), '(Optional; inheritable) The maximum length of the field’s text, in characters.', false),
+                new EntryDefinition('MaxLen', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Optional; inheritable', false, false, true, null), new SourceReference('229', '12.7.4.3', 452), '(Optional; inheritable) The maximum length of the field’s text, in characters.', false),
             ],
             [new FieldDictionaryTable220Definition(), new FieldsContainingVariableTextTable222Definition()],
         );

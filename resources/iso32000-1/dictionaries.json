@@ -5937,7 +5937,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Required) A 2-in, n-out function or an array of n 2-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). Each function’s domain shall be a superset of that of the shading dictionary. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value.",
         "fixed_name": null,
         "direct": false,
@@ -5952,7 +5952,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-79-function",
+          "table": "79",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=193",
+          "evidence_locator": "ISO 32000-1:2008, table 79, Function value prose, physical PDF page 193"
         }
       }
     ],
@@ -6009,7 +6021,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Required) A 1-in, n-out function or an array of n 1-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). The function(s) shall be called with values of the parametric variable t in the domain defined by the Domain entry. Each function’s domain shall be a superset of that of the shading dictionary. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value.",
         "fixed_name": null,
         "direct": false,
@@ -6024,7 +6036,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-80-function",
+          "table": "80",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=194",
+          "evidence_locator": "ISO 32000-1:2008, table 80, Function value prose, physical PDF page 194"
         }
       },
       {
@@ -6101,7 +6125,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Required) A 1-in, n-out function or an array of n 1-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). The function(s) shall be called with values of the parametric variable t in the domain defined by the shading dictionary’s Domain entry. Each function’s domain shall be a superset of that of the shading dictionary. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value.",
         "fixed_name": null,
         "direct": false,
@@ -6116,7 +6140,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-81-function",
+          "table": "81",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=195",
+          "evidence_locator": "ISO 32000-1:2008, table 81, Function value prose, physical PDF page 195"
         }
       },
       {
@@ -6234,7 +6270,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Optional) A 1-in, n-out function or an array of n 1-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). If this entry is present, the colour data for each vertex shall be specified by a single parametric variable rather than by n separate colour components. The designated function(s) shall be called with each interpolated value of the parametric variable to determine the actual colour at each point. Each input value shall be forced into the range interval specified for the corresponding colour component in the shading dictionary’s Decode array. Each function’s domain shall be a superset of that interval. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value. This entry shall not be used with an Indexed colour space.",
         "fixed_name": null,
         "direct": false,
@@ -6249,7 +6285,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-82-function",
+          "table": "82",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=198",
+          "evidence_locator": "ISO 32000-1:2008, table 82, Function value prose, physical PDF page 198"
         }
       }
     ],
@@ -6346,7 +6394,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Optional) A 1-in, n-out function or an array of n 1-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). If this entry is present, the colour data for each vertex shall be specified by a single parametric variable rather than by n separate colour components. The designated function(s) shall be called with each interpolated value of the parametric variable to determine the actual colour at each point. Each input value shall be forced into the range interval specified for the corresponding colour component in the shading dictionary’s Decode array. Each function’s domain shall be a superset of that interval. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value. This entry shall not be used with an Indexed colour space.",
         "fixed_name": null,
         "direct": false,
@@ -6361,7 +6409,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-83-function",
+          "table": "83",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=201",
+          "evidence_locator": "ISO 32000-1:2008, table 83, Function value prose, physical PDF page 201"
         }
       }
     ],
@@ -6458,7 +6518,7 @@
       },
       {
         "name": "Function",
-        "type": "function",
+        "type": "function or array",
         "description": "(Optional) A 1-in, n-out function or an array of n 1-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). If this entry is present, the colour data for each vertex shall be specified by a single parametric variable rather than by n separate colour components. The designated function(s) shall be called with each interpolated value of the parametric variable to determine the actual colour at each point. Each input value shall be forced into the range interval specified for the corresponding colour component in the shading dictionary’s Decode array. Each function’s domain shall be a superset of that interval. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value. This entry shall not be used with an Indexed colour space.",
         "fixed_name": null,
         "direct": false,
@@ -6473,7 +6533,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "function"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-84-function",
+          "table": "84",
+          "entry": "Function",
+          "constraints": {
+            "type": "function or array"
+          },
+          "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=204",
+          "evidence_locator": "ISO 32000-1:2008, table 84, Function value prose, physical PDF page 204"
         }
       }
     ],
@@ -18314,7 +18386,7 @@
   {
     "id": "229",
     "title": "Additional entry specific to a text field",
-    "section": "12.7.4.4",
+    "section": "12.7.4.3",
     "pdf_pages": [
       452
     ],
@@ -18341,7 +18413,8 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "12.7.4.4"
   },
   {
     "id": "231",
@@ -20125,7 +20198,7 @@
   {
     "id": "249",
     "title": "Entries in an FDF template dictionary",
-    "section": "12.7.8",
+    "section": "12.7.7.3.3",
     "pdf_pages": [
       472
     ],
@@ -20192,12 +20265,13 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "12.7.8"
   },
   {
     "id": "250",
     "title": "Entries in an FDF named page reference dictionary",
-    "section": "12.7.8",
+    "section": "12.7.7.3.3",
     "pdf_pages": [
       472
     ],
@@ -20244,12 +20318,13 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "12.7.8"
   },
   {
     "id": "251",
     "title": "Additional entry for annotation dictionaries in an FDF file",
-    "section": "12.7.8",
+    "section": "12.7.7.3.4",
     "pdf_pages": [
       472
     ],
@@ -20276,7 +20351,8 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "12.7.8"
   },
   {
     "id": "252",
@@ -28303,7 +28379,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 605,
@@ -28343,7 +28419,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.5",
         "pdf_page": 606,
@@ -28383,7 +28459,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.5",
         "pdf_page": 607,
@@ -28423,7 +28499,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.5",
         "pdf_page": 608,
@@ -28478,7 +28554,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 608,
@@ -28498,7 +28574,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 608,
@@ -28598,7 +28674,7 @@
         "qualifier": "Optional for Annot; required for any figure or table appearing in its entirety on a single page; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 610,
@@ -28618,7 +28694,7 @@
         "qualifier": "Optional; not inheritable; illustrations, tables, table headers, and table cells only; should be used for table cells",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 610,
@@ -28638,7 +28714,7 @@
         "qualifier": "Optional; not inheritable; illustrations, tables, table headers, and table cells only",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 610,
@@ -28710,7 +28786,7 @@
       },
       {
         "name": "TPadding",
-        "type": "integer or array",
+        "type": "number or array",
         "description": "(Optional; inheritable; PDF 1.5) Specifies an offset to account for the separation between the table cell’s content rectangle and the surrounding border (see “Content and Allocation Rectangles” in 14.8.5.4, “Layout Attributes”). If both TPadding and Padding apply to a given table cell, Padding shall supersede TPadding. A positive value shall enlarge the background area; a negative value shall trim it, and the border may overlap the element’s text or graphic. The value shall be either a single number representing the width of the padding, in default user space units, that applies to all four edges of the table cell or a 4-entry array representing the padding width for the before edge, after edge, start edge, and end edge, respectively, of the content rectangle. Default value: 0.",
         "fixed_name": null,
         "direct": false,
@@ -28725,7 +28801,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "integer or array"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-344-tpadding",
+          "table": "344",
+          "entry": "TPadding",
+          "constraints": {
+            "type": "number or array"
+          },
+          "rationale": "The printed Type column says integer or array, but the normative value prose explicitly permits a single number or a four-entry array of numbers. Fractional padding values must remain constructible. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=611",
+          "evidence_locator": "ISO 32000-1:2008, table 344, TPadding value prose, physical PDF page 611"
         }
       }
     ],
@@ -28752,7 +28840,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 612,
@@ -28832,7 +28920,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 613,
@@ -28884,7 +28972,7 @@
       },
       {
         "name": "GlyphOrientationVertical",
-        "type": "name",
+        "type": "number or name",
         "description": "(Optional; inheritable; PDF 1.5) Specifies the orientation of glyphs when the inline-progression direction is top to bottom or bottom to top. This attribute may take one of the following values: angle A number representing the clockwise rotation in degrees of the top of the glyphs relative to the top of the reference area. Shall be a multiple of 90 degrees between -180 and +360. AutoSpecifies a default orientation for text, depending on whether it is fullwidth (as wide as it is high). Fullwidth Latin and fullwidth ideographic text (excluding ideographic punctuation) shall be set with an angle of 0. Ideographic punctuation and other ideographic characters having alternate horizontal and vertical forms shall use the vertical form of the glyph. Non-fullwidth text shall be set with an angle of 90. Default value: Auto. NOTE 2 This attribute is used most commonly to differentiate between the preferred orientation of alphabetic (non- ideographic) text in vertically written Japanese documents (Auto or 90) and the orientation of the ideographic characters and/or alphabetic (non- ideographic) text in western signage and advertising (90). This attribute shall affect both the alignment and width of the glyphs. If a glyph is perpendicular to the vertical baseline, its horizontal alignment point shall be aligned with the alignment baseline for the script to which the glyph belongs. The width of the glyph area shall be determined from the horizontal width font characteristic for the glyph.",
         "fixed_name": null,
         "direct": false,
@@ -28899,7 +28987,19 @@
         "source_constraints": {
           "direct": false,
           "indirect": false,
-          "array_elements_direct": false
+          "array_elements_direct": false,
+          "type": "name"
+        },
+        "implementation_correction": {
+          "id": "attribute-type-345-glyphorientationvertical",
+          "table": "345",
+          "entry": "GlyphOrientationVertical",
+          "constraints": {
+            "type": "number or name"
+          },
+          "rationale": "The printed Type column says name, but the normative value prose allows a numeric multiple of 90 in [-180, +360] or /Auto. Both source-defined representations must be constructible. This is an explicit source clarification, not a claim of an official ISO erratum.",
+          "evidence_url": "PDF32000_2008.pdf#page=614",
+          "evidence_locator": "ISO 32000-1:2008, table 345, GlyphOrientationVertical value prose, physical PDF page 614"
         }
       }
     ],
@@ -28924,7 +29024,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.6",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.6",
         "pdf_page": 616,
@@ -28944,7 +29044,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.6",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.6",
         "pdf_page": 616,
@@ -28964,7 +29064,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.6",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.6",
         "pdf_page": 616,
@@ -29028,7 +29128,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 617,
@@ -29048,7 +29148,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 617,
@@ -29068,7 +29168,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 617,
@@ -29085,7 +29185,7 @@
   {
     "id": "349",
     "title": "Standard table attributes",
-    "section": "14.9.1",
+    "section": "14.8.5.7",
     "pdf_pages": [
       618
     ],
@@ -29100,7 +29200,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 618,
@@ -29120,7 +29220,7 @@
         "qualifier": "Optional; not inheritable",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": null,
         "pdf_page": 618,
@@ -29140,7 +29240,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.5",
         "pdf_page": 618,
@@ -29160,7 +29260,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.5",
         "pdf_page": 618,
@@ -29180,7 +29280,7 @@
         "qualifier": "Optional; not inheritable; PDF 1.7",
         "required": false,
         "conditional": false,
-        "inheritable": true,
+        "inheritable": false,
         "indirect": false,
         "introduced_in": "1.7",
         "pdf_page": 618,
@@ -29192,7 +29292,8 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "14.9.1"
   },
   {
     "id": "350",

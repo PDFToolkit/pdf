@@ -31,6 +31,35 @@ use PHPUnit\Framework\TestCase;
 
 final class SpecificationTest extends TestCase
 {
+    public function testNegativeInheritanceWordingTakesPrecedenceOverThePositiveSubstring(): void
+    {
+        $layout = new \PDF\Specification\Definition\StandardLayoutAttributesCommonToAllStandardStructureTypesTable343Definition();
+        self::assertFalse($layout->entry('BackgroundColor')->requirement->inheritable);
+        self::assertFalse($layout->entry('Padding')->requirement->inheritable);
+        self::assertTrue($layout->entry('BorderColor')->requirement->inheritable);
+        self::assertTrue($layout->entry('WritingMode')->requirement->inheritable);
+        self::assertStringContainsString('not inheritable', $layout->entry('BackgroundColor')->description);
+    }
+
+    public function testAttributeTypesFollowNormativeProseWithExplicitSourceClarifications(): void
+    {
+        $block = new \PDF\Specification\Definition\AdditionalStandardLayoutAttributesSpecificToBlockLevelStructureElementsContinuedTable344Definition();
+        $inline = new \PDF\Specification\Definition\StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable345Definition();
+        $block->entry('TPadding')->type->validate(new NumericType(0.5));
+        $inline->entry('GlyphOrientationVertical')->type->validate(new IntegerType(90));
+        $inline->entry('GlyphOrientationVertical')->type->validate(new NameType('Auto'));
+        self::assertNotNull($block->entry('TPadding')->correction);
+        self::assertNotNull($inline->entry('GlyphOrientationVertical')->correction);
+        self::assertSame(611, $block->entry('TPadding')->source->pdfPage);
+        self::assertSame(614, $inline->entry('GlyphOrientationVertical')->source->pdfPage);
+    }
+
+    public function testContinuedTablesRetainTheClauseThatDefinesTheirEntries(): void
+    {
+        self::assertSame('12.7.4.3', (new \PDF\Specification\Definition\TextFieldTable229Definition())->source->clause);
+        self::assertSame('14.8.5.7', (new \PDF\Specification\Definition\StandardTableAttributesTable349Definition())->source->clause);
+    }
+
     public function testEveryGeneratedDefinitionCanConstructItsDeclaredObjectDomain(): void
     {
         $json = file_get_contents(dirname(__DIR__) . '/resources/iso32000-1/classes.json');

@@ -9,14 +9,15 @@ namespace PDF\Specification\Dictionary\StandardLayoutAttributesSpecificToInlineL
 use PDF\Specification\Definition\StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable345Definition;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NumericType;
 
-/** Table 345, /GlyphOrientationVertical; PDF type: name; Optional; inheritable; PDF 1.5. */
+/** Table 345, /GlyphOrientationVertical; PDF type: number or name; Optional; inheritable; PDF 1.5. */
 final class GlyphOrientationVerticalEntry extends \PDF\Specification\SchemaEntry
 {
     public const string TABLE = '345';
     public const string KEY = 'GlyphOrientationVertical';
 
-    public function __construct(NameType|IndirectReference $value)
+    public function __construct(NumericType|NameType|IndirectReference $value)
     {
         parent::__construct((new StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable345Definition())->entry('GlyphOrientationVertical'), $value);
     }

@@ -14,7 +14,7 @@ use PDF\Syntax\Object\DictionaryObject\Entry;
 final class Type2ShadingDictionaryTable80 extends SchemaDictionary
 {
     public const string TABLE = '80';
-    public const array COMMON_TABLES = [];
+    public const array COMMON_TABLES = ['78'];
 
     public function __construct(Entry ...$entries)
     {

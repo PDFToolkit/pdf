@@ -18,12 +18,12 @@ final readonly class FDFTemplateDictionaryTable249Definition extends TableDefini
     public function __construct()
     {
         parent::__construct(
-            new SourceReference('249', '12.7.8', 472),
+            new SourceReference('249', '12.7.7.3.3', 472),
             'Entries in an FDF template dictionary',
             [
-                new EntryDefinition('TRef', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('249', '12.7.8', 472), '(Required) A named page reference dictionary (see Table 250) that shall specify the location of the template.', false),
-                new EntryDefinition('Fields', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('249', '12.7.8', 472), '(Optional) An array of references to FDF field dictionaries (see Table 246) describing the root fields that shall be imported (those with no ancestors in the field hierarchy).', false),
-                new EntryDefinition('Rename', new ObjectTypeConstraint('boolean', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('249', '12.7.8', 472), '(Optional) A flag that shall specify whether fields imported from the template shall be renamed in the event of name conflicts with existing fields; see the Note in this sub-clause for further discussion. Default value: true.', false),
+                new EntryDefinition('TRef', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('249', '12.7.7.3.3', 472), '(Required) A named page reference dictionary (see Table 250) that shall specify the location of the template.', false),
+                new EntryDefinition('Fields', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('249', '12.7.7.3.3', 472), '(Optional) An array of references to FDF field dictionaries (see Table 246) describing the root fields that shall be imported (those with no ancestors in the field hierarchy).', false),
+                new EntryDefinition('Rename', new ObjectTypeConstraint('boolean', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('249', '12.7.7.3.3', 472), '(Optional) A flag that shall specify whether fields imported from the template shall be renamed in the event of name conflicts with existing fields; see the Note in this sub-clause for further discussion. Default value: true.', false),
             ],
             [],
         );

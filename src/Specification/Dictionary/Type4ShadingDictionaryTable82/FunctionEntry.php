@@ -7,16 +7,17 @@ declare(strict_types=1);
 namespace PDF\Specification\Dictionary\Type4ShadingDictionaryTable82;
 
 use PDF\Specification\Definition\Type4ShadingDictionaryTable82Definition;
+use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 
-/** Table 82, /Function; PDF type: function; Optional. */
+/** Table 82, /Function; PDF type: function or array; Optional. */
 final class FunctionEntry extends \PDF\Specification\SchemaEntry
 {
     public const string TABLE = '82';
     public const string KEY = 'Function';
 
-    public function __construct(DictionaryType|IndirectReference $value)
+    public function __construct(DictionaryType|ArrayType|IndirectReference $value)
     {
         parent::__construct((new Type4ShadingDictionaryTable82Definition())->entry('Function'), $value);
     }

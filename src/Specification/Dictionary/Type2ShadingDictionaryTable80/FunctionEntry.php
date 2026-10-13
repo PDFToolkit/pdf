@@ -7,16 +7,17 @@ declare(strict_types=1);
 namespace PDF\Specification\Dictionary\Type2ShadingDictionaryTable80;
 
 use PDF\Specification\Definition\Type2ShadingDictionaryTable80Definition;
+use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 
-/** Table 80, /Function; PDF type: function; Required. */
+/** Table 80, /Function; PDF type: function or array; Required. */
 final class FunctionEntry extends \PDF\Specification\SchemaEntry
 {
     public const string TABLE = '80';
     public const string KEY = 'Function';
 
-    public function __construct(DictionaryType|IndirectReference $value)
+    public function __construct(DictionaryType|ArrayType|IndirectReference $value)
     {
         parent::__construct((new Type2ShadingDictionaryTable80Definition())->entry('Function'), $value);
     }
