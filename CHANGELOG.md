@@ -2,6 +2,42 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-13
+
+Immutable revision histories, native object generations, navigation, attachments,
+portable collections and applied signature-field policies. PHP 8.3 remains the
+minimum version, with validation on PHP 8.3, 8.4 and 8.5.
+
+### Added
+
+- Return exact initial snapshots from `LinearizedWriter::revision()` and append ordinary incremental updates while preserving every original byte and hint extent.
+- Model immutable free lists, release and reuse operations, retired generations and effective ordinary/compressed xref indexes. Preserve obsolete aliases as their original number/generation; distinguish never-used holes and permanent generation 65535.
+- Construct native page labels, named and explicit destinations, viewport calculations, article threads and beads, transitions and presentation sequences. Validate their actual effective catalog and page relationships after updates.
+- Construct file specifications, embedded-file bytes and derived metadata, Mac resource information, related-file arrays, attachment name trees and portable collection schemas/items/sorts. Declare external-stream data and filters without loading external files.
+- Apply written signature seeds, locks, certificate facts, actual appearances and evidence contracts before finalization. Verify the actual CMS/PKCS#1 output on the exact reserved bytes and freeze the selected credential and digest.
+- Retain historical certification and field-lock restrictions when signing another field, including renamed descendants and retired signature values. Enforce first/unique certification and usage-signature cardinality without making the optional Perms/DocMDP link mandatory.
+- Add four explained tutorials with real PDFs for navigation, attachments, generations and signature-field policies. Add permanent independent oracles for the new mechanisms.
+
+### Fixed
+
+- Capture stream dictionaries and encoded pre-encryption bytes from the actual same-call emission, including managed entries and remapped reference identities. Keep emission evidence scoped to number and generation.
+- Retain temporary objects during graph discovery so generated dictionary entries cannot be skipped when PHP reuses an object ID. Keep direct values distinct from their optional historical indirect identities.
+- Validate effective page resources, boxes, rotation and name-tree byte ordering/limits. Check file-name, EF/RF/CI and collection-schema relationships against frozen and replaced objects.
+- Resolve external-stream declarations against actual generations before applying a file-data exemption. Preserve explicit internal replacements and reject loss of an unchanged historical external dependency.
+- Preserve the original file-specification F version and the correct continued PageLabels source clause; enforce the printed indirect-reference constraint for CI.
+- Verify native OpenSSL signature results and reject mismatched credentials, digest declarations, malformed DER or replayed verification facts.
+
+### Development dependencies
+
+- Lock optional modules to their published 0.1.3 releases, accepting core `^0.2 || ^0.3 || ^0.4 || ^0.5`. The core still has no module dependency in production.
+
+### Scope
+
+- Dictionary definitions remain complete for both retained references. These additions do not claim complete semantic conformance or implementation of every native source procedure.
+- General authenticated revision-difference analysis for DocMDP/FieldMDP/UR, remaining annotation/measurement/media/function rules and barcode appearance procedures remain tracked in [the coverage inventory](docs/coverage.md).
+- External parsing/conversion, rendering, XFA/JavaScript/media execution, timestamp/revocation acquisition and certificate trust remain explicit external components.
+- See [the 0.5 guide](docs/migration-0.5.md) for new APIs and the distinction between writable objects and emitted snapshots.
+
 ## [0.4.0] - 2026-10-13
 
 Native writing mechanisms with explicit object construction, independent interoperability checks and a coverage inventory that separates definitions from algorithms and semantic rules. PHP 8.3 remains the minimum version.
@@ -154,7 +190,9 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
+[0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
 [0.3.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.3.0
 [0.2.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.1
 [0.2.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.0
