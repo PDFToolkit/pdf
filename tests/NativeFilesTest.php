@@ -37,6 +37,12 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringObject\LiteralString;
+use PDF\Syntax\Object\StreamObject;
+use PDF\Syntax\FileStructure\ReleaseIndirectObject;
+use PDF\Syntax\FileStructure\RetiredObjectGeneration;
+use PDF\Syntax\FileStructure\RevisionObject;
+use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
+use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -213,6 +219,248 @@ final class NativeFilesTest extends TestCase
         self::assertStringContainsString("stream\nlocal ignored bytes\nendstream", $serialized);
         self::assertStringNotContainsString('private-external-name.bin', $serialized);
         self::assertStringContainsString('/Length 19', $serialized);
+    }
+
+    /** @return iterable<string, array{CrossReferenceFormat, bool, bool}> */
+    public static function externalRevisions(): iterable
+    {
+        foreach (CrossReferenceFormat::cases() as $format) {
+            foreach ([false, true] as $encrypted) {
+                foreach ([false, true] as $linearized) {
+                    yield $format->name . '-' . (int) $encrypted . '-' . (int) $linearized => [$format, $encrypted, $linearized];
+                }
+            }
+        }
+    }
+
+    private function revision5Encryption(): Sec\FileEncryption
+    {
+        return (new Sec\HistoricalRevision5SecurityHandler(new Sec\OpenSslAes256Backend(), new Sec\SystemRandomSource()))->create(new Sec\PreparedPassword('user'), new Sec\PreparedPassword('owner'), new Sec\Revision5Permissions(-4), new Sec\EncryptMetadata(true));
+    }
+
+    private function genericFileStream(\PDF\Syntax\FileStructure\BasicType $file, string $bytes): StreamObject
+    {
+        return new class ($file, $bytes) extends StreamObject {
+            public function __construct(private readonly \PDF\Syntax\FileStructure\BasicType $file, string $bytes)
+            {
+                parent::__construct($bytes);
+            }
+            public function dictionary(): DictionaryType
+            {
+                return parent::dictionary()->with(new Entry(new NameType('F'), $this->file));
+            }
+        };
+    }
+
+    /** @return array{\PDF\Syntax\FileStructure\FileRevision, F\FileSpecification, StreamObject} */
+    private function externalRevision(CrossReferenceFormat $format, bool $encrypted, bool $linearized, bool $generic = false): array
+    {
+        $file = new F\FileSpecification(new LiteralString('file.bin'));
+        $stream = $generic ? $this->genericFileStream(new IndirectReference($file), 'LOCAL-IGNORED') : new ExternalStreamObject(new IndirectReference($file), ignoredBytes: 'LOCAL-IGNORED');
+        $pages = (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject(new \PDF\Syntax\DataStructure\Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(100), new IntegerType(100)), new \PDF\Document\ResourceDictionary(), new StreamObject('q Q')));
+        $catalog = new DocumentCatalog($pages, $this->entry('PrivateStream', new IndirectReference($stream)), $this->entry('Extensions', new DictionaryType($this->entry('ADBE', new DictionaryType($this->entry('BaseVersion', new NameType('1.7')), $this->entry('ExtensionLevel', new IntegerType(3)))))));
+        $identifier = new \PDF\Syntax\Object\StringObject\HexadecimalString(str_repeat('i', 16));
+        $document = new FileStructure(new FileHeader(), new FileBody($catalog), new IndirectReference($catalog), new DictionaryType($this->entry('ID', new ArrayType($identifier, $identifier))), $format);
+        $security = $encrypted ? $this->revision5Encryption() : null;
+        $writer = $linearized ? new \PDF\Serialization\LinearizedWriter(encryption: $security) : new FileWriter(encryption: $security);
+        return [$writer->revision($document), $file, $stream];
+    }
+
+    #[DataProvider('externalRevisions')]
+    public function testRetiringAnExternalFileDependencyFailsBeforeAnyUpdateEmission(CrossReferenceFormat $format, bool $encrypted, bool $linearized): void
+    {
+        [$base, $file] = $this->externalRevision($format, $encrypted, $linearized);
+        $probe = new class ('') extends StreamObject {
+            public int $calls = 0;
+            public function bytes(SerializationContext $context): string
+            {
+                ++$this->calls;
+                return 'Must not emit';
+            }
+        };
+        try {
+            (new IncrementalUpdate($base, new FileBody($probe), objectOperations: new ReleaseIndirectObject($base->binding($file)->identifier)))->toRevision();
+            self::fail('A retained external stream cannot lose its effective F dependency.');
+        } catch (\InvalidArgumentException $error) {
+            self::assertStringContainsString('external stream file dependency', $error->getMessage());
+        }
+        self::assertSame(0, $probe->calls);
+    }
+
+    #[DataProvider('externalRevisions')]
+    public function testExplicitInternalReplacementCanRemoveTheExternalDeclaration(CrossReferenceFormat $format, bool $encrypted, bool $linearized): void
+    {
+        [$base, $file, $external] = $this->externalRevision($format, $encrypted, $linearized);
+        $internal = new StreamObject('INTERNAL-REPLACEMENT', filters: new FlateDecode());
+        $next = (new IncrementalUpdate($base, new FileBody(new IndirectObject($internal, $base->binding($external)->identifier)), objectOperations: new ReleaseIndirectObject($base->binding($file)->identifier)))->toRevision();
+        self::assertSame($base->bytes, substr($next->bytes, 0, strlen($base->bytes)));
+        self::assertFalse($next->binding($external)->dictionary?->has('F'));
+        $snapshot = $next->binding($external)->snapshot;
+        self::assertInstanceOf(RevisionStreamSnapshot::class, $snapshot);
+        self::assertSame('INTERNAL-REPLACEMENT', gzuncompress($snapshot->encodedBytes));
+    }
+
+    /** @return iterable<string, array{CrossReferenceFormat, bool, bool, bool}> */
+    public static function stagedGenericExternalRevisions(): iterable
+    {
+        foreach (self::externalRevisions() as $name => $arguments) {
+            foreach ([false, true] as $replacement) {
+                yield $name . '-' . (int) $replacement => [...$arguments, $replacement];
+            }
+        }
+    }
+
+    #[DataProvider('stagedGenericExternalRevisions')]
+    public function testNewGenericStreamMayUseAnObsoleteFileReferenceAsEffectiveNull(CrossReferenceFormat $format, bool $encrypted, bool $linearized, bool $replacement): void
+    {
+        [$base, $file, $external] = $this->externalRevision($format, $encrypted, $linearized);
+        $internal = $this->genericFileStream(new IndirectReference($file), 'INTERNAL-NULL-DECLARATION');
+        $operations = [new ReleaseIndirectObject($base->binding($file)->identifier)];
+        if ($replacement) {
+            $body = new FileBody(new IndirectObject($internal, $base->binding($external)->identifier));
+        } else {
+            $catalog = $base->binding($base->root->target())->dictionary ?? throw new \LogicException('The actual catalog is frozen.');
+            $catalog = $catalog->with($this->entry('PrivateStream', new IndirectReference($internal)));
+            $body = new FileBody($internal, new IndirectObject($catalog, $base->root->identifier ?? throw new \LogicException('The root has an identifier.')));
+            $operations[] = new ReleaseIndirectObject($base->binding($external)->identifier);
+        }
+        $next = (new IncrementalUpdate($base, $body, null, null, ...$operations))->toRevision();
+        self::assertSame($base->bytes, substr($next->bytes, 0, strlen($base->bytes)));
+        $snapshot = $next->binding($internal)->snapshot;
+        self::assertInstanceOf(RevisionStreamSnapshot::class, $snapshot);
+        self::assertSame('INTERNAL-NULL-DECLARATION', $snapshot->encodedBytes);
+        $append = substr($next->bytes, strlen($base->bytes));
+        if ($encrypted) {
+            self::assertStringNotContainsString('INTERNAL-NULL-DECLARATION', $append);
+        } else {
+            self::assertStringContainsString('INTERNAL-NULL-DECLARATION', $append);
+        }
+    }
+
+    #[DataProvider('externalRevisions')]
+    public function testUnchangedGenericExternalSnapshotCannotLoseItsRecordedExemption(CrossReferenceFormat $format, bool $encrypted, bool $linearized): void
+    {
+        [$base, $file] = $this->externalRevision($format, $encrypted, $linearized, true);
+        self::assertStringContainsString("stream\nLOCAL-IGNORED\nendstream", $base->bytes);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('external stream file dependency');
+        (new IncrementalUpdate($base, new FileBody(), objectOperations: new ReleaseIndirectObject($base->binding($file)->identifier)))->toRevision();
+    }
+
+    public function testNativeExternalDeclarationRejectsMalformedIndirectFileSpecification(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new ExternalStreamObject(new IndirectReference(new DictionaryType()));
+    }
+
+    public function testStandaloneNativeExternalStreamRejectsAnObsoleteFileReference(): void
+    {
+        $file = new F\FileSpecification(new LiteralString('file.bin'));
+        $identifier = new ObjectIdentifier(new ObjectNumber(1));
+        $context = new SerializationContext(new ObjectNumber(2), new RetiredObjectGeneration(new RevisionObject($identifier, $file)), $this->revision5Encryption());
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('non-null effective filename');
+        $context->serializeIndirect(new ExternalStreamObject(new IndirectReference($file), ignoredBytes: 'LOCAL-IGNORED'));
+    }
+
+    public function testGenericNullExternalEntryRetainsOrdinaryStreamEncryption(): void
+    {
+        $stream = new class ('INTERNAL-DATA') extends StreamObject {
+            public function dictionary(): DictionaryType
+            {
+                return parent::dictionary()->with(new Entry(new NameType('F'), new IndirectReference(new NullType())));
+            }
+        };
+        $context = new SerializationContext(new ObjectNumber(), $this->revision5Encryption());
+        self::assertStringNotContainsString('INTERNAL-DATA', $context->serializeIndirect($stream));
+    }
+
+    /** @return iterable<string, array{\PDF\Syntax\FileStructure\BasicType}> */
+    public static function invalidExternalDeclarations(): iterable
+    {
+        yield 'integer' => [new IntegerType(42)];
+        yield 'empty dictionary' => [new DictionaryType()];
+        yield 'indirect empty dictionary' => [new IndirectReference(new DictionaryType())];
+    }
+
+    #[DataProvider('invalidExternalDeclarations')]
+    public function testGenericMalformedExternalEntryCannotObtainAnEncryptionExemption(\PDF\Syntax\FileStructure\BasicType $file): void
+    {
+        $stream = new class ($file) extends StreamObject {
+            public function __construct(private readonly \PDF\Syntax\FileStructure\BasicType $file)
+            {
+                parent::__construct('INTERNAL-DATA');
+            }
+            public function dictionary(): DictionaryType
+            {
+                return parent::dictionary()->with(new Entry(new NameType('F'), $this->file));
+            }
+        };
+        $this->expectException(\InvalidArgumentException::class);
+        (new SerializationContext(new ObjectNumber(), $this->revision5Encryption()))->serializeIndirect($stream);
+    }
+
+    public function testGenericObsoleteExternalEntryNoLongerExemptsInternalStreamData(): void
+    {
+        $file = new F\FileSpecification(new LiteralString('file.bin'));
+        $stream = new class ($file) extends StreamObject {
+            public function __construct(private readonly F\FileSpecification $file)
+            {
+                parent::__construct('INTERNAL-DATA');
+            }
+            public function dictionary(): DictionaryType
+            {
+                return parent::dictionary()->with(new Entry(new NameType('F'), new IndirectReference($this->file)));
+            }
+        };
+        $identifier = new ObjectIdentifier(new ObjectNumber(1));
+        $context = new SerializationContext(new ObjectNumber(2), new RetiredObjectGeneration(new RevisionObject($identifier, $file)), $this->revision5Encryption());
+        self::assertStringNotContainsString('INTERNAL-DATA', $context->serializeIndirect($stream));
+    }
+
+    #[DataProvider('formats')]
+    public function testAFormerIndirectFileSpecificationUsedDirectlyKeepsItsOwnValues(CrossReferenceFormat $format): void
+    {
+        $original = new F\FileSpecification(new LiteralString('a.bin'));
+        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('PrivateSpec', new IndirectReference($original)));
+        $base = $this->file($catalog, format: $format)->toRevision();
+        $changed = new F\FileSpecification(new LiteralString('b.bin'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('file data')))));
+        $catalog = $catalog->with($this->entry('DirectSpec', $original));
+        $next = (new IncrementalUpdate($base, new FileBody(new IndirectObject($changed, $base->binding($original)->identifier), new IndirectObject($catalog, $base->root->identifier ?? throw new \LogicException('The root has an identifier.')))))->toRevision();
+        $direct = $next->binding($catalog)->dictionary?->get('DirectSpec');
+        self::assertInstanceOf(DictionaryType::class, $direct);
+        $name = $direct->get('F');
+        self::assertInstanceOf(LiteralString::class, $name);
+        self::assertSame('a.bin', $name->value);
+        self::assertFalse($direct->has('EF'));
+        self::assertTrue($next->binding($original)->dictionary?->has('EF'));
+    }
+
+    public function testDirectChildrenOfAFormerIndirectArrayAreStillValidatedAfterReplacement(): void
+    {
+        $probe = new class () extends DictionaryType implements \PDF\Document\DocumentGraphComponent {
+            public bool $valid = true;
+            public function entries(): iterable
+            {
+                yield new Entry(new NameType('Valid'), new BooleanType($this->valid));
+            }
+            public function validateGraph(DocumentGraphContext $graph): void
+            {
+                $valid = $graph->dictionary($this)?->get('Valid');
+                if (!$valid instanceof BooleanType || $valid->value !== true) {
+                    throw new \InvalidArgumentException('The actual direct array child is invalid.');
+                }
+            }
+        };
+        $original = new ArrayType($probe);
+        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('OriginalArray', new IndirectReference($original)));
+        $base = $this->file($catalog)->toRevision();
+        $probe->valid = false;
+        $catalog = $catalog->with($this->entry('DirectArray', $original));
+        $replacement = new ArrayType(new IndirectReference(new LiteralString('New indirect array child')));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('actual direct array child');
+        (new IncrementalUpdate($base, new FileBody(new IndirectObject($replacement, $base->binding($original)->identifier), new IndirectObject($catalog, $base->root->identifier ?? throw new \LogicException('The root has an identifier.')))))->toRevision();
     }
 
     private function schema(C\CollectionFieldType $type = C\CollectionFieldType::Number): C\CollectionSchema

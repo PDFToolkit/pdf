@@ -19,6 +19,7 @@ final class ExternalStreamObject extends StreamObject implements VersionedCompon
         if ($file instanceof IndirectReference && !$file->target() instanceof StringType && !$file->target() instanceof DictionaryType) {
             throw new \InvalidArgumentException('An external stream F reference must target a file specification.');
         }
+        (new \PDF\Document\Files\ExternalStreamsGraphValidation())->validateFile($file instanceof IndirectReference ? $file->target() : $file);
         parent::__construct($ignoredBytes, $dictionary);
     }
 

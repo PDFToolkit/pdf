@@ -50,6 +50,10 @@ final class SerializationContext
     private \SplObjectStorage $historical;
     /** @var array<int, ObjectIdentifier> */
     private array $reservedIdentifiers = [];
+    /** @var array<int, RevisionObject> */
+    private array $historicalObjects = [];
+    /** @var array<string, RevisionObject> Actual preceding values, including now-retired generations. */
+    private array $historicalGenerations = [];
     private readonly int $firstNewNumber;
     private readonly ?FileEncryption $encryption;
     private ?DocumentMetadataExemption $metadataExemption;
@@ -87,6 +91,7 @@ final class SerializationContext
                 continue;
             }
             if ($record instanceof RetiredObjectGeneration) {
+                $this->historicalGenerations[(string) $record->object->identifier] = $record->object;
                 foreach ($record->object->aliases as $alias) {
                     if ($this->identifiers->offsetExists($alias)) {
                         throw new \InvalidArgumentException('A retired alias cannot also belong to another current or retired generation.');
@@ -130,6 +135,8 @@ final class SerializationContext
                 throw new \InvalidArgumentException('Existing object numbers must be unique and precede the first new number.');
             }
             $this->reservedIdentifiers[$number] = $record->identifier;
+            $this->historicalObjects[$number] = $record;
+            $this->historicalGenerations[(string) $record->identifier] = $record;
             foreach ($record->aliases as $alias) {
                 if ($this->identifiers->offsetExists($alias)) {
                     throw new \InvalidArgumentException('Existing identities must have a single identifier.');
@@ -385,6 +392,41 @@ final class SerializationContext
         return $this->identifiers->offsetExists($object) ? $this->identifiers[$object] : null;
     }
 
+    /** Resolve a known generation without allocating unknown targets or reparsing historical builders. */
+    public function effectiveReferenceValue(IndirectReference $reference): BasicType
+    {
+        if ($this->knownIdentifier($reference->target()) === null) {
+            return $reference->target();
+        }
+        $identifier = $this->reference($reference);
+        $number = $identifier->objectNumber->value;
+        $staged = $this->objects[$number] ?? null;
+        if ($staged !== null) {
+            return (string) $this->knownIdentifier($staged) === (string) $identifier ? $staged : new NullType();
+        }
+        $historical = $this->historicalObjects[$number] ?? null;
+        return $historical !== null && (string) $historical->identifier === (string) $identifier ? $historical->snapshot : new NullType();
+    }
+
+    /** An unchanged emitted stream must not lose the declaration that made its retained bytes external. */
+    public function wasSerializedExternalStream(StreamObject $stream): bool
+    {
+        $identifier = $this->knownIdentifier($stream);
+        if ($identifier === null || isset($this->objects[$identifier->objectNumber->value])) {
+            return false; // Newly staged bytes use the current effective F, including null.
+        }
+        $record = $this->historicalGenerations[(string) $identifier] ?? null;
+        if (!$record?->snapshot instanceof RevisionStreamSnapshot) {
+            return false;
+        }
+        $file = $record->dictionary?->get('F');
+        if ($file instanceof IndirectReference) {
+            $previousIdentifier = $file->identifier;
+            $file = $previousIdentifier === null ? null : ($this->historicalGenerations[(string) $previousIdentifier]->snapshot ?? null);
+        }
+        return $file instanceof StringType || $file instanceof DictionaryType;
+    }
+
     /** Called by StreamObject with the actual final dictionary and same-call pre-encryption bytes. */
     public function recordStreamEmission(StreamObject $stream, DictionaryType $dictionary, string $encoded): void
     {
@@ -495,8 +537,7 @@ final class SerializationContext
     /** @return list<Filter> */
     public function streamFilters(StreamObject $stream): array
     {
-        $external = $stream->dictionary()->get('F');
-        if ($external !== null && !$external instanceof NullType) {
+        if ($this->hasExternalFile($stream)) {
             return $stream->filters;
         }
         if ($stream === $this->metadataExemption?->stream && (new StreamCryptFilter())->explicit($stream) === null) {
@@ -508,8 +549,7 @@ final class SerializationContext
     /** Stream encoders run before encryption; xref and excluded metadata bytes stay clear. */
     public function encryptStream(StreamObject $stream, string $bytes): string
     {
-        $external = $stream->dictionary()->get('F');
-        if ($external !== null && !$external instanceof NullType) {
+        if ($this->hasExternalFile($stream)) {
             return $bytes;
         }
         $explicit = (new StreamCryptFilter())->explicit($stream);
@@ -530,6 +570,16 @@ final class SerializationContext
         }
         $identifier = $this->containingIdentifier ?? $this->identifier($this->indirectValue ?? throw new \LogicException('An encrypted stream must belong to an indirect object.'));
         return $this->encryption?->encryptStream($bytes, $identifier, $stream) ?? $bytes;
+    }
+
+    private function hasExternalFile(StreamObject $stream): bool
+    {
+        $file = $stream->dictionary()->get('F');
+        $file = $file instanceof IndirectReference ? $this->effectiveReferenceValue($file) : $file;
+        if ($stream instanceof \PDF\Syntax\Object\ExternalStreamObject || ($file !== null && !$file instanceof NullType)) {
+            (new \PDF\Document\Files\ExternalStreamsGraphValidation())->validateFile($file);
+        }
+        return $file !== null && !$file instanceof NullType;
     }
 
     private function encrypting(): bool

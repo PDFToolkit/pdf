@@ -28,6 +28,15 @@ final class DocumentGraphContext
     private ?\SplObjectStorage $reachableValues = null;
     /** @var array<string, true> */
     private array $reachableIdentifiers = [];
+    private ?BasicType $directValue = null;
+
+    /** The same construction instance can be used directly and as an indirect historical alias. */
+    public function forDirectValue(BasicType $value): self
+    {
+        $projection = clone $this;
+        $projection->directValue = $value;
+        return $projection;
+    }
 
     public function __construct(private readonly SerializationContext $context, DictionaryType $catalog, RevisionObject ...$effective)
     {
@@ -47,6 +56,9 @@ final class DocumentGraphContext
     public function identifier(BasicType $value): ?ObjectIdentifier
     {
         if (!$value instanceof IndirectReference) {
+            if ($value === $this->directValue) {
+                return null;
+            }
             return $this->context->knownIdentifier($value);
         }
         if ($this->context->knownIdentifier($value->target()) === null) {
@@ -105,6 +117,9 @@ final class DocumentGraphContext
 
     public function isCurrent(BasicType $value): bool
     {
+        if ($value === $this->directValue) {
+            return true;
+        }
         if (!$this->context->isHistorical($value)) {
             return true;
         }

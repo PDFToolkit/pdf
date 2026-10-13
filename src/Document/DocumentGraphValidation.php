@@ -61,14 +61,24 @@ final class DocumentGraphValidation
         foreach ($this->effective as $record) {
             $pending[] = [$record->value, true];
         }
-        $seen = new \SplObjectStorage();
+        $seenIndirect = new \SplObjectStorage();
+        $seenDirect = new \SplObjectStorage();
         while ($pending !== []) {
             [$value, $indirect] = array_pop($pending);
             if ($value instanceof IndirectReference) {
                 $pending[] = [$this->resolve($value), true];
                 continue;
             }
-            $dictionary = $this->dictionary($value);
+            $seen = $indirect ? $seenIndirect : $seenDirect;
+            if ($seen->offsetExists($value)) {
+                continue;
+            }
+            $seen->offsetSet($value);
+            $projection = $indirect ? $graph : $graph->forDirectValue($value);
+            $dictionary = $indirect ? $this->dictionary($value) : $projection->dictionary($value);
+            if ($value instanceof StreamObject && $dictionary !== null) {
+                (new \PDF\Document\Files\ExternalStreamsGraphValidation())->validate($dictionary, $projection, $value instanceof \PDF\Syntax\Object\ExternalStreamObject, $indirect && $this->context->wasSerializedExternalStream($value));
+            }
             $type = $dictionary?->get('Type');
             if ($dictionary !== null && $type instanceof NameType && $type->value === 'Filespec') {
                 (new \PDF\Document\Files\FileSpecificationRules())->validate($dictionary, $graph);
@@ -87,20 +97,16 @@ final class DocumentGraphValidation
                 && ($graph->entry($dictionary, 'EF') !== null || $graph->entry($dictionary, 'RF') !== null) && !$indirect) {
                 throw new \InvalidArgumentException('A file specification containing EF or RF must be indirectly referenced.');
             }
-            if ($seen->offsetExists($value)) {
-                continue;
-            }
-            $seen->offsetSet($value);
             if ($value instanceof FontDescriptor && $value->subset !== null && $value->fontFile !== null) {
                 $this->subsets->register($value->subset, $value->fontFile);
             }
-            if ($value instanceof CatalogComponent && $this->isCurrent($value)) {
+            if ($value instanceof CatalogComponent && (!$indirect || $this->isCurrent($value))) {
                 $value->validateCatalog($this->catalog);
             }
             if ($value instanceof DocumentGraphComponent) {
-                $value->validateGraph($graph);
+                $value->validateGraph($projection);
             }
-            if ($value instanceof VersionedComponent && $this->isCurrent($value)) {
+            if ($value instanceof VersionedComponent && (!$indirect || $this->isCurrent($value))) {
                 $value->validateVersion($version);
             }
             if ($dictionary !== null) {
@@ -131,7 +137,7 @@ final class DocumentGraphValidation
                     $pending[] = [$entry->value, false];
                 }
             } elseif ($value instanceof ArrayType) {
-                $array = $this->context->isHistorical($value)
+                $array = $indirect && $this->context->isHistorical($value)
                     ? ($this->effective[$this->context->identifier($value)->objectNumber->value]->snapshot ?? $value) : $value;
                 if ($array instanceof ArrayType) {
                     array_push($pending, ...array_map(static fn (BasicType $item): array => [$item, false], $array->items));
