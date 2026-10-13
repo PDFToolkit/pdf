@@ -4,7 +4,7 @@ Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/p
 
 ## Sources et génération
 
-Les guides et tutoriels restent dans les fichiers Markdown du dépôt. `tools/export_api.php` découvre les classes, interfaces, enums et traits de `src/` et exporte leurs signatures, propriétés, constantes et liens vers le code. L'exporteur lit les expressions des paramètres par défaut dans le source sans instancier les objets qu'elles décrivent.
+Les guides et tutoriels restent dans les fichiers Markdown du dépôt. `tools/export_api.php` découvre les classes, interfaces, enums et traits de `src/` et des trois modules optionnels installés pour le développement. Il utilise `Composer\InstalledVersions` pour leurs chemins et `composer.lock` pour leurs commits de source, puis exporte signatures, propriétés, constantes et provenance par package. L'exporteur lit les expressions des paramètres par défaut dans le source sans instancier les objets qu'elles décrivent.
 
 `tools/build_site.py` assemble ces données et les métadonnées de `resources/iso32000-1/` pour créer une fiche par composant, les index par famille et la recherche. Les définitions de la norme conservent leurs contraintes, leur tableau et leur page de référence. Une définition de dictionnaire ne remplace pas l'implémentation d'un moteur de chiffrement, de signature ou de police ; voir le guide de couverture.
 
@@ -17,7 +17,7 @@ PHP 8.3 ou supérieur, Composer, Python 3.13 et Poppler (`pdftoppm`) sont néces
 Depuis la racine du dépôt, dans un shell POSIX :
 
 ```sh
-composer install --no-dev --no-interaction --prefer-dist
+composer install --no-interaction --prefer-dist
 python -m pip install --require-hashes -r tools/site-requirements.txt
 mkdir -p _build/pdfs _build/pdf-pages
 php tools/export_api.php _build/api.json
@@ -53,7 +53,7 @@ python -m http.server 8000 --directory _site
 
 Ouvrir [localhost:8000](http://localhost:8000/) pour vérifier la navigation, la recherche, le menu mobile, les aperçus et les téléchargements. Les images de chaque page sont rendues depuis le PDF avec Poppler et se consultent dans tous les navigateurs. Un lecteur PDF natif est également proposé dans une section dépliable ; son fonctionnement dépend du navigateur. Le bouton d'ouverture et le téléchargement restent disponibles sur chaque exemple.
 
-`tools/check_site.py` vérifie l'inventaire des pages, les fichiers liés, les ancres, l'unicité des identifiants, la présence d'un titre principal, l'index de recherche et les couples PDF/source. Les références au code utilisent le commit fourni par `--revision`.
+`tools/check_site.py` vérifie l'inventaire des pages, les fichiers liés, les ancres, l'unicité des identifiants, la présence d'un titre principal, l'index de recherche, la couverture des packages et les couples PDF/source. Les références au code du core utilisent le commit fourni par `--revision` ; celles des modules utilisent leur propre commit fixé dans `composer.lock`. Les modules ne sont installés que pour les exemples et la documentation, sans dépendance de production du core.
 
 Le workflow qualité vérifie le projet et ses PDF d’exemple sous PHP 8.3, 8.4 et 8.5. Les deux workflows installent aussi le lecteur indépendant verrouillé dans `tools/validation-requirements.txt`. `tools/validate_mechanisms.py` contrôle l'extraction Unicode, les tables du programme de fonte incorporé, les échantillons JPEG/PNG et leur alpha, ainsi que chacune des trois révisions du nouvel exemple. Pour exécuter ces contrôles localement :
 

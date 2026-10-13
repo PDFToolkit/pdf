@@ -4,7 +4,7 @@ Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.3 ou su
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
-Le projet fait partie de l'organisation [PDFToolkit](https://github.com/PDFToolkit). Ce dépôt fournit le socle objet PDF. Le lecteur de PDF externes est prévu dans un dépôt distinct, [PDFToolkit/pdf-reader](https://github.com/PDFToolkit/pdf-reader), avec une dépendance du lecteur vers ce socle. Générer un PDF ne nécessitera pas d'installer le lecteur.
+Le projet fait partie de l'organisation [PDFToolkit](https://github.com/PDFToolkit). Ce dépôt est le **core** : il contient les objets et mécanismes décrits par la norme Adobe/ISO, dont l'écriture. La lecture de PDF externes, la conversion des fichiers PNG/JPEG et l'analyse des fontes TrueType appartiennent à trois packages optionnels. Chaque module dépend du core ; installer le core pour générer un PDF n'installe aucun de ces modules.
 
 La [documentation en ligne](https://pdftoolkit.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
 
@@ -30,6 +30,24 @@ composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
 composer require roukmoute/pdf:^0.1
 ```
 
+## Modules optionnels
+
+| Package | Responsabilité |
+| --- | --- |
+| [`pdftoolkit/pdf-reader`](https://github.com/PDFToolkit/pdf-reader) | Lire les objets, références, révisions et flux d'un PDF externe. |
+| [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
+| [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
+
+Les modules sont actuellement disponibles sur leur branche `master`. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur, puis demander explicitement leurs versions de développement. Par exemple, pour importer des fichiers image :
+
+```sh
+composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
+composer config repositories.pdf-images vcs https://github.com/PDFToolkit/pdf-images
+composer require roukmoute/pdf:dev-master pdftoolkit/pdf-images:dev-master
+```
+
+Le [guide des packages](docs/packages.md) explique la frontière du core, les installations et le fonctionnement du lecteur. Le `composer.lock` de l'application fixe les commits utilisés.
+
 ## Développement et vérifications
 
 Depuis un clone du dépôt :
@@ -41,7 +59,7 @@ php examples/hello-world.php hello-world.pdf
 php examples/object-stream.php object-stream.pdf
 ```
 
-Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan et PHP-CS-Fixer sont des dépendances de développement verrouillées dans `composer.lock`. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
+Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 ## Construction objet par objet
 
@@ -113,9 +131,9 @@ Les implémentations exécutables couvrent les objets fondamentaux, l'écriture 
 
 **La présence d'une définition n'est pas une déclaration de conformité complète.** Le catalogue valide les types, références exigées, exigences inconditionnelles et certaines formes de valeurs. Les conditions, relations entre dictionnaires et règles de version qui ne disposent pas encore d'une validation spécialisée restent dans leurs définitions et dans le document de couverture.
 
-L'incorporation de TrueType statique, l'encodage Unicode via CID et ToUnicode, l'import JPEG/PNG et les révisions incrémentales de fichiers générés disposent de mécanismes dédiés et de tutoriels. Les limites détaillées figurent dans [la couverture](docs/specification.md). Les moteurs de chiffrement et de signature, le sous-ensemble de polices, les scripts complexes, les codecs d'image supplémentaires, l'import de PDF externes et la linéarisation restent à implémenter. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les traitements de sécurité qu'il ne sait pas exécuter.
+Le core compose les objets de polices CID, les correspondances Unicode, les images, leurs masques et les révisions incrémentales de fichiers générés. Les modules optionnels fournissent l'analyse TrueType, la conversion JPEG/PNG et la lecture de PDF externes. Les limites de chaque mécanisme figurent dans [la couverture](docs/specification.md). Les moteurs de chiffrement et de signature, le sous-ensemble de polices, les scripts complexes, l'import d'un graphe externe vers le writer et la linéarisation restent à implémenter. `EncodedData` permet de déclarer explicitement des octets déjà encodés. Le writer refuse les traitements de sécurité qu'il ne sait pas exécuter.
 
-Le writer assemble actuellement le fichier en mémoire. Un lecteur PDF, un moteur de rendu et une API de mise en page ne font pas partie de cette bibliothèque de création.
+Le writer assemble actuellement le fichier en mémoire. Le lecteur est fourni par `pdftoolkit/pdf-reader`. Un moteur de rendu et une API de mise en page ne font pas partie du core.
 
 ## Sécurité
 

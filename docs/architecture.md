@@ -8,6 +8,12 @@ Les arguments scalaires sont limités aux feuilles : une valeur numérique, une 
 
 Chaque classe porte une responsabilité propre au modèle PDF. Les noms et les abstractions suivent la norme ; l'API peut évoluer pour respecter ce modèle. Les raccourcis de composition et les fonctions de mise en page appartiennent aux futures bibliothèques de confort.
 
+## Frontière des packages
+
+Le core `roukmoute/pdf` contient les objets et les mécanismes PDF décrits par la référence Adobe/ISO. `pdftoolkit/pdf-reader`, `pdftoolkit/pdf-images` et `pdftoolkit/pdf-fonts` sont des modules optionnels séparés. Ils dépendent du core, qui ne dépend d'aucun d'eux. Leurs parseurs ne sont pas chargés par une application qui installe seulement le core.
+
+Les noms, valeurs, références et structures sont partagés par composition. Le core définit notamment les échantillons et flux image, le programme incorporé `/FontFile2`, les métriques, les fontes CID et les CMaps PDF. L'inspection d'un JPEG, le décodage PNG et l'analyse des tables TrueType sont des traitements de formats externes dans leurs modules. Le [guide des packages](packages.md) détaille ces frontières et les installations.
+
 ## Définition et instance
 
 `PDF\Specification` sépare une définition de norme et un objet PDF. `SourceReference`, `Requirement`, `ObjectTypeConstraint`, `EntryDefinition` et `TableDefinition` sont des valeurs immuables. Les définitions générées sont construites par des instances, sans lecture JSON à l'exécution ni registre global.
@@ -46,9 +52,11 @@ Le modèle requiert PHP 8.3 ou supérieur, avec des constantes typées, des clas
 
 Une bibliothèque de confort peut transformer ses propres objets de mise en page en ce modèle. Une nouvelle entrée normalisée peut recevoir un type spécialisé et sa validation, en conservant la définition et sa source. Un nouveau filtre doit réaliser l'encodage qu'il déclare ; un nom de filtre ou une définition de dictionnaire ne suffit pas à revendiquer un codec.
 
-Les polices TrueType se composent d'un programme, de tables et métriques, d'une correspondance caractère/CID, d'un programme CIDFont incorporable, d'un descripteur, d'une fonte CID et d'une fonte Type0. L'encodage du texte et ToUnicode restent des objets séparés. Le programme fournit des octets ; il ne sélectionne pas une police système et ne compose pas les scripts complexes.
+Dans `pdftoolkit/pdf-fonts`, les polices TrueType se composent d'un programme, de tables et métriques, d'une correspondance caractère/CID et d'un programme CIDFont incorporable. Ces données alimentent les objets du core : FontFile2, descripteur, fonte CID, fonte Type0, métriques et ToUnicode. L'encodage du texte reste un service distinct. Le module fournit des octets ; il ne sélectionne pas une police système et ne compose pas les scripts complexes.
 
-Les lecteurs d'images reçoivent un `ImageFileBytes`. Le PNG devient des échantillons couleur et éventuellement alpha ; le JPEG conserve des données DCT inspectées. `ImageXObjectFactory` compose leurs dictionnaires et leurs flux. Les noms de ressources et matrices de peinture restent explicites. Les limites de lecture sont fournies par un `ImageImportLimits`.
+Dans `pdftoolkit/pdf-images`, les lecteurs d'images reçoivent un `ImageFileBytes`. Le PNG devient des échantillons couleur et éventuellement alpha ; le JPEG devient un `DCTImage` du core avec ses octets encodés et sa transformation de couleur. `ImageXObjectFactory`, dans le core, compose leurs dictionnaires et leurs flux sans connaître le fichier d'origine. Les noms de ressources et matrices de peinture restent explicites. Les limites de lecture sont fournies par un `ImageImportLimits` du module.
+
+Dans `pdftoolkit/pdf-reader`, `DocumentReader` lit un `FileBytes` avec des budgets `ReaderLimits`. Un `ReadDocument` possède ses références, son index xref et son cache ; l'application appelle explicitement `resolve()` et `streamData()`. Les valeurs PDF réutilisent les primitives du core. Les références et flux externes ne se sérialisent pas dans un nouveau document sans import et remappage, mécanismes encore distincts de la lecture.
 
 `FileRevision` fige les octets et les liaisons d'identité d'un document. `RevisionObject` conserve ses alias historiques et une copie des entrées de son dictionnaire, pour ne pas reparcourir un builder mutable après écriture. `IncrementalUpdate` sélectionne les changements dans un `FileBody` ; `IncrementalWriter` ajoute les nouveaux octets, hérite le trailer et relie les sections xref. Une référence historique ne déclenche pas de nouvelle sérialisation. Les conteneurs structuraux anciens sont conservés et les membres compressés remplacés utilisent un nouveau conteneur ou un objet autonome.
 

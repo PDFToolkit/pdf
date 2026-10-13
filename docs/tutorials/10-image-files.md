@@ -4,9 +4,15 @@ Le [tutoriel sur les images](06-images.md) construit directement des pixels.
 Celui-ci part de fichiers encodés : il sépare leur import de leur représentation
 PDF, puis de leur placement. L'API décrite ici suit `master`.
 
+La lecture de ces fichiers appartient au module optionnel
+[`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images). Les
+échantillons, les images DCT et les flux XObject appartiennent au core.
+`composer install` dans ce checkout installe le module pour les exemples ;
+une application doit le [demander explicitement](../packages.md).
+
 - **Exemple complet :** [image-files.php](../../examples/image-files.php).
 - **Résultat :** quatre images sur une page Letter, avec un damier révélant la transparence.
-- **Données :** [motifs synthétiques MIT](../../examples/assets/images/README.md), créés pour ce dépôt.
+- **Données :** [motifs synthétiques MIT](https://github.com/PDFToolkit/pdf-images/blob/master/examples/assets/images/README.md), distribués avec le module dans `vendor/pdftoolkit/pdf-images/examples/assets/images/`.
 - **Prérequis :** [premier document](01-first-document.md), [dessin](03-graphics.md) et [images](06-images.md).
 
 ## 1. Donner des octets, sans déléguer l'accès au fichier
@@ -18,10 +24,10 @@ lecture, puis construit cet objet. Une application web décide elle-même commen
 authentifier et limiter un téléversement avant d'en fournir les octets.
 
 ```php
-use PDF\Document\Images\ImageFileBytes;
-use PDF\Document\Images\ImageImportLimits;
-use PDF\Document\Images\JpegImageReader;
-use PDF\Document\Images\PngImageDecoder;
+use PDF\Images\ImageFileBytes;
+use PDF\Images\ImageImportLimits;
+use PDF\Images\JpegImageReader;
+use PDF\Images\PngImageDecoder;
 
 $limits = new ImageImportLimits(maxEncodedBytes: 1_048_576, maxPixels: 262_144);
 $jpeg = (new JpegImageReader($limits))->read(new ImageFileBytes($jpegBytes));
@@ -43,7 +49,7 @@ DCT Huffman 8 bits de base et progressif. Il ne décode pas les coefficients DCT
 et ne prétend pas vérifier chaque bit du codage entropique : cette étape appartient
 au lecteur PDF. Le fichier encodé reste exactement le même.
 
-`JpegImage` expose les dimensions, le `SampleLayout`, la transformation de couleur
+Le résultat `DCTImage` du core expose les dimensions, le `SampleLayout`, la transformation de couleur
 et les octets. Une image en niveaux de gris utilise `/DeviceGray`. Le JPEG RGB
 utilise `/DeviceRGB` et un `/ColorTransform` explicite : YCbCr pour JFIF, ou la
 valeur du marqueur Adobe. Sans marqueur, seuls les identifiants de composants
@@ -93,6 +99,10 @@ Le service compose un `StreamObject` avec les objets d'entrée de la table 89 :
 `/Type /XObject`, `/Subtype /Image`, dimensions, espace de couleur et profondeur.
 Le JPEG utilise `EncodedData(DCTDecode)` ; les échantillons PNG sont compressés
 avec `FlateDecode`. On peut injecter un autre niveau de compression Flate par objet.
+
+`ImageXObjectFactory` est un composant du core. Il reçoit des `DCTImage` ou
+`SampledImage` explicites ; il ne parse aucun fichier PNG ou JPEG. Une autre
+bibliothèque ou l'application peut construire ces objets sans installer le module.
 
 L'alpha devient un autre flux image, huit bits et `/DeviceGray`. Une
 `IndirectReference` sous `/SMask` le relie à l'image principale. Le writer le

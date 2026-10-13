@@ -2,6 +2,14 @@
 
 Cette revue documente les contrôles de sécurité effectués sur le générateur PHP et ses dépendances verrouillées : revue de code, tests de régression, audit des dépendances et validation des PDF par des lecteurs indépendants. Elle couvre la sérialisation des valeurs PDF, les images inline, les ressources binaires, les graphes, les limites numériques et l'écriture des fichiers. Les résultats ci-dessous correspondent aux surfaces et scénarios vérifiés ; ils ne constituent pas une garantie d'absence de toute vulnérabilité.
 
+Les contrôles des convertisseurs TrueType et PNG/JPEG sont maintenant maintenus
+dans les modules optionnels [pdf-fonts](https://github.com/PDFToolkit/pdf-fonts)
+et [pdf-images](https://github.com/PDFToolkit/pdf-images). Les objets PDF et leurs
+invariants restent dans le core. Le module
+[pdf-reader](https://github.com/PDFToolkit/pdf-reader) a sa propre
+[documentation de sécurité](https://github.com/PDFToolkit/pdf-reader/blob/master/docs/security.md)
+pour la lecture de fichiers externes ; cette revue du générateur ne s'y substitue pas.
+
 ## Résultats et protections
 
 | Surface | Résultat de la revue |
@@ -10,8 +18,8 @@ Cette revue documente les contrôles de sécurité effectués sur le générateu
 | Flux PDF | `/Length` calculée sur les octets encodés. Les marqueurs `endstream` présents dans les données ne modifient pas cette longueur. Les entrées externes `/F`, `/FFilter` et `/FDecodeParms` sont refusées par `StreamObject`. |
 | Images inline | Correction d'une ambiguïté `EI` : un lecteur tolérant peut reconnaître le terminateur sans blanc avant lui. Les octets pourraient alors être lus comme opérateurs de contenu. Ces séquences sont désormais refusées ; un XObject image fournit une représentation séparée avec longueur explicite. |
 | Dimensions d'image | Calcul entier contrôlé des octets par ligne et du total. Un débordement est refusé au lieu de passer par un flottant puis une longueur incorrecte. |
-| Import PNG/JPEG | Octets fournis explicitement, sans chargement de chemin/URL. Limites sur les octets, pixels, dimensions et segments ; PNG CRC/ordre/filtres/zlib borné ; JPEG marqueurs, tables et couleurs inspectés. Les coefficients JPEG sont décodés par le lecteur PDF. |
-| Programme TrueType | Validation des données binaires fournies explicitement : tables, offsets, métriques, cmap et glyphes contrôlés ; cycles et profondeur des glyphes composés bornés. CFF, fontes variables et collections non prises en charge sont refusées. |
+| Import PNG/JPEG — module pdf-images | Octets fournis explicitement, sans chargement de chemin/URL. Limites sur les octets, pixels, dimensions et segments ; PNG CRC/ordre/filtres/zlib borné ; JPEG marqueurs, tables et couleurs inspectés. Les coefficients JPEG sont décodés par le lecteur PDF. |
+| Programme TrueType — module pdf-fonts | Validation des données binaires fournies explicitement : tables, offsets, métriques, cmap et glyphes contrôlés ; cycles et profondeur des glyphes composés bornés. CFF, fontes variables et collections non prises en charge sont refusées. |
 | Opérandes partagés | La validation visite chaque identité une seule fois, avec un ensemble distinct pour les ancêtres actifs. Elle conserve le refus des cycles sans revisiter exponentiellement un sous-graphe partagé. |
 | Références croisées | Les trous initiaux reçoivent des enregistrements libres conformément à la norme. La capacité cumulée est bornée avant leur allocation par `CrossReferenceLimits`. Les sections incrémentales restent partielles ; les additions pour `/Size` et le numéro du flux xref sont contrôlées. |
 | Révisions | Réservations des anciens numéros, conservation des générations et des alias ; remplacement de conteneurs structuraux refusé même à travers un nouveau flux d'objets. Les métadonnées du catalogue et de l'arbre de pages sont contrôlées sur les valeurs effectives. Les anciens octets demeurent dans le fichier : une update ne permet pas d'effacer un secret. |
@@ -26,7 +34,7 @@ Le rejet explicite des stream URIs est un durcissement du contrat de `writeTo()`
 
 Un PDF peut représenter une action JavaScript, une action de lancement ou une URI. La bibliothèque ne les exécute pas côté PHP et conserve ces définitions parce qu'elles appartiennent au format. Un lecteur peut ensuite les interpréter. Une application recevant des choix d'utilisateurs doit autoriser les types d'actions et les destinations, plutôt que d'accepter librement un graphe ou des entrées arbitraires.
 
-`EncodedData` transmet des octets déjà encodés. Il n'analyse ni ne décompresse un fichier PNG, JPEG ou PDF entrant. Les nouveaux `PngImageDecoder` et `JpegImageReader` effectuent leurs validations dédiées et reçoivent des limites explicites ; ils ne remplacent pas les quotas ni les contrôles d'accès d'un service d'upload. Les programmes de police sont également des données binaires. Les moteurs de hinting et le décodage DCT restent exécutés par le lecteur qui ouvre le document.
+`EncodedData` transmet des octets déjà encodés. Il n'analyse ni ne décompresse un fichier PNG, JPEG ou PDF entrant. Les `PngImageDecoder` et `JpegImageReader` du module `pdftoolkit/pdf-images` effectuent leurs validations dédiées et reçoivent des limites explicites ; ils ne remplacent pas les quotas ni les contrôles d'accès d'un service d'upload. Le `DCTImage` du core accepte une représentation DCT déclarée explicitement sans inspecter ses marqueurs. Les programmes de police sont également des données binaires ; leur analyse appartient à `pdftoolkit/pdf-fonts`. Les moteurs de hinting et le décodage DCT restent exécutés par le lecteur qui ouvre le document.
 
 ## Écrire ou servir un document
 
@@ -48,7 +56,7 @@ Le nom de téléchargement est ici fixe. Des données de requête ne doivent pas
 
 Les contrôles numériques évitent les débordements identifiés ; la validation des opérandes évite les revisites inutiles. Ils ne remplacent pas les quotas du service. Un graphe direct partagé peut représenter une très grande sortie lorsqu'il est développé en syntaxe PDF. Une chaîne de filtres peut aussi augmenter fortement le nombre d'octets. Une limite sur la taille des données d'entrée seule ne borne donc pas toute la sérialisation.
 
-Les tests [SecuritySerializationTest](../tests/SecuritySerializationTest.php), [SecurityLimitsTest](../tests/SecurityLimitsTest.php) et [FileOutputTest](../tests/FileOutputTest.php) couvrent les charges d'injection, les 256 valeurs d'octet, les terminateurs inline, les bornes numériques, les graphes partagés et les sorties. [ImageImportTest](../tests/ImageImportTest.php), [CrossReferenceSectionTest](../tests/CrossReferenceSectionTest.php) et [IncrementalUpdateTest](../tests/IncrementalUpdateTest.php) couvrent les nouvelles frontières. Des lectures indépendantes avec pypdf ont confirmé les vecteurs binaires et la reproduction de l'ambiguïté inline. qpdf contrôle tous les exemples en CI.
+Les tests [SecuritySerializationTest](../tests/SecuritySerializationTest.php), [SecurityLimitsTest](../tests/SecurityLimitsTest.php) et [FileOutputTest](../tests/FileOutputTest.php) couvrent les charges d'injection, les 256 valeurs d'octet, les terminateurs inline, les bornes numériques, les graphes partagés et les sorties. [ImageObjectsTest](../tests/ImageObjectsTest.php), [CrossReferenceSectionTest](../tests/CrossReferenceSectionTest.php) et [IncrementalUpdateTest](../tests/IncrementalUpdateTest.php) couvrent les invariants PDF du core. Les régressions de décodage des images sont dans [ImageImportTest du module](https://github.com/PDFToolkit/pdf-images/blob/master/tests/ImageImportTest.php). Les validations TrueType restent dans [les tests du module de fontes](https://github.com/PDFToolkit/pdf-fonts/tree/master/tests). Des lectures indépendantes avec pypdf ont confirmé les vecteurs binaires et la reproduction de l'ambiguïté inline. qpdf contrôle tous les exemples en CI.
 
 Cette revue n'est pas un audit des lecteurs PDF, de PHP, du serveur HTTP ou d'une future bibliothèque de mise en page. Les fichiers de définition générés expriment les contraintes de la norme ; ils ne forment pas une politique générale d'assainissement des documents.
 

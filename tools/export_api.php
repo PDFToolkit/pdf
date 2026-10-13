@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace PDF\Tools\Documentation;
 
+use Composer\InstalledVersions;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionEnum;
@@ -220,14 +221,11 @@ function parameterRecord(ReflectionParameter $parameter, array $defaults): array
 }
 
 /** @return array<string, mixed> */
-function methodRecord(ReflectionMethod $method): array
+function methodRecord(ReflectionMethod $method, array $packages): array
 {
     $defaults = parameterDefaults($method);
     $file = $method->getFileName();
-    $root = dirname(__DIR__);
-    $source = $file !== false && str_starts_with($file, $root . DIRECTORY_SEPARATOR)
-        ? str_replace('\\', '/', substr($file, strlen($root) + 1))
-        : null;
+    $location = $file === false ? [] : sourceLocation($file, $packages);
     return [
         'name' => $method->getName(),
         'visibility' => visibility($method),
@@ -238,7 +236,7 @@ function methodRecord(ReflectionMethod $method): array
         'parameters' => array_map(static fn (ReflectionParameter $parameter): array => parameterRecord($parameter, $defaults), $method->getParameters()),
         'description' => description($method->getDocComment()),
         'declaringClass' => $method->getDeclaringClass()->getName(),
-        'source' => $source,
+        ...$location,
         'line' => $method->getStartLine() ?: null,
     ];
 }
@@ -274,7 +272,7 @@ function constantRecord(ReflectionClassConstant $constant): array
  * @param ReflectionClass<object> $reflection
  * @return array<string, mixed>
  */
-function componentRecord(ReflectionClass $reflection, string $root): array
+function componentRecord(ReflectionClass $reflection, array $packages): array
 {
     $methods = [];
     $inheritedMethods = [];
@@ -283,9 +281,9 @@ function componentRecord(ReflectionClass $reflection, string $root): array
             continue;
         }
         if ($method->getDeclaringClass()->getName() === $reflection->getName()) {
-            $methods[] = methodRecord($method);
+            $methods[] = methodRecord($method, $packages);
         } else {
-            $inheritedMethods[] = methodRecord($method);
+            $inheritedMethods[] = methodRecord($method, $packages);
         }
     }
     $sort = static fn (array $left, array $right): int => strcmp($left['name'], $right['name']);
@@ -313,9 +311,10 @@ function componentRecord(ReflectionClass $reflection, string $root): array
     sort($interfaces);
     sort($traits);
     $file = $reflection->getFileName();
-    if ($file === false || !str_starts_with($file, $root . DIRECTORY_SEPARATOR)) {
-        throw new \RuntimeException('An API declaration is outside the project source tree.');
+    if ($file === false) {
+        throw new \RuntimeException('An API declaration has no source file.');
     }
+    $location = sourceLocation($file, $packages);
     return [
         'name' => $reflection->getName(),
         'shortName' => $reflection->getShortName(),
@@ -324,19 +323,83 @@ function componentRecord(ReflectionClass $reflection, string $root): array
         'abstract' => $reflection->isAbstract(),
         'final' => $reflection->isFinal(),
         'readonly' => $reflection->isReadOnly(),
-        'source' => str_replace('\\', '/', substr($file, strlen($root) + 1)),
+        ...$location,
         'line' => $reflection->getStartLine() ?: null,
         'description' => description($reflection->getDocComment()),
         'parent' => ($parent = $reflection->getParentClass()) === false ? null : $parent->getName(),
         'interfaces' => $interfaces,
         'traits' => $traits,
-        'constructor' => ($constructor = $reflection->getConstructor()) === null ? null : methodRecord($constructor),
+        'constructor' => ($constructor = $reflection->getConstructor()) === null ? null : methodRecord($constructor, $packages),
         'methods' => $methods,
         'inheritedMethods' => $inheritedMethods,
         'properties' => $properties,
         'constants' => $constants,
         'cases' => $cases,
     ];
+}
+
+/** @return array<string, array{root: string, repository: string, revision: ?string, optional: bool}> */
+function documentationPackages(string $root): array
+{
+    $root = realpath($root) ?: throw new \RuntimeException('Cannot resolve the core source tree.');
+    $packages = [
+        'roukmoute/pdf' => ['root' => $root, 'repository' => 'https://github.com/PDFToolkit/pdf', 'revision' => null, 'optional' => false],
+    ];
+    $lockBytes = file_get_contents($root . '/composer.lock');
+    if ($lockBytes === false) {
+        throw new \RuntimeException('Cannot read the locked documentation dependencies.');
+    }
+    $lock = json_decode($lockBytes, true, flags: JSON_THROW_ON_ERROR);
+    $lockedPackages = [];
+    foreach ([...$lock['packages'], ...$lock['packages-dev']] as $package) {
+        $lockedPackages[$package['name']] = $package;
+    }
+    foreach (['pdf-fonts', 'pdf-images', 'pdf-reader'] as $module) {
+        $name = 'pdftoolkit/' . $module;
+        if (!InstalledVersions::isInstalled($name)) {
+            continue;
+        }
+        $path = InstalledVersions::getInstallPath($name);
+        $path = $path === null ? false : realpath($path);
+        $reference = $lockedPackages[$name]['source']['reference']
+            ?? $lockedPackages[$name]['dist']['reference']
+            ?? InstalledVersions::getReference($name);
+        if ($path === false || !is_string($reference) || preg_match('/^[0-9a-f]{40}$/D', $reference) !== 1) {
+            throw new \RuntimeException('An optional API package needs an installed source tree and a locked commit: ' . $name);
+        }
+        if (InstalledVersions::getReference($name) !== $reference) {
+            throw new \RuntimeException('An optional API package differs from the lock; run composer install: ' . $name);
+        }
+        $packages[$name] = [
+            'root' => $path,
+            'repository' => 'https://github.com/PDFToolkit/' . $module,
+            'revision' => $reference,
+            'optional' => true,
+        ];
+    }
+    return $packages;
+}
+
+/**
+ * @param array<string, array{root: string, repository: string, revision: ?string, optional: bool}> $packages
+ * @return array{package: string, repository: string, revision: ?string, optional: bool, source: string}
+ */
+function sourceLocation(string $file, array $packages): array
+{
+    $file = realpath($file) ?: throw new \RuntimeException('Cannot resolve an API source file.');
+    // Installed modules may live inside the core vendor directory.
+    foreach (array_reverse($packages, true) as $name => $package) {
+        if (str_starts_with($file, $package['root'] . DIRECTORY_SEPARATOR)) {
+            return [
+                'package' => $name,
+                'repository' => $package['repository'],
+                'revision' => $package['revision'],
+                'optional' => $package['optional'],
+                'source' => str_replace('\\', '/', substr($file, strlen($package['root']) + 1)),
+            ];
+        }
+    }
+    throw new \RuntimeException('An API declaration is outside the documented source trees.');
 }
 
 $arguments = $_SERVER['argv'] ?? [];
@@ -347,22 +410,37 @@ if (!is_array($arguments) || count($arguments) !== 2 || !isset($arguments[1]) ||
 
 try {
     $root = dirname(__DIR__);
-    $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root . '/src', \FilesystemIterator::SKIP_DOTS));
+    $packages = documentationPackages($root);
     $files = [];
-    foreach ($iterator as $file) {
-        if ($file instanceof \SplFileInfo && $file->isFile() && $file->getExtension() === 'php') {
-            $files[] = $file->getPathname();
+    foreach ($packages as $package) {
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($package['root'] . '/src', \FilesystemIterator::SKIP_DOTS));
+        foreach ($iterator as $file) {
+            if ($file instanceof \SplFileInfo && $file->isFile() && $file->getExtension() === 'php') {
+                $files[] = $file->getPathname();
+            }
         }
     }
     sort($files);
     $components = [];
+    $seen = [];
     foreach ($files as $file) {
         foreach (declarations($file) as $name) {
-            $components[] = componentRecord(new ReflectionClass($name), $root);
+            $key = strtolower($name);
+            $reflection = new ReflectionClass($name);
+            if (isset($seen[$key]) || realpath($reflection->getFileName() ?: '') !== realpath($file)) {
+                throw new \RuntimeException('Duplicate or mismatched API declaration: ' . $name);
+            }
+            $seen[$key] = true;
+            $components[] = componentRecord($reflection, $packages);
         }
     }
     usort($components, static fn (array $left, array $right): int => strcmp($left['name'], $right['name']));
-    $json = json_encode(['components' => $components], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+    $metadata = [];
+    foreach ($packages as $name => $package) {
+        unset($package['root']);
+        $metadata[] = ['name' => $name, ...$package];
+    }
+    $json = json_encode(['packages' => $metadata, 'components' => $components], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     if (file_put_contents($arguments[1], $json . "\n") === false) {
         throw new \RuntimeException('Cannot write the API inventory.');
     }

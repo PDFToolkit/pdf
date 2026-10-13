@@ -51,12 +51,21 @@ subsets of those domains rather than every format and script.
 
 ## Implemented mechanisms beyond the syntax model
 
+The core implements the PDF objects and mechanisms described by the Adobe/ISO
+reference. External TrueType, JPEG and PNG parsing is supplied by optional
+packages; reading existing PDFs is also a separate package. Modules depend on
+the core, which has no production dependency on them. See the
+[package boundaries and installation guide](packages.md).
+
 | Mechanism | Executable behavior | Explicit limits |
 | --- | --- | --- |
-| TrueType incorporation | Static sfnt/glyf validation, Unicode cmap 4/12, metrics, full-glyph CIDFont program, FontFile2, FontDescriptor, CIDFontType2, Identity-H Type0 font, CIDToGIDMap, widths and ToUnicode. | No font collections, CFF/variable fonts, glyph subsetting, vertical writing, kerning or complex-script shaping. FontFile2 uses a derived CIDFontProgram with cmap removed as required by 9.9; the invalidated DSIG is also removed. The original font's embedding permissions are checked. |
-| JPEG incorporation | Marker/frame/table validation, baseline and progressive eight-bit grayscale/RGB JPEG, Adobe CMYK transform zero and explicit DCTDecode parameters. Original DCT bytes are preserved. | No entropy decoding or JPEG encoding; the reader decodes the coefficients. ICC, YCCK and ambiguous colour semantics are rejected. EXIF orientation is not applied. |
-| PNG decoding | CRC/framing/order checks, bounded zlib decoding, all five scanline filters, eight-bit grayscale/RGB/indexed/alpha samples and tRNS, separate PDF soft-mask stream. | Static non-interlaced PNG only; other depths, APNG and embedded colour profiles are rejected. Ancillary colour metadata does not create calibrated PDF spaces. Import limits are explicit objects. |
+| PDF fonts — core | FontFile2 bytes, explicit FontDescriptor metrics, CIDFontType2, Identity-H Type0 font, CharacterMap and mappings, CIDToGIDMap, widths and ToUnicode. | The core does not inspect TrueType tables or select font files. Applications or optional converters supply the program bytes and PDF values. |
+| TrueType conversion — pdf-fonts | Static sfnt/glyf validation, Unicode cmap 4/12, metrics, full-glyph CIDFont program and conversion factories producing core font objects. | No font collections, CFF/variable fonts, glyph subsetting, vertical writing, kerning or complex-script shaping. The derived CIDFontProgram removes cmap as required by 9.9 and the invalidated DSIG. The original font's embedding permissions are checked. |
+| PDF images — core | Explicit dimensions, device spaces, sample layouts, colour/alpha samples and DCTImage data; normalized XObject dictionaries, DCTDecode parameters and soft-mask streams. | The core does not inspect an external image-file format. Encoded DCT data is a caller-declared representation. |
+| JPEG conversion — pdf-images | Marker/frame/table validation, baseline and progressive eight-bit grayscale/RGB JPEG and Adobe CMYK transform zero into a core DCTImage. Original DCT bytes are preserved. | No entropy decoding or JPEG encoding; the reader decodes the coefficients. ICC, YCCK and ambiguous colour semantics are rejected. EXIF orientation is not applied. |
+| PNG conversion — pdf-images | CRC/framing/order checks, bounded zlib decoding, all five scanline filters, eight-bit grayscale/RGB/indexed/alpha samples and tRNS into core sample objects. | Static non-interlaced PNG only; other depths, APNG and embedded colour profiles are rejected. Ancillary colour metadata does not create calibrated PDF spaces. Import limits are explicit objects. |
 | Incremental revisions | Frozen FileRevision snapshots, explicit replacements/additions, historical identity aliases, absolute offsets, chained Prev, inherited trailer entries, renewed changing file ID, tables or streams and new object-stream containers. | Generated revisions only, inherited xref format, no external PDF parser, deletion/reuse, hybrid references, encrypted updates, signatures or linearization. Replacements retain the PDF object family and existing dictionary Type. Old bytes are preserved, so updates cannot erase confidential old content. |
+| External PDF reading — pdf-reader | PDF 1.0–1.7 object syntax, traditional and stream xrefs, Prev revisions, object streams, explicit reference resolution, encoded stream retention and bounded Flate/ASCIIHex/ASCII85/RunLength decoding with eight-bit TIFF/PNG predictors. | No PDF 2.0, encrypted documents, hybrid XRefStm, repair, content interpretation, rendering or text extraction. Unknown codecs can be retained encoded but cannot be decoded. Reading does not implement import or remapping into the writer. |
 
 The initial writer emits free records for every unused object number below Size.
 Incremental sections emit changed records and newly introduced free holes, keeping
@@ -116,6 +125,8 @@ clause, and the meaningful constraints on its values and relationships. Compose
 existing entry definitions rather than maintaining a second catalogue of names.
 Keep parsers, encoders, compression, encryption, signatures, document writing,
 and rendering separate from the definition objects, with explicit dependencies.
+External-format parsing belongs in optional modules; normalized PDF values and
+mechanisms remain in the core.
 Use independent readers and validators to test emitted bytes, alongside focused
 unit tests for invalid cases. An entry's implementation status should distinguish
 its object model, its serialization, its constraints and its associated algorithm.

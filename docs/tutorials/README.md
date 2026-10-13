@@ -2,6 +2,12 @@
 
 Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent l'API du même checkout que cette documentation.
 
+Les leçons 09 et 10 utilisent les modules optionnels `pdftoolkit/pdf-fonts` et
+`pdftoolkit/pdf-images`, installés comme dépendances de développement dans ce
+checkout. Leurs objets PDF restent dans le core. Le [guide des packages](../packages.md)
+explique comment installer seulement les mécanismes nécessaires à une application
+et présente le lecteur externe `pdftoolkit/pdf-reader`.
+
 Le parcours s'inspire de l'organisation des [tutoriels FPDF](https://www.fpdf.org/en/tutorial/index.php) et de sa [collection de scripts](https://www.fpdf.org/en/script/index.php). Ici, les objets du format restent visibles : une police est une ressource, une page appartient à un arbre et une ligne de texte est une séquence d'opérateurs.
 
 ## Préparer le dépôt

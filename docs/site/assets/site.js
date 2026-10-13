@@ -110,8 +110,10 @@
                     const recordKind = typeof record.kind === "string" ? record.kind.slice(0, 80) : "";
                     const group = typeof record.group === "string" ? record.group.slice(0, 256) : "";
                     const shortName = typeof record.shortName === "string" ? record.shortName.slice(0, 256) : record.title;
-                    return [{ title: record.title, description, namespace, kind: recordKind, group, shortName, url,
-                        text: normalize(`${record.title} ${shortName} ${namespace} ${description} ${group}`) }];
+                    const packageName = typeof record.package === "string" ? record.package.slice(0, 256) : "";
+                    const optional = record.optional === true;
+                    return [{ title: record.title, description, namespace, kind: recordKind, group, shortName, packageName, optional, url,
+                        text: normalize(`${record.title} ${shortName} ${namespace} ${description} ${group} ${packageName}`) }];
                 });
             })();
         }
@@ -142,6 +144,12 @@
         namespace.className = "namespace";
         namespace.textContent = record.namespace || record.title;
         card.append(badge, title, namespace);
+        if (record.optional) {
+            const packageBadge = document.createElement("span");
+            packageBadge.className = "badge";
+            packageBadge.textContent = `Optionnel · ${record.packageName}`;
+            card.append(packageBadge);
+        }
         if (record.description) {
             const description = document.createElement("p");
             description.textContent = record.description.length > 180 ? `${record.description.slice(0, 177)}…` : record.description;

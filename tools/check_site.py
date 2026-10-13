@@ -4,6 +4,7 @@ import argparse
 from html.parser import HTMLParser
 import json
 from pathlib import Path
+import re
 import struct
 from urllib.parse import unquote, urlsplit
 
@@ -41,6 +42,7 @@ def check(root):
         raise ValueError('Stale or missing HTML pages: ' + str(actual ^ set(pages)))
     documents = {page: Document((root / page).read_text(encoding='utf-8')) for page in pages}
     errors = []
+    targets = {}
     for page, document in documents.items():
         if document.duplicates:
             errors.append(f'{page}: duplicate IDs {document.duplicates}')
@@ -51,28 +53,50 @@ def check(root):
             if url.scheme or url.netloc:
                 continue
             path = unquote(url.path)
-            if path.startswith('/'):
-                if not path.startswith(manifest['basePath']):
-                    errors.append(f'{page}: URL escapes the project base path: {link}')
-                    continue
-                target = root / path[len(manifest['basePath']):]
-            else:
-                target = (root / page).parent / path if path else root / page
-            target = target.resolve()
-            if target.is_dir():
-                target /= 'index.html'
-            if not target.is_relative_to(root) or not target.is_file():
+            if path.startswith('/') and not path.startswith(manifest['basePath']):
+                errors.append(f'{page}: URL escapes the project base path: {link}')
+                continue
+            context = '' if path.startswith('/') else (str(Path(page).parent) if path else page)
+            key = (context, path)
+            if key not in targets:
+                if path.startswith('/'):
+                    target = root / path[len(manifest['basePath']):]
+                else:
+                    target = (root / page).parent / path if path else root / page
+                target = target.resolve()
+                if target.is_dir():
+                    target /= 'index.html'
+                targets[key] = target.relative_to(root).as_posix() if target.is_relative_to(root) and target.is_file() else None
+            relative = targets[key]
+            if relative is None:
                 errors.append(f'{page}: missing target {link}')
                 continue
-            relative = target.relative_to(root).as_posix()
             if url.fragment and relative in documents and unquote(url.fragment) not in documents[relative].ids:
                 errors.append(f'{page}: missing anchor {link}')
     index = json.loads((root / 'assets' / 'search-index.json').read_text(encoding='utf-8'))
     if len(index) != manifest['components'] or len({item['title'] for item in index}) != len(index):
         errors.append('Search index does not cover every unique API component')
+    packages = {item['name']: item for item in manifest['packages']}
+    if len(packages) != len(manifest['packages']) or 'roukmoute/pdf' not in packages:
+        errors.append('Package inventory needs unique names and the core')
+    if sum(package['components'] for package in packages.values()) != len(index):
+        errors.append('Package inventory does not cover every API component')
+    for name, package in packages.items():
+        if package['components'] != sum(item['package'] == name for item in index):
+            errors.append('Incorrect API package component count: ' + name)
+        if package['optional'] and not re.fullmatch(r'[0-9a-f]{40}', package['revision']):
+            errors.append('Optional package source is not pinned to a commit: ' + name)
     for item in index:
         if item['url'] not in documents:
             errors.append('Missing API page: ' + item['title'])
+            continue
+        package = packages.get(item['package'])
+        if package is None or item['optional'] != package['optional']:
+            errors.append('Missing or inconsistent API package: ' + item['title'])
+            continue
+        expected_source = package['repository'] + '/blob/' + package['revision'] + '/src/'
+        if not item['sourceUrl'].startswith(expected_source) or item['sourceUrl'] not in documents[item['url']].links:
+            errors.append('Incorrect API declaration source link: ' + item['title'])
     for name in manifest['examples']:
         pdf = root / 'examples' / (name + '.pdf')
         if not pdf.is_file() or not pdf.read_bytes().startswith(b'%PDF-'):

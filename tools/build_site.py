@@ -21,6 +21,7 @@ GUIDES = [
     ('README.md', 'guides/demarrer.html', 'Démarrer', 'Guides'),
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
     ('docs/architecture.md', 'guides/architecture.html', 'Architecture', 'Guides'),
+    ('docs/packages.md', 'guides/modules.html', 'Core et modules optionnels', 'Guides'),
     ('docs/specification.md', 'guides/couverture.html', 'Couverture de la norme', 'Guides'),
     ('docs/security.md', 'guides/securite.html', 'Sécurité', 'Guides'),
     ('SECURITY.md', 'guides/signalements.html', 'Signaler une vulnérabilité', 'Guides'),
@@ -48,7 +49,15 @@ GROUPS = [
     ('fonctions', 'Fonctions PDF'), ('filtres', 'Filtres'), ('lexique', 'Conventions lexicales'),
     ('norme', 'Modèle de norme'), ('dictionnaires', 'Dictionnaires normalisés'),
     ('entrees', 'Entrées normalisées'), ('definitions', 'Définitions normalisées'),
+    ('polices-externes', 'Module optionnel : fontes externes'),
+    ('images-externes', 'Module optionnel : images externes'),
+    ('lecture', 'Module optionnel : lecture de PDF'),
 ]
+MODULE_GROUPS = {
+    'pdftoolkit/pdf-fonts': 'polices-externes',
+    'pdftoolkit/pdf-images': 'images-externes',
+    'pdftoolkit/pdf-reader': 'lecture',
+}
 
 
 def e(value: object) -> str:
@@ -67,6 +76,8 @@ def component_route(name: str) -> str:
 
 
 def group_for(component: dict) -> str:
+    if component['package'] in MODULE_GROUPS:
+        return MODULE_GROUPS[component['package']]
     path = component['source']
     if path.startswith('src/Specification/Definition/'):
         return 'definitions'
@@ -96,11 +107,22 @@ class Site:
         self.pdf_pages = {}
         self.base = '/' + base.strip('/') + '/' if base.strip('/') else '/'
         self.revision = revision
-        self.components = json.loads(api.read_text(encoding='utf-8'))['components']
+        inventory = json.loads(api.read_text(encoding='utf-8'))
+        self.packages = {item['name']: item for item in inventory['packages']}
+        self.components = inventory['components']
+        for item in self.components:
+            package = self.packages.get(item['package'])
+            if package is None or item['repository'] != package['repository'] or item['revision'] != package['revision']:
+                raise ValueError('Inconsistent API package metadata: ' + item['name'])
+            if item['optional'] and not re.fullmatch(r'[0-9a-f]{40}', item['revision'] or ''):
+                raise ValueError('Optional API sources must use their locked commit: ' + item['name'])
+            if not item['source'].startswith('src/') or '..' in Path(item['source']).parts:
+                raise ValueError('Invalid API source path: ' + item['name'])
         self.by_name = {item['name']: item for item in self.components}
         if len(self.by_name) != len(self.components):
             raise ValueError('Duplicate API component names')
-        self.by_source = {item['source']: item for item in self.components}
+        self.by_source = {item['source']: item for item in self.components if not item['optional']}
+        self.by_package_source = {(item['package'], item['source']): item for item in self.components}
         self.routes = {item['name']: component_route(item['name']) for item in self.components}
         self.groups = defaultdict(list)
         for item in self.components:
@@ -135,8 +157,10 @@ class Site:
     def url(self, route: str) -> str:
         return self.base + route
 
-    def source_url(self, source: str, line: int | None = None) -> str:
-        url = f'{REPOSITORY}/blob/{self.revision}/{quote(source, safe="/")}'
+    def source_url(self, source: str, line: int | None = None, owner: dict | None = None) -> str:
+        repository = owner['repository'] if owner else REPOSITORY
+        revision = (owner['revision'] if owner else None) or self.revision
+        url = f'{repository}/blob/{revision}/{quote(source, safe="/")}'
         return url + (f'#L{line}' if line else '')
 
     def link_type(self, value: str | None) -> str:
@@ -161,7 +185,7 @@ class Site:
 
     def sidebar(self, current: str) -> str:
         groups = [
-            ('Découvrir', [('index.html', 'Accueil'), ('guides/demarrer.html', 'Démarrer'), ('guides/composants.html', 'Les composants'), ('guides/architecture.html', 'Architecture')]),
+            ('Découvrir', [('index.html', 'Accueil'), ('guides/demarrer.html', 'Démarrer'), ('guides/modules.html', 'Core et modules'), ('guides/composants.html', 'Les composants'), ('guides/architecture.html', 'Architecture')]),
             ('Apprendre', [('tutorials/index.html', 'Tous les tutoriels'), *[(f'tutorials/{slug}.html', f'{i:02d}. {title}') for i, (_, slug, title, _, _) in enumerate(LESSONS, 1)], ('recipes/table.html', 'Recette : tableau')]),
             ('Explorer', [('reference/index.html', 'Référence des composants'), ('guides/couverture.html', 'Couverture de la norme'), ('guides/securite.html', 'Sécurité'), ('guides/versions.html', 'Versions')]),
         ]
@@ -199,6 +223,12 @@ class Site:
 
     def rewrite_link(self, source: str, href: str) -> str:
         parsed = urlsplit(href)
+        if parsed.netloc == 'github.com':
+            match = re.fullmatch(r'/PDFToolkit/(pdf-fonts|pdf-images|pdf-reader)/blob/(?:master|[0-9a-f]{40})/(src/.*)', parsed.path)
+            if match and not parsed.fragment:
+                item = self.by_package_source.get(('pdftoolkit/' + match.group(1), match.group(2)))
+                if item:
+                    return self.url(self.routes[item['name']])
         if parsed.netloc == 'pdftoolkit.github.io' and parsed.path.startswith('/pdf/'):
             return self.url(parsed.path[len('/pdf/'):]) + ('#' + parsed.fragment if parsed.fragment else '')
         if parsed.scheme or parsed.netloc or not parsed.path:
@@ -304,7 +334,8 @@ class Site:
         html = '<div class="reference-grid">'
         for item in components:
             description = item['description'].split('\n')[0][:200]
-            html += f'<a class="component-card" href="{e(self.url(self.routes[item["name"]]))}"><span class="badge">{e(item["kind"])}</span><h3>{e(item["shortName"])}</h3><code>{e(item["namespace"])}</code><p>{e(description)}</p></a>'
+            package = f'<span class="badge">Optionnel · {e(item["package"])}</span>' if item['optional'] else ''
+            html += f'<a class="component-card" href="{e(self.url(self.routes[item["name"]]))}"><span class="badge">{e(item["kind"])}</span>{package}<h3>{e(item["shortName"])}</h3><code>{e(item["namespace"])}</code><p>{e(description)}</p></a>'
         return html + '</div>'
 
     def search(self) -> str:
@@ -314,6 +345,7 @@ class Site:
         body = f'''<section class="hero"><div class="hero-copy"><p class="eyebrow">PHP 8.3+ · PDF 1.7 · ISO 32000-1</p><h1>Le format PDF.<br>Objet par objet.</h1><p class="hero-description">Comprendre les structures, composer les objets, maîtriser les octets. Une documentation pour explorer le format et construire vos propres fichiers PDF.</p><div class="pdf-actions"><a class="button" href="{e(self.url('tutorials/01-premier-document.html'))}">Créer mon premier PDF →</a><a class="button secondary" href="{e(self.url('reference/index.html'))}">Explorer les composants</a></div></div><div class="hero-visual" aria-label="Du catalogue à la page"><div class="graph-card"><span class="badge">01 / point d’entrée</span><code>DocumentCatalog</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">02 / arbre du document</span><code>PageTreeNode</code></div><div class="graph-connector" aria-hidden="true">↓</div><div class="graph-card"><span class="badge">03 / contenu & ressources</span><code>PageObject</code><span class="graph-leaves">StreamObject · ResourceDictionary</span></div></div></section>
 <div class="stats"><div class="stat"><strong>{number(len(self.components))}</strong><span>composants documentés</span></div><div class="stat"><strong>{self.metadata['dictionary_table_count']}</strong><span>dictionnaires normalisés</span></div><div class="stat"><strong>{len(self.examples)}</strong><span>exemples PDF à explorer</span></div><div class="stat"><strong>{self.metadata['operator_count']}</strong><span>tokens d’opérateurs PDF</span></div></div>
 <section><p class="eyebrow">Apprendre en construisant</p><h2>Du premier texte aux révisions du document</h2><p>Chaque tutoriel relie les explications aux objets PHP et au document produit. Ouvrez le résultat, modifiez le script et observez ce qui change.</p>{self.tutorial_cards()}</section>
+<section><h2>Un core PDF, des modules au choix</h2><p>Le core représente les objets et les mécanismes de la norme Adobe. La lecture de PDF externes et la conversion de fichiers image ou de fontes sont des dépendances optionnelles : chaque module dépend du core.</p><p><a href="{e(self.url('guides/modules.html'))}">Choisir les packages et comprendre leur frontière →</a></p></section>
 <section><h2>Trois chemins pour explorer le projet</h2><div class="cards"><a class="card" href="{e(self.url('guides/composants.html'))}"><div class="card-body"><h3>Comprendre les responsabilités</h3><p>Valeurs, graphes, ressources, fonctions et écriture : comment les familles se composent.</p></div></a><a class="card" href="{e(self.url('reference/index.html'))}"><div class="card-body"><h3>Consulter la référence</h3><p>Les signatures et l’héritage de chaque composant, avec les sources et les tableaux de la norme.</p></div></a><a class="card" href="{e(self.url('recipes/table.html'))}"><div class="card-body"><h3>Assembler un exemple pratique</h3><p>Un tableau explicite : cellules, couleurs, grille et positionnement du texte.</p></div></a></div></section>
 <aside class="callout"><strong>Cette documentation suit master.</strong> La version stable 0.1.1 reçoit les correctifs de sécurité ; les évolutions d’API présentées ici sont celles du code en développement. La couverture et les traitements restant à implémenter sont détaillés dans <a href="{e(self.url('guides/couverture.html'))}">la couverture de la norme</a>.</aside>'''
         self.page('index.html', 'Le format PDF, objet par objet', 'Accueil', body)
@@ -391,7 +423,7 @@ class Site:
         if method['returnType']:
             signature += ': ' + self.link_type(method['returnType'])
         owner = self.by_name.get(method['declaringClass'], component)
-        source = self.source_url(method.get('source') or owner['source'], method['line'])
+        source = self.source_url(method.get('source') or owner['source'], method['line'], method if 'package' in method else owner)
         description = f'<pre class="member-doc">{e(method["description"])}</pre>' if method['description'] else ''
         return f'<section class="member" id="method-{e(method["name"])}"><h3>{e(method["name"])}()</h3><div class="api-signature"><code>{signature}</code></div>{description}<p class="member-meta">Déclarée par {self.link_type(method["declaringClass"])} · <a href="{e(source)}">Voir le code ↗</a></p></section>'
 
@@ -403,12 +435,15 @@ class Site:
             group = group_for(item)
             spec = self.spec_by_name.get(name)
             search_extra = (' /' + spec[1] + ' tableau ' + spec[0]) if spec and spec[1] else ''
-            records.append({'title': name, 'shortName': item['shortName'], 'namespace': item['namespace'], 'kind': item['kind'], 'url': self.routes[name], 'description': item['description'].split('\n')[0][:240] + search_extra, 'group': labels[group]})
+            records.append({'title': name, 'shortName': item['shortName'], 'namespace': item['namespace'], 'kind': item['kind'], 'url': self.routes[name], 'description': item['description'].split('\n')[0][:240] + search_extra, 'group': labels[group], 'package': item['package'], 'optional': item['optional'], 'sourceUrl': self.source_url(item['source'], item['line'], item)})
             flags = [item['kind'], *[flag for flag in ['abstract', 'final', 'readonly'] if item[flag]]]
+            flags.append(('Optionnel · ' if item['optional'] else 'Core · ') + item['package'])
             body = f'<p class="breadcrumbs"><a href="{e(self.url("reference/index.html"))}">Référence</a> / <a href="{e(self.url("reference/groups/" + group + ".html"))}">{e(labels[group])}</a></p><p>' + ' '.join(f'<span class="badge">{e(flag)}</span>' for flag in flags) + f'</p><div class="api-signature"><code>{e(name)}</code></div>'
             if item['description']:
                 body += f'<pre class="member-doc">{e(item["description"])}</pre>'
-            body += f'<p><a href="{e(self.source_url(item["source"], item["line"]))}">Lire la déclaration source ↗</a></p>'
+            body += f'<p><a href="{e(self.source_url(item["source"], item["line"], item))}">Lire la déclaration source ↗</a></p>'
+            if item['optional']:
+                body += f'<aside class="callout">Ce composant appartient à <code>{e(item["package"])}</code>, un module installé séparément du core. <a href="{e(self.url("guides/modules.html"))}">Installation et responsabilités des packages.</a></aside>'
             body += '<section id="relations"><h2>Héritage et contrats</h2>'
             relations = [('Parent', [item['parent']] if item['parent'] else []), ('Interfaces', item['interfaces']), ('Traits', item['traits'])]
             for label, values in relations:
@@ -442,7 +477,7 @@ class Site:
             toc = [{'id': key, 'name': label, 'level': 2} for key, label in [('relations', 'Héritage'), ('norme', 'Norme'), ('construction', 'Construction'), ('methodes', 'Méthodes'), ('methodes-heritees', 'Méthodes héritées'), ('proprietes', 'Propriétés'), ('constantes', 'Constantes'), ('cas', 'Cas de l’enum')] if f'id="{key}"' in body]
             self.page(self.routes[name], item['shortName'], labels[group], body, toc)
         (self.output / 'assets' / 'search-index.json').write_text(json.dumps(records, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
-        body = '<p>Chaque classe, interface, enum et trait du code possède une fiche. Les signatures sont extraites par Reflection ; les descriptions normalisées proviennent du catalogue de la référence PDF.</p>' + self.search()
+        body = '<p>Chaque classe, interface, enum et trait du core et des modules installés pour cette documentation possède une fiche. Les composants optionnels portent leur nom de package ; les installer dépend des traitements nécessaires à votre application. Les signatures sont extraites par Reflection ; les descriptions normalisées proviennent du catalogue de la référence PDF.</p>' + self.search()
         body += '<div id="component-list"><h2>Explorer par famille</h2><div class="cards">'
         for group, label in GROUPS:
             items = self.groups[group]
@@ -521,7 +556,8 @@ class Site:
         self.api_pages()
         self.page('404.html', 'Page introuvable', 'Documentation', f'<p>Cette adresse ne correspond pas à une page publiée.</p><p><a href="{e(self.url("reference/index.html"))}">Rechercher un composant</a> ou <a href="{e(self.url("index.html"))}">revenir à l’accueil</a>.</p>')
         (self.output / '.nojekyll').write_text('')
-        manifest = {'basePath': self.base, 'revision': self.revision, 'components': len(self.components), 'examples': sorted(expected), 'pdfPages': {example: ['assets/pdf-pages/' + image['file'] for image in images] for example, images in self.pdf_pages.items()}, 'pages': sorted(route for route in self.written if route.endswith('.html'))}
+        packages = [dict(package, revision=package['revision'] or self.revision, components=sum(item['package'] == name for item in self.components)) for name, package in self.packages.items()]
+        manifest = {'basePath': self.base, 'revision': self.revision, 'packages': packages, 'components': len(self.components), 'examples': sorted(expected), 'pdfPages': {example: ['assets/pdf-pages/' + image['file'] for image in images] for example, images in self.pdf_pages.items()}, 'pages': sorted(route for route in self.written if route.endswith('.html'))}
         (self.output / 'site-manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         print(f'Built {len(manifest["pages"])} pages, {len(self.components)} API components and {len(expected)} PDF examples into {self.output}')
 

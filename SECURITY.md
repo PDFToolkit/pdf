@@ -10,6 +10,8 @@ Security fixes are applied to `master`. The published `0.1` series receives the 
 
 This library constructs PDF objects and serializes documents. Its object graph and PHP extensions are application code. It is not a PDF reader or a sanitizer for arbitrary PDF content.
 
+External PDF reading is provided by [pdftoolkit/pdf-reader](https://github.com/PDFToolkit/pdf-reader), image-file conversion by [pdftoolkit/pdf-images](https://github.com/PDFToolkit/pdf-images), and TrueType analysis by [pdftoolkit/pdf-fonts](https://github.com/PDFToolkit/pdf-fonts). These optional packages have their own source, tests and security policies. Report an issue in the affected package; installing only the core does not install their parsers.
+
 - Supply untrusted text as `LiteralString` or `TextString` where appropriate, and names as `NameType`. Do not interpolate request data into raw content-stream strings.
 - Choose output paths in the application. `writeTo()` rejects stream URIs, empty paths and NUL bytes, but does not confine paths to a directory or defend a directory controlled by another user.
 - Keep generated documents in locations where the server will not execute their bytes as PHP or another program. PDF streams may contain arbitrary bytes.
