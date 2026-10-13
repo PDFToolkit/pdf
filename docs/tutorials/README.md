@@ -61,7 +61,7 @@ La [collection de recettes](../recipes/README.md) commence par un [tableau](../r
 
 Pour proposer un exemple, ajouter un script autonome dans `examples/`, un guide et une entrée dans cet index. Le guide doit expliquer le résultat attendu, les objets employés, les paramètres à modifier et les limites. Un exemple communautaire peut créditer son auteur et citer ses sources. Les fichiers présents ici sont les exemples du projet ; cette liste pourra accueillir les contributions au fil des pull requests.
 
-En local, avec qpdf installé :
+La CI exécute tous les scripts `examples/*.php`, puis contrôle chaque PDF avec qpdf. En local, avec qpdf installé :
 
 ```sh
 qpdf --check examples/hello-world.pdf

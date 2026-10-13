@@ -26,7 +26,12 @@ jobs:
       - run: composer check
       - run: python tools/generate_specification.py --check
       - run: sudo apt-get update && sudo apt-get install -y qpdf
-      - run: php examples/hello-world.php /tmp/hello-world.pdf
-      - run: php examples/object-stream.php /tmp/object-stream.pdf
-      - run: qpdf --check /tmp/hello-world.pdf
-      - run: qpdf --check /tmp/object-stream.pdf
+      - name: Generate and validate every example
+        run: |
+          mkdir -p /tmp/pdf-examples
+          for example in examples/*.php; do
+            name=$(basename "$example" .php)
+            output="/tmp/pdf-examples/$name.pdf"
+            php "$example" "$output"
+            qpdf --check "$output"
+          done
