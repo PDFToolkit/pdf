@@ -1,7 +1,8 @@
 # Core et modules optionnels
 
-PDFToolkit sépare le modèle PDF des traitements de fichiers externes. Les quatre
-packages utilisent PHP 8.3 ou supérieur et une CI sur PHP 8.3, 8.4 et 8.5.
+PDFToolkit sépare le modèle PDF des traitements de fichiers externes. Le core
+**0.2.0** et les trois modules **0.1.0** utilisent PHP 8.3 ou supérieur et une CI
+sur PHP 8.3, 8.4 et 8.5.
 Le core conserve son nom Composer `roukmoute/pdf` après son transfert dans
 l'organisation ; les nouveaux modules utilisent le préfixe `pdftoolkit/`.
 
@@ -32,31 +33,53 @@ Le modèle objet est commun, sans copie parallèle des primitives ni registre gl
 
 ## Installer ce dont l'application a besoin
 
-Les packages sont actuellement distribués depuis GitHub, sans publication
-Packagist. Les versions de développement compatibles PHP 8.3 sont `dev-master` ;
-le tag du core `v0.1.1` conserve sa contrainte PHP 8.5.
+Les packages sont distribués depuis GitHub, sans publication Packagist. Les
+contraintes stables sont `roukmoute/pdf:^0.2` pour le core et
+`pdftoolkit/pdf-reader:^0.1`, `pdftoolkit/pdf-images:^0.1` ou
+`pdftoolkit/pdf-fonts:^0.1` pour les modules. Les anciens tags du core `v0.1.0`
+et `v0.1.1` conservent leur contrainte PHP 8.5.
 
 Pour générer seulement des PDF :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
-composer require roukmoute/pdf:dev-master
+composer require 'roukmoute/pdf:^0.2'
 ```
 
 Pour ajouter la lecture de PDF existants :
 
 ```sh
+composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
 composer config repositories.pdf-reader vcs https://github.com/PDFToolkit/pdf-reader
-composer require roukmoute/pdf:dev-master pdftoolkit/pdf-reader:dev-master
+composer require 'pdftoolkit/pdf-reader:^0.1'
 ```
 
-Pour convertir des images, ajouter le dépôt `https://github.com/PDFToolkit/pdf-images`
-et demander `pdftoolkit/pdf-images:dev-master`. Pour les fontes, utiliser
-`https://github.com/PDFToolkit/pdf-fonts` et `pdftoolkit/pdf-fonts:dev-master`.
-Dans chaque cas, le projet consommateur doit aussi déclarer le dépôt du core et
-autoriser explicitement `roukmoute/pdf:dev-master` : Composer ne reprend pas les
-dépôts déclarés par les dépendances. Conserver le `composer.lock` de l'application
-pour fixer les révisions.
+Pour convertir des images :
+
+```sh
+composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
+composer config repositories.pdf-images vcs https://github.com/PDFToolkit/pdf-images
+composer require 'pdftoolkit/pdf-images:^0.1'
+```
+
+Pour analyser des fontes TrueType :
+
+```sh
+composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
+composer config repositories.pdf-fonts vcs https://github.com/PDFToolkit/pdf-fonts
+composer require 'pdftoolkit/pdf-fonts:^0.1'
+```
+
+Les modules demandent le core stable transitivement. Le projet consommateur
+doit déclarer les deux dépôts : Composer ne reprend pas les dépôts déclarés
+par les dépendances. Conserver le `composer.lock` de l'application pour fixer
+les versions et les révisions.
+
+Avant 1.0, une nouvelle version mineure peut changer les noms et signatures.
+Les contraintes `^0.2` et `^0.1` autorisent les correctifs de leur série et
+écartent la version mineure suivante. Consulter les changelogs avant de changer
+de série. Pour travailler sur les développements à venir, demander explicitement
+`dev-master` pour les packages concernés.
 
 ## Lire un PDF externe
 

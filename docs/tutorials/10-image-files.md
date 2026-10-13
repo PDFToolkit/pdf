@@ -2,7 +2,7 @@
 
 Le [tutoriel sur les images](06-images.md) construit directement des pixels.
 Celui-ci part de fichiers encodés : il sépare leur import de leur représentation
-PDF, puis de leur placement. L'API décrite ici suit `master`.
+PDF, puis de leur placement. L'exemple utilise le core 0.2 et le module d'images 0.1.
 
 La lecture de ces fichiers appartient au module optionnel
 [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images). Les

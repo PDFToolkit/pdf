@@ -2,11 +2,15 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-13
+
+The PHP 8.3-compatible core and its separately versioned optional modules. This minor release includes API changes described below; the published 0.1 tags keep their PHP 8.5 requirement.
+
 ### Added
 
 - A page-reading tutorial using the optional reader's independently generated PDF, with all input pages, verified inherited attributes, ordered content-stream results and the complete PHP reader example. API and source links are pinned to the tested module commit.
 - Explicit static TrueType/CID font incorporation with Unicode character maps, metric objects, FontFile2, descriptors, Identity-H Type0 fonts, CIDToGIDMap, widths and ToUnicode streams.
-- Bounded JPEG inspection and PNG decoding into image objects, including PNG alpha soft masks and explicit Adobe CMYK decoding semantics.
+- Explicit sampled-image and DCT image representations, PNG alpha soft-mask construction and Adobe CMYK decoding semantics, composed from the optional image module's bounded readers.
 - Frozen file revisions and incremental updates with historical identity aliases, absolute xref offsets, trailer inheritance and changing file identifiers, including replacements of compressed members.
 - Dedicated tutorials and rendered PDF examples for fonts, image files and incremental revisions.
 - A French GitHub Pages documentation site with a searchable reference of every PHP component, specification constraints and source links, tutorials with generated PDF downloads and browser previews, and automated link and PDF validation before deployment.
@@ -36,6 +40,13 @@
 
 - The unused `PDF\Dictionary\CatalogDictionary` compatibility alias and catalog entry constant registry. Catalog entries now extend the PDF dictionary entry object directly.
 - The `PDF\Text\Font` and `PDF\Text\TextObject` convenience wrappers. Compose `BeginTextObject`, `SetTextFontAndSize`, `ShowText` and `EndTextObject` explicitly in a `ContentStreams` object.
+
+### Requirements and compatibility
+
+- PHP 8.3 or later, with `ctype`, `iconv` and `zlib`; CI verifies PHP 8.3, 8.4 and 8.5.
+- Optional `pdftoolkit/pdf-reader`, `pdftoolkit/pdf-images` and `pdftoolkit/pdf-fonts` releases begin at 0.1.0 and depend on the core's 0.2 series. The core has no production dependency on these modules.
+- Before 1.0, minor releases may change names and signatures. Patch releases preserve the API of their minor series.
+- Encryption, signatures, font subsetting, complex-script shaping, external-graph import and linearization remain outside the implemented mechanisms. See [the coverage document](docs/specification.md).
 
 ## [0.1.1] - 2026-10-13
 
@@ -73,6 +84,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.0
 [0.1.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.1
 [0.1.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.0

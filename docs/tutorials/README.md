@@ -1,6 +1,6 @@
 # Tutoriels : construire et lire un PDF objet par objet
 
-Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent l'API du core et les révisions des modules fixées dans le `composer.lock` de ce checkout.
+Ces tutoriels expliquent comment un fichier PDF relie ses valeurs, dictionnaires, ressources et instructions de dessin. Chaque leçon accompagne un script complet, commenté et exécutable. Les exemples utilisent le core 0.2 et les modules 0.1, avec les révisions exactes fixées dans le `composer.lock` de ce checkout.
 
 Les leçons 09 et 10 utilisent les modules optionnels `pdftoolkit/pdf-fonts` et
 `pdftoolkit/pdf-images`, installés comme dépendances de développement dans ce

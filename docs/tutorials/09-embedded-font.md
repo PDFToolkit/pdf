@@ -7,7 +7,7 @@ Le PDF présente du français et du grec ; le lecteur peut sélectionner et
 extraire les caractères d'origine grâce au flux `/ToUnicode`.
 
 Ce tutoriel utilise le module optionnel
-[`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) pour analyser
+[`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) **0.1**, avec le core **0.2**, pour analyser
 TrueType. Le programme incorporé, les dictionnaires et les correspondances PDF
 restent des objets du core. `composer install` dans ce checkout installe le
 module comme dépendance de développement ; une application doit le

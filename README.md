@@ -8,27 +8,20 @@ Le projet fait partie de l'organisation [PDFToolkit](https://github.com/PDFToolk
 
 La [documentation en ligne](https://pdftoolkit.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
 
-La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0`. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
+La série `0.x` est destinée aux développeurs qui souhaitent construire et explorer ce modèle. Avant la version `1.0`, une nouvelle version mineure peut modifier les noms et signatures ; les versions correctives conservent l'API de leur série. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
 
 La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dans ce dépôt. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
 
 ## Installation
 
-La branche `master` nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`.
-
-Les versions publiées `v0.1.0` et `v0.1.1` nécessitent toujours PHP 8.5. Pour utiliser les développements de `master`, dont la prise en charge de PHP 8.3, installer explicitement cette branche :
+La version stable **0.2.0** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
 
 ```sh
 composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require roukmoute/pdf:dev-master
+composer require 'roukmoute/pdf:^0.2'
 ```
 
-La version corrective est identifiée par le tag Git `v0.1.1`. Avec le dépôt déclaré comme source Composer :
-
-```sh
-composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require roukmoute/pdf:^0.1
-```
+Les anciens tags `v0.1.0` et `v0.1.1` conservent leur contrainte PHP 8.5. Les modifications d'API de 0.2.0 figurent dans le [changelog](CHANGELOG.md). Pour suivre les développements après cette version, remplacer la contrainte stable par `dev-master`.
 
 ## Modules optionnels
 
@@ -38,15 +31,15 @@ composer require roukmoute/pdf:^0.1
 | [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Les modules sont actuellement disponibles sur leur branche `master`. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur, puis demander explicitement leurs versions de développement. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.0**, compatible avec le core 0.2 et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
 
 ```sh
 composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
 composer config repositories.pdf-images vcs https://github.com/PDFToolkit/pdf-images
-composer require roukmoute/pdf:dev-master pdftoolkit/pdf-images:dev-master
+composer require 'pdftoolkit/pdf-images:^0.1'
 ```
 
-Le [guide des packages](docs/packages.md) explique la frontière du core, les installations et le fonctionnement du lecteur. Le `composer.lock` de l'application fixe les commits utilisés.
+Le module installe le core avec sa contrainte stable. Le [guide des packages](docs/packages.md) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.
 
 ## Développement et vérifications
 
@@ -61,10 +54,11 @@ php examples/object-stream.php object-stream.pdf
 
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples et la documentation sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
-Dans une branche de contribution, définir `COMPOSER_ROOT_VERSION=dev-master`
-avant `composer install`. Les modules de développement dépendent de cette version
-du core ; cette variable identifie le checkout courant pour Composer. Les CI la
-définissent également pour les branches et les pull requests.
+Pour valider ce checkout, y compris depuis son tag, définir
+`COMPOSER_ROOT_VERSION=dev-master` avant `composer install`. Ses modules de
+développement sont encore fixés à leurs commits validés précédant leurs premiers
+tags ; cette variable identifie le core utilisé par leurs tests. Leurs versions
+publiées seront intégrées dans la prochaine version corrective du core.
 
 ## Construction objet par objet
 

@@ -1,6 +1,6 @@
 # Construire la documentation
 
-Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/pdf/). Il documente la branche `master`. Le tag `v0.1.1` reste la dernière version publiée ; ses différences avec `master` figurent dans les guides et le changelog.
+Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/pdf/). Il documente la branche `master`. Le tag `v0.2.0` est la dernière version publiée du core ; les modules optionnels disposent chacun du tag `v0.1.0`. Les différences ultérieures avec `master` figurent dans les guides et le changelog.
 
 ## Sources et génération
 

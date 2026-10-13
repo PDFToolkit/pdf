@@ -1,7 +1,7 @@
 # 12. Lire les pages d'un PDF externe
 
 Les premières leçons construisent un graphe et écrivent un PDF. Celle-ci ouvre
-un fichier existant avec le module optionnel `pdftoolkit/pdf-reader`. Elle
+un fichier existant avec le module optionnel `pdftoolkit/pdf-reader` **0.1**, qui utilise le core **0.2**. Elle
 parcourt son arbre de pages, consulte ses attributs effectifs et demande
 séparément le décodage de ses flux. Les dictionnaires, nombres et rectangles
 restent des objets du core.
