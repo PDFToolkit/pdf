@@ -6,7 +6,7 @@
 
 Dessiner un petit tableau de cinq articles avec un en-tête sombre, des lignes alternées, une grille et deux polices. La mise en page demeure dans [examples/table.php](../../examples/table.php) : le noyau reçoit des objets d'opérateurs PDF.
 
-Lire les tutoriels [pages et texte](../tutorials/02-pages-and-text.md) et [graphiques](../tutorials/03-graphics.md). Installer les dépendances avec `composer install`, puis utiliser PHP 8.5 et les extensions demandées par Composer.
+Lire les tutoriels [pages et texte](../tutorials/02-pages-and-text.md) et [graphiques](../tutorials/03-graphics.md). Installer les dépendances avec `composer install`, puis utiliser PHP 8.3 ou supérieur et les extensions demandées par Composer.
 
 ## Exécuter et regarder
 

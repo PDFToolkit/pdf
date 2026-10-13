@@ -1,6 +1,6 @@
 # PDF
 
-Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.5.
+Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.3 ou supérieur.
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
@@ -12,7 +12,14 @@ La référence est le document Adobe/ISO `PDF32000_2008.pdf` déjà présent dan
 
 ## Installation
 
-PHP 8.5 et les extensions `ctype`, `iconv` et `zlib` sont nécessaires.
+La branche `master` nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`.
+
+Les versions publiées `v0.1.0` et `v0.1.1` nécessitent toujours PHP 8.5. Pour utiliser les développements de `master`, dont la prise en charge de PHP 8.3, installer explicitement cette branche :
+
+```sh
+composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf
+composer require roukmoute/pdf:dev-master
+```
 
 La version corrective est identifiée par le tag Git `v0.1.1`. Avec le dépôt déclaré comme source Composer :
 
@@ -32,7 +39,7 @@ php examples/hello-world.php hello-world.pdf
 php examples/object-stream.php object-stream.pdf
 ```
 
-Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit, PHPStan et PHP-CS-Fixer sont des dépendances de développement verrouillées dans `composer.lock`. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
+Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan et PHP-CS-Fixer sont des dépendances de développement verrouillées dans `composer.lock`. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.md) décrit chaque version publiée.
 
 ## Construction objet par objet
 

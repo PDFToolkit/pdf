@@ -6,7 +6,7 @@ Cette leçon dessine des rectangles, une courbe de Bézier et un segment pointil
 
 ## Exécuter l'exemple
 
-Utiliser PHP 8.5 et les dépendances installées par `composer install`. L'assemblage du document est celui du [premier tutoriel](01-first-document.md). Depuis la racine du dépôt :
+Utiliser PHP 8.3 ou supérieur et les dépendances installées par `composer install`. L'assemblage du document est celui du [premier tutoriel](01-first-document.md). Depuis la racine du dépôt :
 
 ```sh
 php examples/graphics.php graphics.pdf

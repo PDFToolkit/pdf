@@ -6,7 +6,7 @@ Le parcours s'inspire de l'organisation des [tutoriels FPDF](https://www.fpdf.or
 
 ## Préparer le dépôt
 
-Il faut PHP 8.5 et les extensions `ctype`, `iconv` et `zlib`. Depuis la racine d'un clone :
+Il faut PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Depuis la racine d'un clone :
 
 ```sh
 composer install

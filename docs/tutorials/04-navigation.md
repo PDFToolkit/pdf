@@ -4,7 +4,7 @@
 
 ## But et prérequis
 
-Créer trois pages, un plan hiérarchique de signets et des destinations nommées. Les tutoriels [premier document](01-first-document.md) et [pages et texte](02-pages-and-text.md) expliquent déjà les ressources, les flux et l'arbre des pages. Installer les dépendances avec `composer install` ; PHP 8.5 et les extensions indiquées par Composer sont nécessaires.
+Créer trois pages, un plan hiérarchique de signets et des destinations nommées. Les tutoriels [premier document](01-first-document.md) et [pages et texte](02-pages-and-text.md) expliquent déjà les ressources, les flux et l'arbre des pages. Installer les dépendances avec `composer install` ; PHP 8.3 ou supérieur et les extensions indiquées par Composer sont nécessaires.
 
 Le script complet est [examples/navigation.php](../../examples/navigation.php). Chaque étape y est commentée ; il fonctionne seul et n'utilise aucun fichier produit par les autres tutoriels.
 

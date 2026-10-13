@@ -1,8 +1,8 @@
 # Specification model and coverage
 
 The authoritative source for this revision is the `PDF32000_2008.pdf` already
-committed to the repository: ISO 32000-1:2008, PDF 1.7. PHP 8.5 does not change
-the PDF format version. Implementing PDF 2.0 requires a separate specification
+committed to the repository: ISO 32000-1:2008, PDF 1.7. The minimum PHP version is
+8.3, independently of the PDF format version. Implementing PDF 2.0 requires a separate specification
 and explicit version-specific definitions.
 
 The source contains 756 PDF pages, 823 outline entries, 370 main numbered tables

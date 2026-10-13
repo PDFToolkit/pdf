@@ -6,7 +6,7 @@
 
 Créer deux zones cliquables sur une page : l'une ouvre le dépôt GitHub, l'autre affiche une seconde page. Ce tutoriel compose les classes issues des tableaux de la norme pour montrer comment utiliser une fonctionnalité qui n'a pas de façade spécialisée dans le domaine.
 
-Lire [pages et texte](02-pages-and-text.md) et [destinations](04-navigation.md), puis installer les dépendances avec `composer install`. Le script [examples/links.php](../../examples/links.php) fonctionne seul sous PHP 8.5 avec les extensions demandées par Composer.
+Lire [pages et texte](02-pages-and-text.md) et [destinations](04-navigation.md), puis installer les dépendances avec `composer install`. Le script [examples/links.php](../../examples/links.php) fonctionne seul sous PHP 8.3 ou supérieur avec les extensions demandées par Composer.
 
 ## Exécuter et regarder
 

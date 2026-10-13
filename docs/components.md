@@ -4,7 +4,7 @@ Ce guide explique les familles d'objets, leurs responsabilités et leur composit
 
 La documentation publiée depuis `master` suit le code de développement. La dernière version stable est actuellement **0.1.1**. Pour consulter exactement son API, utiliser le [code du tag v0.1.1](https://github.com/roukmoute/pdf/tree/v0.1.1). Pendant la série 0.x, les noms et signatures peuvent évoluer pour améliorer le modèle.
 
-Le format décrit est **PDF 1.7, ISO 32000-1:2008**. La version PHP requise, PHP 8.5, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
+Le format décrit est **PDF 1.7, ISO 32000-1:2008**. La version PHP minimale, PHP 8.3, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
 
 ## Comment lire le modèle
 

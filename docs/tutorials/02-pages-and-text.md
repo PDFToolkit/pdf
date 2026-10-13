@@ -6,7 +6,7 @@ Cette leçon construit trois pages A4 qui partagent leurs ressources. Elle montr
 
 ## Exécuter l'exemple
 
-Utiliser PHP 8.5 et les dépendances installées par `composer install`, comme dans le [premier tutoriel](01-first-document.md). Depuis la racine du dépôt :
+Utiliser PHP 8.3 ou supérieur et les dépendances installées par `composer install`, comme dans le [premier tutoriel](01-first-document.md). Depuis la racine du dépôt :
 
 ```sh
 php examples/pages-and-text.php pages-and-text.pdf

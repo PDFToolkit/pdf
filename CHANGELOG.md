@@ -14,6 +14,8 @@
 
 ### Changed
 
+- Lower the minimum PHP version to 8.3 while retaining typed constants, readonly classes and the object model; keep the native `NoDiscard` diagnostic when running on PHP 8.5.
+- Use PHPUnit 12 and run the quality checks and PDF example validation on PHP 8.3, 8.4 and 8.5; build the documentation with PHP 8.3.
 - Run PHPStan on examples and generate and validate every example with qpdf in CI.
 - Move the outline hierarchy root to `PDF\Document\OutlineDictionary`, alongside outline items and destinations.
 - Rename the catalog entry `Extension` to `Extensions`, matching the PDF key. These API changes have no compatibility aliases.
