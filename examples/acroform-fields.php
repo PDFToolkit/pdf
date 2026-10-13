@@ -40,11 +40,19 @@ use PDF\FileStructure;
 use PDF\Specification\Dictionary\ResetFormActionTable238;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\ContentStreamsResources\Operators\AppendRectangle;
+use PDF\Syntax\ContentStreamsResources\Operators\BeginMarkedContent;
 use PDF\Syntax\ContentStreamsResources\Operators\BeginTextObject;
+use PDF\Syntax\ContentStreamsResources\Operators\ClipPathNonzero;
+use PDF\Syntax\ContentStreamsResources\Operators\EndMarkedContent;
+use PDF\Syntax\ContentStreamsResources\Operators\EndPath;
 use PDF\Syntax\ContentStreamsResources\Operators\EndTextObject;
+use PDF\Syntax\ContentStreamsResources\Operators\FillPathNonzero;
 use PDF\Syntax\ContentStreamsResources\Operators\MoveTextPosition;
+use PDF\Syntax\ContentStreamsResources\Operators\RestoreGraphicsState;
+use PDF\Syntax\ContentStreamsResources\Operators\SaveGraphicsState;
 use PDF\Syntax\ContentStreamsResources\Operators\SetLineWidth;
 use PDF\Syntax\ContentStreamsResources\Operators\SetNonstrokingGray;
+use PDF\Syntax\ContentStreamsResources\Operators\SetNonstrokingRGBColor;
 use PDF\Syntax\ContentStreamsResources\Operators\SetTextFontAndSize;
 use PDF\Syntax\ContentStreamsResources\Operators\ShowText;
 use PDF\Syntax\ContentStreamsResources\Operators\StrokePath;
@@ -96,33 +104,75 @@ $tree->addRoot($person);
 // Une apparence est un XObject Form dont BBox est local au widget. Les octets
 // visibles sont distincts de /V : changer la valeur demande une nouvelle AP,
 // ou une demande explicite NeedAppearances au lecteur. Ici AP est fournie.
-$drawAppearance = static function (string $text, int $width, int $height) use ($resources): FormAppearanceStream {
+// Le cadre reste statique. Pour /Tx et /Ch, la section /Tx BMC ... EMC indique
+// au lecteur ce qu'il doit REMPLACER lors d'une saisie (ISO 12.7.3.3, p.444).
+// Sans cette section, Acrobat ajoute le texte et conserve l'ancien dessin.
+$drawAppearance = static function (ContentStreams $contents, int $width, int $height) use ($resources): FormAppearanceStream {
     return new FormAppearanceStream(new ContentStreams(
         new SetLineWidth(new NumericType(1)),
         new AppendRectangle(new NumericType(0.5), new NumericType(0.5), new NumericType($width - 1), new NumericType($height - 1)),
         new StrokePath(),
-        new BeginTextObject(),
-        new SetTextFontAndSize(new NameType('Helv'), new NumericType(12)),
-        new MoveTextPosition(new NumericType(8), new NumericType(($height - 12) / 2)),
-        new ShowText(new LiteralString($text)),
-        new EndTextObject(),
+        ...$contents->operators,
     ), new Rectangle(new NumericType(0), new NumericType(0), new NumericType($width), new NumericType($height)), $resources);
 };
+$label = static fn (string $text, int $height): ContentStreams => new ContentStreams(
+    new BeginTextObject(),
+    new SetTextFontAndSize(new NameType('Helv'), new NumericType(12)),
+    new SetNonstrokingGray(new NumericType(0)),
+    new MoveTextPosition(new NumericType(8), new NumericType(($height - 12) / 2)),
+    new ShowText(new LiteralString($text)),
+    new EndTextObject(),
+);
 $rectangle = static fn (int $x, int $y, int $width, int $height): Rectangle => new Rectangle(new NumericType($x), new NumericType($y), new NumericType($x + $width), new NumericType($y + $height));
 $print = new Entry(new NameType('F'), new IntegerType(4));
-$nameWidget = new WidgetAnnotation($rectangle(64, 620, 320, 32), new WidgetAppearance($drawAppearance('Ada Lovelace', 320, 32)), null, $print);
-$countryWidget = new WidgetAnnotation($rectangle(64, 538, 320, 32), new WidgetAppearance($drawAppearance('France + Belgique (FR, BE)', 320, 32)), null, $print);
+$nameAppearance = $drawAppearance(new ContentStreams(...[
+    new BeginMarkedContent(new NameType('Tx')),
+    new SaveGraphicsState(),
+    new AppendRectangle(new NumericType(1), new NumericType(1), new NumericType(318), new NumericType(30)),
+    new ClipPathNonzero(),
+    new EndPath(),
+    ...$label('Ada Lovelace', 32)->operators,
+    new RestoreGraphicsState(),
+    new EndMarkedContent(),
+]), 320, 32);
+// Une liste dessine ses libellés /Opt, ligne par ligne, et ses deux sélections
+// /I. Les valeurs exportées FR/BE restent exclusivement des données /V.
+// Le surlignage et les lignes sont tous dans la section variable remplaçable.
+$countryAppearance = $drawAppearance(new ContentStreams(
+    new BeginMarkedContent(new NameType('Tx')),
+    new SaveGraphicsState(),
+    new AppendRectangle(new NumericType(1), new NumericType(1), new NumericType(318), new NumericType(30)),
+    new ClipPathNonzero(),
+    new EndPath(),
+    new SetNonstrokingRGBColor(new NumericType(0.85), new NumericType(0.9), new NumericType(0.97)),
+    new AppendRectangle(new NumericType(1), new NumericType(16), new NumericType(318), new NumericType(14)),
+    new FillPathNonzero(),
+    new AppendRectangle(new NumericType(1), new NumericType(2), new NumericType(318), new NumericType(14)),
+    new FillPathNonzero(),
+    new BeginTextObject(),
+    new SetTextFontAndSize(new NameType('Helv'), new NumericType(12)),
+    new SetNonstrokingGray(new NumericType(0)),
+    new MoveTextPosition(new NumericType(8), new NumericType(19)),
+    new ShowText(new LiteralString('France')),
+    new MoveTextPosition(new NumericType(0), new NumericType(-14)),
+    new ShowText(new LiteralString('Belgique')),
+    new EndTextObject(),
+    new RestoreGraphicsState(),
+    new EndMarkedContent(),
+), 320, 32);
+$nameWidget = new WidgetAnnotation($rectangle(64, 620, 320, 32), new WidgetAppearance($nameAppearance), null, $print);
+$countryWidget = new WidgetAnnotation($rectangle(64, 538, 320, 32), new WidgetAppearance($countryAppearance), null, $print);
 
 // Boutons : /V est le nom de l'état sélectionné. Chaque widget conserve son
 // propre /AS et ses deux apparences /Off et /Yes (ou Email/Paper pour la radio).
-$checkboxAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance('', 24, 24)), new AppearanceState(new NameType('Yes'), $drawAppearance('X', 24, 24)));
+$checkboxAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance($label('', 24), 24, 24)), new AppearanceState(new NameType('Yes'), $drawAppearance($label('X', 24), 24, 24)));
 $consentWidget = new WidgetAnnotation($rectangle(64, 460, 24, 24), new WidgetAppearance($checkboxAppearances), new NameType('Yes'), $print);
-$emailAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance('', 24, 24)), new AppearanceState(new NameType('Email'), $drawAppearance('X', 24, 24)));
-$paperAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance('', 24, 24)), new AppearanceState(new NameType('Paper'), $drawAppearance('X', 24, 24)));
+$emailAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance($label('', 24), 24, 24)), new AppearanceState(new NameType('Email'), $drawAppearance($label('X', 24), 24, 24)));
+$paperAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance($label('', 24), 24, 24)), new AppearanceState(new NameType('Paper'), $drawAppearance($label('X', 24), 24, 24)));
 $emailWidget = new WidgetAnnotation($rectangle(64, 382, 24, 24), new WidgetAppearance($emailAppearances), new NameType('Email'), $print);
 $paperWidget = new WidgetAnnotation($rectangle(210, 382, 24, 24), new WidgetAppearance($paperAppearances), new NameType('Off'), $print);
-$resetWidget = new WidgetAnnotation($rectangle(64, 300, 220, 32), new WidgetAppearance($drawAppearance('Reinitialiser les champs', 220, 32)), null, $print, new Entry(new NameType('A'), new ResetFormActionTable238(new Entry(new NameType('S'), new NameType('ResetForm')))));
-$signatureWidget = new WidgetAnnotation($rectangle(64, 218, 320, 32), new WidgetAppearance($drawAppearance('Signature non renseignee', 320, 32)), null, $print);
+$resetWidget = new WidgetAnnotation($rectangle(64, 300, 220, 32), new WidgetAppearance($drawAppearance($label('Reinitialiser les champs', 32), 220, 32)), null, $print, new Entry(new NameType('A'), new ResetFormActionTable238(new Entry(new NameType('S'), new NameType('ResetForm')))));
+$signatureWidget = new WidgetAnnotation($rectangle(64, 218, 320, 32), new WidgetAppearance($drawAppearance($label('Signature non renseignee', 32), 320, 32)), null, $print);
 $name->addWidget($nameWidget);
 $countries->addWidget($countryWidget);
 $consent->addWidget($consentWidget);

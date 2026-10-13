@@ -11,6 +11,8 @@ from pypdf import PdfReader
 from pypdf.generic import read_object
 from pypdf._utils import read_non_whitespace
 
+from validate_variable_text_appearances import verify_variable_text_appearance
+
 
 def object_without_xref(path: Path):
     """Parse actual FDF object syntax without inventing a PDF header or page tree."""
@@ -83,6 +85,35 @@ assert "/V" not in fields["Person.Reset"]
 assert "/V" not in fields["Person.Signature"]
 widgets = reader.pages[0]["/Annots"]
 assert len(widgets) == 7
+terminal_fields = {str(reference.get_object()["/Parent"]["/T"]): reference.get_object()["/Parent"] for reference in widgets}
+country_field = terminal_fields["Countries"]
+assert country_field["/FT"] == "/Ch"
+assert country_field["/Ff"] & (1 << 21)  # MultiSelect is bit 22.
+assert not country_field["/Ff"] & (1 << 17)  # It is a list box, not Combo.
+assert country_field["/Opt"] == [["FR", "France"], ["BE", "Belgique"]]
+assert country_field["/V"] == ["FR", "BE"]
+assert country_field["/I"] == [0, 1]
+assert country_field.get("/TI", 0) == 0
+assert [str(country_field["/Opt"][index][0]) for index in country_field["/I"]] == list(country_field["/V"])
+selected_display = [str(country_field["/Opt"][index][1]) for index in country_field["/I"]]
+assert selected_display == ["France", "Belgique"]
+variable_appearance_proofs = {}
+for reference in widgets:
+    widget = reference.get_object()
+    field = widget["/Parent"]
+    name = str(field["/T"])
+    if name == "Name":
+        variable_appearance_proofs[name] = verify_variable_text_appearance(
+            widget["/AP"]["/N"], reader, [str(field["/V"])],
+            [["Grace Hopper"], ["Katherine Johnson"]], "Person.Name",
+        )
+    elif name == "Countries":
+        variable_appearance_proofs[name] = verify_variable_text_appearance(
+            widget["/AP"]["/N"], reader, selected_display,
+            [["Belgique"], ["France"]], "Person.Countries",
+            expected_selection_fills=2,
+        )
+assert set(variable_appearance_proofs) == {"Name", "Countries"}
 page_identity = reader.pages[0].indirect_reference
 for reference in widgets:
     widget = reference.get_object()
@@ -114,4 +145,4 @@ minimal_values = field_values(minimal["/FDF"])
 traditional = PdfReader(directory / "acroform-traditional.fdf")
 assert "/Pages" not in traditional.trailer["/Root"]
 assert minimal_values == field_values(traditional.trailer["/Root"]["/FDF"])
-print("AcroForm: six terminal fields, seven widgets, states/resources/locks validated; native minimal and traditional FDF agree.")
+print("AcroForm: six terminal fields, seven widgets, states/resources/locks validated; native minimal and traditional FDF agree. Editable Name/Countries AP parsed independently: complete Tx text, balanced q/Q and clipping, replaceable selection fills, outside frames, two actual France/Belgique lines, repeated source-prescribed replacement, nested marked content and no-Tx append regressions verified.")

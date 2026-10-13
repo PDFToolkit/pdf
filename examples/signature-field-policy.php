@@ -31,10 +31,16 @@ use PDF\Security\X509Certificate;
 use PDF\Serialization\SignatureWriter;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\ContentStreamsResources\Operators\AppendRectangle;
+use PDF\Syntax\ContentStreamsResources\Operators\BeginMarkedContent;
 use PDF\Syntax\ContentStreamsResources\Operators\BeginTextObject;
+use PDF\Syntax\ContentStreamsResources\Operators\ClipPathNonzero;
+use PDF\Syntax\ContentStreamsResources\Operators\EndMarkedContent;
+use PDF\Syntax\ContentStreamsResources\Operators\EndPath;
 use PDF\Syntax\ContentStreamsResources\Operators\EndTextObject;
 use PDF\Syntax\ContentStreamsResources\Operators\FillPathNonzero;
 use PDF\Syntax\ContentStreamsResources\Operators\MoveTextPosition;
+use PDF\Syntax\ContentStreamsResources\Operators\RestoreGraphicsState;
+use PDF\Syntax\ContentStreamsResources\Operators\SaveGraphicsState;
 use PDF\Syntax\ContentStreamsResources\Operators\SetLineWidth;
 use PDF\Syntax\ContentStreamsResources\Operators\SetNonstrokingGray;
 use PDF\Syntax\ContentStreamsResources\Operators\SetStrokingGray;
@@ -87,13 +93,23 @@ $text = static fn (string $value, int $x, int $y, int $size, string $font = 'F1'
     new ShowText(new LiteralString($value)),
     new EndTextObject(),
 );
-$referenceAppearance = new FormAppearanceStream(new ContentStreams(
+$referenceAppearance = new FormAppearanceStream(new ContentStreams(...[
     new SetStrokingGray(new NumericType(0.7)),
     new SetLineWidth(new NumericType(1)),
     new AppendRectangle(new NumericType(0.5), new NumericType(0.5), new NumericType(498), new NumericType(31)),
     new StrokePath(),
+    // ISO 12.7.3.3, p.444 : le lecteur remplace uniquement le texte variable,
+    // en conservant le cadre. Cette apparence reste distincte de la signature.
+    new BeginMarkedContent(new NameType('Tx')),
+    new SaveGraphicsState(),
+    new AppendRectangle(new NumericType(1), new NumericType(1), new NumericType(497), new NumericType(30)),
+    new ClipPathNonzero(),
+    new EndPath(),
+    new SetNonstrokingGray(new NumericType(0)),
     ...$text('DOSSIER-2026-010', 12, 10, 12)->operators,
-), $rectangle(0, 0, 499, 32), $resources);
+    new RestoreGraphicsState(),
+    new EndMarkedContent(),
+]), $rectangle(0, 0, 499, 32), $resources);
 $signatureAppearance = new FormAppearanceStream(new ContentStreams(
     new SetNonstrokingGray(new NumericType(0.95)),
     new AppendRectangle(new NumericType(0), new NumericType(0), new NumericType(499), new NumericType(80)),

@@ -8,6 +8,7 @@ import tempfile
 from pypdf import PdfReader
 
 from validate_signature_field_policies import run, signature_proof
+from validate_variable_text_appearances import verify_variable_text_appearance
 
 
 def verify(path, root):
@@ -54,6 +55,11 @@ def verify(path, root):
         assert appearance['/Subtype'] == '/Form'
         text = b'DOSSIER-2026-010' if str(field['/T']) == 'Reference' else b'Signature mathematiquement verifiee'
         assert text in appearance.get_data()
+        if str(field['/T']) == 'Reference':
+            verify_variable_text_appearance(
+                appearance, reader, [str(field['/V'])],
+                [['DOSSIER-2026-011'], ['DOSSIER-2026-012']], 'Reference',
+            )
     certificate = (root / 'tests/Fixtures/signing/signer.der').read_bytes()
     end, digest = signature_proof(path.read_bytes(), signature, certificate)
     assert end == path.stat().st_size and digest == 'SHA256'
@@ -72,7 +78,7 @@ def main():
             run([args.php, root / 'examples/signature-field-policy.php', path])
         run([args.qpdf, '--check', path])
         verify(path, root)
-    print('Signature field policy example: 1 page, 1 signature field, 1 selected text field, mandatory emitted seed, copied FieldMDP and widgets, actual CMS RSA/SHA256 mathematically verified.')
+    print('Signature field policy example: 1 page, 1 signature field, 1 selected text field, mandatory emitted seed, copied FieldMDP and widgets, actual CMS RSA/SHA256 mathematically verified. Reference AP independently parsed: complete Tx text, balanced q/Q and clipping, outside frame, repeated source-prescribed replacement and no-Tx append regression verified.')
 
 
 if __name__ == '__main__':
