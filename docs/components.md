@@ -294,6 +294,18 @@ Les entrées de [`CatalogDictionary`](../src/Syntax/DocumentStructure/CatalogDic
 
 Le [premier document](tutorials/01-first-document.md) présente une page ; le [tutoriel pages et texte](tutorials/02-pages-and-text.md) montre des pages partageant des ressources et des propriétés héritées.
 
+Pour consulter des pages d'un PDF existant, le module optionnel
+[`PageTreeReader`](https://github.com/PDFToolkit/pdf-reader/blob/master/src/PageTreeReader.php)
+parcourt et vérifie son arbre. Il produit un
+[`ReadPageTree`](https://github.com/PDFToolkit/pdf-reader/blob/master/src/ReadPageTree.php)
+dont les [`ReadPage`](https://github.com/PDFToolkit/pdf-reader/blob/master/src/ReadPage.php)
+gardent leurs dictionnaires source et leurs
+[`PageAttributes`](https://github.com/PDFToolkit/pdf-reader/blob/master/src/PageAttributes.php)
+effectifs. [`PageContentsReader`](https://github.com/PDFToolkit/pdf-reader/blob/master/src/PageContentsReader.php)
+résout séparément les flux locaux de chaque page, sans décodage implicite.
+Le [guide des modules](packages.md#lire-un-pdf-externe) montre cette construction ;
+ces vues de lecture ne remplacent pas les objets de génération du core.
+
 ## 8. Ressources, polices et informations documentaires
 
 ### Ressources nommées
@@ -399,4 +411,4 @@ Pour créer un document, commencer par les objets de domaine : pages, ressources
 
 Les constructeurs vérifient les valeurs locales, les builders vérifient la propriété des graphes, et l'écriture vérifie les états qui nécessitent un graphe complet. L'application choisit les données, les chemins, les ressources accessibles et les actions qu'elle accepte. La [documentation de sécurité](security.md) précise les limites et les protections disponibles.
 
-Pour passer à des documents complets, suivre les [onze tutoriels](tutorials/README.md), comparer leur aperçu au PDF téléchargeable sur le site, puis étudier la [recette de tableau](recipes/table.md). Pour lire un PDF externe, utiliser le [module lecteur](packages.md#lire-un-pdf-externe), avec résolution et décodage explicites. Pour ajouter un comportement au modèle, consulter l'[architecture](architecture.md), la [couverture de spécification](specification.md) et la [référence API](https://pdftoolkit.github.io/pdf/reference/index.html).
+Pour passer à des documents complets, suivre les [tutoriels](tutorials/README.md), comparer leur aperçu au PDF téléchargeable sur le site, puis étudier la [recette de tableau](recipes/table.md). Pour lire un PDF externe, utiliser le [module lecteur](packages.md#lire-un-pdf-externe), avec résolution et décodage explicites. Pour ajouter un comportement au modèle, consulter l'[architecture](architecture.md), la [couverture de spécification](specification.md) et la [référence API](https://pdftoolkit.github.io/pdf/reference/index.html).

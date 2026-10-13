@@ -34,7 +34,7 @@ composer require roukmoute/pdf:^0.1
 
 | Package | Responsabilité |
 | --- | --- |
-| [`pdftoolkit/pdf-reader`](https://github.com/PDFToolkit/pdf-reader) | Lire les objets, références, révisions et flux d'un PDF externe. |
+| [`pdftoolkit/pdf-reader`](https://github.com/PDFToolkit/pdf-reader) | Lire les objets et révisions d'un PDF externe, vérifier ses pages et leur héritage, inspecter leurs flux. |
 | [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 

@@ -23,7 +23,7 @@ L'écriture reste dans le core, car elle produit la syntaxe et la structure PDF.
 | [PDFToolkit/pdf](https://github.com/PDFToolkit/pdf) — `roukmoute/pdf` | Objets PDF assemblés par l'application | Fichier PDF, références croisées et révisions |
 | [PDFToolkit/pdf-images](https://github.com/PDFToolkit/pdf-images) — `pdftoolkit/pdf-images` | Octets PNG ou JPEG et limites explicites | Échantillons couleur/alpha ou représentation DCT du core |
 | [PDFToolkit/pdf-fonts](https://github.com/PDFToolkit/pdf-fonts) — `pdftoolkit/pdf-fonts` | Octets TrueType, texte et paramètres explicites | Programme incorporable, métriques et correspondances pour le core |
-| [PDFToolkit/pdf-reader](https://github.com/PDFToolkit/pdf-reader) — `pdftoolkit/pdf-reader` | Octets PDF et budgets de lecture | Graphe lu, références à résoudre et flux encodés ou décodés |
+| [PDFToolkit/pdf-reader](https://github.com/PDFToolkit/pdf-reader) — `pdftoolkit/pdf-reader` | Octets PDF et budgets de lecture | Graphe lu, pages et attributs hérités, références à résoudre et flux encodés ou décodés |
 
 Les dépendances vont **des modules vers le core**. Les modules ne se dépendent
 pas entre eux. Le core ne connaît aucun de leurs parseurs : une application peut
@@ -61,38 +61,60 @@ pour fixer les révisions.
 ## Lire un PDF externe
 
 Le lecteur reçoit ses octets ; l'application choisit comment les obtenir.
-`DocumentReader`, `FileBytes` et `ReaderLimits` appartiennent au namespace
+`DocumentReader`, `FileBytes` et les lecteurs de pages appartiennent au namespace
 `PDF\Reading` du module, tandis que les dictionnaires et nombres utilisent
 les mêmes classes `PDF\Syntax\Object` que le writer.
 
 ```php
 use PDF\Reading\DocumentReader;
 use PDF\Reading\FileBytes;
+use PDF\Reading\PageContentLimits;
+use PDF\Reading\PageContentsReader;
+use PDF\Reading\PageTreeLimits;
+use PDF\Reading\PageTreeReader;
 use PDF\Reading\ReaderLimits;
-use PDF\Syntax\Object\DictionaryType;
-use PDF\Syntax\Object\IntegerType;
 
 $reader = new DocumentReader(new ReaderLimits(maxFileBytes: 8_388_608));
 $document = $reader->read(new FileBytes($pdfBytes));
-$catalog = $document->catalog();
-$pages = $document->resolve(
-    $catalog->get('Pages') ?? throw new UnexpectedValueException('Missing Pages.'),
-);
-if (!$pages instanceof DictionaryType) {
-    throw new UnexpectedValueException('Pages must resolve to a dictionary.');
+$tree = (new PageTreeReader($document, new PageTreeLimits(
+    maxDepth: 64,
+    maxNodes: 10_000,
+    maxPages: 5_000,
+)))->read();
+$contentsReader = new PageContentsReader($document, new PageContentLimits(
+    maxStreams: 128,
+));
+
+printf("Validated page count: %d\n", count($tree));
+foreach ($tree as $index => $page) {
+    printf(
+        "Page %d; rotation: %d; content streams: %d\n",
+        $index + 1,
+        $page->attributes->rotate->integer(),
+        count($contentsReader->read($page)),
+    );
 }
-$count = $pages->get('Count');
-if (!$count instanceof IntegerType) {
-    throw new UnexpectedValueException('Count must be an integer.');
-}
-printf("Declared page count: %d\n", $count->integer());
 ```
 
-`get()` conserve une référence comme référence. `resolve()` demande son chargement
-dans ce document. Les objets lus sont conservés dans un cache propre au document ;
-il n'y a ni singleton ni résolution cachée dans les valeurs. `/Count` est la valeur
-déclarée par le PDF : cet exemple ne recompte pas les pages et ne valide pas tout
-l'arbre.
+`PageTreeReader::read()` vérifie l'arbre entier : comptes de feuilles, parents,
+cycles et identités répétées. Il retourne un `ReadPageTree` comptable et itérable,
+avec des `ReadPage` conservant leur document, leur référence et leur dictionnaire
+source. Leurs `PageAttributes` donnent les ressources, MediaBox, CropBox et
+rotation effectifs, après héritage depuis l'ancêtre le plus proche. Un dictionnaire
+de ressources local remplace celui hérité sans fusion ; Contents reste local.
+
+`PageContentsReader` donne des `EncodedStream` dans l'ordre du document, sans
+concaténation ni décodage. Les limites de parcours et de nombre de flux sont des
+objets explicites ; les budgets cumulatifs de `ReadDocument` continuent de
+s'appliquer. Pour obtenir les octets décodés, demander séparément
+`$document->streamData($stream)`. Le
+[guide de lecture des pages](https://github.com/PDFToolkit/pdf-reader/blob/master/docs/pages.md)
+explique chaque étape et fournit un exemple exécutable avec trois pages héritées.
+
+Les valeurs PDF restent des objets : `get()` conserve une référence comme
+référence et `resolve()` demande son chargement dans ce document. Les objets lus
+sont conservés dans un cache propre au document ; il n'y a ni singleton ni
+résolution cachée dans les valeurs.
 
 Le lecteur gère les tables et flux xref, les révisions `/Prev`, les flux d'objets,
 Flate, ASCIIHex, ASCII85 et RunLength, ainsi que certains prédicteurs TIFF/PNG.

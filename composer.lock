@@ -853,12 +853,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-reader.git",
-                "reference": "9aac316cf0f288447fd0af5b4de927db05c8c0ac"
+                "reference": "119abbdcaca47a6ac5e8b2eae0f2356b2e386856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/9aac316cf0f288447fd0af5b4de927db05c8c0ac",
-                "reference": "9aac316cf0f288447fd0af5b4de927db05c8c0ac",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/119abbdcaca47a6ac5e8b2eae0f2356b2e386856",
+                "reference": "119abbdcaca47a6ac5e8b2eae0f2356b2e386856",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +926,7 @@
                 "issues": "https://github.com/PDFToolkit/pdf-reader/issues",
                 "source": "https://github.com/PDFToolkit/pdf-reader"
             },
-            "time": "2026-10-13T08:34:21+00:00"
+            "time": "2026-10-13T09:49:27+00:00"
         },
         {
             "name": "phar-io/manifest",
