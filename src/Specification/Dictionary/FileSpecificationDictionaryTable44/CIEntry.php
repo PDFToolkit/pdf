@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace PDF\Specification\Dictionary\FileSpecificationDictionaryTable44;
 
 use PDF\Specification\Definition\FileSpecificationDictionaryTable44Definition;
-use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 
 /** Table 44, /CI; PDF type: dictionary; Optional; shall be indirect reference; PDF 1.7. */
@@ -16,7 +15,7 @@ final class CIEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '44';
     public const string KEY = 'CI';
 
-    public function __construct(DictionaryType|IndirectReference $value)
+    public function __construct(IndirectReference $value)
     {
         parent::__construct((new FileSpecificationDictionaryTable44Definition())->entry('CI'), $value);
     }

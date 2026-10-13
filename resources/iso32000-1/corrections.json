@@ -146,5 +146,16 @@
     "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
     "evidence_url": "PDF32000_2008.pdf#page=204",
     "evidence_locator": "ISO 32000-1:2008, table 84, Function value prose, physical PDF page 204"
+  },
+  {
+    "id": "file-specification-f-amendment-is-not-introduction",
+    "table": "44",
+    "entry": "F",
+    "constraints": {
+      "introduced_in": null
+    },
+    "rationale": "The PDF1.7 qualifier describes the UF amendment, not the introduction of F. File specifications exist since PDF1.1 (7.11.1). Preserve the printed wording but do not require PDF1.7 for the original F entry.",
+    "evidence_url": "PDF32000_2008.pdf#page=110",
+    "evidence_locator": "ISO32000-1 7.11.1 physical page107 and Table44 physical page110; UF amendment vs existing F."
   }
 ]

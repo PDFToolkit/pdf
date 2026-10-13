@@ -3667,12 +3667,23 @@
         "conditional": true,
         "inheritable": false,
         "indirect": false,
-        "introduced_in": "1.7",
+        "introduced_in": null,
         "pdf_page": 110,
         "source_constraints": {
           "direct": false,
           "indirect": false,
           "array_elements_direct": false
+        },
+        "implementation_correction": {
+          "id": "file-specification-f-amendment-is-not-introduction",
+          "table": "44",
+          "entry": "F",
+          "constraints": {
+            "introduced_in": null
+          },
+          "rationale": "The PDF1.7 qualifier describes the UF amendment, not the introduction of F. File specifications exist since PDF1.1 (7.11.1). Preserve the printed wording but do not require PDF1.7 for the original F entry.",
+          "evidence_url": "PDF32000_2008.pdf#page=110",
+          "evidence_locator": "ISO32000-1 7.11.1 physical page107 and Table44 physical page110; UF amendment vs existing F."
         }
       },
       {
@@ -3866,12 +3877,12 @@
         "required": false,
         "conditional": false,
         "inheritable": false,
-        "indirect": false,
+        "indirect": true,
         "introduced_in": "1.7",
         "pdf_page": 111,
         "source_constraints": {
           "direct": false,
-          "indirect": false,
+          "indirect": true,
           "array_elements_direct": false
         }
       }
@@ -12083,7 +12094,7 @@
   {
     "id": "159",
     "title": "Entries in a page label dictionary",
-    "section": "12.4.3",
+    "section": "12.4.2",
     "pdf_pages": [
       383
     ],
@@ -12170,7 +12181,8 @@
       }
     ],
     "variable_entries": [],
-    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints"
+    "implementation": "object_type_validation; unconditional_required_keys; indirect_reference_constraints",
+    "extraction_section": "12.4.3"
   },
   {
     "id": "160",

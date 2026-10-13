@@ -53,7 +53,7 @@ def refresh_constraints(dictionaries: list[dict], corrections_path: Path) -> Non
     # An adjacent later heading must not move a continued table into another
     # normative clause. Physical PDF pages and original table prose stay intact.
     source_clauses = {'229': '12.7.4.3', '249': '12.7.7.3.3', '250': '12.7.7.3.3',
-                      '251': '12.7.7.3.4', '349': '14.8.5.7'}
+                      '251': '12.7.7.3.4', '349': '14.8.5.7', '159': '12.4.2'}
     for dictionary in dictionaries:
         if dictionary['id'] in source_clauses:
             if dictionary['section'] != source_clauses[dictionary['id']]:
@@ -67,8 +67,8 @@ def refresh_constraints(dictionaries: list[dict], corrections_path: Path) -> Non
             entry['inheritable'] = bool(re.search(r'\binheritable\b', qualifier, re.I) and not re.search(r'\b(?:not|non)[\s-]+inheritable\b', qualifier, re.I))
             if 'type' in entry.get('source_constraints', {}):
                 entry['type'] = entry['source_constraints']['type']
-            direct = dictionary['id'] == '17' or bool(re.search(r'(?:shall|must) not be an indirect reference|(?:shall|must) be a direct object', qualifier, re.I))
-            indirect = not direct and bool(re.search(r'(?:shall|must) be an indirect reference', qualifier, re.I))
+            direct = dictionary['id'] == '17' or bool(re.search(r'(?:shall|must) not be (?:an? )?indirect reference|(?:shall|must) be (?:a )?direct object', qualifier, re.I))
+            indirect = not direct and bool(re.search(r'(?:shall|must) be (?:an? )?indirect reference', qualifier, re.I))
             entry['direct'] = direct
             entry['indirect'] = indirect
             entry['array_elements_direct'] = dictionary['id'] == '17' and entry['name'] in ['Index', 'W']
