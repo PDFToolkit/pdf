@@ -76,7 +76,7 @@ $reused = (new IncrementalUpdate(
 // transformer en alias de la nouvelle valeur et sans ressusciter l'ancien objet.
 $oldReference = $reused->reference($old);
 $currentReference = $reused->reference($new);
-$path = $argv[1] ?? dirname(__DIR__) . '/_build/pdfs/object-lifecycle.pdf';
+$path = $argv[1] ?? __DIR__ . '/object-lifecycle.pdf';
 $reused->writeTo($path);
 echo $oldReference->identifier, ' R -> null ; ', $currentReference->identifier, ' R -> dictionnaire', PHP_EOL;
 echo $path, PHP_EOL;
