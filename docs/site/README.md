@@ -1,6 +1,6 @@
 # Construire la documentation
 
-Le site est publié à [roukmoute.github.io/pdf](https://roukmoute.github.io/pdf/). Il documente la branche `master`. Le tag `v0.1.1` reste la dernière version publiée ; ses différences avec `master` figurent dans les guides et le changelog.
+Le site est publié à [pdftoolkit.github.io/pdf](https://pdftoolkit.github.io/pdf/). Il documente la branche `master`. Le tag `v0.1.1` reste la dernière version publiée ; ses différences avec `master` figurent dans les guides et le changelog.
 
 ## Sources et génération
 

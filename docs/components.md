@@ -1,8 +1,8 @@
 # Guide des composants
 
-Ce guide explique les familles d'objets, leurs responsabilités et leur composition. La [référence API exhaustive](https://roukmoute.github.io/pdf/reference/index.html) donne ensuite les signatures de chaque classe, interface, enum, méthode et propriété. Les [tutoriels](tutorials/README.md) montrent des documents complets, leurs instructions PDF et leur résultat visuel ; les [recettes](recipes/README.md) combinent plusieurs familles pour un usage concret.
+Ce guide explique les familles d'objets, leurs responsabilités et leur composition. La [référence API exhaustive](https://pdftoolkit.github.io/pdf/reference/index.html) donne ensuite les signatures de chaque classe, interface, enum, méthode et propriété. Les [tutoriels](tutorials/README.md) montrent des documents complets, leurs instructions PDF et leur résultat visuel ; les [recettes](recipes/README.md) combinent plusieurs familles pour un usage concret.
 
-La documentation publiée depuis `master` suit le code de développement. La dernière version stable est actuellement **0.1.1**. Pour consulter exactement son API, utiliser le [code du tag v0.1.1](https://github.com/roukmoute/pdf/tree/v0.1.1). Pendant la série 0.x, les noms et signatures peuvent évoluer pour améliorer le modèle.
+La documentation publiée depuis `master` suit le code de développement. La dernière version stable est actuellement **0.1.1**. Pour consulter exactement son API, utiliser le [code du tag v0.1.1](https://github.com/PDFToolkit/pdf/tree/v0.1.1). Pendant la série 0.x, les noms et signatures peuvent évoluer pour améliorer le modèle.
 
 Le format décrit est **PDF 1.7, ISO 32000-1:2008**. La version PHP minimale, PHP 8.3, est indépendante de la version du format PDF. La [couverture de la spécification](specification.md) détaille ce qui est modélisé et ce qui nécessite encore un traitement spécialisé.
 
@@ -397,4 +397,4 @@ Pour créer un document, commencer par les objets de domaine : pages, ressources
 
 Les constructeurs vérifient les valeurs locales, les builders vérifient la propriété des graphes, et l'écriture vérifie les états qui nécessitent un graphe complet. L'application choisit les données, les chemins, les ressources accessibles et les actions qu'elle accepte. La [documentation de sécurité](security.md) précise les limites et les protections disponibles.
 
-Pour passer à des documents complets, suivre les [huit tutoriels](tutorials/README.md), comparer leur aperçu au PDF téléchargeable sur le site, puis étudier la [recette de tableau](recipes/table.md). Pour ajouter un comportement au modèle, consulter l'[architecture](architecture.md), la [couverture de spécification](specification.md) et la [référence API](https://roukmoute.github.io/pdf/reference/index.html).
+Pour passer à des documents complets, suivre les [huit tutoriels](tutorials/README.md), comparer leur aperçu au PDF téléchargeable sur le site, puis étudier la [recette de tableau](recipes/table.md). Pour ajouter un comportement au modèle, consulter l'[architecture](architecture.md), la [couverture de spécification](specification.md) et la [référence API](https://pdftoolkit.github.io/pdf/reference/index.html).

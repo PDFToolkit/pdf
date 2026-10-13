@@ -16,7 +16,7 @@ from urllib.parse import quote, urlsplit
 import markdown
 
 
-REPOSITORY = 'https://github.com/roukmoute/pdf'
+REPOSITORY = 'https://github.com/PDFToolkit/pdf'
 GUIDES = [
     ('README.md', 'guides/demarrer.html', 'Démarrer', 'Guides'),
     ('docs/components.md', 'guides/composants.html', 'Comprendre les composants', 'Guides'),
@@ -199,7 +199,7 @@ class Site:
 
     def rewrite_link(self, source: str, href: str) -> str:
         parsed = urlsplit(href)
-        if parsed.netloc == 'roukmoute.github.io' and parsed.path.startswith('/pdf/'):
+        if parsed.netloc == 'pdftoolkit.github.io' and parsed.path.startswith('/pdf/'):
             return self.url(parsed.path[len('/pdf/'):]) + ('#' + parsed.fragment if parsed.fragment else '')
         if parsed.scheme or parsed.netloc or not parsed.path:
             return href

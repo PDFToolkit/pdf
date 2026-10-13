@@ -4,7 +4,9 @@ Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.3 ou su
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
-La [documentation en ligne](https://roukmoute.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
+Le projet fait partie de l'organisation [PDFToolkit](https://github.com/PDFToolkit). Ce dépôt fournit le socle objet PDF. Le lecteur de PDF externes est prévu dans un dépôt distinct, [PDFToolkit/pdf-reader](https://github.com/PDFToolkit/pdf-reader), avec une dépendance du lecteur vers ce socle. Générer un PDF ne nécessitera pas d'installer le lecteur.
+
+La [documentation en ligne](https://pdftoolkit.github.io/pdf/) réunit les guides, la référence de tous les composants et les tutoriels avec leur code et leurs PDF consultables. Elle suit la branche `master` ; les différences avec la dernière version publiée sont indiquées dans les guides et le changelog.
 
 La série `0.x` est une première publication destinée aux développeurs qui souhaitent construire et explorer ce modèle. L'API peut évoluer avant la version `1.0`. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](docs/specification.md).
 
@@ -17,14 +19,14 @@ La branche `master` nécessite PHP 8.3 ou supérieur et les extensions `ctype`, 
 Les versions publiées `v0.1.0` et `v0.1.1` nécessitent toujours PHP 8.5. Pour utiliser les développements de `master`, dont la prise en charge de PHP 8.3, installer explicitement cette branche :
 
 ```sh
-composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf
+composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
 composer require roukmoute/pdf:dev-master
 ```
 
 La version corrective est identifiée par le tag Git `v0.1.1`. Avec le dépôt déclaré comme source Composer :
 
 ```sh
-composer config repositories.roukmoute-pdf vcs https://github.com/roukmoute/pdf
+composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
 composer require roukmoute/pdf:^0.1
 ```
 
@@ -101,7 +103,7 @@ La [recette de tableau](docs/recipes/table.md) assemble ces notions dans une pr�
 
 Voir [`docs/architecture.md`](docs/architecture.md) pour les choix de construction et [`docs/specification.md`](docs/specification.md) pour la traçabilité et les limites.
 
-Le [guide des composants](docs/components.md) explique chaque famille d'objets. La [référence API](https://roukmoute.github.io/pdf/reference/index.html) donne les signatures et les liens vers le code et la norme. Les [instructions de construction du site](docs/site/README.md) décrivent la génération et les vérifications locales.
+Le [guide des composants](docs/components.md) explique chaque famille d'objets. La [référence API](https://pdftoolkit.github.io/pdf/reference/index.html) donne les signatures et les liens vers le code et la norme. Les [instructions de construction du site](docs/site/README.md) décrivent la génération et les vérifications locales.
 
 ## Couverture et limites
 

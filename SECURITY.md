@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Use [GitHub private vulnerability reporting](https://github.com/roukmoute/pdf/security/advisories/new) to report a suspected vulnerability. Include the affected version, a minimal reproduction, expected behaviour and the observed impact. Avoid real credentials, customer data and public exploit reports before a fix can be prepared.
+Use [GitHub private vulnerability reporting](https://github.com/PDFToolkit/pdf/security/advisories/new) to report a suspected vulnerability. Include the affected version, a minimal reproduction, expected behaviour and the observed impact. Avoid real credentials, customer data and public exploit reports before a fix can be prepared.
 
 Security fixes are applied to `master`. The published `0.1` series receives the security fixes identified in the October 2026 review through version `0.1.1`; upgrade from `0.1.0`. New API development remains on `master`.
 

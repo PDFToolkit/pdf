@@ -3,10 +3,10 @@
     "type": "library",
     "description": "An explicit object model and writer for ISO 32000-1 PDF 1.7",
     "keywords": ["pdf", "pdf-1.7", "iso-32000-1", "object-model", "php"],
-    "homepage": "https://github.com/roukmoute/pdf",
+    "homepage": "https://github.com/PDFToolkit/pdf",
     "support": {
-        "issues": "https://github.com/roukmoute/pdf/issues",
-        "source": "https://github.com/roukmoute/pdf"
+        "issues": "https://github.com/PDFToolkit/pdf/issues",
+        "source": "https://github.com/PDFToolkit/pdf"
     },
     "require": {
         "php": "^8.3",
