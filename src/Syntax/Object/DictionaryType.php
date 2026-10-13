@@ -81,7 +81,7 @@ class DictionaryType implements BasicType, \Countable, \IteratorAggregate
                 throw new \LogicException('Duplicate dictionary key: ' . $entry->key->value);
             }
             $keys[$entry->key->value] = true;
-            $pairs[] = $context->serialize($entry->key) . ' ' . $context->serialize($entry->value);
+            $pairs[] = $context->serializeEntry($this, $entry);
         }
         return '<<' . ($pairs === [] ? '' : ' ' . implode(' ', $pairs) . ' ') . '>>';
     }

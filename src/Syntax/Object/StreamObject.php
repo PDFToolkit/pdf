@@ -43,7 +43,7 @@ class StreamObject implements BasicType
     }
     public function bytes(SerializationContext $context): string
     {
-        $bytes = is_string($this->data) ? $this->data : $this->data->toPdf($context);
+        $bytes = is_string($this->data) ? $this->data : $context->serializeStreamValue($this->data);
         // Filter array is in decoding order, so encoders run in reverse.
         foreach (array_reverse($this->filters) as $filter) {
             $bytes = $filter->encode($bytes);
@@ -53,7 +53,7 @@ class StreamObject implements BasicType
 
     public function toPdf(SerializationContext $context): string
     {
-        $bytes = $this->bytes($context);
+        $bytes = $context->encryptStream($this, $this->bytes($context));
         $dictionary = $this->dictionary()->with(new Entry(new NameType('Length'), new StreamExtent($bytes)));
         if ($this->filters !== []) {
             $names = array_map(static fn (Filter $filter): NameType => $filter->name(), $this->filters);

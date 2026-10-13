@@ -108,7 +108,7 @@ final class ObjectStream extends StreamObject
         foreach ($this->members as $member) {
             $header[] = (string) $member->objectNumber->value;
             $header[] = (string) strlen($body);
-            $body .= $context->serialize($member->value) . "\n";
+            $body .= $context->serializeStreamValue($member->value) . "\n";
         }
         $prefix = $header === [] ? '' : implode(' ', $header) . "\n";
 

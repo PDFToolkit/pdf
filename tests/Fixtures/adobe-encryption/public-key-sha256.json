@@ -1,0 +1,52 @@
+{
+  "producer": "OpenSSL 3.2.3 cms -encrypt -binary -aes-256-cbc -outform DER; SHA-256 oracle: Python hashlib",
+  "recipients": [
+    {
+      "filename": "public-key-recipient-1.der",
+      "sha256": "816172a582b0ba02c546cce50a83891e0789954060461dd223d3edc4299df0f1"
+    },
+    {
+      "filename": "public-key-recipient-2.der",
+      "sha256": "9f4957b49bf76a63841bea01b6c1d2be8982d35da02f9f54506edf80eab91583"
+    }
+  ],
+  "scope": "Opaque CMS envelopes of a public 20-byte test seed plus four sample permission bytes. No CMS or certificate validation is implemented by the library.",
+  "vectors": [
+    {
+      "EncryptMetadata": true,
+      "fileKey": "723b8e0446bb0ea2683204a6f2f97760e74ca6ef984788e78db429502bdd8bcf",
+      "recipients": [
+        "public-key-recipient-1.der",
+        "public-key-recipient-2.der"
+      ],
+      "seed": "000102030405060708090a0b0c0d0e0f10111213"
+    },
+    {
+      "EncryptMetadata": false,
+      "fileKey": "7e1508c8e019ee467847c05597c86ff4f85c0a422208533485694bce9f9fd942",
+      "recipients": [
+        "public-key-recipient-1.der",
+        "public-key-recipient-2.der"
+      ],
+      "seed": "000102030405060708090a0b0c0d0e0f10111213"
+    },
+    {
+      "EncryptMetadata": true,
+      "fileKey": "0a0593b626a510b6303ad43d871edb2769ebd453ffd6dd9272851a217ba41b0b",
+      "recipients": [
+        "public-key-recipient-2.der",
+        "public-key-recipient-1.der"
+      ],
+      "seed": "000102030405060708090a0b0c0d0e0f10111213"
+    },
+    {
+      "EncryptMetadata": false,
+      "fileKey": "3813fd5e7c09db0c4fb428542cb618b9ce52788751d231b1a26d66365dad69bb",
+      "recipients": [
+        "public-key-recipient-2.der",
+        "public-key-recipient-1.der"
+      ],
+      "seed": "000102030405060708090a0b0c0d0e0f10111213"
+    }
+  ]
+}

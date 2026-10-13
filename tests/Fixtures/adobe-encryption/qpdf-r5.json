@@ -1,0 +1,34 @@
+{
+  "passwords": {
+    "owner": "owner",
+    "user": "user"
+  },
+  "producer": "qpdf version 12.4.2\nRun qpdf --copyright to see copyright and license information.",
+  "source": "MIT test document built by tools/fixtures/adobe_encryption.php",
+  "vectors": [
+    {
+      "EncryptMetadata": true,
+      "O": "4660ce48c37d91df12f84937ea094f613a3a5817e6805c633d3ba090eda475bb9ca1561325020d1f7c6ae05456735e5c",
+      "OE": "2f77f80ecf5ae1edbcf9238dad0db6d409264f1b37b7a16a13bde1cf355c9d87",
+      "P": -3392,
+      "Perms": "15451f47c59a8764c24db61a147e5bdc",
+      "U": "a5af56a289d55aff545638bad791f326a26489f27791ea500b9ffd9054a41e96944f937d0e0481316cb584fe6835424f",
+      "UE": "537c2f860a477c3203d2c5c7c105b2647d3edf6a253ab0232a57d3565c4bee4d",
+      "fileKey": "2d860adaf36b312b48ac377b21c0712bbfecfedc3702b2542f0fac81922df712",
+      "filename": "qpdf-r5-metadata-encrypted.pdf",
+      "sha256": "7cda36c4f30a59a89c073a79ba89349e9d0cbd04b9105e099496198d9de263fb"
+    },
+    {
+      "EncryptMetadata": false,
+      "O": "5cf0350dbb7af979892c806a45bd227acf31f60e856e9e43bae6d18dd4be4253cc9b60a128b6ed9f3f5d274f73549212",
+      "OE": "290eca18342e2e7fb5512decbe8a43ef0f293cf5493c47fa3119f4981a907301",
+      "P": -3392,
+      "Perms": "6b64e98fac944656abee9bcbde0c2429",
+      "U": "916e9e0c10df72e67c6c6e7d338de4a19a3c140e398a9b6f7962a8058072b31d1d88f639785c1a1e31558a6173454b2e",
+      "UE": "731c17e337770cc88a5b62061608a310630fcf5ca2723086bf619c6b5d2a2454",
+      "fileKey": "ba468a2cd80be8738b54b05b76e1a732fc4f5b9021dc62ef0b875a22e464734b",
+      "filename": "qpdf-r5-metadata-clear.pdf",
+      "sha256": "8d04283a0f2ac7ca94c042fc80192412a212616637cfc4e93819f13642080099"
+    }
+  ]
+}

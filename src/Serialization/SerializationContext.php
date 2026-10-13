@@ -15,6 +15,15 @@ use PDF\Syntax\Object\IndirectObject;
 use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 use PDF\Syntax\Object\StreamObject;
+use PDF\Syntax\Object\StringType;
+use PDF\Syntax\FileStructure\CrossReferenceStream;
+use PDF\Security\HistoricalRevision5Encryption;
+use PDF\Security\DocumentMetadataExemption;
+use PDF\Syntax\ContentStreamsResources\ContentStreams;
+use PDF\Syntax\Object\DictionaryObject\Entry;
+use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\IntegerType;
+use PDF\Syntax\Object\StringObject\HexadecimalString;
 
 /** An identity map and serialization guard scoped to one PDF file. */
 final class SerializationContext
@@ -31,15 +40,35 @@ final class SerializationContext
     /** @var array<int, ObjectIdentifier> */
     private array $reservedIdentifiers = [];
     private readonly int $firstNewNumber;
+    private readonly ?HistoricalRevision5Encryption $encryption;
+    private readonly ?DocumentMetadataExemption $metadataExemption;
+    private ?BasicType $indirectValue = null;
+    private int $encryptionSuppression = 0;
 
-    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject ...$existingObjects)
+    public function __construct(ObjectNumber $firstNewNumber = new ObjectNumber(), RevisionObject|HistoricalRevision5Encryption|DocumentMetadataExemption ...$existingObjects)
     {
         $this->identifiers = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
         $this->historical = new \SplObjectStorage();
         $this->firstNewNumber = $firstNewNumber->value;
         $this->nextNumber = $this->firstNewNumber;
+        $encryption = null;
+        $metadata = null;
         foreach ($existingObjects as $record) {
+            if ($record instanceof DocumentMetadataExemption) {
+                if ($metadata !== null) {
+                    throw new \InvalidArgumentException('Only one document-level metadata stream can be exempted.');
+                }
+                $metadata = $record;
+                continue;
+            }
+            if ($record instanceof HistoricalRevision5Encryption) {
+                if ($encryption !== null) {
+                    throw new \InvalidArgumentException('One serialization context can use only one file encryption operation.');
+                }
+                $encryption = $record;
+                continue;
+            }
             $number = $record->identifier->objectNumber->value;
             if ($number >= $this->firstNewNumber || isset($this->reservedIdentifiers[$number])) {
                 throw new \InvalidArgumentException('Existing object numbers must be unique and precede the first new number.');
@@ -53,6 +82,14 @@ final class SerializationContext
                 $this->historical->offsetSet($alias);
             }
         }
+        if ($encryption !== null && $this->reservedIdentifiers !== []) {
+            throw new \LogicException('Encrypted incremental serialization is not implemented.');
+        }
+        if ($metadata !== null && ($encryption === null || $encryption->dictionary->encryptMetadata->value)) {
+            throw new \LogicException('A document metadata exemption requires EncryptMetadata=false.');
+        }
+        $this->encryption = $encryption;
+        $this->metadataExemption = $metadata;
     }
 
     /** Discover explicit identifiers before assigning automatic numbers. */
@@ -236,7 +273,81 @@ final class SerializationContext
     }
     public function serializeIndirect(BasicType $object): string
     {
-        return $this->guarded($object);
+        $previous = $this->indirectValue;
+        $this->indirectValue = $object;
+        try {
+            return $this->guarded($object);
+        } finally {
+            $this->indirectValue = $previous;
+        }
+    }
+
+    /** Signature container Contents stay clear; this also matches qpdf's signature handling. */
+    public function serializeEntry(DictionaryType $dictionary, Entry $entry): string
+    {
+        $value = $this->encrypting() && $entry->key->value === 'Contents' && $entry->value instanceof StringType && $this->isByteRangeSignature($dictionary)
+            ? $this->serializeStreamValue(new HexadecimalString($entry->value->value)) : $this->serialize($entry->value);
+        return $this->serialize($entry->key) . ' ' . $value;
+    }
+
+    /** Recognizes byte-range signature containers; object signatures without ByteRange use normal encryption. */
+    public function isByteRangeSignature(DictionaryType $dictionary): bool
+    {
+        $type = $dictionary->get('Type');
+        if ($type instanceof IndirectReference) {
+            $type = $type->target();
+        }
+        if ($type !== null && (!$type instanceof NameType || !in_array($type->value, ['Sig', 'DocTimeStamp'], true))) {
+            return false;
+        }
+        // Type is optional in a signature dictionary. The writer recognizes the
+        // integer offset/length pairs and required named security Filter.
+        $range = $dictionary->get('ByteRange');
+        $filter = $dictionary->get('Filter');
+        if (!$range instanceof ArrayType || count($range->items) < 2 || count($range->items) % 2 !== 0 || !$filter instanceof NameType) {
+            return false;
+        }
+        foreach ($range->items as $part) {
+            if (!$part instanceof IntegerType || $part->value < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** Embedded object and content-stream strings are encrypted with their containing stream. */
+    public function serializeStreamValue(BasicType|ContentStreams $object): string
+    {
+        ++$this->encryptionSuppression;
+        try {
+            return $object instanceof ContentStreams ? $object->toPdf($this) : $this->serialize($object);
+        } finally {
+            --$this->encryptionSuppression;
+        }
+    }
+
+    /** Stream encoders run before encryption; xref and excluded metadata bytes stay clear. */
+    public function encryptStream(StreamObject $stream, string $bytes): string
+    {
+        if (!$this->encrypting() || $stream instanceof CrossReferenceStream) {
+            return $bytes;
+        }
+        foreach ($stream->filters as $filter) {
+            if ($filter->name()->value === 'Crypt') {
+                throw new \LogicException('Explicit stream Crypt filters are not supported by the historical R=5 writer.');
+            }
+        }
+        if ($this->indirectValue === $this->metadataExemption?->stream) {
+            return $bytes;
+        }
+        return $this->encryption?->encrypt($bytes) ?? $bytes;
+    }
+
+    private function encrypting(): bool
+    {
+        return $this->encryption !== null && $this->encryptionSuppression === 0 && $this->indirectValue !== null
+            && !$this->indirectValue instanceof CrossReferenceStream
+            && $this->indirectValue !== $this->encryption->dictionary->dictionary();
     }
     private function guarded(BasicType $object): string
     {
@@ -245,6 +356,9 @@ final class SerializationContext
         }
         $this->active->offsetSet($object);
         try {
+            if ($object instanceof StringType && $this->encrypting()) {
+                return '<' . strtoupper(bin2hex($this->encryption?->encrypt($object->value) ?? $object->value)) . '>';
+            }
             return $object->toPdf($this);
         } finally {
             $this->active->offsetUnset($object);
