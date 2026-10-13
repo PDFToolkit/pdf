@@ -41,11 +41,20 @@ def main():
         run(sys.executable, 'tools/validate_lzw_predictors.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_linearization.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_linearization_graphs.py', '--php', args.php, '--qpdf', args.qpdf)
+        run(sys.executable, 'tools/validate_linearized_revisions.py', '--php', args.php, '--qpdf', args.qpdf)
+        run(sys.executable, 'tools/validate_object_lifecycle.py', '--php', args.php, '--qpdf', args.qpdf)
+        navigation = directory / 'native-navigation.json'
+        with navigation.open('wb') as output:
+            subprocess.run([args.php, 'tools/fixtures/native_navigation.php'], cwd=root, check=True, stdout=output)
+        run(sys.executable, 'tools/validate_native_navigation.py', examples / 'native-navigation.pdf', navigation)
+        run(sys.executable, 'tools/validate_native_files.py', '--php', args.php, '--qpdf', args.qpdf, '--example', examples / 'embedded-files.pdf')
         run(sys.executable, 'tools/validate_hybrid_references.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_iso_security.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_public_key_security.py', '--php', args.php)
         run(sys.executable, 'tools/validate_pdf_signatures.py', '--php', args.php, '--qpdf', args.qpdf)
         run(sys.executable, 'tools/validate_signature_algorithms.py', '--php', args.php, '--qpdf', args.qpdf)
+        run(sys.executable, 'tools/validate_signature_field_policies.py', '--php', args.php, '--qpdf', args.qpdf)
+        run(sys.executable, 'tools/validate_signature_field_policy_example.py', '--php', args.php, '--qpdf', args.qpdf, '--pdf', examples / 'signature-field-policy.pdf')
     print('Native source mechanisms: all independent validators passed.')
 
 
