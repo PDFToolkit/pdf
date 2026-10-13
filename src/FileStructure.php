@@ -28,12 +28,16 @@ final readonly class FileStructure implements \Stringable
         return (new FileWriter())->serialize($this);
     }
 
+    /** Writes to a filesystem path chosen by the application; stream URIs are refused. */
     public function writeTo(string $path): void
     {
+        if ($path === '' || str_contains($path, "\0") || preg_match('~^[a-z][a-z0-9+.-]*://~i', $path) === 1) {
+            throw new \InvalidArgumentException('The PDF output must be a non-empty filesystem path without a stream wrapper.');
+        }
         $bytes = $this->toPdf();
-        $written = file_put_contents($path, $bytes, LOCK_EX);
+        $written = @file_put_contents($path, $bytes, LOCK_EX);
         if ($written !== strlen($bytes)) {
-            throw new \RuntimeException('Unable to write the complete PDF: ' . $path);
+            throw new \RuntimeException('Unable to write the complete PDF.');
         }
     }
 
