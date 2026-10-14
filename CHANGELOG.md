@@ -4,6 +4,57 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-14
+
+### PDF 2.0 objects and companion mechanisms
+
+- Preserve all eleven supplied bundle originals unchanged, with PDF Association
+  provenance, physical pages, hashes and annotation counts. Record implementation,
+  independent evidence and limits separately for each document; exclude originals
+  from Composer distribution archives.
+- Expand the edition-specific dictionary catalogue beyond the initial four tables:
+  include continuation pages, fixed and variable keys, common definitions and
+  explicit reviewed corrections. Preserve case-sensitive PDF names and existing
+  authored summaries. Complete table coverage does not imply complete conformance.
+- Implement SHA-3 and fixed-output SHAKE256, the named ECDSA/Brainpool and EdDSA
+  algorithms with their permitted digest pairs, and explicit ISO extension arrays.
+- Add R=6 credentials, R=7 AES-GCM, full-width random IV allocation with bounded
+  key usage, authenticated decryption and the NIST plaintext bound.
+- Implement standalone and signature-attached PDF MAC over actual serialized
+  revisions, including encrypted initial, incremental and linearized output.
+  Keep historical bytes, exact DER lengths and single-revision hybrid signatures.
+- Add RFC3161 document timestamps, explicit authority providers, token/request and
+  certificate binding, DSS/VRI objects and signed-revision ordering. Preserve
+  FieldMDP and field locks while proving the narrow DocMDP maintenance exception
+  through a complete frozen-delta comparison.
+- Add XMP/RDF construction, declarations and claim data, object/marked-content
+  metadata, black point compensation, document parts and encrypted-payload wrappers.
+  Validate effective resource ownership and freeze native emission facts.
+- Add qualified standard/custom namespaces, transitive role maps and the full
+  ISO/TS 32005 inclusion matrix with explicitly selected corrections.
+- Model geospatial coordinate systems, paired control points, measurements,
+  viewports, display units, affine matrices and point clouds; validate actual
+  page, Form, image and 3D contexts across frozen revisions.
+- Add bounded WTPDF mechanical audits that distinguish failures, human review and
+  additional validation. These reports do not certify WTPDF or PDF/UA-2.
+- Trace 199 WTPDF aspects to source clauses, explicit execution boundaries and
+  evidence files; reject omitted normative leaf clauses and missing evidence.
+- Add local, named, remote and embedded structure destinations, ordered content
+  traversal, explicit page fallbacks and frozen navigation relationships.
+- Require explicit PDF2 simple-font metrics and indirect descriptors, including
+  standard fonts; retain the earlier omission only for PDF1.0–1.7. Validate raw
+  resources and frozen revisions, and supply explicit Courier metrics in examples.
+
+### Runtime, examples and validation
+
+- Require 64-bit PHP 8.3 or later; validate PHP 8.3, 8.4 and 8.5. Keep optional
+  PDF modules out of production dependencies and lock development modules to 0.1.8.
+- Add explained examples for metadata/declarations, encrypted payloads, namespaces,
+  modern signatures and document timestamps/DSS, with bilingual central tutorials.
+- Verify actual ciphertext, MACs, CMS signatures, timestamps, historical revisions,
+  metadata, structure and rendered examples with independent implementations.
+  Certificate trust and complete semantic/profile conformance remain explicit.
+
 ## [0.6.2] - 2026-10-14
 
 ### Preserved PDF 2.0 reference

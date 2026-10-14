@@ -3196,12 +3196,15 @@
           601,
           602,
           603,
-          604
+          604,
+          605,
+          606
         ],
         "clauses": [
           "12.8.1",
           "12.8.3",
-          "12.8.4"
+          "12.8.4",
+          "12.8.5"
         ],
         "errata": []
       },
@@ -3211,12 +3214,14 @@
         "src/Document/Signatures/DocumentTimestampRevisionPolicy.php",
         "src/Document/Signatures/DocumentSecurityStore.php",
         "src/Document/Signatures/DssGraphValidation.php",
-        "src/Security/OpenSslTimestampTokenVerifier.php"
+        "src/Security/OpenSslTimestampTokenVerifier.php",
+        "src/Document/Signatures/DocumentTimestampGraphValidation.php"
       ],
       "unit_test_files": [
         "tests/Pdf20TimestampDssTest.php",
         "tests/DocumentTimestampRevisionPolicyTest.php",
-        "tests/Rfc3161ValidationTest.php"
+        "tests/Rfc3161ValidationTest.php",
+        "tests/DocumentTimestampGraphValidationTest.php"
       ],
       "independent_validation_files": [
         "tools/validate_pdf20_timestamps.py"
@@ -3224,6 +3229,150 @@
       "limits": [
         "Cryptographic token verification does not establish an external trust chain, revocation freshness or legal signature validity.",
         "OCSP/CRL payloads are supplied validation data, not an automatic online PKI service."
+      ]
+    },
+    {
+      "id": "geospatial-measurements-and-point-data",
+      "title": "Native geospatial coordinates, measurements, viewports and point clouds",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          611,
+          612,
+          613,
+          614,
+          615,
+          616,
+          617,
+          618,
+          619,
+          620,
+          621,
+          622
+        ],
+        "clauses": [
+          "12.9",
+          "12.10"
+        ],
+        "errata": [
+          {
+            "issue": 358,
+            "review_status": "Completed"
+          },
+          {
+            "issue": 533,
+            "review_status": "Accepted"
+          },
+          {
+            "issue": 534,
+            "review_status": "Accepted"
+          },
+          {
+            "issue": 284,
+            "review_status": "Accepted"
+          }
+        ]
+      },
+      "implemented_scope": "Explicit geographic/projected coordinate systems, paired local/world points, normalized bounds, preferred units, affine PCSM calculation, viewport selection and typed point-cloud tuples, with effective page/Form/image/3D owner validation and frozen revision checks.",
+      "implementation_files": [
+        "src/Document/Geospatial"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20GeospatialTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_geospatial.py",
+        "examples/pdf20-geospatial.php"
+      ],
+      "limits": [
+        "WKT grammar, EPSG registry meaning, GIS projection conversion and correctness of surveyed coordinates require explicit external evidence.",
+        "Independent sample regions in the example do not claim to depict the same converted map."
+      ]
+    },
+    {
+      "id": "structure-destinations",
+      "title": "Native structure destinations with explicit page fallbacks",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          457,
+          458,
+          459,
+          526,
+          527,
+          528,
+          529,
+          530
+        ],
+        "clauses": [
+          "12.3.2.3",
+          "12.6.4.2",
+          "12.6.4.3",
+          "12.6.4.4"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit view parameters, local structure identity and remote byte-string IDs; ordered bounded content traversal with first-page fallback, action SD and named-destination SD, effective graph and frozen navigation checks.",
+      "implementation_files": [
+        "src/Document/Navigation/StructureDestination.php",
+        "src/Document/Navigation/RemoteStructureDestination.php",
+        "src/Document/Navigation/StructureDestinationResolver.php",
+        "src/Document/Navigation/DestinationView.php",
+        "src/Document/Structure/WtPdfNavigationChecks.php"
+      ],
+      "unit_test_files": [
+        "tests/StructureDestinationTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_structure_destinations.py",
+        "examples/pdf20-structure-destinations.php"
+      ],
+      "limits": [
+        "Remote and embedded target files are supplied externally; their IDs are not fetched or implicitly trusted.",
+        "Native viewport adaptation requires a native PageObject; frozen generic pages can be resolved through the effective graph."
+      ]
+    },
+    {
+      "id": "pdf20-simple-font-metrics",
+      "title": "PDF2 standard-font metrics and effective descriptor validation",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          328,
+          329,
+          332,
+          333,
+          358,
+          359,
+          360
+        ],
+        "clauses": [
+          "9.6.2.1",
+          "9.6.4",
+          "9.8.1"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Require FirstChar/LastChar/Widths/FontDescriptor for PDF2 simple fonts, including the standard fourteen; verify ranges, cardinality, finite metrics, indirect descriptor contracts and native/raw/frozen resource owners. Type3 descriptor requirements retain their tagged-document context.",
+      "implementation_files": [
+        "src/Document/Fonts/Pdf20FontGraphValidation.php",
+        "src/Document/Fonts/SimpleFont.php"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20FontGraphValidationTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_fonts.py"
+      ],
+      "limits": [
+        "Font-program outline/metric agreement, embedding rights and substitution availability need independent external evidence.",
+        "PDF2 base metrics do not establish WTPDF or other profile font conformance."
+      ],
+      "example_files": [
+        "examples/fixtures/pdf20-courier-font.php"
       ]
     }
   ],
@@ -3235,7 +3384,11 @@
     "python tools/validate_pdf20_tagging.py --help",
     "python tools/validate_pdf20_metadata.py --help",
     "python tools/validate_iso32000_crypto.py --help",
-    "python tools/validate_pdf20_timestamps.py --help"
+    "python tools/validate_pdf20_timestamps.py --help",
+    "python tools/validate_pdf20_geospatial.py --help",
+    "python tools/validate_pdf20_structure_destinations.py --help",
+    "python tools/check_wtpdf_requirements.py",
+    "python tools/validate_pdf20_fonts.py <pdf-directory>"
   ],
   "dictionary_inventory": {
     "source_tables": 440,

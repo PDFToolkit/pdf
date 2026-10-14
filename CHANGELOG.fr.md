@@ -2,7 +2,60 @@
 
 [English](CHANGELOG.md) | Français
 
-## [Unreleased]
+## [Non publié]
+
+## [0.7.0] - 2026-10-14
+
+### Objets PDF 2.0 et mécanismes complémentaires
+
+- Conserver les onze originaux du bundle sans modification, avec provenance PDF
+  Association, pages physiques, empreintes et compteurs d’annotations. Consigner
+  séparément implémentation, preuves indépendantes et limites par document ; exclure
+  les originaux des archives de distribution Composer.
+- Étendre le catalogue de dictionnaires propre à l’édition au-delà des quatre
+  premiers tableaux : pages de continuation, clés fixes et variables, définitions
+  communes et corrections vérifiées explicites. Préserver la casse des noms PDF
+  et les résumés existants. Couvrir les tableaux n’établit pas la conformité complète.
+- Implémenter SHA-3 et SHAKE256 à sortie fixe, les algorithmes ECDSA/Brainpool et
+  EdDSA avec leurs couples de condensats permis, et les tableaux d’extensions ISO.
+- Ajouter l’authentification R=6, AES-GCM R=7, les IV aléatoires de pleine largeur
+  avec budget par clé, le déchiffrement authentifié et la limite de taille NIST.
+- Implémenter PDF MAC autonome et attaché à une signature sur les révisions réelles,
+  y compris les sorties chiffrées initiales, incrémentales et linéarisées. Conserver
+  les octets historiques, les longueurs DER exactes et les signatures hybrides à
+  une seule révision physique.
+- Ajouter les horodatages RFC3161, fournisseurs d’autorité explicites, liaisons
+  jeton/requête/certificat, objets DSS/VRI et ordre des révisions signées. Conserver
+  FieldMDP et les verrous de champs, et prouver l’exception de maintenance DocMDP
+  par comparaison complète des différences entre snapshots figés.
+- Ajouter XMP/RDF, déclarations et données de revendication, métadonnées d’objets
+  et de contenu marqué, compensation du point noir, parties documentaires et
+  enveloppes chiffrées. Vérifier les ressources effectives et figer les faits émis.
+- Ajouter les espaces de noms standard/personnalisés qualifiés, les mappings
+  transitifs et toute la matrice ISO/TS 32005 avec corrections choisies explicitement.
+- Modéliser systèmes de coordonnées géospatiaux, points de contrôle appariés,
+  mesures, viewports, unités d’affichage, matrices affines et nuages de points ;
+  valider les contextes réels de page, Form, image et 3D dans les révisions figées.
+- Ajouter des audits mécaniques WTPDF bornés séparant échecs, revue humaine et
+  validation supplémentaire. Ces rapports ne certifient ni WTPDF ni PDF/UA-2.
+- Relier 199 aspects WTPDF aux clauses source, frontières d’exécution explicites
+  et fichiers de preuve ; rejeter clauses normatives terminales et preuves absentes.
+- Ajouter les destinations de structure locales, nommées, distantes et incorporées,
+  le parcours ordonné du contenu, les replis de page et les relations de navigation figées.
+- Exiger métriques explicites et descripteurs indirects des fontes simples PDF2,
+  y compris standard ; conserver l’omission antérieure seulement en PDF1.0–1.7.
+  Contrôler ressources brutes et révisions figées ; fournir les métriques Courier des exemples.
+
+### Exécution, exemples et validation
+
+- Nécessiter PHP 8.3 ou ultérieur en 64 bits ; vérifier PHP 8.3, 8.4 et 8.5.
+  Conserver les modules PDF hors des dépendances de production et verrouiller
+  leurs versions de développement sur 0.1.8.
+- Ajouter des exemples expliqués de métadonnées/déclarations, enveloppes chiffrées,
+  espaces de noms, signatures modernes et horodatages/DSS, avec tutoriels bilingues.
+- Vérifier chiffrement réel, MAC, CMS, horodatages, révisions historiques,
+  métadonnées, structure et rendus avec des implémentations indépendantes. La
+  confiance envers les certificats et la conformité sémantique restent explicites.
 
 ## [0.6.2] - 2026-10-14
 

@@ -2,8 +2,9 @@
 
 English | [Français](README.fr.md)
 
-An explicit object model of **PDF 1.7 / ISO 32000-1:2008**, with initial
-**PDF 2.0 / ISO 32000-2:2020 EC3** mechanisms, for PHP 8.3 or newer.
+An explicit object model and writer for **PDF 1.7 / ISO 32000-1:2008** and
+**PDF 2.0 / ISO 32000-2:2020 EC3**, with companion specifications for encryption,
+signatures, metadata and tagged structure. Requires PHP 8.3 or newer, 64-bit.
 
 This library represents the format's syntax and structures down to names,
 numbers, references, dictionary entries and operators. It does not provide a
@@ -35,46 +36,69 @@ explains Adobe PDF 1.7 extension level 3, its provenance and mechanisms.
 The [Adobe reference guide](https://pdftoolkit.github.io/guides/adobe-references.html)
 also presents the 2006 reference, its errata, the redaction addendum and their
 portfolio. All Adobe PDFs supplied to the project retain their original names
-and bytes; the four archived references are excluded from Composer archives.
+and bytes; reference PDFs are excluded from Composer archives.
 The supplied [ISO 32000-2:2020 EC3 PDF](ISO_32000-2_sponsored_EC3.pdf),
 obtained through the [PDF Association sponsored access](https://www.pdfa.org/sponsored-standards/),
 is retained unchanged in this repository and excluded from Composer archives.
 Its edition, physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
 PDF/X and PDF/UA profiles require their own conformance mechanisms.
 
-## First PDF 2.0 mechanisms
+## PDF 2.0 companion specifications
 
-Core 0.6 adds explicit header/catalog PDF 2.0 declarations, UTF-8 text strings
-with BOM, associated files and edition-specific source/correction objects.
-PDFDocEncoding and UTF-16BE remain available as separate encoding strategies.
-UTF-8 dictionary text is distinct from the font-specific character codes used
-in page content. The [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html)
-and [associated-files tutorial](https://pdftoolkit.github.io/tutorials/27-pdf20-associated-files.html)
-explain the construction and its validation.
+Core 0.7 adds R=6 AES-CBC and R=7 AES-GCM, SHA-3/SHAKE256 and named-curve
+signatures, PDF MAC integrity protection, namespace-qualified structure and
+TS 32005 inclusion rules. XMP declarations, object metadata, black point
+compensation, document parts and encrypted-payload wrappers are explicit objects.
+RFC3161 timestamps and DSS/VRI bind validation evidence to actual signed
+revisions. Geospatial objects describe coordinate systems, viewports, paired
+control points, affine matrices and point clouds.
+Structure destinations target actual logical elements, with ordered content
+resolution, explicit page fallbacks and separate remote byte-string IDs.
+The [bundle guide](https://pdftoolkit.github.io/guides/pdf-2-0-bundle.html)
+explains each source, algorithm, object relationship and independent check.
 
-The ISO 32000-2 pilot contains four tables and 53 entry classes: document
-catalog 29, file specification 43, namespace 356 and MCAF property list 409a.
-The complete PDF 2.0 catalogue remains pending. Revision 5 encryption is
-prohibited for PDF 2.0; its deprecated historical Adobe implementation remains
-available for earlier files. Revision 6 encryption, native namespace graphs,
-DSS/timestamps, document parts and complete PDF 2.0 conformance are not yet
-implemented. Schemas alone do not implement these mechanisms.
+The eleven supplied PDFs are preserved unchanged in
+[the reference collection](resources/iso32000-2-bundle/README.md), with their
+PDF Association provenance, byte identities, physical pages and annotations.
+They are excluded from Composer distributions. The earlier ISO 32000-2 copy
+remains available separately; different copy hashes do not imply different editions.
+
+The [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html) explains
+file versions, Unicode text strings and associated files. The tutorials add
+[metadata and declarations](https://pdftoolkit.github.io/tutorials/28-pdf20-metadata-declarations.html),
+[encrypted wrappers](https://pdftoolkit.github.io/tutorials/29-pdf20-encrypted-payload.html),
+[structure namespaces](https://pdftoolkit.github.io/tutorials/30-pdf20-tagged-namespaces.html)
+[modern signatures](https://pdftoolkit.github.io/tutorials/31-pdf20-modern-signature.html),
+[timestamps and DSS](https://pdftoolkit.github.io/tutorials/32-pdf20-timestamp-dss.html)
+[geospatial measurements](https://pdftoolkit.github.io/tutorials/33-pdf20-geospatial.html)
+and [structure destinations](https://pdftoolkit.github.io/tutorials/34-pdf20-structure-destinations.html),
+with executable sources and actual PDF previews.
+
+A `WtPdfAudit` report distinguishes detected failures, additional validation and
+human semantic review. A metadata declaration does not establish its own truth.
+The specification catalogue, native mechanisms and full document conformance
+remain separate concerns; [coverage](https://pdftoolkit.github.io/guides/specification.html)
+records their actual scope. Revision 5 encryption is prohibited for PDF 2.0.
+The edition-specific base inventory contains 440 tables, 306 dictionary definitions
+and 1,709 entry objects. Its complete inventory does not establish every semantic
+or conditional requirement of the standard.
 
 ## Installation
 
-Core **0.6** requires PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
-extensions. AES and CMS backends are optional and require `openssl`.
+Core **0.7** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+extensions. AES and CMS backends are optional and require `openssl`. The explicit
+Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.6.2'
+composer require 'roukmoute/pdf:^0.7.0'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
 [0.5 migration guide](https://pdftoolkit.github.io/guides/migration-0-5.html);
 the [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html) describes
-the new 0.6 constructions.
+the foundational constructions; the bundle guide covers 0.7.
 To follow development after this series, replace the stable constraint with
 `dev-master`.
 
@@ -86,12 +110,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Each module has a stable **0.1.7** release on Packagist, compatible with core
-series 0.2, 0.3, 0.4, 0.5 and 0.6 and PHP 8.3 or newer. Composer automatically installs
+Each module has a stable **0.1.8** release on Packagist, compatible with core
+series 0.2, 0.3, 0.4, 0.5, 0.6 and 0.7 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.7'
+composer require 'pdftoolkit/pdf-images:^0.1.8'
 ```
 
 The module installs the core using its stable constraint. The
@@ -118,8 +142,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.6.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.6 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.7.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.7 series expected by modules.
 Development dependencies use stable 0.1 modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.

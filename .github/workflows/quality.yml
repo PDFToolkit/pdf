@@ -48,7 +48,9 @@ jobs:
       - name: Verify reproducible structure inclusion rules
         run: python tools/generate_structure_inclusion.py --check
       - name: Verify source-linked WTPDF requirement coverage
-        run: python tools/check_wtpdf_requirements.py
+        run: |
+          python tools/check_wtpdf_requirements.py
+          python -m unittest discover -s tests -p test_wtpdf_requirements.py
       - uses: ./.github/actions/setup-qpdf
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Generate and validate every example
@@ -62,6 +64,8 @@ jobs:
           done
       - name: Verify mechanism semantics with an independent reader
         run: python tools/validate_mechanisms.py /tmp/pdf-examples
+      - name: Inspect PDF2 simple-font metrics independently
+        run: python tools/validate_pdf20_fonts.py /tmp/pdf-examples
       - name: Verify the Adobe source and extension semantics
         run: python tools/validate_adobe_supplement.py /tmp/pdf-examples
       - name: Verify historical encryption and Unicode preparation independently
@@ -80,5 +84,7 @@ jobs:
         run: python tools/validate_pdf20_timestamps.py --php php --qpdf qpdf --openssl /usr/bin/openssl --work-dir /tmp/pdf20-timestamps
       - name: Verify geospatial object relationships and historical revisions
         run: python tools/validate_pdf20_geospatial.py --php php --qpdf qpdf --work-dir /tmp/pdf20-geospatial
+      - name: Verify semantic destinations and their fallback pages
+        run: python tools/validate_pdf20_structure_destinations.py --php php --qpdf qpdf --work-dir /tmp/pdf20-structure-destinations
       - name: Verify PDF 2.0 namespaces and tagged content independently
         run: python tools/validate_pdf20_tagging.py --php php --qpdf qpdf --example /tmp/pdf-examples/pdf20-tagged-namespaces.pdf
