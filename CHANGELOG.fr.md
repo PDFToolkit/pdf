@@ -4,6 +4,41 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-14
+
+### Premiers mécanismes PDF 2.0
+
+- Ajoute les déclarations PDF 2.0 explicites dans l'en-tête du fichier et la
+  version effective du catalogue. Conserve PDF 1.7 comme construction par défaut.
+- Compose `TextString` avec des stratégies explicites PDFDoc/UTF-16BE et UTF-8
+  PDF 2.0. Conserve les codes de caractères de police comme mécanisme distinct
+  du contenu des pages.
+- Ajoute les objets de relation de fichiers associés, tableaux AF, validation
+  des propriétaires et construction corrigée MCAF avec propriétés nommées EC3.
+  Vérifie les graphes émis et les révisions incrémentales ; les octets restent
+  fournis explicitement.
+- Introduit la provenance immuable des éditions et errata, en distinguant
+  Completed, approuvé par ISO, d'Accepted, approuvé par le TWG de la PDF Association.
+  Sépare l'identité de la copie privée, la norme et la version du fichier produit.
+- Ajoute le pilote distinct ISO 32000-2:2020 EC3 : quatre schémas de dictionnaires,
+  53 classes d'entrées, pages physiques et générateur reproductible. Refuse les
+  familles/profils mélangés et limite la règle OPI à sa source ISO 32000-1 réelle.
+- Distingue les fonctionnalités introduites, dépréciées et interdites. Refuse
+  le chiffrement révision 5 en PDF 2.0 et applique ses obligations de permissions
+  de sécurité à clé publique.
+- Ajoute un exemple PDF 2.0 avec métadonnées Unicode, CSV incorporé associé au
+  catalogue et à la page, propriétés de contenu marqué nommées et police incorporée.
+
+### Périmètre et distribution
+
+- Conserve PHP 8.3 minimum et la validation sous PHP 8.3, 8.4 et 8.5.
+  Les modules optionnels 0.1.7 acceptent aussi la série 0.6 du core.
+- Préserve les catalogues ISO 32000-1 et du supplément Adobe et les PDF conservés.
+  Enregistre la provenance ISO 32000-2 sans publier sa copie personnalisée.
+- Maintient en attente le chiffrement révision 6, le catalogue PDF 2.0 complet,
+  les espaces de noms natifs, DSS/horodatages, parties documentaires et conformité
+  complète. Publie des guides anglais/français et un tutoriel avec PDF réel.
+
 ## [0.5.5] - 2026-10-14
 
 ### Documentation bilingue
@@ -470,7 +505,7 @@ pour PHP 8.5.
   incrémentales, linéarisation et autres contraintes sémantiques restent à venir.
   Voir [le document de couverture](docs/fr/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.5...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.6.0...HEAD
 [0.5.4]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.4
 [0.5.3]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.3
 [0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2
@@ -483,3 +518,4 @@ pour PHP 8.5.
 [0.1.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.1
 [0.1.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.0
 [0.5.5]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.5
+[0.6.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.6.0

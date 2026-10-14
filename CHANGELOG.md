@@ -4,6 +4,39 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-14
+
+### Initial PDF 2.0 mechanisms
+
+- Add explicit PDF 2.0 file-header and effective catalog version declarations.
+  Keep the existing PDF 1.7 construction as the default.
+- Compose `TextString` with explicit PDFDoc/UTF-16BE and PDF 2.0 UTF-8 encoding
+  strategies. Preserve font character codes as a distinct content mechanism.
+- Add associated-file relationship objects, AF arrays, owner validation and the
+  corrected MCAF named-property construction from EC3. Check actual emitted
+  graphs and incremental revisions; keep supplied file bytes explicit.
+- Introduce immutable edition and errata provenance, distinguishing Completed
+  ISO approval from Accepted PDF Association TWG approval. Keep the private
+  supplied copy's identity separate from the logical standard and output version.
+- Add the separate ISO 32000-2:2020 EC3 pilot: four dictionary schemas, 53
+  named entry classes, physical source pages and a reproducible generator.
+  Reject mixed catalogue families/profiles and scope the historical OPI rule
+  to its actual ISO 32000-1 source.
+- Distinguish introduced, deprecated and prohibited features. Reject revision 5
+  encryption in PDF 2.0 and apply its public-key permission requirements.
+- Add a PDF 2.0 example with Unicode metadata, an embedded CSV associated with
+  the catalog and page, named marked-content properties and an embedded font.
+
+### Scope and distribution
+
+- Keep PHP 8.3 minimum and validation under PHP 8.3, 8.4 and 8.5.
+  Optional modules 0.1.7 also accept the core 0.6 series.
+- Preserve ISO 32000-1 and Adobe supplement catalogues and original retained PDFs.
+  Record ISO 32000-2 source provenance without publishing its personalised copy.
+- Keep revision 6 encryption, the complete PDF 2.0 dictionary catalogue, native
+  namespaces, DSS/timestamps, document parts and complete conformance pending.
+  Publish paired English/French guidance and a real PDF tutorial.
+
 ## [0.5.5] - 2026-10-14
 
 ### Bilingual documentation
@@ -287,7 +320,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.5...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.6.0...HEAD
 [0.5.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.1
 [0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
 [0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
@@ -300,3 +333,4 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 [0.5.3]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.3
 [0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2
 [0.5.5]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.5
+[0.6.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.6.0

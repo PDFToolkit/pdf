@@ -2,7 +2,8 @@
 
 English | [Français](README.fr.md)
 
-An explicit object model of **PDF 1.7 / ISO 32000-1:2008**, for PHP 8.3 or newer.
+An explicit object model of **PDF 1.7 / ISO 32000-1:2008**, with initial
+**PDF 2.0 / ISO 32000-2:2020 EC3** mechanisms, for PHP 8.3 or newer.
 
 This library represents the format's syntax and structures down to names,
 numbers, references, dictionary entries and operators. It does not provide a
@@ -35,21 +36,43 @@ The [Adobe reference guide](https://pdftoolkit.github.io/guides/adobe-references
 also presents the 2006 reference, its errata, the redaction addendum and their
 portfolio. All Adobe PDFs supplied to the project retain their original names
 and bytes; the four archived references are excluded from Composer archives.
-PDF 2.0 and PDF/A, PDF/X and PDF/UA profiles are additional specifications.
+The supplied ISO 32000-2:2020 EC3 copy is retained privately; its edition,
+physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
+PDF/X and PDF/UA profiles require their own conformance mechanisms.
+
+## First PDF 2.0 mechanisms
+
+Core 0.6 adds explicit header/catalog PDF 2.0 declarations, UTF-8 text strings
+with BOM, associated files and edition-specific source/correction objects.
+PDFDocEncoding and UTF-16BE remain available as separate encoding strategies.
+UTF-8 dictionary text is distinct from the font-specific character codes used
+in page content. The [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html)
+and [associated-files tutorial](https://pdftoolkit.github.io/tutorials/27-pdf20-associated-files.html)
+explain the construction and its validation.
+
+The ISO 32000-2 pilot contains four tables and 53 entry classes: document
+catalog 29, file specification 43, namespace 356 and MCAF property list 409a.
+The complete PDF 2.0 catalogue remains pending. Revision 5 encryption is
+prohibited for PDF 2.0; its deprecated historical Adobe implementation remains
+available for earlier files. Revision 6 encryption, native namespace graphs,
+DSS/timestamps, document parts and complete PDF 2.0 conformance are not yet
+implemented. Schemas alone do not implement these mechanisms.
 
 ## Installation
 
-Core **0.5** requires PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.6** requires PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.5.5'
+composer require 'roukmoute/pdf:^0.6.0'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
-[0.5 migration guide](https://pdftoolkit.github.io/guides/migration-0-5.html).
+[0.5 migration guide](https://pdftoolkit.github.io/guides/migration-0-5.html);
+the [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html) describes
+the new 0.6 constructions.
 To follow development after this series, replace the stable constraint with
 `dev-master`.
 
@@ -61,12 +84,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Each module has a stable **0.1.6** release on Packagist, compatible with core
-series 0.2, 0.3, 0.4 and 0.5 and PHP 8.3 or newer. Composer automatically installs
+Each module has a stable **0.1.7** release on Packagist, compatible with core
+series 0.2, 0.3, 0.4, 0.5 and 0.6 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.6'
+composer require 'pdftoolkit/pdf-images:^0.1.7'
 ```
 
 The module installs the core using its stable constraint. The
@@ -93,8 +116,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.5.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.5 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.6.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.6 series expected by modules.
 Development dependencies use stable 0.1 modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.
@@ -182,7 +205,7 @@ describe generation and local checks in the documentation repository.
 
 ## Coverage and limits
 
-The catalogue records the reference's **392 tables**, **823 indexed sections**
+The ISO 32000-1 catalogue records **392 tables**, **823 indexed sections**
 and **73 operator tokens**. Dictionary tables produce named classes for their
 dictionaries, entries and immutable definitions. PDF names preserve their exact
 case, which is significant in the format.

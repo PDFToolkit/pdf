@@ -1,11 +1,13 @@
 {
     "name": "roukmoute/pdf",
     "type": "library",
-    "description": "An explicit object model and writer for ISO 32000-1 PDF 1.7",
+    "description": "An explicit PDF object model and writer with ISO 32000-1 PDF 1.7 and initial ISO 32000-2 PDF 2.0 support",
     "keywords": [
         "pdf",
         "pdf-1.7",
+        "pdf-2.0",
         "iso-32000-1",
+        "iso-32000-2",
         "object-model",
         "php"
     ],
@@ -23,9 +25,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.6",
-        "pdftoolkit/pdf-images": "^0.1.6",
-        "pdftoolkit/pdf-reader": "^0.1.6",
+        "pdftoolkit/pdf-fonts": "^0.1.7",
+        "pdftoolkit/pdf-images": "^0.1.7",
+        "pdftoolkit/pdf-reader": "^0.1.7",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
@@ -73,7 +75,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.5.x-dev"
+            "dev-master": "0.6.x-dev"
         }
     }
 }

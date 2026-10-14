@@ -2,7 +2,8 @@
 
 [English](README.md) | Français
 
-Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, pour PHP 8.3 ou supérieur.
+Un modèle objet explicite de **PDF 1.7 / ISO 32000-1:2008**, avec les premiers
+mécanismes **PDF 2.0 / ISO 32000-2:2020 EC3**, pour PHP 8.3 ou supérieur.
 
 Cette bibliothèque représente la syntaxe et les structures du format, jusque dans ses noms, nombres, références, entrées de dictionnaire et opérateurs. Elle ne cherche pas à fournir une API de mise en page. Une bibliothèque de plus haut niveau peut construire ces objets et conserver le contrôle de leur composition.
 
@@ -12,18 +13,40 @@ La [documentation en ligne](https://pdftoolkit.github.io/fr/) réunit les guides
 
 La série `0.x` est destinée aux développeurs qui souhaitent construire et explorer ce modèle. Avant la version `1.0`, une nouvelle version mineure peut modifier les noms et signatures ; les versions correctives conservent l'API de leur série. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](https://pdftoolkit.github.io/fr/guides/couverture.html).
 
-Les définitions se fondent sur les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supplement_iso32000.pdf`, conservés dans ce dépôt. Le [guide du supplément](https://pdftoolkit.github.io/fr/guides/supplement-adobe.html) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Le [guide des références Adobe](https://pdftoolkit.github.io/fr/guides/references-adobe.html) présente aussi la référence de 2006, ses errata, l'addendum de caviardisation et leur portfolio. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine ; les quatre références archivées sont exclues des archives Composer. PDF 2.0 et les profils PDF/A, PDF/X et PDF/UA constituent des spécifications supplémentaires.
+Les définitions se fondent sur les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supplement_iso32000.pdf`, conservés dans ce dépôt. Le [guide du supplément](https://pdftoolkit.github.io/fr/guides/supplement-adobe.html) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Le [guide des références Adobe](https://pdftoolkit.github.io/fr/guides/references-adobe.html) présente aussi la référence de 2006, ses errata, l'addendum de caviardisation et leur portfolio. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine ; les quatre références archivées sont exclues des archives Composer. La copie fournie d’ISO 32000-2:2020 EC3 est conservée en privé ; son édition, ses pages physiques et son empreinte sont enregistrées dans un catalogue séparé. Les profils PDF/A, PDF/X et PDF/UA demandent leurs propres mécanismes de conformité.
+
+## Premiers mécanismes PDF 2.0
+
+Le core 0.6 ajoute des déclarations PDF 2.0 explicites dans l'en-tête et le
+catalogue, les chaînes textuelles UTF-8 avec BOM, les fichiers associés et des
+objets distincts pour les éditions et corrections. PDFDocEncoding et UTF-16BE
+restent disponibles comme stratégies d'encodage séparées. Le texte UTF-8 d'un
+dictionnaire est distinct des codes de caractères de police utilisés dans le
+contenu des pages. Le [guide PDF 2.0](https://pdftoolkit.github.io/fr/guides/pdf-2-0.html)
+et le [tutoriel des fichiers associés](https://pdftoolkit.github.io/fr/tutorials/27-pdf20-fichiers-associes.html)
+expliquent cette construction et ses vérifications.
+
+Le pilote ISO 32000-2 contient quatre tableaux et 53 classes d'entrées :
+catalogue 29, spécification de fichier 43, espace de noms 356 et liste de
+propriétés MCAF 409a. Le catalogue PDF 2.0 complet reste à construire.
+Le chiffrement révision 5 est interdit en PDF 2.0 ; son implémentation Adobe
+historique, dépréciée, reste disponible pour les fichiers antérieurs.
+Le chiffrement révision 6, les graphes natifs d'espaces de noms, DSS/horodatages,
+les parties documentaires et la conformité PDF 2.0 complète ne sont pas encore
+implémentés. Des schémas seuls n'implémentent pas ces mécanismes.
 
 ## Installation
 
-Le core **0.5** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
+Le core **0.6** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.5.5'
+composer require 'roukmoute/pdf:^0.6.0'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
-[guide de migration 0.5](https://pdftoolkit.github.io/fr/guides/migration-0-5.html). Pour suivre les développements
+[guide de migration 0.5](https://pdftoolkit.github.io/fr/guides/migration-0-5.html) ;
+le [guide PDF 2.0](https://pdftoolkit.github.io/fr/guides/pdf-2-0.html) décrit
+les nouvelles constructions 0.6. Pour suivre les développements
 après cette série, remplacer la contrainte stable par `dev-master`.
 
 ## Modules optionnels
@@ -34,10 +57,10 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.6** sur Packagist, compatible avec les séries 0.2, 0.3, 0.4 et 0.5 du core et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.7** sur Packagist, compatible avec les séries 0.2, 0.3, 0.4, 0.5 et 0.6 du core et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.6'
+composer require 'pdftoolkit/pdf-images:^0.1.7'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/fr/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.
@@ -56,8 +79,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.fr.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.5.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.5 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.6.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.6 attendue par les modules. Les
 dépendances de développement utilisent les modules stables 0.1, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.
