@@ -37,7 +37,7 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $createPage = static function (string ...$lines): PageTreeNode {
     $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))));
     $operators = [];
-    foreach ($lines as $index => $line) {
+    foreach (array_values($lines) as $index => $line) {
         $operators[] = new Op\BeginTextObject();
         $operators[] = new Op\SetTextFontAndSize(new NameType('F1'), new NumericType($index === 0 ? 20 : 12));
         $operators[] = new Op\MoveTextPosition(new NumericType(48), new NumericType(780 - 32 * $index));
