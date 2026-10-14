@@ -4,6 +4,17 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-10-14
+
+### EC3 source traceability
+
+- Attach the PDF 2.0 Form XObject resource requirement explicitly to completed
+  erratum 292, physical page 287, clause 8.10.2 and table 93.
+- Attach encrypted-catalog placement to completed erratum 439, physical pages
+  77 and 112, clauses 7.5.7 and 7.7.2. Both rules were implemented and tested
+  in 0.6.0; this correction completes their coverage references.
+- Preserve the PHP API, emitted PDF behavior and locked dependency versions.
+
 ## [0.6.0] - 2026-10-14
 
 ### Initial PDF 2.0 mechanisms

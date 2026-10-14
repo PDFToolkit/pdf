@@ -66,7 +66,7 @@ extensions. AES and CMS backends are optional and require `openssl`.
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.6.0'
+composer require 'roukmoute/pdf:^0.6.1'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and

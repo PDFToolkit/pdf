@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-10-14
+
+### Traçabilité des sources EC3
+
+- Rattacher explicitement les ressources propres aux Form XObjects PDF 2.0 à
+  l’erratum 292 Completed, page physique 287, §8.10.2 et tableau 93.
+- Rattacher le placement du catalogue chiffré à l’erratum 439 Completed,
+  pages physiques 77 et 112, §7.5.7 et §7.7.2. Ces deux règles étaient déjà
+  implémentées et testées en 0.6.0 ; la correction complète leurs références.
+- Préserver l’API PHP, les PDF produits et les versions des dépendances figées.
+
 ## [0.6.0] - 2026-10-14
 
 ### Premiers mécanismes PDF 2.0

@@ -307,7 +307,13 @@
         "clauses": [
           "8.10.2"
         ],
-        "errata": []
+        "errata": [
+          {
+            "issue": 292,
+            "review_status": "Completed",
+            "physical_pdf_page": 287
+          }
+        ]
       },
       "implemented_scope": "PDF20 Form XObjects declare their own resource dictionaries; MCAF resolution uses their actual effective resources, including indirect resource dictionaries and incremental replacement/removal. Earlier-version resource fallback retains its existing behavior.",
       "implementation_files": [
@@ -364,18 +370,34 @@
       "source": {
         "document": "ISO_32000-2_sponsored_EC3.pdf",
         "physical_pdf_pages": [
+          77,
           93,
           94,
+          95,
           103,
           104,
+          112,
           1021
         ],
         "clauses": [
+          "7.5.7",
           "7.6.4.2",
           "7.6.5.2",
-          "7.6.5.3"
+          "7.6.5.3",
+          "7.6.5.4",
+          "7.7.2"
         ],
         "errata": [
+          {
+            "issue": 439,
+            "review_status": "Completed",
+            "physical_pdf_page": 77
+          },
+          {
+            "issue": 439,
+            "review_status": "Completed",
+            "physical_pdf_page": 112
+          },
           {
             "issue": 475,
             "review_status": "Completed",

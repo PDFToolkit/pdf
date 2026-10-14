@@ -40,7 +40,7 @@ implémentés. Des schémas seuls n'implémentent pas ces mécanismes.
 Le core **0.6** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.6.0'
+composer require 'roukmoute/pdf:^0.6.1'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
