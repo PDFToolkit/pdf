@@ -118,6 +118,7 @@ final class DocumentGraphValidation
             }
             if ($dictionary !== null) {
                 (new \PDF\Document\Geospatial\GeospatialGraphValidation())->validate($dictionary, $projection, $version);
+                (new \PDF\Document\Signatures\DocumentTimestampGraphValidation())->validate($value, $dictionary, $projection, $version, $previous);
                 (new \PDF\Document\Metadata\MetadataGraphValidation())->validate($dictionary, $projection, $version);
                 $resolvedType = $type instanceof IndirectReference ? $projection->resolve($type) : $type;
                 if ($resolvedType instanceof NameType && $resolvedType->value === 'ExtGState') {
