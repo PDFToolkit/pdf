@@ -13,7 +13,20 @@ final readonly class Catalogue
     public function __construct(TableDefinition ...$definitions)
     {
         $tables = [];
+        $family = null;
+        $edition = null;
         foreach ($definitions as $definition) {
+            $candidateFamily = $definition->source->edition->family;
+            if ($family !== null && $candidateFamily !== $family) {
+                throw new \InvalidArgumentException('Different specification families require separate catalogues.');
+            }
+            if ($edition !== null && $candidateFamily === 'iso32000-2'
+                && ($definition->source->edition->identifier !== $edition->identifier
+                    || $definition->source->edition->corrections != $edition->corrections)) {
+                throw new \InvalidArgumentException('Different specification editions or correction profiles require separate catalogues.');
+            }
+            $family = $candidateFamily;
+            $edition = $definition->source->edition;
             if (isset($tables[$definition->source->table])) {
                 throw new \InvalidArgumentException('Duplicate specification table.');
             }

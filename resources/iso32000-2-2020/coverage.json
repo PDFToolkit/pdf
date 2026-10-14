@@ -1,0 +1,413 @@
+{
+  "schema_version": 1,
+  "edition_identifier": "iso32000-2:2020",
+  "errata_collection": 3,
+  "complete_dictionary_catalogue": "pending",
+  "complete_standard_conformance": false,
+  "implemented_schemas": [
+    {
+      "table": "29",
+      "physical_pdf_pages": [
+        113,
+        114,
+        115,
+        116,
+        117
+      ],
+      "entry_count": 32,
+      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+    },
+    {
+      "table": "43",
+      "physical_pdf_pages": [
+        149,
+        150,
+        151,
+        152
+      ],
+      "entry_count": 16,
+      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+    },
+    {
+      "table": "356",
+      "physical_pdf_pages": [
+        744
+      ],
+      "entry_count": 4,
+      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+    },
+    {
+      "table": "409a",
+      "physical_pdf_pages": [
+        1015
+      ],
+      "entry_count": 1,
+      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+    }
+  ],
+  "remaining_work": [
+    "Complete reviewed edition-specific table and entry inventory",
+    "Review remaining annotations, reply relations, new errata tables and replacement pages",
+    "Conditional dictionary requirements and enumeration constraints outside native mechanisms",
+    "Revision 6 password-security handler algorithms and integration",
+    "Native namespaces, structure relationships and role-map validation",
+    "Document parts and hierarchy validation",
+    "Encrypted-wrapper graph semantics",
+    "Document Security Store, validation information and timestamps",
+    "Geospatial and other PDF 2.0 mechanisms and conformance rules"
+  ],
+  "validation_files": [
+    "tests/AssociatedFilesMarkedContentTest.php",
+    "tests/AssociatedFilesTest.php",
+    "tests/Iso32000_2SpecificationTest.php",
+    "tests/Pdf20PublicKeySecurityTest.php",
+    "tests/Pdf20TextStringTest.php",
+    "tests/Pdf20VersionPolicyTest.php",
+    "tests/PdfDateValidationTest.php",
+    "tools/fixtures/pdf20_foundations.php",
+    "tools/fixtures/public_key_encryption.php",
+    "tools/validate_pdf20_foundations.py",
+    "tools/validate_public_key_security.py"
+  ],
+  "source_provenance": "metadata.json",
+  "catalogue_descriptions": "Concise implementation summaries authored for the project; not reproduced normative paragraphs.",
+  "implemented_mechanisms": [
+    {
+      "id": "edition-provenance",
+      "title": "Edition-scoped definitions and reviewed EC3 provenance",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          2,
+          113,
+          114,
+          115,
+          116,
+          117,
+          149,
+          150,
+          151,
+          152,
+          744,
+          1015
+        ],
+        "clauses": [
+          "7.7.2",
+          "7.11.3",
+          "14.7.4.2",
+          "14.13.5"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Immutable logical standard identity, separately selected corrections and copy fingerprint; independent ISO1/Adobe/ISO2 catalogue families and ISO2 correction profiles; Completed ISO versus Accepted TWG review provenance.",
+      "implementation_files": [
+        "src/Specification/SourceEdition.php",
+        "src/Specification/SourceReference.php",
+        "src/Specification/ErrataCollection.php",
+        "src/Specification/ErrataReviewStatus.php",
+        "src/Specification/ErrataResolution.php",
+        "src/Specification/Catalogue.php",
+        "tools/generate_iso32000_2_pilot.py"
+      ],
+      "unit_test_files": [
+        "tests/Iso32000_2SpecificationTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/generate_iso32000_2_pilot.py --check"
+      ],
+      "limits": [
+        "Only four reviewed dictionary tables; complete source extraction and semantic conformance are pending."
+      ]
+    },
+    {
+      "id": "pdf20-version-declarations",
+      "title": "Header, catalog and effective incremental version",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          69,
+          70,
+          75,
+          114
+        ],
+        "clauses": [
+          "7.5.2",
+          "7.5.6",
+          "7.7.2"
+        ],
+        "errata": [
+          {
+            "issue": 399,
+            "review_status": "Completed",
+            "physical_pdf_page": 75
+          }
+        ]
+      },
+      "implemented_scope": "Explicit PDF20 enum/header and direct supported catalog version; effective version checks on current and frozen revision graphs; EC3 rule prevents an incremental update from lowering an already effective PDF 2.0 version.",
+      "implementation_files": [
+        "src/Syntax/FileStructure/PdfVersion.php",
+        "src/Syntax/FileStructure/FileHeader.php",
+        "src/Syntax/FileStructure/EffectivePdfVersion.php",
+        "src/Syntax/FileStructure/IncrementalVersionPolicy.php",
+        "src/Document/DocumentGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20TextStringTest.php",
+        "tests/Pdf20VersionPolicyTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "Writing a PDF20 header does not establish complete conformance."
+      ]
+    },
+    {
+      "id": "unicode-text-strings",
+      "title": "Explicit Unicode text-string strategies and decoding",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          131,
+          132
+        ],
+        "clauses": [
+          "7.9.2.2.1"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Application Unicode validation; default PDFDocEncoding/UTF16BE strategy preserves historical output while avoiding BOM collisions; explicit UTF16BE and UTF8 with BOM; decoding follows its explicit version context; typed UTF8 values require effective PDF20 in current and historical graphs.",
+      "implementation_files": [
+        "src/Syntax/DataStructure/TextString.php",
+        "src/Syntax/DataStructure/TextStringEncoding.php",
+        "src/Syntax/DataStructure/PdfDocOrUtf16TextStringEncoding.php",
+        "src/Syntax/DataStructure/Utf16BETextStringEncoding.php",
+        "src/Syntax/DataStructure/Utf8TextStringEncoding.php",
+        "src/Syntax/DataStructure/TextStringDecoder.php"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20TextStringTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "Font character codes in Tj/TJ remain a separate mechanism.",
+        "Raw LiteralString/HexadecimalString bytes are not reinterpreted as typed application text."
+      ]
+    },
+    {
+      "id": "associated-file-dictionaries",
+      "title": "Associated files on actual PDF owners",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          149,
+          150,
+          151,
+          152,
+          853,
+          854,
+          855,
+          856
+        ],
+        "clauses": [
+          "7.11.3",
+          "14.13"
+        ],
+        "errata": [
+          {
+            "issue": 568,
+            "review_status": "Accepted",
+            "physical_pdf_page": 853
+          }
+        ]
+      },
+      "implemented_scope": "Explicit standard or custom AFRelationship names; nonempty AF arrays and effective Filespec, EF/RF, indirectness, MIME and optional Params/ModDate constraints; actual Catalog/Page/StructElem/DPart/annotation/metadata/image/Type1Form contexts and incremental replacements.",
+      "implementation_files": [
+        "src/Document/Files/AFRelationship.php",
+        "src/Document/Files/AssociatedFileRelationship.php",
+        "src/Document/Files/AssociatedFiles.php",
+        "src/Document/Files/AssociatedFilesEntry.php",
+        "src/Document/Files/AssociatedFileOwner.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php",
+        "src/Syntax/DataStructure/PdfDateValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/AssociatedFilesTest.php",
+        "tests/PdfDateValidationTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "No implicit filesystem/URL loading, encrypted-wrapper orchestration or attachment viewer UI.",
+        "Private dictionary keys and earlier-edition AF extensions do not automatically acquire PDF20 semantics."
+      ]
+    },
+    {
+      "id": "associated-file-marked-content",
+      "title": "Named MCAF resources and native marked-content emission facts",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          854,
+          855,
+          1015
+        ],
+        "clauses": [
+          "14.13.5"
+        ],
+        "errata": [
+          {
+            "issue": 374,
+            "review_status": "Completed",
+            "physical_pdf_page": 1015
+          }
+        ]
+      },
+      "implemented_scope": "Dictionary-valued Resources.Properties entries containing MCAF arrays, named AF BDC sequences, rejection of inline MCAF and single-point associations, per-page/per-form resource contexts and effective incremental replacements. Native association facts are frozen with the bytes emitted and retained across unstaged builder mutation and encoder callbacks.",
+      "implementation_files": [
+        "src/Document/Files/AssociatedFilesPropertyList.php",
+        "src/Document/Files/BeginAssociatedFilesMarkedContent.php",
+        "src/Document/Files/AssociatedFilesMarkedContentUse.php",
+        "src/Document/Files/AssociatedFilesMarkedContentFacts.php",
+        "src/Document/Files/AssociatedFilesMarkedContentGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/AssociatedFilesMarkedContentTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "AF BDC uses an existing PDF operator; it adds no Annex A operator token.",
+        "Caller-declared opaque content bytes do not acquire invented native operator facts."
+      ]
+    },
+    {
+      "id": "pdf20-form-resources",
+      "title": "Independent resources for PDF20 Form XObjects",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          287,
+          288
+        ],
+        "clauses": [
+          "8.10.2"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "PDF20 Form XObjects declare their own resource dictionaries; MCAF resolution uses their actual effective resources, including indirect resource dictionaries and incremental replacement/removal. Earlier-version resource fallback retains its existing behavior.",
+      "implementation_files": [
+        "src/Document/DocumentGraphValidation.php",
+        "src/Document/Files/AssociatedFilesMarkedContentGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/AssociatedFilesMarkedContentTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "This validates resource ownership and native associations, not a rendering engine or interpretation of arbitrary opaque form bytes."
+      ]
+    },
+    {
+      "id": "pdf-dates",
+      "title": "Bounded PDF date values in associated-file parameters",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          133,
+          134
+        ],
+        "clauses": [
+          "7.9.4"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit date-string decoding, bounded byte length, successive components, Gregorian calendar and clock/offset ranges; preserves supplied bytes and historical terminal-apostrophe syntax without timezone normalization.",
+      "implementation_files": [
+        "src/Syntax/DataStructure/PdfDateValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/PdfDateValidationTest.php",
+        "tests/AssociatedFilesTest.php",
+        "tests/AssociatedFilesMarkedContentTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_foundations.py",
+        "tools/fixtures/pdf20_foundations.php"
+      ],
+      "limits": [
+        "Date validation does not invent missing source modification metadata."
+      ]
+    },
+    {
+      "id": "pdf20-encryption-applicability",
+      "title": "PDF20 encryption restrictions and CMS permission facts",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          93,
+          94,
+          103,
+          104,
+          1021
+        ],
+        "clauses": [
+          "7.6.4.2",
+          "7.6.5.2",
+          "7.6.5.3"
+        ],
+        "errata": [
+          {
+            "issue": 475,
+            "review_status": "Completed",
+            "physical_pdf_page": 1021
+          }
+        ]
+      },
+      "implemented_scope": "Introduced/deprecated/prohibited feature status; historical R5 forbidden for PDF20; standard handler accessibility/reserved permission requirements and encrypted-catalog placement; document CMS requires explicit actual permission facts, most-significant-first order, accessibility bit10 and reserved bits13–32, with backend/decrypted-payload consistency checks. Existing permitted public-key ciphers retain explicit writer integration.",
+      "implementation_files": [
+        "src/Specification/FeatureApplicability.php",
+        "src/Specification/FeatureStatus.php",
+        "src/Security/EncryptionVersionPolicy.php",
+        "src/Security/PublicKeyVersionValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20VersionPolicyTest.php",
+        "tests/Pdf20PublicKeySecurityTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_public_key_security.py",
+        "tools/fixtures/public_key_encryption.php"
+      ],
+      "limits": [
+        "R6 password encryption is pending.",
+        "Deprecated earlier algorithms are not silently treated as prohibited.",
+        "Explicit encryption and CMS verification do not establish PKI trust or authenticated content."
+      ]
+    }
+  ],
+  "validation_commands": [
+    "python tools/generate_iso32000_2_pilot.py --check",
+    "python tools/validate_pdf20_foundations.py --php php --qpdf qpdf --example <pdf-directory>/pdf20-associated-files.pdf",
+    "python tools/validate_public_key_security.py --pdf-version 2.0 --php php --qpdf qpdf"
+  ]
+}

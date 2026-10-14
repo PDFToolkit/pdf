@@ -14,6 +14,7 @@ final readonly class EntryDefinition
         public string $description,
         public bool $variable = false,
         public ?ImplementationCorrection $correction = null,
+        public ?ErrataResolution $errata = null,
     ) {
     }
 }

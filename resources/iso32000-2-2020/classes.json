@@ -1,0 +1,242 @@
+[
+  {
+    "table": "29",
+    "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29",
+    "definition_class": "PDF\\Specification\\Iso32000_2\\Definition\\CatalogDictionaryTable29Definition",
+    "entries": [
+      {
+        "name": "Type",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\TypeEntry"
+      },
+      {
+        "name": "Version",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\VersionEntry"
+      },
+      {
+        "name": "Extensions",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\ExtensionsEntry"
+      },
+      {
+        "name": "Pages",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PagesEntry"
+      },
+      {
+        "name": "PageLabels",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PageLabelsEntry"
+      },
+      {
+        "name": "Names",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\NamesEntry"
+      },
+      {
+        "name": "Dests",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\DestsEntry"
+      },
+      {
+        "name": "ViewerPreferences",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\ViewerPreferencesEntry"
+      },
+      {
+        "name": "PageLayout",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PageLayoutEntry"
+      },
+      {
+        "name": "PageMode",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PageModeEntry"
+      },
+      {
+        "name": "Outlines",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\OutlinesEntry"
+      },
+      {
+        "name": "Threads",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\ThreadsEntry"
+      },
+      {
+        "name": "OpenAction",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\OpenActionEntry"
+      },
+      {
+        "name": "AA",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\AAEntry"
+      },
+      {
+        "name": "URI",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\URIEntry"
+      },
+      {
+        "name": "AcroForm",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\AcroFormEntry"
+      },
+      {
+        "name": "Metadata",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\MetadataEntry"
+      },
+      {
+        "name": "StructTreeRoot",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\StructTreeRootEntry"
+      },
+      {
+        "name": "MarkInfo",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\MarkInfoEntry"
+      },
+      {
+        "name": "Lang",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\LangEntry"
+      },
+      {
+        "name": "SpiderInfo",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\SpiderInfoEntry"
+      },
+      {
+        "name": "OutputIntents",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\OutputIntentsEntry"
+      },
+      {
+        "name": "PieceInfo",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PieceInfoEntry"
+      },
+      {
+        "name": "OCProperties",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\OCPropertiesEntry"
+      },
+      {
+        "name": "Perms",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\PermsEntry"
+      },
+      {
+        "name": "Legal",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\LegalEntry"
+      },
+      {
+        "name": "Requirements",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\RequirementsEntry"
+      },
+      {
+        "name": "Collection",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\CollectionEntry"
+      },
+      {
+        "name": "NeedsRendering",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\NeedsRenderingEntry"
+      },
+      {
+        "name": "DSS",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\DSSEntry"
+      },
+      {
+        "name": "AF",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\AFEntry"
+      },
+      {
+        "name": "DPartRoot",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\CatalogDictionaryTable29\\DPartRootEntry"
+      }
+    ]
+  },
+  {
+    "table": "43",
+    "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43",
+    "definition_class": "PDF\\Specification\\Iso32000_2\\Definition\\FileSpecificationDictionaryTable43Definition",
+    "entries": [
+      {
+        "name": "Type",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\TypeEntry"
+      },
+      {
+        "name": "FS",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\FSEntry"
+      },
+      {
+        "name": "F",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\FEntry"
+      },
+      {
+        "name": "UF",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\UFEntry"
+      },
+      {
+        "name": "DOS",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\DOSEntry"
+      },
+      {
+        "name": "Mac",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\MacEntry"
+      },
+      {
+        "name": "Unix",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\UnixEntry"
+      },
+      {
+        "name": "ID",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\IDEntry"
+      },
+      {
+        "name": "V",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\VEntry"
+      },
+      {
+        "name": "EF",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\EFEntry"
+      },
+      {
+        "name": "RF",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\RFEntry"
+      },
+      {
+        "name": "Desc",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\DescEntry"
+      },
+      {
+        "name": "CI",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\CIEntry"
+      },
+      {
+        "name": "Thumb",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\ThumbEntry"
+      },
+      {
+        "name": "EP",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\EPEntry"
+      },
+      {
+        "name": "AFRelationship",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\FileSpecificationDictionaryTable43\\AFRelationshipEntry"
+      }
+    ]
+  },
+  {
+    "table": "356",
+    "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\NamespaceDictionaryTable356",
+    "definition_class": "PDF\\Specification\\Iso32000_2\\Definition\\NamespaceDictionaryTable356Definition",
+    "entries": [
+      {
+        "name": "Type",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\NamespaceDictionaryTable356\\TypeEntry"
+      },
+      {
+        "name": "NS",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\NamespaceDictionaryTable356\\NSEntry"
+      },
+      {
+        "name": "Schema",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\NamespaceDictionaryTable356\\SchemaEntry"
+      },
+      {
+        "name": "RoleMapNS",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\NamespaceDictionaryTable356\\RoleMapNSEntry"
+      }
+    ]
+  },
+  {
+    "table": "409a",
+    "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\AssociatedFilesPropertyListTable409a",
+    "definition_class": "PDF\\Specification\\Iso32000_2\\Definition\\AssociatedFilesPropertyListTable409aDefinition",
+    "entries": [
+      {
+        "name": "MCAF",
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\AssociatedFilesPropertyListTable409a\\MCAFEntry"
+      }
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "standard": "ISO 32000-2:2020",
+  "edition_identifier": "iso32000-2:2020",
+  "family": "iso32000-2",
+  "specified_pdf_version": "2.0",
+  "errata_collection": {
+    "number": 3,
+    "publication_date": "2026-06-01"
+  },
+  "source": {
+    "document": "ISO_32000-2_sponsored_EC3.pdf",
+    "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+    "physical_pdf_pages": 1023,
+    "retention": "supplied original preserved privately outside Git",
+    "public_copy_included": false
+  },
+  "dictionary_catalogue": {
+    "status": "pilot",
+    "tables": [
+      "29",
+      "43",
+      "356",
+      "409a"
+    ],
+    "dictionary_tables": 4,
+    "entry_count": 53
+  },
+  "interpretation": "Edition-specific pilot schemas. Types, unconditionally required entries and selected EC3 directness constraints are checked. Conditional requirements and the complete ISO 32000-2 catalogue are not claimed.",
+  "official_references": {
+    "standard": "https://www.iso.org/standard/75839.html",
+    "sponsored_access": "https://pdfa.org/sponsored-standards/",
+    "public_errata": "https://pdf-issues.pdfa.org/32000-2-2020/"
+  }
+}
