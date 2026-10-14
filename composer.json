@@ -9,8 +9,9 @@
         "object-model",
         "php"
     ],
-    "homepage": "https://github.com/PDFToolkit/pdf",
+    "homepage": "https://pdftoolkit.github.io/modules/core/",
     "support": {
+        "docs": "https://pdftoolkit.github.io/modules/core/",
         "issues": "https://github.com/PDFToolkit/pdf/issues",
         "source": "https://github.com/PDFToolkit/pdf"
     },
@@ -22,9 +23,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.4",
-        "pdftoolkit/pdf-images": "^0.1.4",
-        "pdftoolkit/pdf-reader": "^0.1.4",
+        "pdftoolkit/pdf-fonts": "^0.1.5",
+        "pdftoolkit/pdf-images": "^0.1.5",
+        "pdftoolkit/pdf-reader": "^0.1.5",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
@@ -74,19 +75,5 @@
         "branch-alias": {
             "dev-master": "0.5.x-dev"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/PDFToolkit/pdf-fonts"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/PDFToolkit/pdf-images"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/PDFToolkit/pdf-reader"
-        }
-    ]
+    }
 }

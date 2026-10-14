@@ -14,11 +14,10 @@ Les définitions se fondent sur les documents Adobe/ISO `PDF32000_2008.pdf` et `
 
 ## Installation
 
-Le core **0.5** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Les packages sont distribués depuis GitHub ; déclarer leur dépôt VCS dans le projet consommateur :
+Le core **0.5** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer config repositories.roukmoute-pdf vcs https://github.com/PDFToolkit/pdf
-composer require 'roukmoute/pdf:^0.5'
+composer require 'roukmoute/pdf:^0.5.4'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.md) et le
@@ -29,16 +28,14 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 
 | Package | Responsabilité |
 | --- | --- |
-| [`pdftoolkit/pdf-reader`](https://github.com/PDFToolkit/pdf-reader) | Lire les objets et révisions d'un PDF externe, vérifier ses pages et leur héritage, inspecter leurs flux. |
-| [`pdftoolkit/pdf-images`](https://github.com/PDFToolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
-| [`pdftoolkit/pdf-fonts`](https://github.com/PDFToolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
+| [`pdftoolkit/pdf-reader`](https://packagist.org/packages/pdftoolkit/pdf-reader) | Lire les objets et révisions d'un PDF externe, vérifier ses pages et leur héritage, inspecter leurs flux. |
+| [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
+| [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.4**, compatible avec les séries 0.2, 0.3, 0.4 et 0.5 du core et PHP 8.3 ou supérieur. Déclarer le dépôt du core et celui du module choisi dans le projet consommateur. Par exemple, pour importer des fichiers image :
+Chaque module dispose d'une version stable **0.1.5** sur Packagist, compatible avec les séries 0.2, 0.3, 0.4 et 0.5 du core et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer config repositories.pdf vcs https://github.com/PDFToolkit/pdf
-composer config repositories.pdf-images vcs https://github.com/PDFToolkit/pdf-images
-composer require 'pdftoolkit/pdf-images:^0.1'
+composer require 'pdftoolkit/pdf-images:^0.1.5'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.

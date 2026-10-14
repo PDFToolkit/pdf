@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "328f1ea3b565b9e1459a19bdebd632e5",
+    "content-hash": "7d5bd8b0c04f6c4ad7704dd729dfa561",
     "packages": [],
     "packages-dev": [
         {
@@ -691,16 +691,16 @@
         },
         {
             "name": "pdftoolkit/pdf-fonts",
-            "version": "v0.1.4",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-fonts.git",
-                "reference": "e0af936afced188861be21eaba6523177fe6645d"
+                "reference": "537df47166104fa813c641b8b3249770c871899b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-fonts/zipball/e0af936afced188861be21eaba6523177fe6645d",
-                "reference": "e0af936afced188861be21eaba6523177fe6645d",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-fonts/zipball/537df47166104fa813c641b8b3249770c871899b",
+                "reference": "537df47166104fa813c641b8b3249770c871899b",
                 "shasum": ""
             },
             "require": {
@@ -725,30 +725,7 @@
                     "PDF\\Fonts\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "PDF\\Fonts\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "analyse": [
-                    "phpstan analyse --no-progress"
-                ],
-                "format": [
-                    "php-cs-fixer fix"
-                ],
-                "format:check": [
-                    "php-cs-fixer fix --dry-run --diff"
-                ],
-                "check": [
-                    "@test",
-                    "@analyse",
-                    "@format:check"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -759,7 +736,7 @@
                 }
             ],
             "description": "Bounded TrueType converters into explicit PDF font objects",
-            "homepage": "https://github.com/PDFToolkit/pdf-fonts",
+            "homepage": "https://pdftoolkit.github.io/modules/fonts/",
             "keywords": [
                 "fonts",
                 "object-model",
@@ -767,23 +744,24 @@
                 "php"
             ],
             "support": {
+                "docs": "https://pdftoolkit.github.io/modules/fonts/",
                 "issues": "https://github.com/PDFToolkit/pdf-fonts/issues",
                 "source": "https://github.com/PDFToolkit/pdf-fonts"
             },
-            "time": "2026-10-13T23:18:46+00:00"
+            "time": "2026-10-14T00:24:24+00:00"
         },
         {
             "name": "pdftoolkit/pdf-images",
-            "version": "v0.1.4",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-images.git",
-                "reference": "932ba574764011419cbb31590a59ce1233786556"
+                "reference": "2e754bccf38a5cd0f983e1be09223537857e0001"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-images/zipball/932ba574764011419cbb31590a59ce1233786556",
-                "reference": "932ba574764011419cbb31590a59ce1233786556",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-images/zipball/2e754bccf38a5cd0f983e1be09223537857e0001",
+                "reference": "2e754bccf38a5cd0f983e1be09223537857e0001",
                 "shasum": ""
             },
             "require": {
@@ -808,30 +786,7 @@
                     "PDF\\Images\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "PDF\\Images\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "analyse": [
-                    "phpstan analyse --no-progress"
-                ],
-                "format": [
-                    "php-cs-fixer fix"
-                ],
-                "format:check": [
-                    "php-cs-fixer fix --dry-run --diff"
-                ],
-                "check": [
-                    "@test",
-                    "@analyse",
-                    "@format:check"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -842,7 +797,7 @@
                 }
             ],
             "description": "Bounded PNG and JPEG converters into explicit PDF image objects",
-            "homepage": "https://github.com/PDFToolkit/pdf-images",
+            "homepage": "https://pdftoolkit.github.io/modules/images/",
             "keywords": [
                 "images",
                 "object-model",
@@ -850,23 +805,24 @@
                 "php"
             ],
             "support": {
+                "docs": "https://pdftoolkit.github.io/modules/images/",
                 "issues": "https://github.com/PDFToolkit/pdf-images/issues",
                 "source": "https://github.com/PDFToolkit/pdf-images"
             },
-            "time": "2026-10-13T23:18:53+00:00"
+            "time": "2026-10-14T00:24:14+00:00"
         },
         {
             "name": "pdftoolkit/pdf-reader",
-            "version": "v0.1.4",
+            "version": "v0.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-reader.git",
-                "reference": "866ae76621cd0ddea360f4121eb92767032b2233"
+                "reference": "4777848f2cf3c82c87ef0b8d9745365af8851bef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/866ae76621cd0ddea360f4121eb92767032b2233",
-                "reference": "866ae76621cd0ddea360f4121eb92767032b2233",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/4777848f2cf3c82c87ef0b8d9745365af8851bef",
+                "reference": "4777848f2cf3c82c87ef0b8d9745365af8851bef",
                 "shasum": ""
             },
             "require": {
@@ -891,30 +847,7 @@
                     "PDF\\Reading\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "PDF\\Reading\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "analyse": [
-                    "phpstan analyse --no-progress"
-                ],
-                "format": [
-                    "php-cs-fixer fix"
-                ],
-                "format:check": [
-                    "php-cs-fixer fix --dry-run --diff"
-                ],
-                "check": [
-                    "@test",
-                    "@analyse",
-                    "@format:check"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -925,7 +858,7 @@
                 }
             ],
             "description": "An explicit, bounded object reader for ISO 32000-1 PDF 1.7",
-            "homepage": "https://github.com/PDFToolkit/pdf-reader",
+            "homepage": "https://pdftoolkit.github.io/modules/reader/",
             "keywords": [
                 "iso-32000-1",
                 "object-model",
@@ -935,10 +868,11 @@
                 "reader"
             ],
             "support": {
+                "docs": "https://pdftoolkit.github.io/modules/reader/",
                 "issues": "https://github.com/PDFToolkit/pdf-reader/issues",
                 "source": "https://github.com/PDFToolkit/pdf-reader"
             },
-            "time": "2026-10-13T23:18:40+00:00"
+            "time": "2026-10-14T00:24:46+00:00"
         },
         {
             "name": "phar-io/manifest",
