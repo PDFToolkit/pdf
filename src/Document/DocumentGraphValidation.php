@@ -11,6 +11,7 @@ use PDF\Specification\SchemaDictionary;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\RevisionObject;
+use PDF\Syntax\FileStructure\FileRevision;
 use PDF\Syntax\FileStructure\FileHeader;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\FileStructure\PdfVersion;
@@ -41,7 +42,7 @@ final class DocumentGraphValidation
         $this->catalog = $effective === [] ? $catalog : $this->effectiveDictionary($catalog);
     }
 
-    public function validate(FileHeader $header = new FileHeader(), bool $encrypted = false): void
+    public function validate(FileHeader $header = new FileHeader(), bool $encrypted = false, ?FileRevision $previous = null): void
     {
         $version = new EffectivePdfVersion($header, $this->catalog);
         $pageReferences = $this->catalog->get('Pages');
@@ -59,6 +60,7 @@ final class DocumentGraphValidation
         (new \PDF\Document\Parts\DocumentPartsGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Files\EncryptedPayloadGraphValidation())->validate($graph, $version, $encrypted);
         (new \PDF\Document\Structure\NamespaceGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Signatures\DssGraphValidation())->validate($graph, $version, $previous);
         /** @var list<array{BasicType, bool}> $pending */
         $pending = [[$this->catalog, true], ...array_map(static fn (BasicType $value): array => [$value, true], array_values($this->context->objects()))];
         // Unchanged objects still participate in file-scoped subset uniqueness and graph relationships.

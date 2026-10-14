@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PDF\Serialization;
 
 use PDF\FileStructure;
-use PDF\Document\Signatures\PendingSignature;
+use PDF\Document\Signatures\PendingSignatureDictionary;
 use PDF\Document\Signatures\PreparedSignature;
 use PDF\Syntax\FileStructure\FileRevision;
 
@@ -16,12 +16,12 @@ final readonly class SignatureWriter
     {
     }
 
-    public function prepare(FileStructure $file, PendingSignature $signature): PreparedSignature
+    public function prepare(FileStructure $file, PendingSignatureDictionary $signature): PreparedSignature
     {
         return new PreparedSignature($this->writer->revision($file), $signature);
     }
 
-    public function prepareRevision(FileRevision $revision, PendingSignature $signature): PreparedSignature
+    public function prepareRevision(FileRevision $revision, PendingSignatureDictionary $signature): PreparedSignature
     {
         return new PreparedSignature($revision, $signature);
     }

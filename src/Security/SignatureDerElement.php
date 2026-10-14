@@ -27,4 +27,18 @@ final readonly class SignatureDerElement
         }
         return $this;
     }
+
+    public function requireObjectIdentifier(): self
+    {
+        $this->requireTag(6);
+        if ($this->value === '' || (ord($this->value[strlen($this->value) - 1]) & 128) !== 0) {
+            throw new \InvalidArgumentException('A DER object identifier contains complete base-128 subidentifiers.');
+        }
+        for ($index = 0; $index < strlen($this->value); ++$index) {
+            if (($index === 0 || (ord($this->value[$index - 1]) & 128) === 0) && $this->value[$index] === "\x80") {
+                throw new \InvalidArgumentException('DER object identifier subidentifiers are minimally encoded.');
+            }
+        }
+        return $this;
+    }
 }

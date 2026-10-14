@@ -36,7 +36,7 @@ final readonly class SignatureAlgorithmParameters
         if ($format === SignatureFormat::X509RsaSha1 && $this->keyAlgorithm !== SignatureKeyAlgorithm::RSA) {
             throw new \InvalidArgumentException('adbe.x509.rsa_sha1 requires an RSA private key.');
         }
-        if ($this->curve !== null && $format !== SignatureFormat::Pkcs7Detached) {
+        if ($this->curve !== null && !in_array($format, [SignatureFormat::Pkcs7Detached, SignatureFormat::Rfc3161], true)) {
             throw new \InvalidArgumentException('Elliptic-curve signatures require the detached CMS SubFilter.');
         }
     }

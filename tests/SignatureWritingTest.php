@@ -41,7 +41,7 @@ final class SignatureWritingTest extends TestCase
     public static function formats(): iterable
     {
         foreach (CrossReferenceFormat::cases() as $xref) {
-            foreach (SignatureFormat::cases() as $signature) {
+            foreach ([SignatureFormat::Pkcs7Detached, SignatureFormat::Pkcs7Sha1, SignatureFormat::X509RsaSha1] as $signature) {
                 yield $xref->name . ' ' . $signature->name => [$xref, $signature];
             }
         }

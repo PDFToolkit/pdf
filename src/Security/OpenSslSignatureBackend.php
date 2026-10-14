@@ -129,6 +129,9 @@ final readonly class OpenSslSignatureBackend implements PolicySignatureBackend
     /** Native PKCS#1 is SHA1; PHP CMS_sign has no digest-selection argument and uses SHA256 for RSA/DSA. */
     public function algorithmParameters(SignatureFormat $format): SignatureAlgorithmParameters
     {
+        if ($format === SignatureFormat::Rfc3161) {
+            throw new \InvalidArgumentException('RFC3161 document timestamps require an explicit timestamp provider.');
+        }
         $details = openssl_pkey_get_details($this->identity->key());
         if ($details === false) {
             throw new \RuntimeException('The actual signing key parameters are unavailable.');

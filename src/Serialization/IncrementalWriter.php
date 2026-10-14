@@ -30,7 +30,7 @@ use PDF\Security\FileIdentifier;
 use PDF\Security\PdfMacReservation;
 use PDF\Security\PdfMacTokenComposer;
 use PDF\Security\PdfMacSignatureAuthCode;
-use PDF\Document\Signatures\PendingSignature;
+use PDF\Document\Signatures\PendingSignatureDictionary;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Document\DocumentGraphValidation;
 use PDF\Syntax\Object\ArrayType;
@@ -49,7 +49,7 @@ use PDF\Syntax\DocumentStructure\PageTree\PageObject;
 /** Append a delta while preserving every byte and reference identity of previous revisions (7.5.6). */
 final class IncrementalWriter
 {
-    public function __construct(private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(), private readonly ?PdfMacTokenComposer $mac = null, private readonly ?PendingSignature $macSignature = null)
+    public function __construct(private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(), private readonly ?PdfMacTokenComposer $mac = null, private readonly ?PendingSignatureDictionary $macSignature = null)
     {
     }
 
@@ -130,7 +130,7 @@ final class IncrementalWriter
         $context->prepare(...array_values($context->objects()));
         if ($reservation !== null) {
             foreach ($context->objects() as $object) {
-                if ($object instanceof PendingSignature) {
+                if ($object instanceof PendingSignatureDictionary) {
                     throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
                 }
             }
@@ -159,7 +159,7 @@ final class IncrementalWriter
         // Current typed components need their explicit construction identities; unchanged roots use frozen values.
         $validationCatalog = ($context->objects()[$rootIdentifier->objectNumber->value] ?? null) === $catalog ? $catalog : $catalogDictionary;
         (new \PDF\Syntax\FileStructure\IncrementalVersionPolicy())->validate($previous, $catalogDictionary);
-        (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header, $previous->encryption !== null);
+        (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header, $previous->encryption !== null, $previous);
         if ($previous->encryption !== null) {
             if (!$previous->encryption->metadata()->value && $catalogDictionary->has('Metadata')) {
                 $metadata = $catalogDictionary->get('Metadata');
@@ -268,7 +268,11 @@ final class IncrementalWriter
         $trailer = $this->updatedIdentifier($previous, $update, $trailer, $bytes, $context);
         $extras = $trailer->with(new Entry(new NameType('Prev'), new IntegerType($previous->crossReferenceOffset->value)));
         $root = new IndirectReference($catalog, $rootIdentifier);
-        if ($hybrid !== null && $this->mac !== null) {
+        $hasPendingSignature = false;
+        foreach ($context->objects() as $object) {
+            $hasPendingSignature = $hasPendingSignature || ($object instanceof PendingSignatureDictionary && !$context->isHistorical($object));
+        }
+        if ($hybrid !== null && ($this->mac !== null || $hasPendingSignature)) {
             $identifier = new ObjectIdentifier($firstAvailable);
             $fullSize = new IntegerType($firstAvailable->increment()->value);
             $auxiliaryOffset = strlen($bytes);

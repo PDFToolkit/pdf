@@ -9,7 +9,7 @@ use PDF\Security\FileEncryption;
 use PDF\Security\PdfMacReservation;
 use PDF\Security\PdfMacTokenComposer;
 use PDF\Security\PdfMacSignatureAuthCode;
-use PDF\Document\Signatures\PendingSignature;
+use PDF\Document\Signatures\PendingSignatureDictionary;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\ByteOffset;
 use PDF\Syntax\FileStructure\CrossReferenceFormat;
@@ -58,7 +58,7 @@ use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 /** Native Annex F layout and binary hints; no external linearization program is invoked. */
 final readonly class LinearizedWriter
 {
-    public function __construct(private LinearizationLimits $limits = new LinearizationLimits(), private ?HintStreamSplit $hintSplit = null, private ?FileEncryption $encryption = null, private ?ThumbnailGraphNormalization $thumbnailNormalization = null, private ?PdfMacTokenComposer $mac = null, private ?PendingSignature $macSignature = null)
+    public function __construct(private LinearizationLimits $limits = new LinearizationLimits(), private ?HintStreamSplit $hintSplit = null, private ?FileEncryption $encryption = null, private ?ThumbnailGraphNormalization $thumbnailNormalization = null, private ?PdfMacTokenComposer $mac = null, private ?PendingSignatureDictionary $macSignature = null)
     {
     }
 
@@ -108,7 +108,7 @@ final readonly class LinearizedWriter
         $first = [...$plan->documentObjects, ...$plan->firstPageObjects];
         if ($reservation !== null) {
             foreach ([...$second, ...$first] as $object) {
-                if ($object instanceof PendingSignature) {
+                if ($object instanceof PendingSignatureDictionary) {
                     throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
                 }
             }

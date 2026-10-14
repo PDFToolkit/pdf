@@ -41,7 +41,7 @@ final class SignatureOutputVerificationTest extends TestCase
     /** @return iterable<string, array{SignatureFormat, string}> */
     public static function formats(): iterable
     {
-        foreach (SignatureFormat::cases() as $format) {
+        foreach ([SignatureFormat::Pkcs7Detached, SignatureFormat::Pkcs7Sha1, SignatureFormat::X509RsaSha1] as $format) {
             yield $format->name => [$format, 'signer'];
         }
         yield 'DSA detached' => [SignatureFormat::Pkcs7Detached, 'dsa-1024'];

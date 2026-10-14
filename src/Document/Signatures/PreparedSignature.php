@@ -27,7 +27,7 @@ final readonly class PreparedSignature
     private int $byteRangeOffset;
     public string $bytes;
 
-    public function __construct(public FileRevision $revision, public PendingSignature $signature, private ?PdfMacTokenComposer $mac = null)
+    public function __construct(public FileRevision $revision, public PendingSignatureDictionary $signature, private ?PdfMacTokenComposer $mac = null)
     {
         (new \PDF\Syntax\FileStructure\EffectivePdfVersion(
             $revision->header,
@@ -64,10 +64,17 @@ final readonly class PreparedSignature
         $this->byteRangeOffset = $after + strlen(' /ByteRange ');
         $this->bytes = substr_replace($revision->bytes, $signature->byteRange->filled($this->range), $this->byteRangeOffset, strlen($range));
         $graph = new FrozenSignatureGraph($revision);
+        if ($signature instanceof PendingDocumentTimestamp && count($graph->bindings($binding->identifier)) !== 1) {
+            throw new \LogicException('A document timestamp belongs to one actual signature field.');
+        }
         (new SignatureDocumentSigningRules())->validate($graph, $binding->identifier);
         $history = new SignaturePermissionHistory($graph);
         foreach ($graph->bindings($binding->identifier) as $field) {
-            $history->assertSigning($field);
+            if ($signature instanceof PendingDocumentTimestamp) {
+                $history->assertDocumentTimestamp($graph, $field, $signature);
+            } else {
+                $history->assertSigning($field);
+            }
         }
     }
 

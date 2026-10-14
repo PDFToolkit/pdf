@@ -27,10 +27,12 @@ final readonly class SignaturePermissionHistory
     public IntegerType $permissions;
     /** @var list<array{FrozenSignatureGraph, FieldMdpTransform}> */
     private array $fieldRestrictions;
+    private IntegerType $fieldLockPermissions;
 
     public function __construct(FrozenSignatureGraph $graph)
     {
         $permissions = 3;
+        $fieldLockPermissions = 3;
         $restrictions = [];
         $seen = [];
         $rules = new SignatureDocumentSigningRules();
@@ -83,6 +85,7 @@ final readonly class SignaturePermissionHistory
                         $policy = (new FrozenSignatureSeedReader($source))->lock($lock);
                         if ($policy->permissions !== null) {
                             $permissions = min($permissions, $policy->permissions->integer());
+                            $fieldLockPermissions = min($fieldLockPermissions, $policy->permissions->integer());
                         }
                     }
                 }
@@ -90,6 +93,7 @@ final readonly class SignaturePermissionHistory
         }
         $this->permissions = new IntegerType($permissions);
         $this->fieldRestrictions = $restrictions;
+        $this->fieldLockPermissions = new IntegerType($fieldLockPermissions);
     }
 
     public function assertSigning(FrozenSignatureField $field): void
@@ -97,6 +101,23 @@ final readonly class SignaturePermissionHistory
         if ($this->permissions->integer() === 1) {
             throw new \LogicException('Historical DocMDP/Adobe P1 forbids changing a field value by a later signature.');
         }
+        $this->assertFieldRestrictions($field);
+    }
+
+    /** ISO 32000-2 12.8.5.3: prove the entire maintenance delta before DocMDP exclusion. */
+    public function assertDocumentTimestamp(FrozenSignatureGraph $graph, FrozenSignatureField $field, PendingDocumentTimestamp $pending): void
+    {
+        if ($this->fieldLockPermissions->integer() === 1) {
+            throw new \LogicException('Historical signature field lock P1 remains binding for document timestamps.');
+        }
+        if ($this->permissions->integer() === 1) {
+            (new DocumentTimestampRevisionPolicy())->validate($graph, $field, $pending);
+        }
+        $this->assertFieldRestrictions($field);
+    }
+
+    private function assertFieldRestrictions(FrozenSignatureField $field): void
+    {
         foreach ($this->fieldRestrictions as [$source, $restriction]) {
             $names = [$field->qualifiedName];
             foreach ($source->fields() as $original) {

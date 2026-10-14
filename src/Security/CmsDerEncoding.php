@@ -9,8 +9,11 @@ final readonly class CmsDerEncoding
 {
     public function element(int $tag, string $value): string
     {
+        if ($tag < 1 || $tag > 255 || ($tag & 31) === 31) {
+            throw new \InvalidArgumentException('The selected DER encoder supports its explicit single-byte nonzero tags.');
+        }
         $size = strlen($value);
-        $length = chr($size);
+        $length = $size < 128 ? chr($size) : '';
         if ($size >= 128) {
             $encoded = '';
             while ($size > 0) {

@@ -40,7 +40,7 @@ use PDF\Security\FileEncryption;
 use PDF\Security\PdfMacReservation;
 use PDF\Security\PdfMacTokenComposer;
 use PDF\Security\PdfMacSignatureAuthCode;
-use PDF\Document\Signatures\PendingSignature;
+use PDF\Document\Signatures\PendingSignatureDictionary;
 use PDF\Security\FileIdentifier;
 use PDF\Security\DocumentMetadataExemption;
 use PDF\Syntax\Object\StreamObject;
@@ -52,7 +52,7 @@ final class FileWriter
         private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(),
         private readonly ?FileEncryption $encryption = null,
         private readonly ?PdfMacTokenComposer $mac = null,
-        private readonly ?PendingSignature $macSignature = null,
+        private readonly ?PendingSignatureDictionary $macSignature = null,
     ) {
     }
 
@@ -113,7 +113,7 @@ final class FileWriter
         $context->prepareFile($file->body, $root, $trailerEntries);
         if ($reservation !== null) {
             foreach ($context->objects() as $object) {
-                if ($object instanceof PendingSignature) {
+                if ($object instanceof PendingSignatureDictionary) {
                     throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
                 }
             }
@@ -189,9 +189,13 @@ final class FileWriter
             throw new \OverflowException('Not enough object number space to serialize this file.');
         }
         $size = $maximumNumber + 1;
-        if ($hybrid !== null && $this->mac !== null) {
-            // A signed MAC cannot authenticate a completed fallback revision and a later
-            // revision using the same signature ByteRange. Emit one hybrid revision:
+        $hasPendingSignature = false;
+        foreach ($context->objects() as $object) {
+            $hasPendingSignature = $hasPendingSignature || $object instanceof PendingSignatureDictionary;
+        }
+        if ($hybrid !== null && ($this->mac !== null || $hasPendingSignature)) {
+            // A signature cannot authenticate a completed fallback revision and a later
+            // revision using the same ByteRange. Emit one hybrid revision:
             // classic records omit compressed objects, supplied through XRefStm instead.
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
             $fullSize = new IntegerType($size + 1);
