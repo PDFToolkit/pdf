@@ -117,7 +117,7 @@ $named = new Navigation\NamedDestinations(
     new Navigation\NamedDestinationEntry(new LiteralString('empty-section'), new Navigation\DestinationDictionary(new Navigation\LocalDestination(new Fit($first)), new Navigation\StructureDestinationEntry(new Navigation\StructureDestination($empty, $view)))),
 );
 $catalog = new DocumentCatalog($pages, ...[...$root->catalogEntries(new Structure\MarkInformation(new BooleanType(true))), $named->catalogEntry(), new Entry(new NameType('Lang'), new TextString('en-US'))]);
-$format = in_array('--xref-stream', $argv, true) ? CrossReferenceFormat::Stream : (in_array('--hybrid', $argv, true) ? CrossReferenceFormat::Hybrid : CrossReferenceFormat::Table);
+$format = in_array('--xref-stream', $argv ?? [], true) ? CrossReferenceFormat::Stream : (in_array('--hybrid', $argv ?? [], true) ? CrossReferenceFormat::Hybrid : CrossReferenceFormat::Table);
 $file = new FileStructure(new FileHeader('2.0'), new FileBody($catalog), new IndirectReference($catalog), crossReferenceFormat: $format);
 $path = $argv[1] ?? __DIR__ . '/pdf20-structure-destinations.pdf';
 $file->writeTo($path);

@@ -140,10 +140,10 @@ $audit = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion($header, 
 $audit->assertNoDetectedFailures();
 
 // stdout stays binary PDF; the optional --audit-json writes a separate review report.
-if (in_array('--audit-json', $argv, true)) {
+if (in_array('--audit-json', $argv ?? [], true)) {
     fwrite(STDERR, json_encode(['detectedFailures' => count($audit->failures()), 'pendingReviews' => array_map(static fn ($finding): array => ['clause' => $finding->clause, 'page' => $finding->pdfPage, 'status' => $finding->status->name, 'message' => $finding->message], $audit->pending())], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT) . PHP_EOL);
 }
-$format = in_array('--xref-stream', $argv, true) ? CrossReferenceFormat::Stream : (in_array('--hybrid', $argv, true) ? CrossReferenceFormat::Hybrid : CrossReferenceFormat::Table);
+$format = in_array('--xref-stream', $argv ?? [], true) ? CrossReferenceFormat::Stream : (in_array('--hybrid', $argv ?? [], true) ? CrossReferenceFormat::Hybrid : CrossReferenceFormat::Table);
 $file = new FileStructure($header, new FileBody($catalog), new IndirectReference($catalog), crossReferenceFormat: $format);
 if (isset($argv[1]) && !str_starts_with($argv[1], '--')) {
     $file->writeTo($argv[1]);
