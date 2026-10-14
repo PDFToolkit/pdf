@@ -15,11 +15,22 @@ use PDF\Syntax\Object\StreamObject;
 final readonly class StructureAttributeObject
 {
     public NameType $owner;
+    public ?StructureNamespace $namespace;
 
     public function __construct(public DictionaryType|StreamObject|IndirectReference $object)
     {
         $dictionary = $this->dictionary();
         $owner = $dictionary->get('O');
+        $namespaceReference = $dictionary->get('NS');
+        $namespace = $namespaceReference instanceof IndirectReference ? $namespaceReference->target() : $namespaceReference;
+        if ($namespace !== null && (!$namespaceReference instanceof IndirectReference || !$namespace instanceof StructureNamespace || $owner !== null)) {
+            throw new \InvalidArgumentException('An attribute uses exactly one owner: O or an indirect namespace dictionary (PDF 2.0 table 360).');
+        }
+        $this->namespace = $namespace;
+        if ($namespace !== null) {
+            $this->owner = new NameType($namespace->identifier);
+            return;
+        }
         if (!$owner instanceof NameType) {
             throw new \InvalidArgumentException('An attribute object requires an explicit owner /O (table 327).');
         }

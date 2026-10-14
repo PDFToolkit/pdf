@@ -56,6 +56,7 @@ final class DocumentGraphValidation
         (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Navigation\NavigationGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Structure\NamespaceGraphValidation())->validate($graph, $version);
         /** @var list<array{BasicType, bool}> $pending */
         $pending = [[$this->catalog, true], ...array_map(static fn (BasicType $value): array => [$value, true], array_values($this->context->objects()))];
         // Unchanged objects still participate in file-scoped subset uniqueness and graph relationships.

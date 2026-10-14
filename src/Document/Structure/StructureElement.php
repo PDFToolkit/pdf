@@ -23,10 +23,13 @@ final class StructureElement extends SchemaDictionary
     private StructureElement|StructureTreeRoot|null $parentElement = null;
     /** @var list<StructureElement|PageMarkedContent|MarkedContentReference|ObjectReference> */
     private array $children = [];
+    /** @var list<StructureElement> */
+    private array $references = [];
     public readonly NameType $type;
+    public readonly ?StructureNamespace $namespace;
 
     public function __construct(
-        NameType|StandardStructureType $type,
+        NameType|StandardStructureType|StructureRole $type,
         public readonly ?PageObject $page = null,
         public readonly ?StringType $identifier = null,
         public readonly ?StructureAttributes $attributes = null,
@@ -38,16 +41,20 @@ final class StructureElement extends SchemaDictionary
             throw new \InvalidArgumentException('A structure-element revision must be non-negative.');
         }
         foreach ($entries as $entry) {
-            if (in_array($entry->key->value, ['Type', 'S', 'P', 'Pg', 'K', 'ID', 'A', 'C', 'R'], true)) {
+            if (in_array($entry->key->value, ['Type', 'S', 'P', 'Pg', 'K', 'ID', 'A', 'C', 'R', 'NS'], true)) {
                 throw new \InvalidArgumentException('Structural entries are supplied by the element constructor and hierarchy.');
             }
         }
-        $this->type = $type instanceof StandardStructureType ? $type->name() : $type;
+        $this->namespace = $type instanceof StructureRole ? $type->namespace : null;
+        $this->type = $type instanceof StructureRole ? $type->type : ($type instanceof StandardStructureType ? $type->name() : $type);
         $required = [
             new Entry(new NameType('Type'), new NameType('StructElem')),
             new Entry(new NameType('S'), $this->type),
             new Entry(new NameType('R'), $revision),
         ];
+        if ($this->namespace !== null) {
+            $required[] = new Entry(new NameType('NS'), new IndirectReference($this->namespace));
+        }
         if ($page !== null) {
             $required[] = new Entry(new NameType('Pg'), new IndirectReference($page));
         }
@@ -98,6 +105,26 @@ final class StructureElement extends SchemaDictionary
         return $this->parentElement;
     }
 
+    /** Explicit document-scoped graph construction also permits reciprocal FENote citations. */
+    public function addReference(self $target): self
+    {
+        foreach (parent::entries() as $entry) {
+            if ($entry->key->value === 'Ref') {
+                throw new \InvalidArgumentException('Build Ref associations through one explicit mechanism.');
+            }
+        }
+        if (in_array($target, $this->references, true)) {
+            throw new \InvalidArgumentException('Build Ref associations through one explicit mechanism without duplicate targets.');
+        }
+        $this->references[] = $target;
+        $node = $this->parentElement;
+        while ($node instanceof self) {
+            $node = $node->parentElement;
+        }
+        $node?->invalidate();
+        return $this;
+    }
+
     public function root(): StructureTreeRoot
     {
         $node = $this->parentElement;
@@ -120,6 +147,9 @@ final class StructureElement extends SchemaDictionary
             throw new \LogicException('A structure parent must contain its attached element.');
         }
         yield from parent::entries();
+        if ($this->references !== []) {
+            yield new StructureElementReferences(...$this->references);
+        }
         yield new Entry(new NameType('P'), new IndirectReference($parent));
         if ($this->children !== []) {
             $values = array_map(fn (self|PageMarkedContent|MarkedContentReference|ObjectReference $child): BasicType => $this->kidValue($child), $this->children);

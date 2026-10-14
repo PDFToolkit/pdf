@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace PDF\Document\Structure;
 
 use PDF\Document\CatalogComponent;
+use PDF\Document\VersionedComponent;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Specification\Definition\StructureTreeRootTable322Definition;
 use PDF\Specification\SchemaDictionary;
 use PDF\Syntax\DataStructure\NameTree;
@@ -25,7 +28,7 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NullType;
 
 /** Logical-structure graph and document-local derived ParentTree/IDTree (PDF pages 564–577). */
-final class StructureTreeRoot extends SchemaDictionary implements CatalogComponent
+final class StructureTreeRoot extends SchemaDictionary implements CatalogComponent, VersionedComponent
 {
     public const string TABLE = '322';
     /** @var list<StructureElement> */
@@ -38,6 +41,8 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
         public readonly RoleMap $roleMap = new RoleMap(),
         public readonly ClassMap $classMap = new ClassMap(),
         public readonly StructureLimits $limits = new StructureLimits(),
+        public readonly StructureNamespaces $namespaces = new StructureNamespaces(),
+        public readonly ?StructureInclusionRules $inclusionRules = null,
     ) {
         if ($pages->parent() !== null) {
             throw new \InvalidArgumentException('A structure tree requires the document page-tree root.');
@@ -100,6 +105,7 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
                 throw new \InvalidArgumentException('All elements must belong to the same structure tree.');
             }
             $elements[] = $element;
+            $this->namespaces->require($element->namespace);
             if ($element->page !== null) {
                 $this->validatePage($element->page);
             }
@@ -116,6 +122,7 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
                 array_push($attributes, ...$this->classMap->attributeClass($association->name)->attributes);
             }
             foreach ($attributes as $attribute) {
+                $this->namespaces->require($attribute->namespace);
                 if ($attribute->owner->value === 'UserProperties') {
                     $properties = $attribute->dictionary()->get('P');
                     if (!$properties instanceof ArrayType) {
@@ -175,6 +182,19 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
             }
         }
         $pairs = [];
+        foreach ($elements as $element) {
+            $references = $element->get('Ref');
+            if ($references !== null) {
+                if (!$references instanceof ArrayType) {
+                    throw new \InvalidArgumentException('A structure-element Ref association must be an array.');
+                }
+                foreach ($references as $reference) {
+                    if (!$reference instanceof IndirectReference || !$reference->target() instanceof StructureElement || !in_array($reference->target(), $elements, true)) {
+                        throw new \InvalidArgumentException('Ref associations must identify structure elements in this same document tree.');
+                    }
+                }
+            }
+        }
         foreach ($marked as $key => $parents) {
             $values = [];
             $last = max(array_keys($parents));
@@ -215,8 +235,12 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
             throw new \InvalidArgumentException('Tagged PDF requires MarkInfo.Marked=true and exactly one root structure element.');
         }
         $this->validateMarkInformation($index, $markInformation);
-        $validator = new TaggedStructureValidator($this->roleMap, new AttributeResolver($this->classMap, roles: $this->roleMap));
-        $validator->validate($index);
+        if ($this->namespaces->items !== [] || $this->inclusionRules !== null) {
+            ($this->inclusionRules ?? new StructureInclusionRules())->validate($this, $index);
+        } else {
+            $validator = new TaggedStructureValidator($this->roleMap, new AttributeResolver($this->classMap, roles: $this->roleMap));
+            $validator->validate($index);
+        }
         (new StructureContentValidator())->validate($index, true, $this->pages);
     }
 
@@ -272,6 +296,9 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
     {
         $index = $this->index();
         yield from parent::entries();
+        if ($this->namespaces->items !== []) {
+            yield new Entry(new NameType('Namespaces'), $this->namespaces->value());
+        }
         if ($this->children !== []) {
             yield new Entry(new NameType('K'), new ArrayType(...array_map(static fn (StructureElement $element): IndirectReference => new IndirectReference($element), $this->children)));
         }
@@ -293,6 +320,13 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
     public function with(Entry $entry): static
     {
         throw new \LogicException('Structure-tree entries are derived from explicit hierarchy, role and class objects.');
+    }
+
+    public function validateVersion(EffectivePdfVersion $version): void
+    {
+        if ($this->namespaces->items !== [] || $this->inclusionRules !== null) {
+            $version->require(PdfVersion::PDF20, 'Structure namespaces and TS 32005 inclusion rules');
+        }
     }
 
     public function without(NameType|string $key): static
