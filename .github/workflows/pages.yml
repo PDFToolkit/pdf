@@ -47,6 +47,8 @@ jobs:
               *) exit "$status" ;;
             esac
             if [ "$attempt" -eq 3 ]; then exit "$status"; fi
+            # A failed download leaves partial output; the pinned builder requires an empty directory.
+            python -c 'from pathlib import Path; import shutil; root = Path.cwd().resolve(); output = (root / "_site").resolve(); assert output.parent == root and output.name == "_site", "Unexpected compatibility output"; shutil.rmtree(output) if output.exists() else None'
             sleep "$((attempt * 5))"
           done
           python _docs/tools/check_legacy_site.py _site
