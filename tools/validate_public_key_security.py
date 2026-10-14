@@ -41,11 +41,20 @@ def decrypt_packet(packet, key):
 
 def check_material(filter_object, key, case, document, encrypt_metadata=True):
     packets = [packet.dump() for packet in filter_object.recipients]
-    payload = decrypt_packet(packets[0], key)
-    assert len(payload) == (24 if document else 20)
+    payloads = [decrypt_packet(packet, key) for packet in packets]
+    assert all(len(payload) == (24 if document else 20) for payload in payloads)
+    payload = payloads[0]
+    assert all(item[:20] == payload[:20] for item in payloads)
     if document:
         order = 'little' if case['permissionByteOrder'] == 'V' else 'big'
-        assert int.from_bytes(payload[20:], order) == case['permissions']
+        words = [int.from_bytes(item[20:], order) for item in payloads]
+        assert words == case['recipientPermissions']
+        assert words[0] == case['permissions']
+        if case['pdfVersion'] == '2.0':
+            assert order == 'big'
+            assert len(words) == 2 and words[0] != words[1]
+            assert all(word & 0x200 for word in words)
+            assert all(word & 0xfffff000 == 0xfffff000 for word in words)
     metadata_suffix = b'' if encrypt_metadata else b'\xff' * 4
     digest_name = 'sha256' if len(filter_object.shared_key) == 32 else 'sha1'
     independent_key = hashlib.new(digest_name, payload[:20] + b''.join(packets) + metadata_suffix).digest()[:len(filter_object.shared_key)]
@@ -72,6 +81,7 @@ def independently_decode_named_stream(stream, file_key, method):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--php', default='php')
+    parser.add_argument('--pdf-version', choices=['1.7', '2.0'], default='1.7')
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     fixtures = root / 'tests/Fixtures/signing'
@@ -79,25 +89,33 @@ def main():
     attachment_credential = SimpleEnvelopeKeyDecrypter.load(str(fixtures / 'recipient-private-key.pem'), str(fixtures / 'recipient.der'))
     key = serialization.load_pem_private_key((fixtures / 'signer-private-key.pem').read_bytes(), None)
     attachment_key = serialization.load_pem_private_key((fixtures / 'recipient-private-key.pem').read_bytes(), None)
+    metadata = (b'<x:xmpmeta xmlns:x="adobe:ns:meta/"><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"><rdf:Description rdf:about="" xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:description>Public-key document XML</dc:description></rdf:Description></rdf:RDF></x:xmpmeta>'
+                if args.pdf_version == '2.0' else b'<metadata>Public-key document XML</metadata>')
     count = 0
     with tempfile.TemporaryDirectory(prefix='pdf-public-key-') as temporary:
         directory = Path(temporary)
-        run([args.php, root / 'tools/fixtures/public_key_encryption.php', directory])
+        run([args.php, root / 'tools/fixtures/public_key_encryption.php', directory, '--pdf-version', args.pdf_version])
         cases = json.loads((directory / 'manifest.json').read_text())
+        assert len(cases) == (24 if args.pdf_version == '2.0' else 48)
         for case in cases:
             first = (directory / case['file']).read_bytes()
             for filename, incremental in [(case['file'], False), (case['incrementalFile'], True)]:
                 pdf = (directory / filename).read_bytes()
+                assert pdf.startswith(f'%PDF-{args.pdf_version}\n'.encode())
+                assert case['pdfVersion'] == args.pdf_version
                 assert not incremental or pdf.startswith(first)
                 reader = PdfFileReader(BytesIO(pdf))
                 handler = reader.security_handler
                 default = handler.get_stream_filter()
                 # Authenticate public API filters separately: EFF uses another identity,
-                # and ISO2008 has no PDF2.0 MAC policy. The reader's cipher algorithms are unchanged.
+                # without invoking an unrelated file MAC policy. Cipher/filter algorithms remain unchanged.
                 result = default.authenticate(credential)
                 assert result.status.name == 'USER'
                 if case['permissionByteOrder'] == 'N':
-                    assert result.permission_flags.value == case['permissions']
+                    # The public API exposes interpreted flags, not reserved bits in the raw word.
+                    # Full 32-bit CMS words are checked independently by check_material below.
+                    mask = sum(flag.value for flag in result.permission_flags.__class__)
+                    assert result.permission_flags.value == case['permissions'] & mask
                 else:
                     # Deliberately retained source-literal encoding differs from deployed
                     # big-endian permission interpretation; do not claim semantic interoperability.
@@ -106,7 +124,10 @@ def main():
                 assert reader.trailer['/Info']['/Title'] == 'Public-key private title'
                 expected_content = b'% Updated public-key content\n' if incremental else b'% Private public-key content\n'
                 assert reader.root['/Pages']['/Kids'][0]['/Contents'].data == expected_content
-                assert reader.root['/Metadata'].data == b'<metadata>Public-key document XML</metadata>'
+                assert reader.root['/Metadata'].data == metadata
+                if args.pdf_version == '2.0':
+                    assert '/Extensions' not in reader.root
+                    assert case['permissionByteOrder'] == 'N'
                 if case['attachment']:
                     attachment_filter = handler.get_stream_filter('/AttachmentKey')
                     assert attachment_filter.authenticate(attachment_credential).status.name == 'USER'
@@ -123,7 +144,8 @@ def main():
                     assert fresh_reader.get_object(generic.Reference(40, 0, pdf=fresh_reader)).data == bytes(range(256))
                     assert reader.get_object(generic.Reference(41, 0, pdf=reader)).data == b'Explicit public-key clear stream'
                 count += 1
-    print(f'Public-key security: {count} initial/incremental files, s3/s4/s5, RC4/AESV2/AESV3, independent CMS/keys/named-stream verification and unmodified pyHanko default-filter decryption; permission byte-order interpretations checked separately.')
+    assert count == (48 if args.pdf_version == '2.0' else 96)
+    print(f'Public-key security PDF {args.pdf_version}: {count} initial/incremental files, s3/s4/s5, RC4/AESV2/AESV3, independent CMS/keys/named-stream verification and unmodified pyHanko default-filter decryption; permission byte-order interpretations checked separately.')
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: 0.5.x-dev
+  COMPOSER_ROOT_VERSION: 0.6.x-dev
 
 jobs:
   php:
@@ -36,6 +36,7 @@ jobs:
       - run: composer check
       - run: python tools/generate_specification.py --check
       - run: python tools/generate_adobe_supplement.py --check
+      - run: python tools/generate_iso32000_2_pilot.py --check
       - run: python tools/build_saslprep_tables.py --check
       - run: python -m pip install --require-hashes -r tools/public-key-validation-requirements.txt
       - name: Verify retained archival Adobe references and portfolio attachments
@@ -57,5 +58,9 @@ jobs:
         run: python tools/validate_adobe_supplement.py /tmp/pdf-examples
       - name: Verify historical encryption and Unicode preparation independently
         run: python tools/validate_adobe_encryption.py --php php --qpdf qpdf
+      - name: Verify PDF 2.0 foundations and public-key permission semantics
+        run: |
+          python tools/validate_pdf20_foundations.py --php php --qpdf qpdf --example /tmp/pdf-examples/pdf20-associated-files.pdf
+          python tools/validate_public_key_security.py --php php --pdf-version 2.0
       - name: Verify native source mechanisms with independent oracles
         run: python tools/validate_source_mechanisms.py /tmp/pdf-examples --php php --qpdf qpdf
