@@ -79,7 +79,11 @@ final readonly class PublicKeySecurityHandler
         $recipients = [];
         foreach ($grouped as $key => $certificates) {
             $payload = $seed->bytes() . ($permissions[$key]?->bytes($this->permissionByteOrder) ?? '');
-            $recipients[] = $this->cms->envelope($payload, ...$certificates);
+            $recipient = $this->cms->envelope($payload, ...$certificates);
+            if ($recipient->permissions !== null && $recipient->permissions->unsigned !== $permissions[$key]?->unsigned) {
+                throw new \UnexpectedValueException('The CMS backend declared permissions different from its supplied payload.');
+            }
+            $recipients[] = new PublicKeyRecipient($recipient->value, $permissions[$key]);
         }
         return new PublicKeyKeyMaterial($seed, $length, $metadata, $scope, $this->permissionByteOrder, ...$recipients);
     }

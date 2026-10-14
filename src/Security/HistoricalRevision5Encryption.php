@@ -61,7 +61,9 @@ final readonly class HistoricalRevision5Encryption implements FileEncryption
         $adobe = $extensions instanceof DictionaryType ? $extensions->get('ADBE') : null;
         $base = $adobe instanceof DictionaryType ? $adobe->get('BaseVersion') : null;
         $level = $adobe instanceof DictionaryType ? $adobe->get('ExtensionLevel') : null;
-        (new EffectivePdfVersion($header, $catalog))->require(PdfVersion::PDF17, 'Historical revision-5 encryption');
+        $version = new EffectivePdfVersion($header, $catalog);
+        (new EncryptionVersionPolicy())->validate($version, $this->dictionary());
+        $version->require(PdfVersion::PDF17, 'Historical revision-5 encryption');
         if (!$base instanceof NameType || $base->value !== '1.7'
             || !$level instanceof IntegerType || $level->value < 3) {
             throw new \LogicException('Historical R=5 encryption requires PDF 1.7 and direct Adobe extension level 3 or greater.');

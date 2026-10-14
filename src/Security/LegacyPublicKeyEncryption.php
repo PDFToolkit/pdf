@@ -35,6 +35,7 @@ final readonly class LegacyPublicKeyEncryption implements FileEncryption
         $version = $subFilter === PublicKeySubFilter::Pkcs7S3 ? 1 : 2;
         $entries = [new Entry(new NameType('Filter'), new NameType('Adobe.PubSec')),
             new Entry(new NameType('SubFilter'), new NameType($subFilter->value)), new Entry(new NameType('V'), new IntegerType($version)),
+            // Historical compatibility P does not establish the permission words in CMS recipients.
             new Entry(new NameType('P'), $permissions->value), new Entry(new NameType('Recipients'), $material->recipientObject())];
         if ($version === 2) {
             $entries[] = new Entry(new NameType('Length'), $material->length->value);
@@ -54,10 +55,12 @@ final readonly class LegacyPublicKeyEncryption implements FileEncryption
 
     public function validateFile(FileHeader $header, DictionaryType $catalog, FileIdentifier $identifier): void
     {
-        (new EffectivePdfVersion($header, $catalog))->require(
+        $effective = new EffectivePdfVersion($header, $catalog);
+        $effective->require(
             $this->subFilter === PublicKeySubFilter::Pkcs7S3 ? PdfVersion::PDF13 : PdfVersion::PDF14,
             'Public-key security handler',
         );
+        (new PublicKeyVersionValidation())->validate($effective, $this->material);
     }
 
     public function encryptString(string $bytes, ObjectIdentifier $identifier): string

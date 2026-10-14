@@ -7,6 +7,7 @@ namespace PDF\Syntax\FileStructure;
 use PDF\Serialization\SerializationContext;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectObject;
+use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 use PDF\Syntax\Object\IntegerType;
 
 /** Preserve logical identities while omitting required legacy-visible members from physical object-stream copies. */
@@ -17,10 +18,10 @@ final class HybridReferenceObjects
     /** @var array<int, CrossReferenceStreamCompressedEntry> */
     private array $compressed = [];
 
-    public function __construct(SerializationContext $context, DictionaryType $catalog, ?FileRevision $previous = null)
+    public function __construct(SerializationContext $context, DictionaryType $catalog, ?FileRevision $previous = null, ?ObjectIdentifier $catalogIdentifier = null)
     {
         $this->values = new \SplObjectStorage();
-        $visible = (new HybridVisibleGraph($context, $catalog, $previous))->objectNumbers();
+        $visible = (new HybridVisibleGraph($context, $catalog, $previous, $catalogIdentifier))->objectNumbers();
         if ($previous !== null) {
             $ordinary = [];
             foreach ($previous->spans() as $span) {

@@ -26,6 +26,11 @@ final readonly class PublicKeyKeyMaterial
         if ($recipients === [] || ($scope === PublicKeyRecipientScope::IndividualStream && count($recipients) !== 1)) {
             throw new \InvalidArgumentException('Document recipients are nonempty; individual-stream recipients contain exactly one envelope.');
         }
+        foreach ($recipients as $recipient) {
+            if ($scope === PublicKeyRecipientScope::IndividualStream && $recipient->permissions !== null) {
+                throw new \InvalidArgumentException('Individual-stream CMS payloads omit document permission words.');
+            }
+        }
         $this->recipients = array_values($recipients);
         $this->key = (new PublicKeyKeyDerivation())->derive($seed, $length, $metadata, ...$recipients);
     }
@@ -54,6 +59,9 @@ final readonly class PublicKeyKeyMaterial
                     throw new \UnexpectedValueException('Invalid public-key permission word.');
                 }
                 $permissions = new PublicKeyPermissions(new IntegerType($word['permissions']));
+                if ($recipient->permissions !== null && $recipient->permissions->unsigned !== $permissions->unsigned) {
+                    throw new \UnexpectedValueException('Decrypted CMS permissions differ from the explicitly declared payload facts.');
+                }
             }
             return new AuthenticatedPublicKey($this->key, $permissions, $index);
         }

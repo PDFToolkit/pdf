@@ -12,6 +12,7 @@ use PDF\Specification\TableDefinition;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
 
@@ -25,13 +26,14 @@ final class HybridVisibleGraph
     /** @var array<int, RevisionObject> */
     private array $historical = [];
 
-    public function __construct(private readonly SerializationContext $context, DictionaryType $catalog, ?FileRevision $previous = null)
+    public function __construct(private readonly SerializationContext $context, DictionaryType $catalog, ?FileRevision $previous = null, ?ObjectIdentifier $catalogIdentifier = null)
     {
         $this->seen = new \SplObjectStorage();
         foreach ($previous?->objects() ?? [] as $record) {
             $this->historical[$record->identifier->objectNumber->value] = $record;
         }
-        $this->numbers[$context->identifier($catalog)->objectNumber->value] = true;
+        // A frozen effective catalog is a value view, not another indirect object.
+        $this->numbers[($catalogIdentifier ?? $context->identifier($catalog))->objectNumber->value] = true;
         $this->visit($catalog);
     }
 

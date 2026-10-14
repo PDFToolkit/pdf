@@ -51,7 +51,8 @@ final class DocumentGraphValidation
         $pages = [];
         $visitedPages = [];
         $graph = new DocumentGraphContext($this->context, $this->catalog, ...array_values($this->effective));
-        $this->visitPages($pageReferences, null, $pages, $visitedPages, $graph);
+        $this->visitPages($pageReferences, null, $pages, $visitedPages, $graph, $version);
+        $this->validatePageAssociations($pages, $graph, $version);
         (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Navigation\NavigationGraphValidation())->validate($graph, $version);
@@ -106,11 +107,42 @@ final class DocumentGraphValidation
             if ($value instanceof DocumentGraphComponent) {
                 $value->validateGraph($projection);
             }
-            if ($value instanceof VersionedComponent && (!$indirect || $this->isCurrent($value))) {
+            // Immutable text values retained by a revision still obey its effective version.
+            if ($value instanceof VersionedComponent && (!$indirect || $this->isCurrent($value) || $value instanceof \PDF\Syntax\DataStructure\TextString)) {
                 $value->validateVersion($version);
             }
             if ($dictionary !== null) {
+                $associationOwner = null;
+                if ($value instanceof StreamObject) {
+                    $subtype = $dictionary->get('Subtype');
+                    $associationOwner = $subtype instanceof NameType ? match ($subtype->value) {
+                        'Form' => \PDF\Document\Files\AssociatedFileOwner::FormXObject,
+                        'Image' => \PDF\Document\Files\AssociatedFileOwner::ImageXObject,
+                        default => null,
+                    } : null;
+                }
+                (new \PDF\Document\Files\AssociatedFilesGraphValidation())->validate($dictionary, $projection, $version, $associationOwner);
+                if ($associationOwner === \PDF\Document\Files\AssociatedFileOwner::FormXObject && $value instanceof StreamObject) {
+                    $resources = $projection->entry($dictionary, 'Resources');
+                    $resourceGraph = $resources instanceof IndirectReference || $resources === null ? $projection : $projection->forDirectValue($resources);
+                    $resources = $resources === null ? null : $resourceGraph->dictionary($resources);
+                    if ($version->value === PdfVersion::PDF20 && $resources === null) {
+                        throw new \InvalidArgumentException('PDF 2.0 Form XObjects require their own Resources dictionary (Table93, EC3 issue292).');
+                    }
+                    if ($value->data instanceof ContentStreams) {
+                        $declared = false;
+                        foreach ($value->data->operators as $operator) {
+                            $declared = $declared || $operator instanceof \PDF\Document\Files\BeginAssociatedFilesMarkedContent;
+                        }
+                        if ($resources !== null || $declared) {
+                            $this->validateMarkedContentStreams($value, $resources ?? new DictionaryType(), $projection, $version);
+                        }
+                    }
+                }
                 if ($value instanceof SchemaDictionary) {
+                    if ($value->definition()->source->edition->family === 'iso32000-2') {
+                        $version->require(PdfVersion::PDF20, 'ISO 32000-2 dictionary table ' . $value->definition()->source->table);
+                    }
                     foreach ($dictionary->entries() as $entry) {
                         if ($value->definition()->has($entry->key)) {
                             $minimum = $value->definition()->entry($entry->key)->requirement->introducedIn;
@@ -147,6 +179,63 @@ final class DocumentGraphValidation
                 foreach ($value->data->operators as $operator) {
                     array_push($pending, ...array_map(static fn (BasicType $operand): array => [$operand, false], $operator->operands));
                 }
+            }
+        }
+    }
+
+    /** @param array<int, true> $pages */
+    private function validatePageAssociations(array $pages, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        if ($version->value !== PdfVersion::PDF20) {
+            return;
+        }
+        $associations = new \PDF\Document\Files\AssociatedFilesGraphValidation();
+        foreach ($pages as $number => $_) {
+            $page = $this->effective[$number]->value ?? $this->context->objects()[$number] ?? null;
+            $dictionary = $page === null ? null : $graph->dictionary($page);
+            $annots = $dictionary === null ? null : $graph->entry($dictionary, 'Annots');
+            $annotations = $annots === null ? null : $graph->resolve($annots);
+            if (!$annotations instanceof ArrayType) {
+                continue;
+            }
+            foreach ($annotations as $annotation) {
+                $projection = $annotation instanceof IndirectReference ? $graph : $graph->forDirectValue($annotation);
+                $dictionary = $projection->dictionary($annotation);
+                if ($dictionary !== null) {
+                    $associations->validate($dictionary, $projection, $version, \PDF\Document\Files\AssociatedFileOwner::Annotation);
+                }
+            }
+        }
+    }
+
+    private function validateMarkedContentStreams(BasicType $contents, DictionaryType $resources, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        $pending = [$contents];
+        $seen = new \SplObjectStorage();
+        $validator = new \PDF\Document\Files\AssociatedFilesMarkedContentGraphValidation();
+        while ($pending !== []) {
+            $value = array_pop($pending);
+            $identifier = $value instanceof StreamObject ? $graph->identifier($value) : null;
+            $resolved = $identifier === null ? $graph->resolve($value) : $graph->resolve(new IndirectReference($value, $identifier));
+            if ($seen->offsetExists($resolved)) {
+                continue;
+            }
+            $seen->offsetSet($resolved);
+            if ($resolved instanceof ArrayType) {
+                array_push($pending, ...$resolved->items);
+                continue;
+            }
+            if ($resolved instanceof \PDF\Syntax\FileStructure\RevisionStreamSnapshot) {
+                if ($resolved->markedContentFacts !== null) {
+                    $validator->validateFacts($resolved->markedContentFacts, $resources, $graph, $version);
+                }
+                continue;
+            }
+            // Current native operator objects carry an inspectable AST; historical
+            // validation above uses operands frozen with the actual emitted bytes.
+            $native = $value instanceof IndirectReference ? $this->resolve($value) : $value;
+            if ($native instanceof StreamObject && $native->data instanceof ContentStreams) {
+                $validator->validate($native->data, $resources, $graph, $version);
             }
         }
     }
@@ -204,7 +293,7 @@ final class DocumentGraphValidation
      * @param array<int, true> $visited
      * @param array<string, BasicType> $inherited
      */
-    private function visitPages(IndirectReference $reference, ?int $parent, array &$pages, array &$visited, DocumentGraphContext $graph, array $inherited = []): int
+    private function visitPages(IndirectReference $reference, ?int $parent, array &$pages, array &$visited, DocumentGraphContext $graph, EffectivePdfVersion $version, array $inherited = []): int
     {
         $number = $this->context->reference($reference)->objectNumber->value;
         if (isset($visited[$number])) {
@@ -246,6 +335,10 @@ final class DocumentGraphValidation
             if ($rotation !== null && (!$rotation instanceof NumericType || fmod($rotation->value, 90) != 0)) {
                 throw new \LogicException('Effective page rotation must be an integer multiple of90.');
             }
+            $contents = $graph->entry($dictionary, 'Contents');
+            if ($contents !== null) {
+                $this->validateMarkedContentStreams($contents, $inherited['Resources'], $graph, $version);
+            }
             $pages[$number] = true;
             return 1;
         }
@@ -259,7 +352,7 @@ final class DocumentGraphValidation
             if (!$kid instanceof IndirectReference) {
                 throw new \LogicException('Page-tree children must be indirect references.');
             }
-            $leaves += $this->visitPages($kid, $number, $pages, $visited, $graph, $inherited);
+            $leaves += $this->visitPages($kid, $number, $pages, $visited, $graph, $version, $inherited);
         }
         if ($leaves !== $count->integer()) {
             throw new \LogicException('The effective page-tree Count must match its descendant pages.');

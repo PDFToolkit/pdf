@@ -126,6 +126,7 @@ final class IncrementalWriter
         }
         // Current typed components need their explicit construction identities; unchanged roots use frozen values.
         $validationCatalog = ($context->objects()[$rootIdentifier->objectNumber->value] ?? null) === $catalog ? $catalog : $catalogDictionary;
+        (new \PDF\Syntax\FileStructure\IncrementalVersionPolicy())->validate($previous, $catalogDictionary);
         (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header);
         if ($previous->encryption !== null) {
             if (!$previous->encryption->metadata()->value && $catalogDictionary->has('Metadata')) {
@@ -144,6 +145,7 @@ final class IncrementalWriter
             if (!$id instanceof ArrayType || !($id->items[0] ?? null) instanceof StringType) {
                 throw new \LogicException('An encrypted incremental file retains its original file identifier.');
             }
+            (new \PDF\Security\EncryptionVersionPolicy())->validate(new \PDF\Syntax\FileStructure\EffectivePdfVersion($previous->header, $catalogDictionary), $previous->encryption->dictionary());
             $previous->encryption->validateFile($previous->header, $catalogDictionary, new FileIdentifier($id->items[0]));
             $this->validateEncryptedTrailer($trailer);
         }
@@ -156,7 +158,7 @@ final class IncrementalWriter
         if (!$pagesDictionary?->get('Type') instanceof NameType || $pagesDictionary->get('Type')->value !== 'Pages' || $pagesDictionary->has('Parent')) {
             throw new \LogicException('The effective Pages reference must remain a root /Pages dictionary.');
         }
-        $hybrid = $previous->crossReferenceFormat === CrossReferenceFormat::Hybrid ? new HybridReferenceObjects($context, $catalogDictionary, $previous) : null;
+        $hybrid = $previous->crossReferenceFormat === CrossReferenceFormat::Hybrid ? new HybridReferenceObjects($context, $catalogDictionary, $previous, $rootIdentifier) : null;
         $compressed = [];
         foreach ($context->objects() as $object) {
             if (!$object instanceof ObjectStream) {
@@ -192,6 +194,10 @@ final class IncrementalWriter
             }
         }
         $compressed = $hybrid?->compressedEntries() ?? $compressed;
+        if ($previous->encryption !== null && isset($compressed[$rootIdentifier->objectNumber->value])
+            && (new \PDF\Syntax\FileStructure\EffectivePdfVersion($previous->header, $catalogDictionary))->value === \PDF\Syntax\FileStructure\PdfVersion::PDF20) {
+            throw new \LogicException('An encrypted PDF 2.0 catalog cannot be embedded in an object stream (7.5.7, EC3 issue439).');
+        }
         $bytes = $previous->bytes;
         $spans = [];
         foreach ($previous->spans() as $span) {

@@ -124,6 +124,10 @@ final class FileWriter
         }
         $hybrid = $file->crossReferenceFormat === CrossReferenceFormat::Hybrid ? new HybridReferenceObjects($context, $catalog) : null;
         $compressed = $hybrid?->compressedEntries() ?? $compressed;
+        if ($this->encryption !== null && isset($compressed[$context->reference($root)->objectNumber->value])
+            && (new EffectivePdfVersion($file->header, $catalog))->value === PdfVersion::PDF20) {
+            throw new \LogicException('An encrypted PDF 2.0 catalog cannot be embedded in an object stream (7.5.7, EC3 issue439).');
+        }
         if ($compressed !== [] && $file->crossReferenceFormat === CrossReferenceFormat::Table) {
             throw new \LogicException('Object streams require a cross-reference stream.');
         }
@@ -256,7 +260,10 @@ final class FileWriter
             || strlen($id->items[0]->value) !== 16 || strlen($id->items[1]->value) !== 16) {
             throw new \LogicException('The encrypted writer requires an explicit trailer ID with two direct 16-byte strings.');
         }
-        $this->encryption?->validateFile($file->header, $catalog, new FileIdentifier($id->items[0]));
+        if ($this->encryption !== null) {
+            (new \PDF\Security\EncryptionVersionPolicy())->validate(new EffectivePdfVersion($file->header, $catalog), $this->encryption->dictionary());
+            $this->encryption->validateFile($file->header, $catalog, new FileIdentifier($id->items[0]));
+        }
         // Trailer dictionaries and cross-reference stream dictionaries stay clear.
         // Arbitrary strings must therefore live in an encrypted indirect object.
         $pending = [];

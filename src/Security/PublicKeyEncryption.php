@@ -40,6 +40,7 @@ final readonly class PublicKeyEncryption implements FileEncryption
             new Entry(new NameType('SubFilter'), new NameType('adbe.pkcs7.s5')),
             new Entry(new NameType('V'), new IntegerType($version)),
             new Entry(new NameType('Length'), new IntegerType($length)),
+            // Historical compatibility P does not establish the permission words in CMS recipients.
             new Entry(new NameType('P'), $permissions->value),
             new Entry(new NameType('CF'), new DictionaryType(...$entries)),
             new Entry(new NameType('StrF'), $filters->strings),
@@ -67,8 +68,12 @@ final readonly class PublicKeyEncryption implements FileEncryption
             $aes128 = $aes128 || $filter->operation->cipher === PublicKeyCipher::Aes128;
         }
         $minimum = $this->version === 5 ? '1.7' : ($aes128 || $this->filters->embeddedFiles->value !== $this->filters->streams->value ? '1.6' : '1.5');
-        (new EffectivePdfVersion($header, $catalog))->require(PdfVersion::from($minimum), 'Public-key crypt operation');
-        if ($this->version === 5) {
+        $effective = new EffectivePdfVersion($header, $catalog);
+        $effective->require(PdfVersion::from($minimum), 'Public-key crypt operation');
+        foreach ($this->filters->filters() as $filter) {
+            (new PublicKeyVersionValidation())->validate($effective, $filter->material);
+        }
+        if ($this->version === 5 && $effective->value !== PdfVersion::PDF20) {
             $extensions = $catalog->get('Extensions');
             $adobe = $extensions instanceof DictionaryType ? $extensions->get('ADBE') : null;
             $base = $adobe instanceof DictionaryType ? $adobe->get('BaseVersion') : null;

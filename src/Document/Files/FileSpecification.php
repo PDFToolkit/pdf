@@ -20,9 +20,13 @@ final class FileSpecification extends SchemaDictionary implements DocumentGraphC
 {
     public const string TABLE = '44';
 
-    public function __construct(public readonly StringType $fileName, FileSpecificationOptions $options = new FileSpecificationOptions())
+    public function __construct(public readonly StringType $fileName, FileSpecificationOptions $options = new FileSpecificationOptions(), public readonly ?AssociatedFileRelationship $relationship = null)
     {
-        parent::__construct(new FileSpecificationDictionaryTable44Definition(), new Entry(new NameType('Type'), new NameType('Filespec')), new Entry(new NameType('F'), $fileName), ...iterator_to_array($options->entries(), false));
+        $entries = [new Entry(new NameType('Type'), new NameType('Filespec')), new Entry(new NameType('F'), $fileName), ...iterator_to_array($options->entries(), false)];
+        if ($relationship !== null) {
+            $entries[] = new Entry(new NameType('AFRelationship'), $relationship->name);
+        }
+        parent::__construct(new FileSpecificationDictionaryTable44Definition(), ...$entries);
         (new FileSpecificationRules())->validate($this);
     }
 

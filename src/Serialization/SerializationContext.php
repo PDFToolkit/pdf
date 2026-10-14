@@ -35,6 +35,7 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
+use PDF\Document\Files\AssociatedFilesMarkedContentFacts;
 
 /** An identity map and serialization guard scoped to one PDF file. */
 final class SerializationContext
@@ -63,6 +64,8 @@ final class SerializationContext
     private readonly bool $remapping;
     /** @var array<string, RevisionStreamSnapshot> Emissions are scoped to the full number/generation pair. */
     private array $streamEmissions = [];
+    /** @var array<string, array{ContentStreams, AssociatedFilesMarkedContentFacts}> */
+    private array $nativeContentEmissions = [];
     /** @var \SplObjectStorage<IndirectReference, ObjectIdentifier> */
     private \SplObjectStorage $referenceAliases;
     /** @var \SplObjectStorage<BasicType, ObjectIdentifier> */
@@ -440,7 +443,10 @@ final class SerializationContext
         if (!$frozen instanceof DictionaryType) {
             throw new \LogicException('An emitted stream dictionary must freeze as a dictionary.');
         }
-        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded);
+        $native = $this->nativeContentEmissions[(string) $identifier] ?? null;
+        $facts = $native !== null && $stream->data === $native[0] ? $native[1] : null;
+        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded, $facts);
+        unset($this->nativeContentEmissions[(string) $identifier]);
     }
 
     public function serializedSnapshot(BasicType $value, ?ObjectIdentifier $identifier = null): SerializedRevisionValue
@@ -527,7 +533,19 @@ final class SerializationContext
     {
         ++$this->encryptionSuppression;
         try {
-            return $object instanceof ContentStreams ? $object->toPdf($this) : $this->serialize($object);
+            if ($object instanceof ContentStreams) {
+                if ((new \ReflectionMethod($object, 'toPdf'))->getDeclaringClass()->getName() !== ContentStreams::class) {
+                    // Caller-defined byte output has no native emission evidence without parsing it.
+                    return $object->toPdf($this);
+                }
+                $facts = new AssociatedFilesMarkedContentFacts($object);
+                $bytes = $facts->content->toPdf($this);
+                if ($this->containingIdentifier !== null) {
+                    $this->nativeContentEmissions[(string) $this->containingIdentifier] = [$object, $facts];
+                }
+                return $bytes;
+            }
+            return $this->serialize($object);
         } finally {
             --$this->encryptionSuppression;
         }
