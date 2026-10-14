@@ -1,0 +1,3511 @@
+{
+  "document": "Well-Tagged-PDF-WTPDF-1.0.pdf",
+  "sha256": "ef321647824abd1dd336bf7ab8953ce5b8654590e48b7421990cf7d9ad713385",
+  "version": "1.0.0 (2024-02)",
+  "physical_pdf_pages": 57,
+  "source": "resources/iso32000-2-bundle/documents/Well-Tagged-PDF-WTPDF-1.0.pdf",
+  "license": "CC-BY-4.0; PDF Association",
+  "review": "All 57 physical pages and 173 link annotations reviewed. No normative correction annotations are present.",
+  "granularity": "One row per independently assessable paragraph obligation, conditional branch, permission or semantic aspect. Colon ordinals distinguish aspects inside a clause; they are inventory identifiers, not printed source paragraph numbers. Source pages refer to the original PDF, not its printed folios.",
+  "statuses": {
+    "executed": "A native model/check executes the stated aspect; stated boundaries still apply.",
+    "human": "Author intent or semantic adequacy requires a person; no automatic pass is inferred.",
+    "external": "Independent format, program, trust or accessibility validation is required.",
+    "absent": "The identified mechanically checkable aspect is not currently implemented; no coverage is claimed."
+  },
+  "non_requirement_pages": [
+    {
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "reason": "Cover, copyright/license and contents."
+    },
+    {
+      "pages": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "reason": "Introduction, scope, normative references, definitions and notation; operative obligations are traced in clauses 6–8."
+    },
+    {
+      "pages": [
+        57
+      ],
+      "reason": "Bibliography."
+    }
+  ],
+  "no_certification": true,
+  "requirements": [
+    {
+      "id": "6.1.1:1",
+      "clause": "6.1.1",
+      "physical_pdf_pages": [
+        9
+      ],
+      "aspect": "At least one explicit conformance declaration",
+      "status": "executed",
+      "justification": "The caller selects the audit level; the corresponding declaration must occur in typed document XMP.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.1.1:2",
+      "clause": "6.1.1",
+      "physical_pdf_pages": [
+        9
+      ],
+      "aspect": "Multiple levels may coexist",
+      "status": "executed",
+      "justification": "Declarations is a bag; the audit checks only the selected level without forbidding another.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.1.2:1",
+      "clause": "6.1.2",
+      "physical_pdf_pages": [
+        9
+      ],
+      "aspect": "Reuse declaration identifier",
+      "status": "executed",
+      "justification": "Exact case-sensitive URI with slash before hash; caller-supplied claim data remains optional.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.1.2:2",
+      "clause": "6.1.2",
+      "physical_pdf_pages": [
+        9
+      ],
+      "aspect": "All general and reuse obligations apply",
+      "status": "external",
+      "justification": "A declaration or audit report is not evidence that every inherited ISO requirement is met.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.1.3:1",
+      "clause": "6.1.3",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "Accessibility declaration identifier",
+      "status": "executed",
+      "justification": "Exact case-sensitive URI; no declaration is added by the audit.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.1.3:2",
+      "clause": "6.1.3",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "All general and accessibility obligations apply",
+      "status": "external",
+      "justification": "Full ISO 32000-2 and PDF/UA-2 conformance require independent validation and semantic evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.1.3:3",
+      "clause": "6.1.3",
+      "physical_pdf_pages": [
+        10,
+        56
+      ],
+      "aspect": "Optional PDF/UA-2 identification",
+      "status": "executed",
+      "justification": "When typed pdfuaid properties are present they must supply part 2 and revision 2024 together; no claim is emitted automatically.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.2:1",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "Effective PDF 2.0 file version",
+      "status": "executed",
+      "justification": "Audit rejects an effective PDF version other than 2.0.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.2:2",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "Every ISO 32000-2 requirement",
+      "status": "external",
+      "justification": "Native dictionary and graph checks do not implement a universal ISO conformance validator.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.2:3",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10,
+        11
+      ],
+      "aspect": "ISO/TS 32005 namespace inclusion",
+      "status": "executed",
+      "justification": "Native qualified role resolution and explicit correction-profile containment rules apply to the managed structure tree.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "6.2:4",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "Avoid every deprecated feature",
+      "status": "external",
+      "justification": "Deprecated annotation types are checked; a comprehensive deprecated-feature inventory across all ISO features remains external validation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.2:5",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10
+      ],
+      "aspect": "Avoid unspecified pre-PDF2 extensions",
+      "status": "external",
+      "justification": "The generic model can represent application extensions; their full compatibility needs an extension-aware validator.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.2:6",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10,
+        11
+      ],
+      "aspect": "Necessary embedded content must be accessible",
+      "status": "human",
+      "justification": "Whether an attachment is necessary to understand the document is an author/content decision.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.2:7",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        10,
+        11
+      ],
+      "aspect": "Accessibility of necessary embedded documents",
+      "status": "external",
+      "justification": "External documents need their own applicable accessibility validation; the core does not parse their bytes.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "6.2:8",
+      "clause": "6.2",
+      "physical_pdf_pages": [
+        11
+      ],
+      "aspect": "Explicit extension declarations are permitted",
+      "status": "executed",
+      "justification": "IsoExtensions and DeveloperExtensions represent independently selected declarations without asserting conformance.",
+      "implementation_or_boundary": [
+        "src/Document/Extensions/IsoExtensions.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "7.1:1",
+      "clause": "7.1",
+      "physical_pdf_pages": [
+        12
+      ],
+      "aspect": "Real content has text or equivalent and logical semantics",
+      "status": "human",
+      "justification": "Intended meaning and reading order cannot be recovered solely from PDF syntax.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "7.2.2:1",
+      "clause": "7.2.2",
+      "physical_pdf_pages": [
+        12
+      ],
+      "aspect": "Optional additional PDF Declarations and scopes",
+      "status": "executed",
+      "justification": "Native declarations attach to document or object metadata; arbitrary absolute identifiers remain explicit.",
+      "implementation_or_boundary": [
+        "src/Document/Metadata/Declarations/Declarations.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "7.2.2:2",
+      "clause": "7.2.2",
+      "physical_pdf_pages": [
+        13
+      ],
+      "aspect": "Determine necessary non-PDF attachment status",
+      "status": "human",
+      "justification": "The audit cannot infer whether a non-PDF attachment is necessary to understand the parent document.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "7.2.2:3",
+      "clause": "7.2.2",
+      "physical_pdf_pages": [
+        13
+      ],
+      "aspect": "Appropriate accessibility declaration on necessary non-PDF attachment",
+      "status": "external",
+      "justification": "FileSpecification metadata and Declarations can express it; appropriateness and external-standard conformance need evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Metadata/Declarations/Declarations.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "7.2.3:1",
+      "clause": "7.2.3",
+      "physical_pdf_pages": [
+        13
+      ],
+      "aspect": "Optional ISO subset conformity",
+      "status": "external",
+      "justification": "No PDF/A, PDF/X or PDF/UA certificate follows from building objects.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.1:1",
+      "clause": "8.1",
+      "physical_pdf_pages": [
+        14
+      ],
+      "aspect": "Inherited ISO2 and TS32005 obligations",
+      "status": "external",
+      "justification": "The requirement-level inventory distinguishes native checks from independent conformance work.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.1:1",
+      "clause": "8.2.1",
+      "physical_pdf_pages": [
+        14
+      ],
+      "aspect": "Semantically appropriate structures and attributes",
+      "status": "human",
+      "justification": "Constructed roles and relationships are checked; suitability for the actual content is reviewed by a person.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.2:1",
+      "clause": "8.2.2",
+      "physical_pdf_pages": [
+        14
+      ],
+      "aspect": "Real content has structure associations",
+      "status": "executed",
+      "justification": "Managed tagged content rejects unclassified drawing/text and checks MCIDs, parent-tree bindings and object references.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureContentValidator.php",
+        "src/Document/Structure/StructureTreeRoot.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.2:2",
+      "clause": "8.2.2",
+      "physical_pdf_pages": [
+        14,
+        15
+      ],
+      "aspect": "Correct real-content classification and attributes",
+      "status": "human",
+      "justification": "The author decides which content matters and which attributes convey its meaning.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.2:3",
+      "clause": "8.2.2",
+      "physical_pdf_pages": [
+        15
+      ],
+      "aspect": "Do not split one semantic element across layout fragments",
+      "status": "human",
+      "justification": "Single-table/paragraph identity across pages depends on semantics rather than geometric pagination.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.2:4",
+      "clause": "8.2.2",
+      "physical_pdf_pages": [
+        15
+      ],
+      "aspect": "Non-real content explicitly marked as artifact",
+      "status": "executed",
+      "justification": "Typed tagged content permits unassociated painting only inside an Artifact scope or a structural object association.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureContentValidator.php",
+        "src/Document/Structure/StructureTreeRoot.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.3:1",
+      "clause": "8.2.3",
+      "physical_pdf_pages": [
+        15,
+        16
+      ],
+      "aspect": "Logical order and artifact units/order",
+      "status": "human",
+      "justification": "The graph preserves explicit order; whether that order and artifact grouping convey the author's meaning remains human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.4:1",
+      "clause": "8.2.4",
+      "physical_pdf_pages": [
+        16
+      ],
+      "aspect": "Resolve every role to PDF17/PDF20/MathML",
+      "status": "executed",
+      "justification": "Qualified resolver checks recognized namespaces, transitive targets and cycles.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.4:2",
+      "clause": "8.2.4",
+      "physical_pdf_pages": [
+        16
+      ],
+      "aspect": "Default namespace limited to unique PDF17 roles",
+      "status": "executed",
+      "justification": "Mixed-tree inclusion rejects common roles left in PDF17 and WTPDF forbids Note.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.4:3",
+      "clause": "8.2.4",
+      "physical_pdf_pages": [
+        16
+      ],
+      "aspect": "No mapping within the same explicit namespace",
+      "status": "executed",
+      "justification": "Every provided namespace role map is inspected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.4:4",
+      "clause": "8.2.4",
+      "physical_pdf_pages": [
+        16
+      ],
+      "aspect": "Custom roles inherit target-role restrictions",
+      "status": "executed",
+      "justification": "All native WTPDF checks use resolved role identities.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.1:1",
+      "clause": "8.2.5.1",
+      "physical_pdf_pages": [
+        16,
+        17
+      ],
+      "aspect": "Native standard-role inclusion",
+      "status": "executed",
+      "justification": "Source matrix and selected correction profile constrain managed parent/child relationships.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.1:2",
+      "clause": "8.2.5.1",
+      "physical_pdf_pages": [
+        16,
+        17
+      ],
+      "aspect": "Use standard roles according to their meaning",
+      "status": "human",
+      "justification": "A syntactically allowed role can still be semantically wrong.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.2:1",
+      "clause": "8.2.5.2",
+      "physical_pdf_pages": [
+        17
+      ],
+      "aspect": "Single Document root explicitly in PDF20 namespace",
+      "status": "executed",
+      "justification": "The root-child role and the original explicit namespace are both checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.2:2",
+      "clause": "8.2.5.2",
+      "physical_pdf_pages": [
+        17
+      ],
+      "aspect": "Use Document/DocumentFragment for imported logical units",
+      "status": "human",
+      "justification": "Origin, fragment boundaries and author's intent require content evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.3:1",
+      "clause": "8.2.5.3",
+      "physical_pdf_pages": [
+        17
+      ],
+      "aspect": "Part grouping purpose",
+      "status": "human",
+      "justification": "Non-heading grouping semantics are not inferred from object syntax.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.4:1",
+      "clause": "8.2.5.4",
+      "physical_pdf_pages": [
+        17
+      ],
+      "aspect": "Article semantics and ownership of its title",
+      "status": "human",
+      "justification": "The author determines whether content is a self-contained article and which title belongs to it.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.5:1",
+      "clause": "8.2.5.5",
+      "physical_pdf_pages": [
+        17,
+        18
+      ],
+      "aspect": "Section grouping and ownership of heading",
+      "status": "human",
+      "justification": "Semantic section and heading scope require human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.6:1",
+      "clause": "8.2.5.6",
+      "physical_pdf_pages": [
+        18
+      ],
+      "aspect": "Div may carry common properties",
+      "status": "executed",
+      "justification": "Native attribute inheritance retains explicit grouping and class associations.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.7:1",
+      "clause": "8.2.5.7",
+      "physical_pdf_pages": [
+        18
+      ],
+      "aspect": "BlockQuote semantics",
+      "status": "human",
+      "justification": "Whether text quotes another source is a content decision.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.8:1",
+      "clause": "8.2.5.8",
+      "physical_pdf_pages": [
+        18
+      ],
+      "aspect": "TOC/TOCI selection and leader artifacts",
+      "status": "human",
+      "justification": "Identify a true contents list and distinguish its leaders from semantic text.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.8:2",
+      "clause": "8.2.5.8",
+      "physical_pdf_pages": [
+        18
+      ],
+      "aspect": "Every TOCI has target Ref directly or below",
+      "status": "executed",
+      "justification": "A bottom-up descendant index checks nonempty Ref presence; references must target this structure tree.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.9:1",
+      "clause": "8.2.5.9",
+      "physical_pdf_pages": [
+        18,
+        19
+      ],
+      "aspect": "Aside meaning and deepest related ancestor",
+      "status": "human",
+      "justification": "Relationship to the main flow cannot be proved mechanically.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.10:1",
+      "clause": "8.2.5.10",
+      "physical_pdf_pages": [
+        19
+      ],
+      "aspect": "Custom roles may map to NonStruct",
+      "status": "executed",
+      "justification": "Qualified role mapping and descendant semantic retention remain explicit.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.11:1",
+      "clause": "8.2.5.11",
+      "physical_pdf_pages": [
+        19
+      ],
+      "aspect": "Paragraph identification and separation",
+      "status": "human",
+      "justification": "The intended paragraph boundaries and fallback semantics require human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.12:1",
+      "clause": "8.2.5.12",
+      "physical_pdf_pages": [
+        19,
+        20
+      ],
+      "aspect": "Use numbered heading roles rather than H",
+      "status": "executed",
+      "justification": "The resolved standard H role is rejected; headings are not forced to be sequential.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.12:2",
+      "clause": "8.2.5.12",
+      "physical_pdf_pages": [
+        19,
+        20
+      ],
+      "aspect": "Heading level reflects evident content level",
+      "status": "human",
+      "justification": "The printed hierarchy and intended heading meaning are not inferred from typography.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.13:1",
+      "clause": "8.2.5.13",
+      "physical_pdf_pages": [
+        20
+      ],
+      "aspect": "Title is not a heading",
+      "status": "human",
+      "justification": "Role semantics are reviewed independently of dc:title metadata.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.14.1:1",
+      "clause": "8.2.5.14.1",
+      "physical_pdf_pages": [
+        20
+      ],
+      "aspect": "Standard Note is forbidden",
+      "status": "executed",
+      "justification": "The resolved PDF17 Note role is rejected; an unrelated custom spelling is evaluated after role mapping.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.14.1:2",
+      "clause": "8.2.5.14.1",
+      "physical_pdf_pages": [
+        20
+      ],
+      "aspect": "Reciprocal FENote references",
+      "status": "executed",
+      "justification": "When either endpoint Ref targets FENote, the other endpoint must reciprocate within the same tree.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.14.1:3",
+      "clause": "8.2.5.14.1",
+      "physical_pdf_pages": [
+        20
+      ],
+      "aspect": "Identify every citation and interactive note target",
+      "status": "human",
+      "justification": "The machine validates declared associations; identifying all real citations requires semantic review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.14.2:1",
+      "clause": "8.2.5.14.2",
+      "physical_pdf_pages": [
+        20,
+        21
+      ],
+      "aspect": "FENote owner and closed NoteType domain",
+      "status": "executed",
+      "justification": "Optional NoteType is checked as Footnote, Endnote or None.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.14.2:2",
+      "clause": "8.2.5.14.2",
+      "physical_pdf_pages": [
+        20,
+        21
+      ],
+      "aspect": "Choose appropriate note subtype",
+      "status": "human",
+      "justification": "The author identifies whether a note is a footnote or endnote; the attribute remains optional.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.15:1",
+      "clause": "8.2.5.15",
+      "physical_pdf_pages": [
+        21
+      ],
+      "aspect": "Sub represents semantic subdivision",
+      "status": "human",
+      "justification": "Whether a subdivision exists requires content review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.16:1",
+      "clause": "8.2.5.16",
+      "physical_pdf_pages": [
+        21
+      ],
+      "aspect": "Label content and deepest semantic grouping",
+      "status": "human",
+      "justification": "Author intent distinguishes a real label from an artifact and associates it with the labelled content.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.17:1",
+      "clause": "8.2.5.17",
+      "physical_pdf_pages": [
+        21
+      ],
+      "aspect": "Span use satisfies all inline semantic conditions",
+      "status": "human",
+      "justification": "The graph cannot infer whether a more appropriate semantic inline role exists.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.18:1",
+      "clause": "8.2.5.18",
+      "physical_pdf_pages": [
+        22
+      ],
+      "aspect": "Quote is an actual inline quotation",
+      "status": "human",
+      "justification": "Quotation marks alone are not evidence of a quote.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.19:1",
+      "clause": "8.2.5.19",
+      "physical_pdf_pages": [
+        22
+      ],
+      "aspect": "Em/Strong represent emphasis",
+      "status": "human",
+      "justification": "Styling and semantic emphasis are not equivalent.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.20:1",
+      "clause": "8.2.5.20",
+      "physical_pdf_pages": [
+        22
+      ],
+      "aspect": "Link annotation parent is Link or Reference",
+      "status": "executed",
+      "justification": "Native annotation-parent role checks use qualified role resolution.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.20:2",
+      "clause": "8.2.5.20",
+      "physical_pdf_pages": [
+        22
+      ],
+      "aspect": "Separate different link targets and group a single semantic link",
+      "status": "human",
+      "justification": "Target syntax can be compared, but semantic identity of split links and URL interpretation need author context.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.21:1",
+      "clause": "8.2.5.21",
+      "physical_pdf_pages": [
+        22
+      ],
+      "aspect": "Annot follows annotation mechanism requirements",
+      "status": "executed",
+      "justification": "Native markup roles, flags, Popup, alternative text and tab-order checks apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.22:1",
+      "clause": "8.2.5.22",
+      "physical_pdf_pages": [
+        23
+      ],
+      "aspect": "Form follows form mechanism requirements",
+      "status": "executed",
+      "justification": "Widget count/role, non-interactive PrintField and described action checks apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.23:1",
+      "clause": "8.2.5.23",
+      "physical_pdf_pages": [
+        23,
+        24
+      ],
+      "aspect": "Ruby has exactly RB/RT or RB/RP/RT/RP",
+      "status": "executed",
+      "justification": "The WTPDF-specific check also rejects an empty Ruby accepted as an incomplete ISO builder.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.23:2",
+      "clause": "8.2.5.23",
+      "physical_pdf_pages": [
+        23,
+        24
+      ],
+      "aspect": "Ruby purpose, atomic grouping and restored omitted annotation text",
+      "status": "human",
+      "justification": "Visual ruby matching, semantic units and ActualText completeness require content/language evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.24:1",
+      "clause": "8.2.5.24",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Warichu sequence WP/WT/WP",
+      "status": "executed",
+      "justification": "Exact resolved child ordering is checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.24:2",
+      "clause": "8.2.5.24",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Warichu purpose and delimiter content",
+      "status": "human",
+      "justification": "A machine cannot infer typesetting intent or delimiter semantics solely from role names.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:1",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Labelled lists require explicit non-None ListNumbering",
+      "status": "executed",
+      "justification": "Native attributes/classes are resolved without accepting normative defaults as explicit data.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:2",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "LI real content is within Lbl or LBody",
+      "status": "executed",
+      "justification": "Allowed transparent/artifact structure wrappers retain explicit containment validation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:3",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Identify list labels and intended numbering scheme",
+      "status": "human",
+      "justification": "Presence is checked; correctness of labels and nearest scheme require semantic review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:4",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "ContinuedFrom needs ContinuedList=true and a valid list ID",
+      "status": "executed",
+      "justification": "Present IDs resolve to another L; cycles and self-references are rejected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfListChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:5",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Recognize all continued list segments",
+      "status": "human",
+      "justification": "An omitted continuation relationship cannot be inferred from typography alone.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.25:6",
+      "clause": "8.2.5.25",
+      "physical_pdf_pages": [
+        24
+      ],
+      "aspect": "Known segments require complete Ref associations",
+      "status": "executed",
+      "justification": "Reuse requires Ref on first and later segments; any present Ref must identify all other known linked segments, with a cumulative budget.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfListChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.26:1",
+      "clause": "8.2.5.26",
+      "physical_pdf_pages": [
+        25
+      ],
+      "aspect": "Regular logical table and row-group grids",
+      "status": "executed",
+      "justification": "Bounded row/column span expansion checks width, overlap and row-group crossing.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.26:2",
+      "clause": "8.2.5.26",
+      "physical_pdf_pages": [
+        25
+      ],
+      "aspect": "Explicit Headers identifiers target TH in the same table",
+      "status": "executed",
+      "justification": "Cross-table, TD and absent identifiers are rejected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.26:3",
+      "clause": "8.2.5.26",
+      "physical_pdf_pages": [
+        25
+      ],
+      "aspect": "Complete header applicability and necessary Scope/Headers",
+      "status": "human",
+      "justification": "Semantic header relationships and adequacy of the ISO default algorithm remain human evidence, not a false complete-table assertion.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.27:1",
+      "clause": "8.2.5.27",
+      "physical_pdf_pages": [
+        25
+      ],
+      "aspect": "Caption is first or last child of its group",
+      "status": "executed",
+      "justification": "Native resolved caption ordering is checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.27:2",
+      "clause": "8.2.5.27",
+      "physical_pdf_pages": [
+        25
+      ],
+      "aspect": "Caption content, group and intended reading position",
+      "status": "human",
+      "justification": "The machine does not infer what content captions or whether before/after conveys the author's meaning.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.28.1:1",
+      "clause": "8.2.5.28.1",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "Figure includes all appearance content and meaningful substructure",
+      "status": "human",
+      "justification": "Visual completeness and semantic unit identity need rendering/content review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.28.2:1",
+      "clause": "8.2.5.28.2",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "Accessibility Figure has Alt or ActualText",
+      "status": "executed",
+      "justification": "Native role properties are checked without requiring the optional reuse recommendation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.28.2:2",
+      "clause": "8.2.5.28.2",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "ActualText Figure has semantically appropriate block context",
+      "status": "human",
+      "justification": "Native containment alone does not determine semantic appropriateness of a surrounding block.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.29.1:1",
+      "clause": "8.2.5.29.1",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "MathML math root occurs under Formula",
+      "status": "executed",
+      "justification": "Namespace-aware TS32005 inclusion enforces the root relationship.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.29.1:2",
+      "clause": "8.2.5.29.1",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "Mathematical expressions use valid presentation MathML",
+      "status": "external",
+      "justification": "Recognizing MathML namespace objects is not a presentation-MathML grammar or mathematical-equivalence validator.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.29.1:3",
+      "clause": "8.2.5.29.1",
+      "physical_pdf_pages": [
+        26
+      ],
+      "aspect": "Declared MathML associated representation has Supplement relationship",
+      "status": "executed",
+      "justification": "Formula AF entries with application/mathml+xml MIME require Supplement; identifying MathML in arbitrary generic XML remains external parsing.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.29.2:1",
+      "clause": "8.2.5.29.2",
+      "physical_pdf_pages": [
+        27
+      ],
+      "aspect": "Accessible nonmathematical Formula has Alt or ActualText",
+      "status": "executed",
+      "justification": "Native Formula property presence is checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.5.29.2:2",
+      "clause": "8.2.5.29.2",
+      "physical_pdf_pages": [
+        27
+      ],
+      "aspect": "Scientific formula semantic role and appropriate representation",
+      "status": "human",
+      "justification": "Determining mathematical versus other scientific meaning and suitable external representation needs author review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.30:1",
+      "clause": "8.2.5.30",
+      "physical_pdf_pages": [
+        27
+      ],
+      "aspect": "Index grouping and references represent actual indexed content",
+      "status": "human",
+      "justification": "Multiple index purposes, topics and referenced ranges require content interpretation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.31:1",
+      "clause": "8.2.5.31",
+      "physical_pdf_pages": [
+        28
+      ],
+      "aspect": "BibEntry meaning and bibliography ARIA purpose",
+      "status": "human",
+      "justification": "Identifying bibliographic content and the containing Sect's purpose is semantic.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.32:1",
+      "clause": "8.2.5.32",
+      "physical_pdf_pages": [
+        28
+      ],
+      "aspect": "Code meaning and textual equivalent",
+      "status": "human",
+      "justification": "The author decides what constitutes code and whether its representation preserves intended text.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.5.33:1",
+      "clause": "8.2.5.33",
+      "physical_pdf_pages": [
+        28
+      ],
+      "aspect": "Artifact uses native artifact mechanism",
+      "status": "executed",
+      "justification": "The tagged content validator and standard artifact attributes apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureContentValidator.php",
+        "src/Document/Structure/StructureTreeRoot.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.6.1:1",
+      "clause": "8.2.6.1",
+      "physical_pdf_pages": [
+        28
+      ],
+      "aspect": "Explicit standard/custom attribute ownership",
+      "status": "executed",
+      "justification": "StructureAttributeObject checks O versus NS; standard domains validate values and required entries.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.6.2:1",
+      "clause": "8.2.6.2",
+      "physical_pdf_pages": [
+        29
+      ],
+      "aspect": "Layout attributes convey all semantically significant properties",
+      "status": "human",
+      "justification": "Whether color, layout or contrast conveys meaning cannot be inferred from a dictionary.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.6.3:1",
+      "clause": "8.2.6.3",
+      "physical_pdf_pages": [
+        29
+      ],
+      "aspect": "Table/List/PrintField/Artifact attribute shapes",
+      "status": "executed",
+      "justification": "Native standard attribute objects validate applicable domains; WTPDF adds list/table/Form checks.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.2.6.3:2",
+      "clause": "8.2.6.3",
+      "physical_pdf_pages": [
+        29
+      ],
+      "aspect": "Use all attributes appropriate to the real content",
+      "status": "human",
+      "justification": "Required semantic attributes are content-dependent even when a shape is valid.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.6.4:1",
+      "clause": "8.2.6.4",
+      "physical_pdf_pages": [
+        29,
+        30
+      ],
+      "aspect": "ARIA semantic appropriateness and noncontradiction",
+      "status": "human",
+      "justification": "Role intent and additional states/properties require author/content review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.2.6.4:2",
+      "clause": "8.2.6.4",
+      "physical_pdf_pages": [
+        29
+      ],
+      "aspect": "ARIA and DPUB-ARIA attributes use ARIA-1.1 owner",
+      "status": "external",
+      "justification": "Explicit O=ARIA-1.1 construction is supported. An arbitrary extension role key does not prove ARIA intent; external author/schema evidence is required before interpreting generic custom attributes as ARIA.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.3.1:1",
+      "clause": "8.3.1",
+      "physical_pdf_pages": [
+        30
+      ],
+      "aspect": "Non-real paint is explicitly artifact-marked",
+      "status": "executed",
+      "justification": "Managed tagged content checks the classification boundary on typed painting operations.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureContentValidator.php",
+        "src/Document/Structure/StructureTreeRoot.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.3.1:2",
+      "clause": "8.3.1",
+      "physical_pdf_pages": [
+        30
+      ],
+      "aspect": "Artifact property lists or attributes convey relevant semantics",
+      "status": "human",
+      "justification": "Choosing Type/Subtype/BBox based on the actual artifact needs content evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.3.2:1",
+      "clause": "8.3.2",
+      "physical_pdf_pages": [
+        31
+      ],
+      "aspect": "Context-dependent artifacts remain in Artifact structure elements",
+      "status": "human",
+      "justification": "Determining whether an artifact only makes sense beside tree content is an author decision.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.1:1",
+      "clause": "8.4.1",
+      "physical_pdf_pages": [
+        31
+      ],
+      "aspect": "All text is programmatically determinable",
+      "status": "external",
+      "justification": "Typed mappings are checked; arbitrary font programs, generic CMaps and opaque content require independent parsing.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.2:1",
+      "clause": "8.4.2",
+      "physical_pdf_pages": [
+        31
+      ],
+      "aspect": "PUA used only when no public Unicode value exists",
+      "status": "human",
+      "justification": "A private-use codepoint is not by itself evidence that a public alternative exists.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.3:1",
+      "clause": "8.4.3",
+      "physical_pdf_pages": [
+        31
+      ],
+      "aspect": "ActualText restores the intended Unicode sequence",
+      "status": "human",
+      "justification": "The needed semantic replacement cannot be proved from codepoints alone.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.3:2",
+      "clause": "8.4.3",
+      "physical_pdf_pages": [
+        31
+      ],
+      "aspect": "Accessibility PUA real text has Alt/ActualText",
+      "status": "executed",
+      "justification": "Actual shown native ToUnicode sequences are checked against inline/ancestor alternatives and Artifact scopes; reuse remains a recommendation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.4:1",
+      "clause": "8.4.4",
+      "physical_pdf_pages": [
+        32
+      ],
+      "aspect": "Catalog Lang is nonempty and explicit overrides are nonempty",
+      "status": "executed",
+      "justification": "Direct/indirect text strings are decoded; an empty override does not inherit silently.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.4:2",
+      "clause": "8.4.4",
+      "physical_pdf_pages": [
+        32
+      ],
+      "aspect": "Language matches every content/string and change",
+      "status": "human",
+      "justification": "Specific language, correct changes and in-string language escapes require linguistic evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.1:1",
+      "clause": "8.4.5.1",
+      "physical_pdf_pages": [
+        32
+      ],
+      "aspect": "Rendering-mode exemption is exact",
+      "status": "executed",
+      "justification": "Tr3 alone exempts visual embedding; q/Q, gs, Tf, Form invocations and text-showing operators carry actual state.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.2:1",
+      "clause": "8.4.5.2",
+      "physical_pdf_pages": [
+        32
+      ],
+      "aspect": "Every font/program meets its font specification",
+      "status": "external",
+      "justification": "The core does not parse external font formats; independent font modules validate their explicitly supported formats.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.3.1:1",
+      "clause": "8.4.5.3.1",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Embedded composite CIDSystemInfo agrees",
+      "status": "executed",
+      "justification": "Registry/Ordering equality and sufficient Supplement are checked; Identity-H/V are exempt.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.3.1:2",
+      "clause": "8.4.5.3.1",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Non-Identity predefined CMap collection agreement",
+      "status": "external",
+      "justification": "The external predefined CMap registry/order/supplement must be supplied or independently validated.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.3.2:1",
+      "clause": "8.4.5.3.2",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Embedded CIDFontType2 has CIDToGIDMap",
+      "status": "executed",
+      "justification": "A stream or Identity is required.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.4:1",
+      "clause": "8.4.5.4",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Nonstandard encoding CMaps are embedded and bases standard",
+      "status": "executed",
+      "justification": "Encoding and typed ToUnicode base relationships are checked; predefined names use the exact enum.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.4:2",
+      "clause": "8.4.5.4",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Generic CMap WMode matches program",
+      "status": "external",
+      "justification": "Native EncodingCMap constructs both consistently; opaque program text requires an independent CMap parser.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.5.1:1",
+      "clause": "8.4.5.5.1",
+      "physical_pdf_pages": [
+        33
+      ],
+      "aspect": "Rendered fonts require an embedded program",
+      "status": "executed",
+      "justification": "Actual typed text-showing operations distinguish Tr3 from rendered text; Type3 is intrinsically embedded.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.5.1:2",
+      "clause": "8.4.5.5.1",
+      "physical_pdf_pages": [
+        33,
+        34
+      ],
+      "aspect": "Embedding legality and complete rendered glyph programs",
+      "status": "external",
+      "justification": "Program embedding rights and actual glyph definitions require the independent font parser and license evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.5.2:1",
+      "clause": "8.4.5.5.2",
+      "physical_pdf_pages": [
+        34
+      ],
+      "aspect": "Permitted subsets remain conformant",
+      "status": "external",
+      "justification": "Subset construction and complete font-format validation are separate processors.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.6:1",
+      "clause": "8.4.5.6",
+      "physical_pdf_pages": [
+        34
+      ],
+      "aspect": "Widths and vertical metrics agree within 1/1000 unit",
+      "status": "external",
+      "justification": "External font-program metrics require independent parsing; the example oracle checks its actual TrueType widths.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.7:1",
+      "clause": "8.4.5.7",
+      "physical_pdf_pages": [
+        34,
+        35
+      ],
+      "aspect": "TrueType dictionary symbolic/nonsymbolic Encoding rules",
+      "status": "executed",
+      "justification": "Actual used font descriptor flags constrain allowed Encoding/BaseEncoding or its omission.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.7:2",
+      "clause": "8.4.5.7",
+      "physical_pdf_pages": [
+        34,
+        35
+      ],
+      "aspect": "Required cmap subtables, Adobe glyph names and actual glyph selection",
+      "status": "external",
+      "justification": "External font tables and Adobe Glyph List membership require independent font data.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.8:1",
+      "clause": "8.4.5.8",
+      "physical_pdf_pages": [
+        35
+      ],
+      "aspect": "Native ToUnicode maps every shown code and forbids zero/BOM/noncharacter",
+      "status": "executed",
+      "justification": "Typed code spaces and mappings are checked with cumulative mapping and text-byte budgets.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.8:2",
+      "clause": "8.4.5.8",
+      "physical_pdf_pages": [
+        35
+      ],
+      "aspect": "Generic CMap and glyph-name exemptions fully cover every shown glyph",
+      "status": "external",
+      "justification": "The audit reports explicit external evidence requirements instead of silently assuming a mapping.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.4.5.9:1",
+      "clause": "8.4.5.9",
+      "physical_pdf_pages": [
+        35
+      ],
+      "aspect": "No native Type0 .notdef CID/GID use",
+      "status": "executed",
+      "justification": "Native decoding rejects unmapped codes, CID zero and zero/absent glyph indices in typed maps regardless of Tr.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.4.5.9:2",
+      "clause": "8.4.5.9",
+      "physical_pdf_pages": [
+        35
+      ],
+      "aspect": "No .notdef across every external font/CMap format",
+      "status": "external",
+      "justification": "Simple-font programs and external predefined data need independent glyph resolution.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.5.1:1",
+      "clause": "8.5.1",
+      "physical_pdf_pages": [
+        35
+      ],
+      "aspect": "Nontext semantics use Figure/Formula or equivalent",
+      "status": "human",
+      "justification": "Visual drawing type does not determine its semantic type.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.5.2:1",
+      "clause": "8.5.2",
+      "physical_pdf_pages": [
+        36
+      ],
+      "aspect": "Nontext representations intended as text have ActualText and proper context",
+      "status": "human",
+      "justification": "Knowing that a vector or image should be consumed as text requires author intent and rendered-content review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.6:1",
+      "clause": "8.6",
+      "physical_pdf_pages": [
+        36
+      ],
+      "aspect": "Human-readable PDF text strings exclude PUA",
+      "status": "executed",
+      "justification": "Typed TextString and known raw/indirect text fields, including marked-content alternatives, are checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.7:1",
+      "clause": "8.7",
+      "physical_pdf_pages": [
+        36
+      ],
+      "aspect": "Accessible optional-content configurations have Name and no AS",
+      "status": "executed",
+      "justification": "Default and nondefault configurations are checked, with Name conditional on nonempty Configs.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.8:1",
+      "clause": "8.8",
+      "physical_pdf_pages": [
+        36,
+        37
+      ],
+      "aspect": "Every internal destination is structural",
+      "status": "absent",
+      "justification": "Native StructureDestination construction and navigation integration are a separate follow-up; existing page targets are not claimed compliant.",
+      "implementation_or_boundary": [
+        "src/Document/Navigation/NavigationGraphValidation.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.8:2",
+      "clause": "8.8",
+      "physical_pdf_pages": [
+        37
+      ],
+      "aspect": "Declared Ref endpoints stay within this tree",
+      "status": "executed",
+      "justification": "Direct or indirect Ref arrays contain only indirect members of this native structure tree.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.8:3",
+      "clause": "8.8",
+      "physical_pdf_pages": [
+        37
+      ],
+      "aspect": "All actionable cross-references identify actual targets",
+      "status": "human",
+      "justification": "The semantic presence and completeness of content references need author review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.1:1",
+      "clause": "8.9.1",
+      "physical_pdf_pages": [
+        37
+      ],
+      "aspect": "Deprecated annotation subtypes absent",
+      "status": "executed",
+      "justification": "Sound, Movie and TrapNet are rejected; custom subtypes still receive general checks.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.1:1",
+      "clause": "8.9.2.1",
+      "physical_pdf_pages": [
+        37,
+        38
+      ],
+      "aspect": "Annotation objects have unique structural associations",
+      "status": "executed",
+      "justification": "Managed OBJR/StructParent validation checks ownership, page presence and duplicate bindings.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureContentValidator.php",
+        "src/Document/Structure/StructureTreeRoot.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.1:2",
+      "clause": "8.9.2.1",
+      "physical_pdf_pages": [
+        38
+      ],
+      "aspect": "No marked substructure of annotation appearance streams",
+      "status": "executed",
+      "justification": "Only actual AP stream identities/states attached to the owner are classified as appearance, not arbitrary Form owners.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.1:3",
+      "clause": "8.9.2.1",
+      "physical_pdf_pages": [
+        37
+      ],
+      "aspect": "Choose semantically appropriate annotation inclusion/role",
+      "status": "human",
+      "justification": "A visible annotation may intentionally be an untagged artifact, so omission alone is not an automatic failure.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.2:1",
+      "clause": "8.9.2.2",
+      "physical_pdf_pages": [
+        38
+      ],
+      "aspect": "Invisible or NoView-without-Toggle annotations are artifacts",
+      "status": "executed",
+      "justification": "Indirect flags are resolved; a structurally included artifact must have Artifact role.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.3:1",
+      "clause": "8.9.2.3",
+      "physical_pdf_pages": [
+        38,
+        39
+      ],
+      "aspect": "Markup annotations use Annot when real content",
+      "status": "executed",
+      "justification": "The enumerated markup types, plus Watermark/Projection, have a resolved Annot parent.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.3:2",
+      "clause": "8.9.2.3",
+      "physical_pdf_pages": [
+        39
+      ],
+      "aspect": "Context is adequate or Contents supplies purpose",
+      "status": "human",
+      "justification": "The need for a description depends on context; RC and Contents equivalence requires rich-text interpretation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.1:1",
+      "clause": "8.9.2.4.1",
+      "physical_pdf_pages": [
+        39
+      ],
+      "aspect": "Text annotation context and Name reflect intent",
+      "status": "human",
+      "justification": "The displayed note purpose is content-dependent.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.2:1",
+      "clause": "8.9.2.4.2",
+      "physical_pdf_pages": [
+        39
+      ],
+      "aspect": "Link context and contiguous reading-order content",
+      "status": "human",
+      "justification": "Actual logical scope and meaning of a link require semantic review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.3:1",
+      "clause": "8.9.2.4.3",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "FreeText callout reading order matches origin",
+      "status": "human",
+      "justification": "Callout geometry and intended order require content review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.4:1",
+      "clause": "8.9.2.4.4",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Line/shape annotation markup rules",
+      "status": "executed",
+      "justification": "Native markup-role checks apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.5:1",
+      "clause": "8.9.2.4.5",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Split noncontiguous text markup appropriately",
+      "status": "human",
+      "justification": "Whether content is logically contiguous is semantic.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.6:1",
+      "clause": "8.9.2.4.6",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Caret markup rules",
+      "status": "executed",
+      "justification": "Native markup-role checks apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.7:1",
+      "clause": "8.9.2.4.7",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Stamp Contents conveys intent when Name insufficient",
+      "status": "human",
+      "justification": "The sufficiency of a stamp name cannot be judged by its mere presence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.8:1",
+      "clause": "8.9.2.4.8",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Accessible Ink has Contents",
+      "status": "executed",
+      "justification": "Nonempty Contents is checked; its description quality remains human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.9:1",
+      "clause": "8.9.2.4.9",
+      "physical_pdf_pages": [
+        40
+      ],
+      "aspect": "Popup excluded from the structure tree",
+      "status": "executed",
+      "justification": "Native annotation binding and resolved parent checks reject structured Popup.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.10:1",
+      "clause": "8.9.2.4.10",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "Dictionary FileAttachment specification has AFRelationship",
+      "status": "executed",
+      "justification": "String file specifications remain equivalent to Unspecified and are not falsely rejected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.11:1",
+      "clause": "8.9.2.4.11",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "Sound/Movie absent",
+      "status": "executed",
+      "justification": "The deprecated annotation check applies.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.12:1",
+      "clause": "8.9.2.4.12",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "Screen has Contents",
+      "status": "executed",
+      "justification": "Description presence is checked; media accessibility remains external.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.13:1",
+      "clause": "8.9.2.4.13",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "Zero-size widget is artifact",
+      "status": "executed",
+      "justification": "Both zero width and zero height trigger the mandatory artifact rule; Hidden alone does not.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.14:1",
+      "clause": "8.9.2.4.14",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "PrinterMark is artifact",
+      "status": "executed",
+      "justification": "A structured printer mark must be under Artifact.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.15:1",
+      "clause": "8.9.2.4.15",
+      "physical_pdf_pages": [
+        41
+      ],
+      "aspect": "TrapNet absent",
+      "status": "executed",
+      "justification": "The deprecated annotation check applies.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.16:1",
+      "clause": "8.9.2.4.16",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "Real Watermark follows markup rules",
+      "status": "executed",
+      "justification": "A real Watermark requires Annot parent; arbitrary artifact Watermarks remain allowed.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.17:1",
+      "clause": "8.9.2.4.17",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "One logical redaction grouped when geometry permits",
+      "status": "human",
+      "justification": "The author decides logical redaction boundaries and representability with QuadPoints.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.18:1",
+      "clause": "8.9.2.4.18",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "Projection follows markup rules",
+      "status": "executed",
+      "justification": "Native markup-role checks apply.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.19:1",
+      "clause": "8.9.2.4.19",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "Accessible 3D/RichMedia have Contents",
+      "status": "executed",
+      "justification": "Description presence is checked; media alternatives need external accessibility evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.2.4.20:1",
+      "clause": "8.9.2.4.20",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "Custom annotations retain general obligations",
+      "status": "executed",
+      "justification": "Flags, descriptions, structural association and page tab order do not depend on known subtype enumeration.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.3.1:1",
+      "clause": "8.9.3.1",
+      "physical_pdf_pages": [
+        42
+      ],
+      "aspect": "Annotations occur in logical content order",
+      "status": "human",
+      "justification": "The graph preserves the author's order without pretending to infer correct semantics.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.3.2:1",
+      "clause": "8.9.3.2",
+      "physical_pdf_pages": [
+        43
+      ],
+      "aspect": "Annotation close association to relevant content",
+      "status": "human",
+      "justification": "Geometry and semantic applicability require rendered review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.3.3:1",
+      "clause": "8.9.3.3",
+      "physical_pdf_pages": [
+        43
+      ],
+      "aspect": "Annotated pages have Tabs A/W/S",
+      "status": "executed",
+      "justification": "Direct and indirect Tabs names are resolved.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.9.4.1:1",
+      "clause": "8.9.4.1",
+      "physical_pdf_pages": [
+        43
+      ],
+      "aspect": "Alternative descriptions use the correct mechanism",
+      "status": "human",
+      "justification": "Whether a description is needed depends on annotation purpose and context.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.9.4.2:1",
+      "clause": "8.9.4.2",
+      "physical_pdf_pages": [
+        43
+      ],
+      "aspect": "Alternative Contents equals enclosing Alt",
+      "status": "executed",
+      "justification": "Decoded strings are compared; FreeText displayed Contents is not incorrectly treated as an alternate description.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.1:1",
+      "clause": "8.10.1",
+      "physical_pdf_pages": [
+        43,
+        44
+      ],
+      "aspect": "Real widgets use Form with at most one widget",
+      "status": "executed",
+      "justification": "Managed associations and per-Form counts are checked; artifacts are exempt.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.1:2",
+      "clause": "8.10.1",
+      "physical_pdf_pages": [
+        44
+      ],
+      "aspect": "XFA absent",
+      "status": "executed",
+      "justification": "AcroForm XFA is rejected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.2.1:1",
+      "clause": "8.10.2.1",
+      "physical_pdf_pages": [
+        44
+      ],
+      "aspect": "Widget context is sufficient using allowed sources",
+      "status": "human",
+      "justification": "T field name is not accepted as descriptive evidence; quality and completeness require review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.2.2:1",
+      "clause": "8.10.2.2",
+      "physical_pdf_pages": [
+        44,
+        45
+      ],
+      "aspect": "Widget/group real labels use Lbl in the appropriate group",
+      "status": "human",
+      "justification": "Presence of a direct Lbl is mechanically recognized; deciding which real content labels the field is semantic.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.2.3:1",
+      "clause": "8.10.2.3",
+      "physical_pdf_pages": [
+        45
+      ],
+      "aspect": "Unlabelled widget requires Contents",
+      "status": "executed",
+      "justification": "A direct Form label or nonempty Contents is required; TU alone does not substitute.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.2.3:2",
+      "clause": "8.10.2.3",
+      "physical_pdf_pages": [
+        45
+      ],
+      "aspect": "Widget with AA has Contents",
+      "status": "executed",
+      "justification": "A nonempty action description is required on the structured real widget.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.2.3:3",
+      "clause": "8.10.2.3",
+      "physical_pdf_pages": [
+        45
+      ],
+      "aspect": "Description enriches label and explains action intent",
+      "status": "human",
+      "justification": "Semantic sufficiency and nonredundancy cannot be established from mere strings.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.2.4:1",
+      "clause": "8.10.2.4",
+      "physical_pdf_pages": [
+        45
+      ],
+      "aspect": "Multi-widget fields each have sufficient context",
+      "status": "human",
+      "justification": "TU does not prove that each individual widget is understandable.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.1:1",
+      "clause": "8.10.3.1",
+      "physical_pdf_pages": [
+        45
+      ],
+      "aspect": "Read-only fields permitted",
+      "status": "executed",
+      "justification": "Native fields retain the read-only flag without treating it as an audit failure.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.3.2.1:1",
+      "clause": "8.10.3.2.1",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Button Contents reflects CA intent",
+      "status": "human",
+      "justification": "Description and caption semantic equivalence require human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.2.2:1",
+      "clause": "8.10.3.2.2",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Pushbutton descriptions reflect all interaction appearances",
+      "status": "human",
+      "justification": "CA/RC/AC/I/RI/IX and TU intent are semantic and may include images.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.2.3:1",
+      "clause": "8.10.3.2.3",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Checkbox/radio context conforms to 8.10.2",
+      "status": "human",
+      "justification": "Export values are not substituted for descriptions; semantic context is reviewed.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.3:1",
+      "clause": "8.10.3.3",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Rich text RV requires plain V",
+      "status": "executed",
+      "justification": "Explicit text fields and indirect V strings are checked.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.3.3:2",
+      "clause": "8.10.3.3",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "RV and V are textually equivalent",
+      "status": "external",
+      "justification": "A deliberate pending finding requests an independent rich-text parser.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.4:1",
+      "clause": "8.10.3.4",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Choice display text conveys intent",
+      "status": "human",
+      "justification": "Export values, display labels and field context need semantic review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.3.5:1",
+      "clause": "8.10.3.5",
+      "physical_pdf_pages": [
+        46,
+        47
+      ],
+      "aspect": "Mandatory signature-widget artifact flags",
+      "status": "executed",
+      "justification": "The same invisible/NoView/zero-size artifact rules apply to signature widgets.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.3.5:2",
+      "clause": "8.10.3.5",
+      "physical_pdf_pages": [
+        46,
+        47
+      ],
+      "aspect": "Legal location and appearance/metadata consistency",
+      "status": "human",
+      "justification": "Legal relevance, graphical alternatives and contradictory appearance content require application evidence and human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.10.4:1",
+      "clause": "8.10.4",
+      "physical_pdf_pages": [
+        47
+      ],
+      "aspect": "Noninteractive Form has PrintField Role",
+      "status": "executed",
+      "justification": "Native Form without a direct widget requires explicit PrintField Role; standard domains validate values.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.10.4:2",
+      "clause": "8.10.4",
+      "physical_pdf_pages": [
+        47
+      ],
+      "aspect": "Appropriate printed field values and label/group context",
+      "status": "human",
+      "justification": "Whether content represents a form field and the adequate attributes/labels depend on author intent.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.11.1:1",
+      "clause": "8.11.1",
+      "physical_pdf_pages": [
+        47
+      ],
+      "aspect": "Document XMP has nonempty dc:title language alternative",
+      "status": "executed",
+      "justification": "Typed language alternatives are inspected; opaque XML gets an explicit external finding.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.11.1:2",
+      "clause": "8.11.1",
+      "physical_pdf_pages": [
+        47
+      ],
+      "aspect": "dc:title reflects the document title",
+      "status": "human",
+      "justification": "Visible Title need not match metadata literally; meaning is reviewed by a person.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.11.2:1",
+      "clause": "8.11.2",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "Accessible ViewerPreferences DisplayDocTitle true",
+      "status": "executed",
+      "justification": "Direct and indirect true boolean values are accepted.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.12.2:1",
+      "clause": "8.12.2",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "Long documents should have useful outlines/actions",
+      "status": "human",
+      "justification": "No arbitrary length threshold or synthetic bookmark semantics are imposed.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.12.3:1",
+      "clause": "8.12.3",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "Page labels match perceived numbers and non-index numbering",
+      "status": "human",
+      "justification": "Perceived page numbers require rendered/user interpretation.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.12.4:1",
+      "clause": "8.12.4",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "Article threads should follow logical order",
+      "status": "human",
+      "justification": "The author-selected sequence is preserved but semantic order is not inferred.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.13.1:1",
+      "clause": "8.13.1",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "Actions permitted",
+      "status": "executed",
+      "justification": "The PDF object model retains actions without executing them in PHP.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.13.2:1",
+      "clause": "8.13.2",
+      "physical_pdf_pages": [
+        48
+      ],
+      "aspect": "ECMAScript changes communicate accessibly",
+      "status": "external",
+      "justification": "The core does not execute scripts or emulate assistive technology.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.13.3:1",
+      "clause": "8.13.3",
+      "physical_pdf_pages": [
+        49
+      ],
+      "aspect": "Accessible URI IsMap has equivalent real-content functionality",
+      "status": "human",
+      "justification": "Presence of alternatives and equivalent interaction require content/application review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.14.1:1",
+      "clause": "8.14.1",
+      "physical_pdf_pages": [
+        49
+      ],
+      "aspect": "Every EmbeddedFiles dictionary specification has Desc",
+      "status": "executed",
+      "justification": "Name-tree traversal checks description presence and rejects repeated children/cycles.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "8.14.1:2",
+      "clause": "8.14.1",
+      "physical_pdf_pages": [
+        49
+      ],
+      "aspect": "Embedded file description conveys enough intent",
+      "status": "human",
+      "justification": "A present string does not prove descriptive adequacy.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.14.2:1",
+      "clause": "8.14.2",
+      "physical_pdf_pages": [
+        49
+      ],
+      "aspect": "Supplement/alternative representation uses suitable associations",
+      "status": "human",
+      "justification": "Identify the intended supplemental content and which structure it represents.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "8.14.2:2",
+      "clause": "8.14.2",
+      "physical_pdf_pages": [
+        49
+      ],
+      "aspect": "Native associated-file relationships and MIME declarations",
+      "status": "executed",
+      "justification": "Generic AF validation checks explicitly constructed file relationships/discovery; no payload parsing is implied.",
+      "implementation_or_boundary": [
+        "src/Document/Metadata/Declarations/Declarations.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "A:1",
+      "clause": "A",
+      "physical_pdf_pages": [
+        50
+      ],
+      "aspect": "Informative declaration example",
+      "status": "executed",
+      "justification": "Native declarations and ClaimData model the illustrated optional properties.",
+      "implementation_or_boundary": [
+        "src/Document/Metadata/Declarations/Declarations.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "B.1:1",
+      "clause": "B.1",
+      "physical_pdf_pages": [
+        51,
+        52,
+        53
+      ],
+      "aspect": "Informative layout examples",
+      "status": "human",
+      "justification": "Attribute objects represent values; semantic relevance remains content-specific.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "src/Document/Structure/WtPdfAudit.php"
+      ]
+    },
+    {
+      "id": "B.2:1",
+      "clause": "B.2",
+      "physical_pdf_pages": [
+        54
+      ],
+      "aspect": "Informative list examples",
+      "status": "executed",
+      "justification": "Native ListNumbering, ContinuedList and ContinuedFrom checks correspond to normative 8.2.5.25.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfListChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "B.3:1",
+      "clause": "B.3",
+      "physical_pdf_pages": [
+        54
+      ],
+      "aspect": "Informative PrintField examples",
+      "status": "executed",
+      "justification": "Native Role/checked/Desc attributes represent printed field facts; intent remains human review.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "B.4:1",
+      "clause": "B.4",
+      "physical_pdf_pages": [
+        55
+      ],
+      "aspect": "Informative table attributes",
+      "status": "executed",
+      "justification": "Native span/Scope/Headers shape and own-table ID checks supplement normative 8.2.5.26.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfStructureChecks.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "B.5:1",
+      "clause": "B.5",
+      "physical_pdf_pages": [
+        55
+      ],
+      "aspect": "Informative artifact attributes",
+      "status": "executed",
+      "justification": "Native standard artifact attributes retain explicit values; correct subtype/BBox need content evidence.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/StructureAttributeObject.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    },
+    {
+      "id": "C:1",
+      "clause": "C",
+      "physical_pdf_pages": [
+        56
+      ],
+      "aspect": "Conditional PDF/UA-2 identification schema",
+      "status": "executed",
+      "justification": "Typed document XMP with pdfuaid identification must supply part=2 and rev=2024; this does not certify the claim.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfGraphChecks.php"
+      ],
+      "evidence": [
+        "tests/WtPdfAuditTest.php",
+        "tests/WtPdfRequirementsTest.php",
+        "tests/StructureNamespaceTest.php"
+      ]
+    }
+  ]
+}

@@ -10,11 +10,12 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\StringType;
 
 /** Mechanical WTPDF structure checks; author intent remains an explicit human-review finding. */
 final readonly class WtPdfStructureChecks
 {
-    public function __construct(private int $maximumTableSlots = 1000000)
+    public function __construct(private int $maximumTableSlots = 1000000, private WtPdfListChecks $lists = new WtPdfListChecks())
     {
         if ($maximumTableSlots < 1) {
             throw new \InvalidArgumentException('Table validation requires a positive explicit slot budget.');
@@ -60,6 +61,16 @@ final readonly class WtPdfStructureChecks
             }
         }
         $attributes = new AttributeResolver($root->classMap, roles: $root->roleMap);
+        $hasReference = new \SplObjectStorage();
+        foreach (array_reverse($index->elements) as $element) {
+            $ref = $this->target($element->get('Ref'));
+            $present = $ref instanceof ArrayType && $ref->items !== [];
+            foreach ($element->kids() as $kid) {
+                $present = $present || ($kid instanceof StructureElement && $hasReference->offsetExists($kid) && $hasReference[$kid]);
+            }
+            $hasReference[$element] = $present;
+        }
+        $this->lists->inspect($index->elements, $roles, $attributes, $level, $fail);
         foreach ($index->elements as $element) {
             if (!$roles->offsetExists($element)) {
                 continue;
@@ -68,7 +79,7 @@ final readonly class WtPdfStructureChecks
             if (($name === 'H' && $roles[$element]->namespaceName() !== StandardStructureNamespace::MathML->value) || ($name === 'Note' && $roles[$element]->namespaceName() === StandardStructureNamespace::PDF17->value)) {
                 $fail($name === 'H' ? '8.2.5.12' : '8.2.5.14.1', $name === 'H' ? 19 : 20, 'WTPDF forbids the standard ' . $name . ' role.', $element);
             }
-            $references = $element->get('Ref');
+            $references = $this->target($element->get('Ref'));
             if ($references !== null) {
                 if (!$references instanceof ArrayType) {
                     $fail('8.8', 37, 'Ref must be an array of indirect structure-element references.', $element);
@@ -77,10 +88,58 @@ final readonly class WtPdfStructureChecks
                         if (!$reference instanceof IndirectReference || !$reference->target() instanceof StructureElement || !in_array($reference->target(), $index->elements, true)) {
                             $fail('8.8', 37, 'Each Ref target must belong to this same structure tree.', $element);
                         } elseif ($name === 'FENote' || $roles[$reference->target()]->type->value === 'FENote') {
-                            $reverse = $reference->target()->get('Ref');
+                            $reverse = $this->target($reference->target()->get('Ref'));
                             if (!$reverse instanceof ArrayType || array_filter($reverse->items, static fn ($item): bool => $item instanceof IndirectReference && $item->target() === $element) === []) {
                                 $fail('8.2.5.14.1', 20, 'FENote and its citing elements require reciprocal Ref associations.', $element);
                             }
+                        }
+                    }
+                }
+            }
+            if ($name === 'TOCI' && !$hasReference[$element]) {
+                $fail('8.2.5.8', 18, 'A TOCI requires a target Ref on itself or on a descendant.', $element);
+            }
+            if ($name === 'FENote') {
+                $noteType = $this->target($attributes->resolve($element, new NameType('FENote'), new NameType('NoteType')));
+                if ($noteType !== null && (!$noteType instanceof NameType || !in_array($noteType->value, ['Footnote', 'Endnote', 'None'], true))) {
+                    $fail('8.2.5.14.2', 21, 'FENote NoteType must be Footnote, Endnote or None.', $element);
+                }
+            }
+            if ($name === 'Ruby') {
+                $children = array_map(static fn ($kid): string => $kid instanceof StructureElement && $roles->offsetExists($kid) ? $roles[$kid]->type->value : 'content', $element->kids());
+                if ($children !== ['RB', 'RT'] && $children !== ['RB', 'RP', 'RT', 'RP']) {
+                    $fail('8.2.5.23', 23, 'Ruby requires one RB and one RT, optionally with RP delimiters in RB/RP/RT/RP order.', $element);
+                }
+            }
+            if ($name === 'Form') {
+                $widgets = 0;
+                foreach ($element->kids() as $kid) {
+                    $object = $kid instanceof ObjectReference ? $kid->object : null;
+                    $dictionary = $object instanceof \PDF\Syntax\Object\StreamObject ? $object->dictionary() : $object;
+                    $subtype = $dictionary instanceof DictionaryType ? $this->target($dictionary->get('Subtype')) : null;
+                    $widgets += $subtype instanceof NameType && $subtype->value === 'Widget' ? 1 : 0;
+                }
+                if ($widgets === 0 && !$attributes->hasExplicit($element, new NameType('PrintField'), new NameType('Role'))) {
+                    $fail('8.10.4', 47, 'A non-interactive Form requires an explicit PrintField Role attribute.', $element);
+                }
+                if ($widgets > 1) {
+                    $fail('8.10.1', 44, 'A Form structure element may enclose at most one widget.', $element);
+                }
+            }
+            if ($name === 'Formula') {
+                $associated = $this->target($element->get('AF'));
+                foreach ($associated instanceof ArrayType ? $associated->items : [] as $file) {
+                    $file = $this->target($file);
+                    $embedded = $file instanceof DictionaryType ? $this->target($file->get('EF')) : null;
+                    if (!$embedded instanceof DictionaryType) {
+                        continue;
+                    }
+                    foreach (['F', 'UF'] as $key) {
+                        $stream = $this->target($embedded->get($key));
+                        $mime = $stream instanceof \PDF\Syntax\Object\StreamObject ? $this->target($stream->dictionary()->get('Subtype')) : null;
+                        $relationship = $file instanceof DictionaryType ? $this->target($file->get('AFRelationship')) : null;
+                        if ($mime instanceof NameType && $mime->value === 'application/mathml+xml' && (!$relationship instanceof NameType || $relationship->value !== 'Supplement')) {
+                            $fail('8.2.5.29.1', 26, 'A declared MathML associated representation of Formula requires AFRelationship=Supplement.', $element);
                         }
                     }
                 }
@@ -175,6 +234,7 @@ final readonly class WtPdfStructureChecks
         }
         $expectedWidth = null;
         $slots = 0;
+        $tableCells = [];
         foreach ($groups as $rows) {
             $grid = [];
             foreach ($rows as $rowNumber => $row) {
@@ -193,6 +253,7 @@ final readonly class WtPdfStructureChecks
                     if (!in_array($cellRole, ['TH', 'TD'], true)) {
                         continue;
                     }
+                    $tableCells[] = $cell;
                     while (isset($grid[$rowNumber][$column])) {
                         ++$column;
                     }
@@ -227,5 +288,25 @@ final readonly class WtPdfStructureChecks
                 }
             }
         }
+        $headers = [];
+        foreach ($tableCells as $cell) {
+            if ($roles[$cell]->type->value === 'TH' && $cell->identifier !== null) {
+                $headers[bin2hex($cell->identifier->value)] = true;
+            }
+        }
+        foreach ($tableCells as $cell) {
+            $references = $this->target($attributes->resolve($cell, new NameType('Table'), new NameType('Headers')));
+            foreach ($references instanceof ArrayType ? $references->items : [] as $reference) {
+                $reference = $this->target($reference);
+                if (!$reference instanceof StringType || !isset($headers[bin2hex($reference->value)])) {
+                    throw new \InvalidArgumentException('Every Headers identifier must resolve to a TH in the same table.');
+                }
+            }
+        }
+    }
+
+    private function target(?\PDF\Syntax\FileStructure\BasicType $value): ?\PDF\Syntax\FileStructure\BasicType
+    {
+        return $value instanceof IndirectReference ? $value->target() : $value;
     }
 }

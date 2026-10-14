@@ -18,6 +18,8 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 use PDF\Syntax\Object\StringType;
+use PDF\Syntax\DataStructure\TextStringDecoder;
+use PDF\Syntax\FileStructure\PdfVersion;
 
 /** Checks actual typed text-showing operations, including q/Q, Tr, gs and nested Form XObjects. */
 final readonly class WtPdfFontUsageChecks
@@ -30,9 +32,35 @@ final readonly class WtPdfFontUsageChecks
     }
 
     /** @return list<WtPdfFinding> */
-    public function inspect(DictionaryType $catalog): array
+    public function inspect(DictionaryType $catalog, WtPdfConformanceLevel $level = WtPdfConformanceLevel::Reuse): array
     {
         $findings = [];
+        $alternatives = [];
+        $objectAlternatives = [];
+        $root = $this->target($catalog->get('StructTreeRoot'));
+        if ($root instanceof StructureTreeRoot) {
+            $index = $root->index();
+            $resolved = new \SplObjectStorage();
+            $resolver = new NamespaceRoleResolver($root->namespaces, $root->roleMap);
+            foreach ($index->elements as $element) {
+                $parent = $element->parent();
+                $inherited = $parent instanceof StructureElement && $resolved->offsetExists($parent) ? $resolved[$parent] : [false, false];
+                $role = $resolver->resolve(new StructureRole($element->type, $element->namespace));
+                $resolved[$element] = [$inherited[0] || $element->has('Alt') || $element->has('ActualText'), $inherited[1] || $role?->type->value === 'Artifact'];
+                foreach ($element->kids() as $kid) {
+                    if ($kid instanceof ObjectReference) {
+                        $objectAlternatives[spl_object_id($kid->object)] = $resolved[$element];
+                    }
+                }
+            }
+            foreach ($index->containers as $key => $container) {
+                foreach ($container->streams() as $stream) {
+                    foreach ($index->markedParents[$key] ?? [] as $mcid => $element) {
+                        $alternatives[spl_object_id($stream)][$mcid] = $resolved[$element];
+                    }
+                }
+            }
+        }
         $pages = $this->dictionary($catalog->get('Pages'));
         $queue = $pages === null ? [] : [[$pages, new DictionaryType()]];
         $seen = new \SplObjectStorage();
@@ -50,11 +78,44 @@ final readonly class WtPdfFontUsageChecks
             if ($type instanceof NameType && $type->value === 'Page') {
                 $state = ['font' => null, 'mode' => 0];
                 $stack = [];
+                $semantics = [false, false];
+                $markedStack = [];
                 foreach ($this->streams($node->get('Contents')) as $stream) {
-                    $this->stream($stream, $resources, $state, $stack, 0, $operations, $textBytes, $activeStreams, $findings);
+                    $this->stream($stream, $resources, $state, $stack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics, $markedStack);
                 }
-                if ($stack !== []) {
-                    throw new \InvalidArgumentException('A page graphics-state save requires its matching restore.');
+                if ($stack !== [] || $markedStack !== []) {
+                    throw new \InvalidArgumentException('A page graphics/marked-content save requires its matching close.');
+                }
+                $annotations = $this->target($node->get('Annots'));
+                foreach ($annotations instanceof ArrayType ? $annotations->items : [] as $annotation) {
+                    $annotation = $this->dictionary($annotation);
+                    $appearances = $this->dictionary($annotation?->get('AP'));
+                    foreach (['N', 'R', 'D'] as $key) {
+                        $appearance = $this->target($appearances?->get($key));
+                        $streams = $appearance instanceof StreamObject ? [$appearance] : [];
+                        foreach ($appearance instanceof DictionaryType ? $appearance->entries() : [] as $entry) {
+                            if (++$operations > $this->maximumOperations) {
+                                throw new \OverflowException('Annotation appearance inspection exceeds its explicit operation budget.');
+                            }
+                            $value = $this->target($entry->value);
+                            if ($value instanceof StreamObject) {
+                                $streams[] = $value;
+                            }
+                        }
+                        foreach ($streams as $stream) {
+                            if (++$operations > $this->maximumOperations) {
+                                throw new \OverflowException('Annotation appearance inspection exceeds its explicit operation budget.');
+                            }
+                            $appearanceState = ['font' => null, 'mode' => 0];
+                            $appearanceStack = [];
+                            $appearanceMarked = [];
+                            $appearanceSemantics = $annotation === null ? [false, false] : ($objectAlternatives[spl_object_id($annotation)] ?? [false, false]);
+                            $this->stream($stream, $this->dictionary($stream->dictionary()->get('Resources')) ?? new DictionaryType(), $appearanceState, $appearanceStack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $appearanceSemantics, $appearanceMarked);
+                            if ($appearanceStack !== [] || $appearanceMarked !== []) {
+                                throw new \InvalidArgumentException('Annotation appearances require balanced graphics/marked-content scopes.');
+                            }
+                        }
+                    }
                 }
             } else {
                 $kids = $this->target($node->get('Kids'));
@@ -77,8 +138,11 @@ final readonly class WtPdfFontUsageChecks
      * @param list<array{font: ?DictionaryType, mode: int}> $stack
      * @param list<WtPdfFinding> $findings
      * @param array<int, true> $activeStreams
+     * @param array<int, array<int, array{bool, bool}>> $alternatives
+     * @param array{bool, bool} $semantics
+     * @param list<array{bool, bool}> $markedStack
      */
-    private function stream(StreamObject $stream, DictionaryType $resources, array &$state, array &$stack, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings): void
+    private function stream(StreamObject $stream, DictionaryType $resources, array &$state, array &$stack, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array &$semantics, array &$markedStack): void
     {
         $identity = spl_object_id($stream);
         if (isset($activeStreams[$identity])) {
@@ -99,7 +163,35 @@ final readonly class WtPdfFontUsageChecks
                 }
                 $symbol = $operator->symbol();
                 $operands = $operator->operands;
-                if ($symbol === 'q') {
+                if (in_array($symbol, ['BMC', 'BDC'], true)) {
+                    $markedStack[] = $semantics;
+                    $tag = $operands[0] ?? null;
+                    $semantics[1] = $semantics[1] || ($tag instanceof NameType && $tag->value === 'Artifact');
+                    $properties = $operands[1] ?? null;
+                    if ($properties instanceof NameType) {
+                        $properties = $this->dictionary($resources->get('Properties'))?->get($properties);
+                    }
+                    $properties = $properties instanceof BasicType ? $this->dictionary($properties) : null;
+                    if ($properties !== null) {
+                        $semantics[0] = $semantics[0] || $this->target($properties->get('Alt')) instanceof StringType || $this->target($properties->get('ActualText')) instanceof StringType;
+                        $mcid = $properties->get('MCID');
+                        if ($mcid instanceof IntegerType && isset($alternatives[$identity][$mcid->integer()])) {
+                            $bound = $alternatives[$identity][$mcid->integer()];
+                            $semantics = [$semantics[0] || $bound[0], $semantics[1] || $bound[1]];
+                        }
+                        foreach (['Alt', 'ActualText'] as $key) {
+                            $text = $this->target($properties->get($key));
+                            if ($text !== null && !$text instanceof StringType) {
+                                $findings[] = new WtPdfFinding('8.6', 36, WtPdfFindingStatus::Failed, 'Marked-content text alternatives require text strings.');
+                            }
+                            if ($text instanceof StringType && $this->privateUse((new TextStringDecoder(PdfVersion::PDF20))->decode($text))) {
+                                $findings[] = new WtPdfFinding('8.6', 36, WtPdfFindingStatus::Failed, 'Marked-content text alternatives must not contain Unicode private-use characters.');
+                            }
+                        }
+                    }
+                } elseif ($symbol === 'EMC') {
+                    $semantics = array_pop($markedStack) ?? throw new \InvalidArgumentException('Marked content requires its matching beginning.');
+                } elseif ($symbol === 'q') {
                     $stack[] = $state;
                 } elseif ($symbol === 'Q') {
                     $state = array_pop($stack) ?? throw new \InvalidArgumentException('A graphics-state restoration requires its matching save.');
@@ -120,17 +212,20 @@ final readonly class WtPdfFontUsageChecks
                     if ($font instanceof ArrayType) {
                         $state['font'] = $this->dictionary($font->items[0] ?? null);
                     }
-                } elseif ($symbol === 'Do') {
-                    $objects = $this->dictionary($resources->get('XObject'));
-                    $name = $operands[0] ?? null;
+                } elseif (in_array($symbol, ['Do', 'scn', 'SCN'], true)) {
+                    $objects = $this->dictionary($resources->get($symbol === 'Do' ? 'XObject' : 'Pattern'));
+                    $name = $symbol === 'Do' ? ($operands[0] ?? null) : ($operands[count($operands) - 1] ?? null);
                     $form = $name instanceof NameType ? $this->target($objects?->get($name)) : null;
                     $subtype = $form instanceof StreamObject ? $form->dictionary()->get('Subtype') : null;
-                    if ($form instanceof StreamObject && $subtype instanceof NameType && $subtype->value === 'Form') {
+                    $patternType = $form instanceof StreamObject ? $form->dictionary()->get('PatternType') : null;
+                    if ($form instanceof StreamObject && (($subtype instanceof NameType && $subtype->value === 'Form') || ($patternType instanceof IntegerType && $patternType->integer() === 1))) {
                         $formState = $state;
                         $formStack = [];
-                        $this->stream($form, $this->dictionary($form->dictionary()->get('Resources')) ?? $resources, $formState, $formStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings);
-                        if ($formStack !== []) {
-                            throw new \InvalidArgumentException('A Form graphics-state save requires its matching restore.');
+                        $formSemantics = $semantics;
+                        $formMarkedStack = [];
+                        $this->stream($form, $this->dictionary($form->dictionary()->get('Resources')) ?? $resources, $formState, $formStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $formSemantics, $formMarkedStack);
+                        if ($formStack !== [] || $formMarkedStack !== []) {
+                            throw new \InvalidArgumentException('A Form graphics/marked-content save requires its matching close.');
                         }
                     }
                 } elseif (in_array($symbol, ['Tj', 'TJ', "'", '"'], true)) {
@@ -153,7 +248,7 @@ final readonly class WtPdfFontUsageChecks
                                 throw new \OverflowException('Font-usage text inspection exceeds its explicit cumulative byte budget.');
                             }
                             $textBytes += $length;
-                            $this->text($state['font'], $string, $state['mode'] !== 3, $findings);
+                            $this->text($state['font'], $string, $state['mode'] !== 3, $findings, $level, $semantics);
                         }
                     }
                 }
@@ -163,8 +258,11 @@ final readonly class WtPdfFontUsageChecks
         }
     }
 
-    /** @param list<WtPdfFinding> $findings */
-    private function text(?DictionaryType $font, StringType $text, bool $rendered, array &$findings): void
+    /**
+     * @param list<WtPdfFinding> $findings
+     * @param array{bool, bool} $semantics
+     */
+    private function text(?DictionaryType $font, StringType $text, bool $rendered, array &$findings, WtPdfConformanceLevel $level, array $semantics): void
     {
         $fail = static function (string $clause, int $page, string $message) use (&$findings): void {
             $findings[] = new WtPdfFinding($clause, $page, WtPdfFindingStatus::Failed, $message);
@@ -188,6 +286,9 @@ final readonly class WtPdfFontUsageChecks
         }
         if ($rendered && !$embedded) {
             $fail('8.4.5.5.1', 33, 'A font whose glyphs are rendered must have its font program embedded.');
+        }
+        if ($physicalSubtype instanceof NameType && $physicalSubtype->value === 'Type3') {
+            $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::AdditionalValidationRequired, 'Inspect selected Type3 CharProc auxiliary font usage independently; this audit does not infer glyph-program selection from arbitrary Encoding dictionaries.');
         }
         $encoding = $this->target($font->get('Encoding'));
         $base = $encoding instanceof DictionaryType ? $encoding->get('BaseEncoding') : $encoding;
@@ -244,9 +345,16 @@ final readonly class WtPdfFontUsageChecks
             foreach ($codes as $code) {
                 if (!$unicode->codeSpaces()->contains($code) || $unicode->sequence($code) === null) {
                     $fail('8.4.5.8', 35, 'The ToUnicode CMap must map every referenced glyph character code.');
+                } elseif ($this->privateUse($unicode->sequence($code)->utf8()) && !$semantics[1] && !$semantics[0] && $level === WtPdfConformanceLevel::Accessibility) {
+                    $fail('8.4.3', 31, 'Real content mapping to Unicode private use requires an enclosing Alt or ActualText.');
                 }
             }
         }
+    }
+
+    private function privateUse(string $text): bool
+    {
+        return preg_match('/[\x{E000}-\x{F8FF}\x{F0000}-\x{FFFFD}\x{100000}-\x{10FFFD}]/u', $text) === 1;
     }
 
     /** @return list<StreamObject> */

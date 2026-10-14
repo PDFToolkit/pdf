@@ -180,7 +180,7 @@ final class WtPdfAuditTest extends TestCase
         [$root] = $this->tree();
         $catalog = new DocumentCatalog($root->pages, ...$root->catalogEntries(new MarkInformation(new BooleanType(true))));
         $findings = (new WtPdfGraphChecks())->inspect($catalog, $root, WtPdfConformanceLevel::Accessibility);
-        self::assertSame(['8.11.1', '6.1.3', '8.11.2'], array_map(static fn ($finding): string => $finding->clause, $findings));
+        self::assertSame(['8.11.1', '6.1.3', '8.11.2', '8.4.4'], array_map(static fn ($finding): string => $finding->clause, $findings));
     }
 
     public function testXfaAndPrivateUseTextAreDetected(): void
@@ -362,7 +362,7 @@ final class WtPdfAuditTest extends TestCase
     private function catalog(StructureTreeRoot $root, WtPdfConformanceLevel $level): DocumentCatalog
     {
         $metadata = new MetadataStream(new XmpPacket(new Declarations(new Declaration(new MetadataUri($level->declarationIdentifier()))), new XmpLanguageAlternative(new XmpName('dc', new MetadataUri('http://purl.org/dc/elements/1.1/'), 'title'), new XmlText('Audit fixture'))));
-        return new DocumentCatalog($root->pages, ...[...$root->catalogEntries(new MarkInformation(new BooleanType(true))), new MetadataEntry($metadata), new Entry(new NameType('ViewerPreferences'), new DictionaryType(new Entry(new NameType('DisplayDocTitle'), new BooleanType(true))))]);
+        return new DocumentCatalog($root->pages, ...[...$root->catalogEntries(new MarkInformation(new BooleanType(true))), new MetadataEntry($metadata), new Entry(new NameType('Lang'), new TextString('en')), new Entry(new NameType('ViewerPreferences'), new DictionaryType(new Entry(new NameType('DisplayDocTitle'), new BooleanType(true))))]);
     }
 
     private function page(DictionaryType $resources, ?StreamObject $contents = null, Entry ...$entries): PageObject

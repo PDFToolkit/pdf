@@ -9,6 +9,7 @@ use PDF\Document\Fonts\ToUnicodeCMap;
 use PDF\Document\Metadata\Declarations\Declarations;
 use PDF\Document\Metadata\MetadataStream;
 use PDF\Document\Metadata\XmpLanguageAlternative;
+use PDF\Document\Metadata\XmpTextProperty;
 use PDF\Syntax\DataStructure\TextString;
 use PDF\Syntax\DataStructure\TextStringDecoder;
 use PDF\Syntax\FileStructure\BasicType;
@@ -42,6 +43,7 @@ final readonly class WtPdfGraphChecks
         $metadata = $this->dereference($catalog->get('Metadata'));
         $hasTitle = false;
         $hasDeclaration = false;
+        $pdfUa = [];
         if ($metadata instanceof MetadataStream) {
             foreach ($metadata->packet->properties as $property) {
                 if ($property instanceof XmpLanguageAlternative && $property->expandedName() === '{http://purl.org/dc/elements/1.1/}title') {
@@ -52,6 +54,12 @@ final readonly class WtPdfGraphChecks
                         $hasDeclaration = $hasDeclaration || $declaration->conformsTo->value === $level->declarationIdentifier();
                     }
                 }
+                if (in_array($property->expandedName(), ['{http://www.aiim.org/pdfua/ns/id/}part', '{http://www.aiim.org/pdfua/ns/id/}rev'], true)) {
+                    $pdfUa[$property->expandedName()] = $property instanceof XmpTextProperty ? trim($property->text->value) : null;
+                }
+            }
+            if ($pdfUa !== [] && (($pdfUa['{http://www.aiim.org/pdfua/ns/id/}part'] ?? null) !== '2' || ($pdfUa['{http://www.aiim.org/pdfua/ns/id/}rev'] ?? null) !== '2024')) {
+                $fail('C', 56, 'An explicit PDF/UA-2 identification requires part=2 and rev=2024 in document XMP.');
             }
         } elseif ($metadata instanceof StreamObject) {
             $findings[] = new WtPdfFinding('8.11.1', 47, WtPdfFindingStatus::AdditionalValidationRequired, 'Validate the generic XMP stream with an independent XML/XMP validator; this audit inspects typed MetadataStream packets.');
@@ -111,7 +119,7 @@ final readonly class WtPdfGraphChecks
                     if ($kid instanceof ObjectReference) {
                         $parents[$kid->object] = $element;
                     }
-                    if ($kid instanceof MarkedContentReference && $kid->container->streamOwner instanceof DictionaryType && $kid->container->streamOwner->get('Subtype') instanceof NameType) {
+                    if ($kid instanceof MarkedContentReference && $kid->container->stream !== null && $kid->container->streamOwner instanceof DictionaryType && $this->appearance($kid->container->streamOwner, $kid->container->stream)) {
                         $fail('8.9.2.1', 38, 'Annotation appearance substructure must not be represented by marked-content references.');
                     }
                 }
@@ -123,6 +131,10 @@ final readonly class WtPdfGraphChecks
         $hasFonts = false;
         $unicodeMappings = 0;
         $decoder = new TextStringDecoder(PdfVersion::PDF20);
+        $language = $this->dereference($catalog->get('Lang'));
+        if (!$language instanceof StringType || trim($decoder->decode($language)) === '') {
+            $fail('8.4.4', 32, 'The catalog requires a nonempty default natural language.');
+        }
         while ($queue !== []) {
             $object = array_pop($queue);
             if ($seen->offsetExists($object)) {
@@ -147,6 +159,10 @@ final readonly class WtPdfGraphChecks
                 $fail('8.6', 36, 'A human-readable text string contains a Unicode private-use character.');
             }
             if ($object instanceof ToUnicodeCMap) {
+                $base = $this->dereference($object->dictionary()->get('UseCMap'));
+                if ($base !== null && (!$base instanceof NameType || PredefinedCMap::tryFrom($base->value) === null)) {
+                    $fail('8.4.5.4', 33, 'A ToUnicode CMap may reference only a standard predefined base CMap.');
+                }
                 foreach ($object->definition->mappings->items as $mapping) {
                     $range = $mapping->source();
                     $last = $range->distance($this->maximumUnicodeMappings);
@@ -166,12 +182,23 @@ final readonly class WtPdfGraphChecks
             if ($dictionary === null) {
                 continue;
             }
-            $type = $dictionary->get('Type');
-            $subtype = $dictionary->get('Subtype');
+            $type = $this->dereference($dictionary->get('Type'));
+            $language = $this->dereference($dictionary->get('Lang'));
+            if ($dictionary !== $catalog && $dictionary->has('Lang') && (!$language instanceof StringType || trim($decoder->decode($language)) === '')) {
+                $fail('8.4.4', 32, 'An explicit Lang override must resolve to a nonempty natural language.');
+            }
+            $fieldType = $this->dereference($dictionary->get('FT'));
+            if ($fieldType instanceof NameType && $fieldType->value === 'Tx' && $dictionary->has('RV')) {
+                if (!$this->dereference($dictionary->get('V')) instanceof StringType) {
+                    $fail('8.10.3.3', 46, 'A rich-text field RV requires a corresponding plain-text V.');
+                } else {
+                    $findings[] = new WtPdfFinding('8.10.3.3', 46, WtPdfFindingStatus::AdditionalValidationRequired, 'Validate textual equivalence between rich RV markup and plain V with an independent rich-text parser.');
+                }
+            }
             if ($type instanceof NameType && $type->value === 'Page') {
                 $annotations = $this->dereference($dictionary->get('Annots'));
                 if ($annotations instanceof ArrayType && $annotations->items !== []) {
-                    $tabs = $dictionary->get('Tabs');
+                    $tabs = $this->dereference($dictionary->get('Tabs'));
                     if (!$tabs instanceof NameType || !in_array($tabs->value, ['A', 'W', 'S'], true)) {
                         $fail('8.9.3.3', 43, 'Every page with annotations requires Tabs=A, W or S.');
                     }
@@ -192,7 +219,8 @@ final readonly class WtPdfGraphChecks
             }
             foreach ($dictionary->entries() as $entry) {
                 $value = $entry->value;
-                if (in_array($entry->key->value, ['Alt', 'ActualText', 'Contents', 'TU', 'Title', 'Desc'], true) && $value instanceof StringType && $this->privateUse($decoder->decode($value))) {
+                $text = $this->dereference($value);
+                if (in_array($entry->key->value, ['Alt', 'ActualText', 'Contents', 'TU', 'Title', 'Desc', 'T'], true) && $text instanceof StringType && $this->privateUse($decoder->decode($text))) {
                     $fail('8.6', 36, 'A human-readable ' . $entry->key->value . ' string contains Unicode private-use characters.');
                 }
                 if ($entry->key->value === 'EmbeddedFiles') {
@@ -213,15 +241,15 @@ final readonly class WtPdfGraphChecks
     /** @param callable(string, int, string): void $fail */
     private function annotation(DictionaryType $annotation, ?StructureElement $parent, ?string $role, WtPdfConformanceLevel $level, callable $fail, TextStringDecoder $decoder): void
     {
-        $subtype = $annotation->get('Subtype');
+        $subtype = $this->dereference($annotation->get('Subtype'));
         $name = $subtype instanceof NameType ? $subtype->value : '';
         if (in_array($name, ['Sound', 'Movie', 'TrapNet'], true)) {
             $fail('8.9.1', 37, 'Deprecated annotation type ' . $name . ' is forbidden.');
         }
-        $flags = $annotation->get('F');
+        $flags = $this->dereference($annotation->get('F'));
         $flags = $flags instanceof IntegerType ? $flags->integer() : 0;
         $artifact = ($flags & 1) !== 0 || (($flags & 32) !== 0 && ($flags & 256) === 0) || $name === 'PrinterMark';
-        $rectangle = $annotation->get('Rect');
+        $rectangle = $this->dereference($annotation->get('Rect'));
         if ($name === 'Widget' && $rectangle instanceof ArrayType && count($rectangle->items) === 4) {
             $coordinates = array_map(static fn ($number): ?float => $number instanceof \PDF\Syntax\Object\NumericType ? (float) $number->value : null, $rectangle->items);
             $artifact = $artifact || (!in_array(null, $coordinates, true) && $coordinates[0] === $coordinates[2] && $coordinates[1] === $coordinates[3]);
@@ -246,9 +274,10 @@ final readonly class WtPdfGraphChecks
             if (in_array($name, ['Text', 'FreeText', 'Line', 'Square', 'Circle', 'Polygon', 'PolyLine', 'Highlight', 'Underline', 'Squiggly', 'StrikeOut', 'Caret', 'Stamp', 'Ink', 'FileAttachment', 'Redact', 'Watermark', 'Projection'], true) && $role !== 'Annot') {
                 $fail('8.9.2.3', 39, 'A markup annotation must be enclosed by Annot.');
             }
-            $contents = $annotation->get('Contents');
-            $alt = $parent->get('Alt');
-            if ($contents instanceof StringType && $alt instanceof StringType && $decoder->decode($contents) !== $decoder->decode($alt)) {
+            $contents = $this->dereference($annotation->get('Contents'));
+            $alt = $this->dereference($parent->get('Alt'));
+            // FreeText Contents is displayed text, not an alternate description (8.9.4.2).
+            if ($name !== 'FreeText' && $contents instanceof StringType && $alt instanceof StringType && $decoder->decode($contents) !== $decoder->decode($alt)) {
                 $fail('8.9.4.2', 43, 'An annotation Contents description and the enclosing element Alt must be identical.');
             }
             if ($name === 'Widget') {
@@ -256,17 +285,25 @@ final readonly class WtPdfGraphChecks
                 if (count($widgets) > 1) {
                     $fail('8.10.1', 44, 'A Form structure element may enclose at most one widget annotation.');
                 }
-                if ($annotation->has('AA') && !$contents instanceof StringType) {
+                $hasLabel = false;
+                foreach ($parent->kids() as $kid) {
+                    $kidRole = $kid instanceof StructureElement ? (new NamespaceRoleResolver($parent->root()->namespaces, $parent->root()->roleMap))->resolve(new StructureRole($kid->type, $kid->namespace)) : null;
+                    $hasLabel = $hasLabel || $kidRole?->type->value === 'Lbl';
+                }
+                if (!$hasLabel && (!$contents instanceof StringType || trim($decoder->decode($contents)) === '')) {
+                    $fail('8.10.2.3', 45, 'A widget without a direct Form label requires a nonempty Contents description; TU alone is insufficient.');
+                }
+                if ($annotation->has('AA') && (!$contents instanceof StringType || trim($decoder->decode($contents)) === '')) {
                     $fail('8.10.2.3', 45, 'A widget with additional actions requires a Contents description.');
                 }
             }
         }
-        $contents = $annotation->get('Contents');
+        $contents = $this->dereference($annotation->get('Contents'));
         if (($name === 'Screen' || ($level === WtPdfConformanceLevel::Accessibility && in_array($name, ['Ink', '3D', 'RichMedia'], true))) && (!$contents instanceof StringType || $contents->value === '')) {
             $fail('8.9.2.4', 40, 'Annotation type ' . $name . ' requires a nonempty Contents description.');
         }
         $file = $this->dictionary($annotation->get('FS'));
-        if ($name === 'FileAttachment' && $file !== null && !$file->get('AFRelationship') instanceof NameType) {
+        if ($name === 'FileAttachment' && $file !== null && !$this->dereference($file->get('AFRelationship')) instanceof NameType) {
             $fail('8.9.2.4.10', 41, 'A file-attachment specification requires AFRelationship.');
         }
     }
@@ -277,7 +314,7 @@ final readonly class WtPdfGraphChecks
      */
     private function font(DictionaryType $font, callable $fail, array &$findings): void
     {
-        $subtype = $font->get('Subtype');
+        $subtype = $this->dereference($font->get('Subtype'));
         $name = $subtype instanceof NameType ? $subtype->value : '';
         $descriptor = $this->dictionary($font->get('FontDescriptor'));
         if ($name === 'CIDFontType2' && $this->dereference($descriptor?->get('FontFile2')) instanceof StreamObject) {
@@ -293,6 +330,8 @@ final readonly class WtPdfGraphChecks
         if ($encoding instanceof NameType) {
             if (PredefinedCMap::tryFrom($encoding->value) === null) {
                 $fail('8.4.5.4', 33, 'A nonstandard encoding CMap must be embedded.');
+            } elseif (!in_array($encoding->value, ['Identity-H', 'Identity-V'], true)) {
+                $findings[] = new WtPdfFinding('8.4.5.3.1', 33, WtPdfFindingStatus::AdditionalValidationRequired, 'Compare CIDSystemInfo to the externally defined predefined CMap collection.');
             }
             return;
         }
@@ -305,14 +344,14 @@ final readonly class WtPdfGraphChecks
         $fontInfo = $this->dictionary($descendant?->get('CIDSystemInfo'));
         $mapInfo = $this->dictionary($encoding->dictionary()->get('CIDSystemInfo'));
         foreach (['Registry', 'Ordering'] as $key) {
-            $a = $fontInfo?->get($key);
-            $b = $mapInfo?->get($key);
+            $a = $this->dereference($fontInfo?->get($key));
+            $b = $this->dereference($mapInfo?->get($key));
             if (!$a instanceof StringType || !$b instanceof StringType || $a->value !== $b->value) {
                 $fail('8.4.5.3.1', 33, 'CIDFont and encoding CMap Registry/Ordering must match.');
             }
         }
-        $a = $fontInfo?->get('Supplement');
-        $b = $mapInfo?->get('Supplement');
+        $a = $this->dereference($fontInfo?->get('Supplement'));
+        $b = $this->dereference($mapInfo?->get('Supplement'));
         if (!$a instanceof IntegerType || !$b instanceof IntegerType || $a->integer() < $b->integer()) {
             $fail('8.4.5.3.1', 33, 'CIDFont Supplement must cover the encoding CMap Supplement.');
         }
@@ -344,7 +383,7 @@ final readonly class WtPdfGraphChecks
             if ($names instanceof ArrayType) {
                 for ($index = 1; $index < count($names->items); $index += 2) {
                     $specification = $this->dictionary($names->items[$index]);
-                    if ($specification !== null && !$specification->get('Desc') instanceof StringType) {
+                    if ($specification !== null && !$this->dereference($specification->get('Desc')) instanceof StringType) {
                         $fail('8.14.1', 49, 'Every EmbeddedFiles file specification requires a Desc entry.');
                     }
                 }
@@ -362,6 +401,25 @@ final readonly class WtPdfGraphChecks
     private function privateUse(string $text): bool
     {
         return preg_match('/[\x{E000}-\x{F8FF}\x{F0000}-\x{FFFFD}\x{100000}-\x{10FFFD}]/u', $text) === 1;
+    }
+
+    private function appearance(DictionaryType $owner, StreamObject $stream): bool
+    {
+        $appearances = $this->dictionary($owner->get('AP'));
+        foreach (['N', 'R', 'D'] as $key) {
+            $value = $this->dereference($appearances?->get($key));
+            if ($value === $stream) {
+                return true;
+            }
+            if ($value instanceof DictionaryType) {
+                foreach ($value->entries() as $entry) {
+                    if ($this->dereference($entry->value) === $stream) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private function dereference(?BasicType $object): ?BasicType

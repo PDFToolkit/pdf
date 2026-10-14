@@ -40,7 +40,7 @@ final readonly class WtPdfAudit
             $findings[] = new WtPdfFinding('6.2', 10, WtPdfFindingStatus::Failed, 'Document graph: ' . $error->getMessage());
         }
         try {
-            array_push($findings, ...$this->fonts->inspect($catalog));
+            array_push($findings, ...$this->fonts->inspect($catalog, $level));
         } catch (\InvalidArgumentException|\LogicException $error) {
             $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::Failed, 'Font usage: ' . $error->getMessage());
         }
