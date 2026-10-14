@@ -17,6 +17,8 @@ use PDF\Document\Signatures\Policies\SignatureCertificateUrlUsage;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\StringType;
+use PDF\Security\PdfMacTokenComposer;
+use PDF\Security\PdfMacSignatureAttachment;
 
 /** Exact byte reservations identified from the writer's object spans, never by scanning arbitrary PDF bytes. */
 final readonly class PreparedSignature
@@ -25,7 +27,7 @@ final readonly class PreparedSignature
     private int $byteRangeOffset;
     public string $bytes;
 
-    public function __construct(public FileRevision $revision, public PendingSignature $signature)
+    public function __construct(public FileRevision $revision, public PendingSignature $signature, private ?PdfMacTokenComposer $mac = null)
     {
         (new \PDF\Syntax\FileStructure\EffectivePdfVersion(
             $revision->header,
@@ -35,6 +37,18 @@ final readonly class PreparedSignature
         $binding = $revision->binding($signature);
         if ($binding->value !== $signature) {
             throw new \InvalidArgumentException('Only an unfinalized signature reservation can be prepared.');
+        }
+        $authCode = $revision->trailerEntries->get('AuthCode');
+        if ($authCode !== null) {
+            $location = $authCode instanceof DictionaryType ? $authCode->get('MACLocation') : null;
+            $target = $authCode instanceof DictionaryType ? $authCode->get('SigObjRef') : null;
+            if (!$location instanceof NameType || $location->value !== 'AttachedToSig' || !$target instanceof IndirectReference
+                || (string) $revision->binding($target->target())->identifier !== (string) $binding->identifier || $mac === null) {
+                throw new \LogicException('Signing a PDF MAC revision requires its selected signature and an explicit MAC composer.');
+            }
+            $mac->validateEncryption($revision->encryption ?? throw new \LogicException('PDF MAC requires file encryption.'));
+        } elseif ($mac !== null) {
+            throw new \LogicException('The PDF MAC signature location must be prepared before any file bytes are emitted.');
         }
         $span = $revision->span($binding->identifier);
         $prefix = $span->identifier . " obj\n<< /Contents ";
@@ -65,6 +79,7 @@ final readonly class PreparedSignature
     public function sign(SignatureBackend $backend): SignedRevision
     {
         $this->validateFieldObligations();
+        $this->validateCatalog($backend);
         if ($backend instanceof VersionedSignatureBackend) {
             $backend->validateVersion(new \PDF\Syntax\FileStructure\EffectivePdfVersion(
                 $this->revision->header,
@@ -95,6 +110,7 @@ final readonly class PreparedSignature
         SignatureSigningEvidence $evidence = new UnavailableSignatureEvidence(),
         ?SignatureCertificateUrlUsage $urlUsage = null
     ): SignedRevision {
+        $this->validateCatalog($backend);
         $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
         $value = $backend->signWithDigest($this->coveredBytes(), $this->signature->format, $contract->choice->digest);
         $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
@@ -109,13 +125,27 @@ final readonly class PreparedSignature
         SignatureSigningEvidence $evidence = new UnavailableSignatureEvidence(),
         ?SignatureCertificateUrlUsage $urlUsage = null
     ): SignedRevision {
+        $this->validateCatalog($backend);
         $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
         $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
         return $this->finalizeValidated($value);
     }
 
+    private function validateCatalog(SignatureBackend $backend): void
+    {
+        if ($backend instanceof CatalogSignatureBackend) {
+            $backend->validateCatalog($this->revision->binding($this->revision->root->target())->dictionary
+                ?? throw new \LogicException('Signature revision has no frozen catalog.'));
+        }
+    }
+
     private function finalizeValidated(SignatureValue $value): SignedRevision
     {
+        if ($this->mac !== null) {
+            $attachment = new PdfMacSignatureAttachment();
+            $value = $attachment->attach($value, $this->coveredBytes(), $this->mac);
+            $attachment->verify($value, $this->coveredBytes(), $this->mac);
+        }
         if (strlen($value->bytes) > $this->signature->capacity->bytes) {
             throw new \LengthException('Signature output exceeds its reserved capacity; prepare a new reservation and sign again.');
         }

@@ -6,6 +6,10 @@ namespace PDF\Serialization;
 
 use PDF\FileStructure;
 use PDF\Security\FileEncryption;
+use PDF\Security\PdfMacReservation;
+use PDF\Security\PdfMacTokenComposer;
+use PDF\Security\PdfMacSignatureAuthCode;
+use PDF\Document\Signatures\PendingSignature;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\ByteOffset;
 use PDF\Syntax\FileStructure\CrossReferenceFormat;
@@ -44,6 +48,7 @@ use PDF\Syntax\Linearization\ThumbnailHintTable;
 use PDF\Syntax\Linearization\ThumbnailGraphNormalization;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
+use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
@@ -53,7 +58,7 @@ use PDF\Syntax\Object\IndirectObject\ObjectNumber;
 /** Native Annex F layout and binary hints; no external linearization program is invoked. */
 final readonly class LinearizedWriter
 {
-    public function __construct(private LinearizationLimits $limits = new LinearizationLimits(), private ?HintStreamSplit $hintSplit = null, private ?FileEncryption $encryption = null, private ?ThumbnailGraphNormalization $thumbnailNormalization = null)
+    public function __construct(private LinearizationLimits $limits = new LinearizationLimits(), private ?HintStreamSplit $hintSplit = null, private ?FileEncryption $encryption = null, private ?ThumbnailGraphNormalization $thumbnailNormalization = null, private ?PdfMacTokenComposer $mac = null, private ?PendingSignature $macSignature = null)
     {
     }
 
@@ -69,6 +74,28 @@ final readonly class LinearizedWriter
 
     private function write(FileStructure $file): FileRevision
     {
+        if ($file->trailerEntries?->has('AuthCode')) {
+            throw new \LogicException('AuthCode belongs to an explicit PDF MAC writer operation.');
+        }
+        $reservation = $this->mac === null || $this->macSignature !== null ? null : new PdfMacReservation($this->mac);
+        if ($this->macSignature !== null && $this->mac === null) {
+            throw new \LogicException('A PDF MAC signature location requires an explicit MAC composer.');
+        }
+        if ($this->mac !== null) {
+            $this->mac->validateEncryption($this->encryption ?? throw new \LogicException('PDF MAC requires an encrypted document.'));
+            $trailer = $file->trailerEntries ?? new DictionaryType();
+            if ($reservation !== null) {
+                $trailer = $reservation->trailer($trailer);
+            } elseif ($this->macSignature !== null) {
+                $trailer = $trailer->with(new Entry(new NameType('AuthCode'), new PdfMacSignatureAuthCode($this->macSignature)));
+            }
+            $file = new FileStructure($file->header, $file->body, $file->root, $trailer, $file->crossReferenceFormat);
+        } else {
+            $permissions = $this->encryption?->dictionary()->get('P');
+            if ($permissions instanceof IntegerType && ($permissions->integer() & 4096) === 0 && $this->encryption?->dictionary()->has('KDFSalt')) {
+                throw new \LogicException('Permission bit13 requires an explicit PDF MAC operation in every revision.');
+            }
+        }
         $streamXrefs = $file->crossReferenceFormat === CrossReferenceFormat::Stream;
         $hybridXrefs = $file->crossReferenceFormat === CrossReferenceFormat::Hybrid;
         $plan = new LinearizationLayout(new LinearizationPlan($file, $this->limits, $this->encryption, $this->thumbnailNormalization));
@@ -79,6 +106,13 @@ final readonly class LinearizedWriter
         }
         array_push($second, ...$plan->sharedObjects, ...$plan->otherObjects);
         $first = [...$plan->documentObjects, ...$plan->firstPageObjects];
+        if ($reservation !== null) {
+            foreach ([...$second, ...$first] as $object) {
+                if ($object instanceof PendingSignature) {
+                    throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
+                }
+            }
+        }
         $mainXrefNumber = count($second) + 1;
         $linearNumber = count($second) + count($plan->compressedSecondObjects) + ($streamXrefs || $hybridXrefs ? 2 : 1);
         $firstXrefNumber = $linearNumber + 1;
@@ -230,6 +264,25 @@ final readonly class LinearizedWriter
         if (strlen($bytes) !== $parameters->fileLength->value || strlen($bytes) > $this->limits->maximumFileBytes) {
             throw new \LengthException('The generated file exceeds its exact linearization layout or explicit capacity.');
         }
+        $finalAuthCode = null;
+        if ($reservation !== null) {
+            if ($firstXrefObject !== null) {
+                $prefixLength = strlen($firstXrefNumber . " 0 obj\n");
+                $dictionaryEnd = strpos($firstXref, "\nstream\n");
+                if ($dictionaryEnd === false) {
+                    throw new \LogicException('The managed xref stream requires an explicit dictionary boundary.');
+                }
+                $serializedTrailer = substr($firstXref, $prefixLength, $dictionaryEnd - $prefixLength);
+                $trailerOffset = $firstXrefOffset + $prefixLength;
+            } else {
+                $serializedTrailer = $firstTrailer;
+                $trailerOffset = $firstXrefOffset + strlen($firstXref);
+            }
+            $final = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer);
+            $bytes = $final->bytes;
+            $finalAuthCode = $final->authCode;
+            $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $finalAuthCode));
+        }
         $records = [];
         $spans = [];
         foreach ([...$second, ...$first] as $object) {
@@ -258,7 +311,11 @@ final readonly class LinearizedWriter
         }
         foreach ($generated as [$number, $value, $offset, $length]) {
             $identifier = new ObjectIdentifier(new ObjectNumber($number));
-            $records[] = new RevisionObject($identifier, $value, $context->serializedSnapshot($value, $identifier));
+            $snapshot = $context->serializedSnapshot($value, $identifier);
+            if ($reservation !== null && $finalAuthCode !== null) {
+                $snapshot = $reservation->snapshot($snapshot, $finalAuthCode);
+            }
+            $records[] = new RevisionObject($identifier, $value, $snapshot);
             $spans[] = new ObjectByteSpan($identifier, new ByteOffset($offset), $length);
         }
         $trailerSnapshot = $context->serializedSnapshot($trailerEntries ?? new DictionaryType())->value;

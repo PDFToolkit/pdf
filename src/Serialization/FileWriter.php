@@ -37,6 +37,10 @@ use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\StringType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Security\FileEncryption;
+use PDF\Security\PdfMacReservation;
+use PDF\Security\PdfMacTokenComposer;
+use PDF\Security\PdfMacSignatureAuthCode;
+use PDF\Document\Signatures\PendingSignature;
 use PDF\Security\FileIdentifier;
 use PDF\Security\DocumentMetadataExemption;
 use PDF\Syntax\Object\StreamObject;
@@ -47,6 +51,8 @@ final class FileWriter
     public function __construct(
         private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(),
         private readonly ?FileEncryption $encryption = null,
+        private readonly ?PdfMacTokenComposer $mac = null,
+        private readonly ?PendingSignature $macSignature = null,
     ) {
     }
 
@@ -75,7 +81,22 @@ final class FileWriter
                 throw new \LogicException('Unsupported or managed trailer entry: ' . $managed);
             }
         }
-        $trailerEntries = $file->trailerEntries;
+        $reservation = $this->mac === null || $this->macSignature !== null ? null : new PdfMacReservation($this->mac);
+        if ($this->macSignature !== null && $this->mac === null) {
+            throw new \LogicException('A PDF MAC signature location requires an explicit MAC composer.');
+        }
+        if ($file->trailerEntries?->has('AuthCode')) {
+            throw new \LogicException('AuthCode belongs to an explicit PDF MAC writer operation.');
+        }
+        if ($this->mac !== null) {
+            $this->mac->validateEncryption($this->encryption ?? throw new \LogicException('PDF MAC requires an encrypted document.'));
+        }
+        $trailerEntries = $reservation?->trailer($file->trailerEntries ?? new DictionaryType()) ?? $file->trailerEntries;
+        $macSignature = $this->macSignature;
+        if ($macSignature !== null) {
+            $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), new PdfMacSignatureAuthCode($macSignature)));
+        }
+        $this->requireMac($trailerEntries);
         if ($this->encryption !== null) {
             $this->validateEncryptionFile($file, $catalog);
             $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('Encrypt'), new IndirectReference($this->encryption->dictionary())));
@@ -90,7 +111,14 @@ final class FileWriter
         }
         $context = new SerializationContext(new ObjectNumber(), ...$security);
         $context->prepareFile($file->body, $root, $trailerEntries);
-        (new DocumentGraphValidation($context, $catalog))->validate($file->header);
+        if ($reservation !== null) {
+            foreach ($context->objects() as $object) {
+                if ($object instanceof PendingSignature) {
+                    throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
+                }
+            }
+        }
+        (new DocumentGraphValidation($context, $catalog))->validate($file->header, $this->encryption !== null);
         foreach ($context->objects() as $object) {
             if ($context->identifier($object)->generationNumber->value !== 0) {
                 throw new \LogicException('Objects in an initial file start with generation zero.');
@@ -161,6 +189,39 @@ final class FileWriter
             throw new \OverflowException('Not enough object number space to serialize this file.');
         }
         $size = $maximumNumber + 1;
+        if ($hybrid !== null && $this->mac !== null) {
+            // A signed MAC cannot authenticate a completed fallback revision and a later
+            // revision using the same signature ByteRange. Emit one hybrid revision:
+            // classic records omit compressed objects, supplied through XRefStm instead.
+            $identifier = new ObjectIdentifier(new ObjectNumber($size));
+            $fullSize = new IntegerType($size + 1);
+            $auxiliaryOffset = strlen($text);
+            $section = new CrossReferenceSection(
+                $fullSize,
+                new IntegerType(1),
+                new IntegerType(0),
+                $this->limits,
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset))]
+            );
+            $xref = new CrossReferenceStream($fullSize, $root, $trailerEntries?->without('AuthCode'), ...$section->entries());
+            $context->register($xref, $identifier);
+            $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
+            $spans[] = new ObjectByteSpan($identifier, new ByteOffset($auxiliaryOffset), strlen($xrefBytes));
+            $text .= $xrefBytes;
+            $offset = strlen($text);
+            $extras = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('XRefStm'), new IntegerType($auxiliaryOffset)));
+            $trailer = new FileTrailer($fullSize, $root, ...iterator_to_array($extras->entries(), false));
+            $table = (string) (new HybridCrossReferenceSection($section, $identifier->objectNumber))->singleRevision();
+            $serializedTrailer = $context->serialize($trailer);
+            $trailerOffset = strlen($text) + strlen($table) + strlen("trailer\n");
+            $bytes = $text . $table . "trailer\n" . $serializedTrailer . "\nstartxref\n" . $offset . "\n%%EOF\n";
+            if ($reservation !== null) {
+                $final = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer);
+                $bytes = $final->bytes;
+                $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
+            }
+            return $this->snapshot($file, $context, $bytes, $offset, $section, $trailerEntries, $spans, $hybrid, $reservation);
+        }
         if ($hybrid !== null) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
             $fullSize = new IntegerType($size + 1);
@@ -171,9 +232,14 @@ final class FileWriter
                 $this->limits,
                 ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(0))]
             );
-            $fallback = (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
+            $fallback = (string) (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
             $mainTrailer = new FileTrailer($fullSize, $root, ...($trailerEntries === null ? [] : iterator_to_array($trailerEntries->entries(), false)));
-            $text .= $fallback . "trailer\n" . $context->serialize($mainTrailer) . "\nstartxref\n" . $xrefOffset . "\n%%EOF\n";
+            $serializedTrailer = $context->serialize($mainTrailer);
+            $trailerOffset = strlen($text) + strlen($fallback) + strlen("trailer\n");
+            $text .= $fallback . "trailer\n" . $serializedTrailer . "\nstartxref\n" . $xrefOffset . "\n%%EOF\n";
+            if ($reservation !== null) {
+                $text = $reservation->finalize($text, $trailerOffset, $serializedTrailer)->bytes;
+            }
             $auxiliaryOffset = strlen($text);
             $section = new CrossReferenceSection(
                 $fullSize,
@@ -182,7 +248,7 @@ final class FileWriter
                 $this->limits,
                 ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset))]
             );
-            $xref = new CrossReferenceStream($fullSize, $root, $trailerEntries, ...$section->entries());
+            $xref = new CrossReferenceStream($fullSize, $root, $trailerEntries?->without('AuthCode'), ...$section->entries());
             $context->register($xref, $identifier);
             $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
             $spans[] = new ObjectByteSpan($identifier, new ByteOffset($auxiliaryOffset), strlen($xrefBytes));
@@ -191,9 +257,16 @@ final class FileWriter
             $extras = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('Prev'), new IntegerType($xrefOffset)))
                 ->with(new Entry(new NameType('XRefStm'), new IntegerType($auxiliaryOffset)));
             $updateTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($extras->entries(), false));
-            $bytes = $text . (new HybridCrossReferenceSection($section, $identifier->objectNumber))->update()
-                . "trailer\n" . $context->serialize($updateTrailer) . "\nstartxref\n" . $updateOffset . "\n%%EOF\n";
-            return $this->snapshot($file, $context, $bytes, $updateOffset, $section, $trailerEntries, $spans, $hybrid);
+            $updateTable = (string) (new HybridCrossReferenceSection($section, $identifier->objectNumber))->update();
+            $serializedTrailer = $context->serialize($updateTrailer);
+            $trailerOffset = strlen($text) + strlen($updateTable) + strlen("trailer\n");
+            $bytes = $text . $updateTable . "trailer\n" . $serializedTrailer . "\nstartxref\n" . $updateOffset . "\n%%EOF\n";
+            if ($reservation !== null) {
+                $final = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer);
+                $bytes = $final->bytes;
+                $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
+            }
+            return $this->snapshot($file, $context, $bytes, $updateOffset, $section, $trailerEntries, $spans, $hybrid, $reservation);
         }
         if ($file->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
@@ -205,7 +278,18 @@ final class FileWriter
             $spans[] = new ObjectByteSpan($identifier, new ByteOffset(strlen($text)), strlen($xrefBytes));
             $bytes = $text . $xrefBytes
                 . "startxref\n" . $xrefOffset . "\n%%EOF\n";
-            return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans);
+            if ($reservation !== null) {
+                $prefix = $identifier . " obj\n";
+                $dictionaryEnd = strpos($xrefBytes, "\nstream\n");
+                if ($dictionaryEnd === false) {
+                    throw new \LogicException('The managed xref stream must contain its explicit dictionary boundary.');
+                }
+                $serializedTrailer = substr($xrefBytes, strlen($prefix), $dictionaryEnd - strlen($prefix));
+                $final = $reservation->finalize($bytes, $xrefOffset + strlen($prefix), $serializedTrailer);
+                $bytes = $final->bytes;
+                $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
+            }
+            return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
         }
         $section = new CrossReferenceSection(new IntegerType($size), new IntegerType(1), new IntegerType(0), $this->limits, ...$entries);
         $traditional = [];
@@ -217,13 +301,21 @@ final class FileWriter
             }
         }
         $trailer = new FileTrailer(new IntegerType($size), $root, ...($trailerEntries === null ? [] : iterator_to_array($trailerEntries->entries(), false)));
-        $bytes = $text . new CrossReferenceTable(...$traditional) . "trailer\n" . $context->serialize($trailer)
+        $table = (string) new CrossReferenceTable(...$traditional);
+        $serializedTrailer = $context->serialize($trailer);
+        $trailerOffset = strlen($text) + strlen($table) + strlen("trailer\n");
+        $bytes = $text . $table . "trailer\n" . $serializedTrailer
             . "\nstartxref\n" . $xrefOffset . "\n%%EOF\n";
-        return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans);
+        if ($reservation !== null) {
+            $final = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer);
+            $bytes = $final->bytes;
+            $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
+        }
+        return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
     }
 
     /** @param list<ObjectByteSpan> $spans */
-    private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null): FileRevision
+    private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null, ?PdfMacReservation $reservation = null): FileRevision
     {
         $trailerSnapshot = $context->serializedSnapshot($trailerEntries ?? new DictionaryType())->value;
         if (!$trailerSnapshot instanceof DictionaryType) {
@@ -233,7 +325,12 @@ final class FileWriter
         foreach ($context->objects() as $object) {
             $identifier = $context->identifier($object);
             $value = $hybrid?->serializedValue($object) ?? $object;
-            $objects[] = new RevisionObject($identifier, $value, $object, $context->serializedSnapshot($value, $identifier));
+            $snapshot = $context->serializedSnapshot($value, $identifier);
+            $authCode = $trailerSnapshot->get('AuthCode');
+            if ($reservation !== null && $authCode instanceof DictionaryType) {
+                $snapshot = $reservation->snapshot($snapshot, $authCode);
+            }
+            $objects[] = new RevisionObject($identifier, $value, $object, $snapshot);
         }
         $root = $file->root ?? $this->findRoot($file);
         return new FileRevision(
@@ -250,6 +347,14 @@ final class FileWriter
                 new FreeListState($section->size, ...array_values(array_filter($section->entries(), fn ($entry): bool => $entry instanceof CrossReferenceStreamFreeEntry))),
                 ...($this->encryption === null ? [] : [$this->encryption])],
         );
+    }
+
+    private function requireMac(?DictionaryType $trailer): void
+    {
+        $permissions = $this->encryption?->dictionary()->get('P');
+        if ($permissions instanceof IntegerType && ($permissions->integer() & 4096) === 0 && $this->encryption?->dictionary()->has('KDFSalt') && !$trailer?->has('AuthCode')) {
+            throw new \LogicException('Permission bit13 requires an explicit PDF MAC operation in every revision.');
+        }
     }
 
     /** File identifiers and trailer plaintext boundaries are shared by the security handlers. */

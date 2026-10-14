@@ -49,4 +49,18 @@ final readonly class HybridCrossReferenceSection
         // head that resolves to a live compressed object through XRefStm.
         return new CrossReferenceTable(new CrossReferenceEntry(0, new ByteOffset($this->section->freeListHead()->integer()), new GenerationNumber(65535), false));
     }
+
+    /** One physical revision: omit compressed records so XRefStm supplies them before Prev. */
+    public function singleRevision(): CrossReferenceTable
+    {
+        $entries = [];
+        foreach ($this->section->entries() as $entry) {
+            if ($entry instanceof CrossReferenceStreamInUseEntry) {
+                $entries[] = new CrossReferenceEntry($entry->number(), $entry->byteOffset, $entry->generation, true);
+            } elseif ($entry instanceof CrossReferenceStreamFreeEntry) {
+                $entries[] = new CrossReferenceEntry($entry->number(), new ByteOffset($entry->fields()[1]), $entry->generation, false);
+            }
+        }
+        return new CrossReferenceTable(...$entries);
+    }
 }

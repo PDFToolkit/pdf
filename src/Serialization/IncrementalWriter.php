@@ -27,6 +27,10 @@ use PDF\Syntax\FileStructure\HybridReferenceObjects;
 use PDF\Syntax\FileStructure\HybridCrossReferenceSection;
 use PDF\Security\DocumentMetadataExemption;
 use PDF\Security\FileIdentifier;
+use PDF\Security\PdfMacReservation;
+use PDF\Security\PdfMacTokenComposer;
+use PDF\Security\PdfMacSignatureAuthCode;
+use PDF\Document\Signatures\PendingSignature;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Document\DocumentGraphValidation;
 use PDF\Syntax\Object\ArrayType;
@@ -45,7 +49,7 @@ use PDF\Syntax\DocumentStructure\PageTree\PageObject;
 /** Append a delta while preserving every byte and reference identity of previous revisions (7.5.6). */
 final class IncrementalWriter
 {
-    public function __construct(private readonly CrossReferenceLimits $limits = new CrossReferenceLimits())
+    public function __construct(private readonly CrossReferenceLimits $limits = new CrossReferenceLimits(), private readonly ?PdfMacTokenComposer $mac = null, private readonly ?PendingSignature $macSignature = null)
     {
     }
 
@@ -95,6 +99,27 @@ final class IncrementalWriter
         foreach ($update->trailerEntries?->entries() ?? [] as $entry) {
             $trailer = $trailer->with($entry);
         }
+        if ($update->trailerEntries?->has('AuthCode')) {
+            throw new \LogicException('AuthCode belongs to an explicit PDF MAC writer operation.');
+        }
+        $reservation = $this->mac === null || $this->macSignature !== null ? null : new PdfMacReservation($this->mac);
+        if ($this->macSignature !== null && $this->mac === null) {
+            throw new \LogicException('A PDF MAC signature location requires an explicit MAC composer.');
+        }
+        if ($this->mac !== null) {
+            $this->mac->validateEncryption($previous->encryption ?? throw new \LogicException('PDF MAC requires an encrypted document.'));
+        }
+        if ($reservation !== null) {
+            $trailer = $reservation->trailer($trailer);
+        } elseif ($this->macSignature !== null) {
+            $trailer = $trailer->with(new Entry(new NameType('AuthCode'), new PdfMacSignatureAuthCode($this->macSignature)));
+        } elseif ($trailer->has('AuthCode')) {
+            throw new \LogicException('An incremental revision cannot inherit a stale PDF MAC; prepare a fresh operation.');
+        }
+        $permissions = $previous->encryption?->dictionary()->get('P');
+        if ($permissions instanceof IntegerType && ($permissions->integer() & 4096) === 0 && $previous->encryption?->dictionary()->has('KDFSalt') && $this->mac === null) {
+            throw new \LogicException('Permission bit13 requires an explicit PDF MAC operation in every revision.');
+        }
         $root = $update->root ?? $previous->root;
         // Validate inherited and overridden trailer values before serializing any object.
         new FileTrailer($previous->size, $root, ...iterator_to_array($trailer->entries(), false));
@@ -103,6 +128,13 @@ final class IncrementalWriter
         // Reuse values can be unreferenced explicit roots, but their children
         // still need discovery and native graph checks before any bytes emit.
         $context->prepare(...array_values($context->objects()));
+        if ($reservation !== null) {
+            foreach ($context->objects() as $object) {
+                if ($object instanceof PendingSignature) {
+                    throw new \LogicException('A signed revision requires the PDF MAC to be attached to its signature.');
+                }
+            }
+        }
         foreach ($context->objects() as $number => $object) {
             $old = $effective[$number] ?? null;
             if ($old !== null && $old->value === $previous->encryption?->dictionary()) {
@@ -127,7 +159,7 @@ final class IncrementalWriter
         // Current typed components need their explicit construction identities; unchanged roots use frozen values.
         $validationCatalog = ($context->objects()[$rootIdentifier->objectNumber->value] ?? null) === $catalog ? $catalog : $catalogDictionary;
         (new \PDF\Syntax\FileStructure\IncrementalVersionPolicy())->validate($previous, $catalogDictionary);
-        (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header);
+        (new DocumentGraphValidation($context, $validationCatalog, ...array_values($effective)))->validate($previous->header, $previous->encryption !== null);
         if ($previous->encryption !== null) {
             if (!$previous->encryption->metadata()->value && $catalogDictionary->has('Metadata')) {
                 $metadata = $catalogDictionary->get('Metadata');
@@ -147,7 +179,7 @@ final class IncrementalWriter
             }
             (new \PDF\Security\EncryptionVersionPolicy())->validate(new \PDF\Syntax\FileStructure\EffectivePdfVersion($previous->header, $catalogDictionary), $previous->encryption->dictionary());
             $previous->encryption->validateFile($previous->header, $catalogDictionary, new FileIdentifier($id->items[0]));
-            $this->validateEncryptedTrailer($trailer);
+            $this->validateEncryptedTrailer($trailer, $reservation?->dictionary);
         }
         $pagesReference = $catalogDictionary->get('Pages');
         if (!$pagesReference instanceof IndirectReference) {
@@ -236,7 +268,30 @@ final class IncrementalWriter
         $trailer = $this->updatedIdentifier($previous, $update, $trailer, $bytes, $context);
         $extras = $trailer->with(new Entry(new NameType('Prev'), new IntegerType($previous->crossReferenceOffset->value)));
         $root = new IndirectReference($catalog, $rootIdentifier);
-        if ($hybrid !== null) {
+        if ($hybrid !== null && $this->mac !== null) {
+            $identifier = new ObjectIdentifier($firstAvailable);
+            $fullSize = new IntegerType($firstAvailable->increment()->value);
+            $auxiliaryOffset = strlen($bytes);
+            $section = new CrossReferenceSection(
+                $fullSize,
+                $previous->size,
+                $lifecycle->freeList->head(),
+                $this->limits,
+                ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset)), $lifecycle->freeList->changesFrom($previous->freeList)]
+            );
+            $xref = new CrossReferenceStream($fullSize, $root, $trailer->without('AuthCode'), ...$section->entries());
+            $context->register($xref, $identifier);
+            $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
+            $spans[$identifier->objectNumber->value] = new ObjectByteSpan($identifier, new ByteOffset($auxiliaryOffset), strlen($xrefBytes));
+            $bytes .= $xrefBytes;
+            $offset = strlen($bytes);
+            $hybridExtras = $extras->with(new Entry(new NameType('XRefStm'), new IntegerType($auxiliaryOffset)));
+            $fileTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($hybridExtras->entries(), false));
+            $table = (string) (new HybridCrossReferenceSection($section, $identifier->objectNumber))->singleRevision();
+            $serializedTrailer = $context->serialize($fileTrailer);
+            $trailerOffset = strlen($bytes) + strlen($table) + strlen("trailer\n");
+            $bytes .= $table . "trailer\n" . $serializedTrailer . "\n";
+        } elseif ($hybrid !== null) {
             $identifier = new ObjectIdentifier($firstAvailable);
             $fullSize = new IntegerType($firstAvailable->increment()->value);
             $placeholder = new CrossReferenceSection(
@@ -246,9 +301,14 @@ final class IncrementalWriter
                 $this->limits,
                 ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset(0)), $lifecycle->freeList->changesFrom($previous->freeList)]
             );
-            $fallback = (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
+            $fallback = (string) (new HybridCrossReferenceSection($placeholder, $identifier->objectNumber))->fallback();
             $fallbackTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($extras->entries(), false));
-            $bytes .= $fallback . "trailer\n" . $context->serialize($fallbackTrailer) . "\nstartxref\n" . $offset . "\n%%EOF\n";
+            $serializedTrailer = $context->serialize($fallbackTrailer);
+            $trailerOffset = strlen($bytes) + strlen($fallback) + strlen("trailer\n");
+            $bytes .= $fallback . "trailer\n" . $serializedTrailer . "\nstartxref\n" . $offset . "\n%%EOF\n";
+            if ($reservation !== null) {
+                $bytes = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer)->bytes;
+            }
             $auxiliaryOffset = strlen($bytes);
             $section = new CrossReferenceSection(
                 $fullSize,
@@ -257,7 +317,7 @@ final class IncrementalWriter
                 $this->limits,
                 ...[...$entries, new CrossReferenceStreamInUseEntry($identifier->objectNumber, new ByteOffset($auxiliaryOffset)), $lifecycle->freeList->changesFrom($previous->freeList)]
             );
-            $xref = new CrossReferenceStream($fullSize, $root, $trailer, ...$section->entries());
+            $xref = new CrossReferenceStream($fullSize, $root, $trailer->without('AuthCode'), ...$section->entries());
             $context->register($xref, $identifier);
             $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
             $spans[$identifier->objectNumber->value] = new ObjectByteSpan($identifier, new ByteOffset($auxiliaryOffset), strlen($xrefBytes));
@@ -266,8 +326,10 @@ final class IncrementalWriter
             $hybridExtras = $trailer->with(new Entry(new NameType('Prev'), new IntegerType($offset)))
                 ->with(new Entry(new NameType('XRefStm'), new IntegerType($auxiliaryOffset)));
             $updateTrailer = new FileTrailer($fullSize, $root, ...iterator_to_array($hybridExtras->entries(), false));
-            $bytes .= (new HybridCrossReferenceSection($section, $identifier->objectNumber))->update()
-                . "trailer\n" . $context->serialize($updateTrailer) . "\n";
+            $updateTable = (string) (new HybridCrossReferenceSection($section, $identifier->objectNumber))->update();
+            $serializedTrailer = $context->serialize($updateTrailer);
+            $trailerOffset = strlen($bytes) + strlen($updateTable) + strlen("trailer\n");
+            $bytes .= $updateTable . "trailer\n" . $serializedTrailer . "\n";
             $offset = $updateOffset;
         } elseif ($previous->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier($firstAvailable);
@@ -278,6 +340,13 @@ final class IncrementalWriter
             $xrefBytes = (new IndirectObject($xref, $identifier))->toPdf($context);
             $spans[$identifier->objectNumber->value] = new ObjectByteSpan($identifier, new ByteOffset(strlen($bytes)), strlen($xrefBytes));
             $bytes .= $xrefBytes;
+            $prefix = $identifier . " obj\n";
+            $dictionaryEnd = strpos($xrefBytes, "\nstream\n");
+            if ($dictionaryEnd === false) {
+                throw new \LogicException('The managed xref stream must contain its explicit dictionary boundary.');
+            }
+            $serializedTrailer = substr($xrefBytes, strlen($prefix), $dictionaryEnd - strlen($prefix));
+            $trailerOffset = $offset + strlen($prefix);
         } else {
             $section = new CrossReferenceSection(new IntegerType($size), $previous->size, $lifecycle->freeList->head(), $this->limits, ...[...$entries, $lifecycle->freeList->changesFrom($previous->freeList)]);
             $traditional = [];
@@ -289,14 +358,28 @@ final class IncrementalWriter
                 }
             }
             $fileTrailer = new FileTrailer($section->size, $root, ...iterator_to_array($extras->entries(), false));
-            $bytes .= new CrossReferenceTable(...$traditional) . "trailer\n" . $context->serialize($fileTrailer) . "\n";
+            $table = (string) new CrossReferenceTable(...$traditional);
+            $serializedTrailer = $context->serialize($fileTrailer);
+            $trailerOffset = strlen($bytes) + strlen($table) + strlen("trailer\n");
+            $bytes .= $table . "trailer\n" . $serializedTrailer . "\n";
         }
         $bytes .= "startxref\n" . $offset . "\n%%EOF\n";
+        $finalAuthCode = null;
+        if ($reservation !== null) {
+            $final = $reservation->finalize($bytes, $trailerOffset, $serializedTrailer);
+            $bytes = $final->bytes;
+            $finalAuthCode = $final->authCode;
+            $trailer = $trailer->with(new Entry(new NameType('AuthCode'), $finalAuthCode));
+        }
         foreach ($context->objects() as $number => $object) {
             $value = $hybrid?->serializedValue($object) ?? $object;
+            $snapshot = $context->serializedSnapshot($value, $context->identifier($object));
+            if ($reservation !== null && $finalAuthCode !== null) {
+                $snapshot = $reservation->snapshot($snapshot, $finalAuthCode);
+            }
             $effective[$number] = isset($effective[$number])
-                ? $effective[$number]->replacedBy($value, $context->serializedSnapshot($value, $context->identifier($object)))
-                : new RevisionObject($context->identifier($object), $value, $object, $context->serializedSnapshot($value, $context->identifier($object)));
+                ? $effective[$number]->replacedBy($value, $snapshot)
+                : new RevisionObject($context->identifier($object), $value, $object, $snapshot);
         }
         $effectiveCompressed = $previous->compressedObjects();
         foreach ($lifecycle->retiredObjects as $retired) {
@@ -343,11 +426,11 @@ final class IncrementalWriter
         }
     }
 
-    private function validateEncryptedTrailer(DictionaryType $trailer): void
+    private function validateEncryptedTrailer(DictionaryType $trailer, ?DictionaryType $authorizedAuthCode = null): void
     {
         $pending = [];
         foreach ($trailer->entries() as $entry) {
-            if ($entry->key->value !== 'ID') {
+            if ($entry->key->value !== 'ID' && !($entry->key->value === 'AuthCode' && $entry->value === $authorizedAuthCode)) {
                 $pending[] = $entry->value;
             }
         }

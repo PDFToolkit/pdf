@@ -63,7 +63,7 @@ final readonly class LinearizationSecurity
     {
         $pending = [];
         foreach ($entries->entries() as $entry) {
-            if ($entry->key->value !== 'ID') {
+            if ($entry->key->value !== 'ID' && !($entry->key->value === 'AuthCode' && $entry->value instanceof \PDF\Security\PdfMacAuthCodeReservation)) {
                 $pending[] = $entry->value;
             }
         }
