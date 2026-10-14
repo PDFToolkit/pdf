@@ -56,10 +56,10 @@ final class FileStructureTest extends TestCase
         $catalog = $this->catalog();
         $id = new ObjectIdentifier(new ObjectNumber(1), new GenerationNumber(0));
         $stream = new StreamObject('abc');
-        $catalog = $catalog->with(new Entry(new NameType('Metadata'), new IndirectReference($stream, $id)));
+        $catalog = $catalog->with(new Entry(new NameType('PrivateObject'), new IndirectReference($stream, $id)));
         $pdf = (new FileStructure(new FileHeader(), new FileBody($catalog)))->toPdf();
         self::assertStringContainsString('1 0 obj', $pdf);
-        self::assertStringContainsString('/Metadata 1 0 R', $pdf);
+        self::assertStringContainsString('/PrivateObject 1 0 R', $pdf);
         self::assertStringContainsString('/Root 2 0 R', $pdf);
     }
 

@@ -118,7 +118,7 @@ final class LinearizationPlan
         $this->firstPageIndex = $this->initialPage($catalogEntries);
         $original = new SerializationContext();
         $original->prepareFile($file->body, $this->root, $this->security->trailerEntries);
-        (new DocumentGraphValidation($original, $catalog))->validate($file->header);
+        (new DocumentGraphValidation($original, $catalog))->validate($file->header, $encryption !== null);
         if ($file->crossReferenceFormat !== CrossReferenceFormat::Table) {
             (new EffectivePdfVersion($file->header, $catalog))->require(PdfVersion::PDF15, 'Linearized cross-reference streams');
         }

@@ -41,7 +41,7 @@ final class DocumentGraphValidation
         $this->catalog = $effective === [] ? $catalog : $this->effectiveDictionary($catalog);
     }
 
-    public function validate(FileHeader $header = new FileHeader()): void
+    public function validate(FileHeader $header = new FileHeader(), bool $encrypted = false): void
     {
         $version = new EffectivePdfVersion($header, $this->catalog);
         $pageReferences = $this->catalog->get('Pages');
@@ -56,6 +56,8 @@ final class DocumentGraphValidation
         (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Navigation\NavigationGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Parts\DocumentPartsGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Files\EncryptedPayloadGraphValidation())->validate($graph, $version, $encrypted);
         (new \PDF\Document\Structure\NamespaceGraphValidation())->validate($graph, $version);
         /** @var list<array{BasicType, bool}> $pending */
         $pending = [[$this->catalog, true], ...array_map(static fn (BasicType $value): array => [$value, true], array_values($this->context->objects()))];
@@ -113,6 +115,13 @@ final class DocumentGraphValidation
                 $value->validateVersion($version);
             }
             if ($dictionary !== null) {
+                (new \PDF\Document\Metadata\MetadataGraphValidation())->validate($dictionary, $projection, $version);
+                $resolvedType = $type instanceof IndirectReference ? $projection->resolve($type) : $type;
+                if ($resolvedType instanceof NameType && $resolvedType->value === 'ExtGState') {
+                    (new \PDF\Graphics\GraphicsState\GraphicsStateGraphValidation())->validate($dictionary, $projection, $version);
+                }
+                $this->validateResourceGraphicsStates($dictionary, $projection, $version);
+                $this->validateMetadataContentScopes($value, $dictionary, $projection, $version);
                 $associationOwner = null;
                 if ($value instanceof StreamObject) {
                     $subtype = $dictionary->get('Subtype');
@@ -184,6 +193,24 @@ final class DocumentGraphValidation
         }
     }
 
+    private function validateResourceGraphicsStates(DictionaryType $owner, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        $resources = $graph->entry($owner, 'Resources');
+        $projection = $resources instanceof IndirectReference || $resources === null ? $graph : $graph->forDirectValue($resources);
+        $resources = $resources === null ? null : $projection->dictionary($resources);
+        $states = $resources === null ? null : $projection->entry($resources, 'ExtGState');
+        if ($states === null) {
+            return;
+        }
+        $stateGraph = $states instanceof IndirectReference ? $projection : $projection->forDirectValue($states);
+        $states = $stateGraph->dictionary($states) ?? throw new \InvalidArgumentException('Resources.ExtGState requires a dictionary.');
+        foreach ($states->entries() as $entry) {
+            $entryGraph = $entry->value instanceof IndirectReference ? $stateGraph : $stateGraph->forDirectValue($entry->value);
+            $state = $entryGraph->dictionary($entry->value) ?? throw new \InvalidArgumentException('Every named ExtGState resource requires a graphics-state dictionary.');
+            (new \PDF\Graphics\GraphicsState\GraphicsStateGraphValidation())->validate($state, $entryGraph, $version);
+        }
+    }
+
     /** @param array<int, true> $pages */
     private function validatePageAssociations(array $pages, DocumentGraphContext $graph, EffectivePdfVersion $version): void
     {
@@ -214,6 +241,7 @@ final class DocumentGraphValidation
         $pending = [$contents];
         $seen = new \SplObjectStorage();
         $validator = new \PDF\Document\Files\AssociatedFilesMarkedContentGraphValidation();
+        $metadataValidator = new \PDF\Document\Metadata\MetadataMarkedContentGraphValidation();
         while ($pending !== []) {
             $value = array_pop($pending);
             $identifier = $value instanceof StreamObject ? $graph->identifier($value) : null;
@@ -230,6 +258,9 @@ final class DocumentGraphValidation
                 if ($resolved->markedContentFacts !== null) {
                     $validator->validateFacts($resolved->markedContentFacts, $resources, $graph, $version);
                 }
+                if ($resolved->metadataMarkedContentFacts !== null) {
+                    $metadataValidator->validateFacts($resolved->metadataMarkedContentFacts, $resources, $graph, $version);
+                }
                 continue;
             }
             // Current native operator objects carry an inspectable AST; historical
@@ -237,7 +268,40 @@ final class DocumentGraphValidation
             $native = $value instanceof IndirectReference ? $this->resolve($value) : $value;
             if ($native instanceof StreamObject && $native->data instanceof ContentStreams) {
                 $validator->validate($native->data, $resources, $graph, $version);
+                $metadataValidator->validate($native->data, $resources, $graph, $version);
             }
+        }
+    }
+
+    /** Resource scope belongs to the stream's PDF container, including retained revision evidence. */
+    private function validateMetadataContentScopes(BasicType $value, DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        $type = $dictionary->get('Type');
+        $subtype = $dictionary->get('Subtype');
+        $pattern = $dictionary->get('PatternType');
+        $isForm = $subtype instanceof NameType && $subtype->value === 'Form';
+        $isTilingPattern = $pattern instanceof IntegerType && $pattern->integer() === 1;
+        $isType3 = $type instanceof NameType && $type->value === 'Font' && $subtype instanceof NameType && $subtype->value === 'Type3';
+        if (!$isForm && !$isTilingPattern && !$isType3) {
+            return;
+        }
+        $resources = $graph->entry($dictionary, 'Resources');
+        $projection = $resources instanceof IndirectReference || $resources === null ? $graph : $graph->forDirectValue($resources);
+        $resources = $resources === null ? null : $projection->dictionary($resources);
+        if ($resources === null) {
+            return;
+        }
+        if (!$isType3) {
+            if ($value instanceof StreamObject) {
+                $this->validateMarkedContentStreams($value, $resources, $graph, $version);
+            }
+            return;
+        }
+        $procedures = $graph->entry($dictionary, 'CharProcs');
+        $procedureGraph = $procedures instanceof IndirectReference || $procedures === null ? $graph : $graph->forDirectValue($procedures);
+        $procedures = $procedures === null ? null : $procedureGraph->dictionary($procedures);
+        foreach ($procedures?->entries() ?? [] as $entry) {
+            $this->validateMarkedContentStreams($entry->value, $resources, $graph, $version);
         }
     }
 

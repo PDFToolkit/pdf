@@ -36,6 +36,7 @@ use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\StringObject\HexadecimalString;
 use PDF\Document\Files\AssociatedFilesMarkedContentFacts;
+use PDF\Document\Metadata\MetadataMarkedContentFacts;
 
 /** An identity map and serialization guard scoped to one PDF file. */
 final class SerializationContext
@@ -64,7 +65,7 @@ final class SerializationContext
     private readonly bool $remapping;
     /** @var array<string, RevisionStreamSnapshot> Emissions are scoped to the full number/generation pair. */
     private array $streamEmissions = [];
-    /** @var array<string, array{ContentStreams, AssociatedFilesMarkedContentFacts}> */
+    /** @var array<string, array{ContentStreams, AssociatedFilesMarkedContentFacts, MetadataMarkedContentFacts}> */
     private array $nativeContentEmissions = [];
     /** @var \SplObjectStorage<IndirectReference, ObjectIdentifier> */
     private \SplObjectStorage $referenceAliases;
@@ -445,7 +446,8 @@ final class SerializationContext
         }
         $native = $this->nativeContentEmissions[(string) $identifier] ?? null;
         $facts = $native !== null && $stream->data === $native[0] ? $native[1] : null;
-        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded, $facts);
+        $metadataFacts = $facts === null ? null : $native[2];
+        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded, $facts, $metadataFacts);
         unset($this->nativeContentEmissions[(string) $identifier]);
     }
 
@@ -539,9 +541,10 @@ final class SerializationContext
                     return $object->toPdf($this);
                 }
                 $facts = new AssociatedFilesMarkedContentFacts($object);
+                $metadataFacts = new MetadataMarkedContentFacts($facts->content);
                 $bytes = $facts->content->toPdf($this);
                 if ($this->containingIdentifier !== null) {
-                    $this->nativeContentEmissions[(string) $this->containingIdentifier] = [$object, $facts];
+                    $this->nativeContentEmissions[(string) $this->containingIdentifier] = [$object, $facts, $metadataFacts];
                 }
                 return $bytes;
             }
