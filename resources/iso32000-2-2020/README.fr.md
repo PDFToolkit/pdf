@@ -8,9 +8,11 @@ pas une conformité complète à PDF 2.0**.
 
 La source fournie est `ISO_32000-2_sponsored_EC3.pdf`, 1 023 pages PDF physiques,
 SHA-256 `90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
-Ses octets et son nom originaux sont conservés dans une copie privée hors Git.
-Le dépôt public ne distribue pas cette copie personnalisée. La norme est
-accessible par l'[accès sponsorisé officiel](https://pdfa.org/sponsored-standards/).
+Ses octets et son nom originaux sont conservés à la
+[racine du dépôt](../../ISO_32000-2_sponsored_EC3.pdf).
+Cette copie provient de l'[accès sponsorisé de la PDF Association](https://www.pdfa.org/sponsored-standards/)
+et est publiée avec l'autorisation de redistribution confirmée par le contributeur.
+Elle est exclue des archives Composer.
 L'édition de la norme est ISO 32000-2:2020 ; EC3 est une collection de corrections
 sélectionnée séparément, datée du 2026-06-01. Le PDF contenant la norme est en
 PDF 1.7, ce qui ne change pas la version PDF 2.0 définie par son contenu.
@@ -53,7 +55,7 @@ python tools/generate_iso32000_2_pilot.py --check
 ```
 
 Le générateur utilise le JSON pilote rédigé et vérifié ; il n'extrait pas le PDF
-privé. Un futur extracteur complet doit reconnaître les tableaux d'errata avec
+source. Un futur extracteur complet doit reconnaître les tableaux d'errata avec
 suffixe alphabétique, les grilles continuées sans titre répété, les réponses de
 révision aux annotations et les pages de remplacement ajoutées. Le texte seul
 des pages ne suffit pas.

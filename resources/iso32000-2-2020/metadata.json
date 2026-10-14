@@ -12,8 +12,11 @@
     "document": "ISO_32000-2_sponsored_EC3.pdf",
     "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
     "physical_pdf_pages": 1023,
-    "retention": "supplied original preserved privately outside Git",
-    "public_copy_included": false
+    "retention": "supplied original preserved in this public repository",
+    "public_copy_included": true,
+    "bytes": 19205142,
+    "provider": "PDF Association",
+    "provider_url": "https://www.pdfa.org/sponsored-standards/"
   },
   "dictionary_catalogue": {
     "status": "pilot",

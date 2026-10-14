@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate only the explicitly reviewed ISO 32000-2:2020 EC3 pilot schemas.
 
-The authored pilot catalogue does not reproduce the supplied private source PDF
+The authored pilot catalogue does not reproduce the supplied source PDF
 or imply that the remaining dictionary tables and PDF 2.0 mechanisms are covered.
 """
 from __future__ import annotations

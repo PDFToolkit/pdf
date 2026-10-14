@@ -77,8 +77,13 @@ final class Iso32000_2SpecificationTest extends TestCase
         self::assertCount(4, $manifest);
         self::assertSame(53, $entries);
         self::assertSame($entries, $metadata['dictionary_catalogue']['entry_count']);
-        self::assertFalse($metadata['source']['public_copy_included']);
-        self::assertFileDoesNotExist(dirname(__DIR__) . '/' . $metadata['source']['document']);
+        self::assertTrue($metadata['source']['public_copy_included']);
+        $originalSource = dirname(__DIR__) . '/' . $metadata['source']['document'];
+        self::assertFileExists($originalSource);
+        self::assertSame($metadata['source']['sha256'], hash_file('sha256', $originalSource));
+        self::assertSame($metadata['source']['bytes'], filesize($originalSource));
+        self::assertSame('PDF Association', $metadata['source']['provider']);
+        self::assertSame('https://www.pdfa.org/sponsored-standards/', $metadata['source']['provider_url']);
         self::assertSame('pending', $this->inventory('coverage.json')['complete_dictionary_catalogue']);
         self::assertFalse($this->inventory('coverage.json')['complete_standard_conformance']);
     }

@@ -4,6 +4,16 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.6.2] - 2026-10-14
+
+### Preserved PDF 2.0 reference
+
+- Archive the supplied ISO_32000-2_sponsored_EC3.pdf unchanged, with its original
+  filename, 1,023 pages, byte count and SHA-256; record PDF Association sponsored
+  access as its provenance and the contributor's confirmed redistribution permission.
+- Update bilingual source references and verify the archived file identity.
+  Exclude the reference PDF from Composer archives; PHP APIs and dependencies are unchanged.
+
 ## [0.6.1] - 2026-10-14
 
 ### EC3 source traceability

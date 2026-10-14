@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+## [0.6.2] - 2026-10-14
+
+### Référence PDF 2.0 conservée
+
+- Archiver ISO_32000-2_sponsored_EC3.pdf fourni sans modification, avec son nom,
+  ses 1 023 pages, sa taille et son SHA-256 ; indiquer l'accès sponsorisé de la
+  PDF Association et l'autorisation de redistribution confirmée par le contributeur.
+- Actualiser les références bilingues et vérifier l'identité du fichier archivé.
+  Exclure le PDF des archives Composer ; API PHP et dépendances inchangées.
+
 ## [0.6.1] - 2026-10-14
 
 ### Traçabilité des sources EC3

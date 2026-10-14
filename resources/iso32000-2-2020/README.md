@@ -8,9 +8,11 @@ ISO 32000-2 catalogue and does not establish full PDF 2.0 conformance**.
 
 The supplied source is `ISO_32000-2_sponsored_EC3.pdf`, 1,023 physical PDF pages,
 SHA-256 `90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
-Its original bytes and filename are retained privately outside Git. This
-personalised copy is not distributed by the public repository. Obtain the
-standard through [official sponsored access](https://pdfa.org/sponsored-standards/).
+Its original bytes and filename are preserved at the
+[repository root](../../ISO_32000-2_sponsored_EC3.pdf). This copy comes from the
+[PDF Association sponsored access](https://www.pdfa.org/sponsored-standards/)
+and is published with the contributor’s confirmed redistribution permission.
+It is excluded from Composer archives.
 The standard edition is ISO 32000-2:2020; EC3 is a separately selected correction
 collection dated 2026-06-01. The PDF container holding the standard is PDF 1.7,
 which does not change the PDF 2.0 version specified by its contents.
@@ -50,7 +52,7 @@ python tools/generate_iso32000_2_pilot.py --check
 ```
 
 The generator consumes the authored, reviewed pilot JSON; it does not extract
-the private PDF. A future complete extractor must recognise letter-suffixed
+the source PDF. A future complete extractor must recognise letter-suffixed
 errata tables, continued grids without repeated captions, annotation review
 replies and appended replacement pages. Plain page text alone is insufficient.
 

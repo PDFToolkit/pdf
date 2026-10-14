@@ -13,7 +13,7 @@ La [documentation en ligne](https://pdftoolkit.github.io/fr/) réunit les guides
 
 La série `0.x` est destinée aux développeurs qui souhaitent construire et explorer ce modèle. Avant la version `1.0`, une nouvelle version mineure peut modifier les noms et signatures ; les versions correctives conservent l'API de leur série. Le périmètre implémenté et les limites figurent dans [la couverture de la spécification](https://pdftoolkit.github.io/fr/guides/couverture.html).
 
-Les définitions se fondent sur les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supplement_iso32000.pdf`, conservés dans ce dépôt. Le [guide du supplément](https://pdftoolkit.github.io/fr/guides/supplement-adobe.html) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Le [guide des références Adobe](https://pdftoolkit.github.io/fr/guides/references-adobe.html) présente aussi la référence de 2006, ses errata, l'addendum de caviardisation et leur portfolio. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine ; les quatre références archivées sont exclues des archives Composer. La copie fournie d’ISO 32000-2:2020 EC3 est conservée en privé ; son édition, ses pages physiques et son empreinte sont enregistrées dans un catalogue séparé. Les profils PDF/A, PDF/X et PDF/UA demandent leurs propres mécanismes de conformité.
+Les définitions se fondent sur les documents Adobe/ISO `PDF32000_2008.pdf` et `adobe_supplement_iso32000.pdf`, conservés dans ce dépôt. Le [guide du supplément](https://pdftoolkit.github.io/fr/guides/supplement-adobe.html) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Le [guide des références Adobe](https://pdftoolkit.github.io/fr/guides/references-adobe.html) présente aussi la référence de 2006, ses errata, l'addendum de caviardisation et leur portfolio. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine ; les quatre références archivées sont exclues des archives Composer. Le [PDF ISO 32000-2:2020 EC3 fourni](ISO_32000-2_sponsored_EC3.pdf), obtenu via l’[accès sponsorisé de la PDF Association](https://www.pdfa.org/sponsored-standards/), est conservé sans modification dans ce dépôt et exclu des archives Composer. Son édition, ses pages physiques et son empreinte sont enregistrées dans un catalogue séparé. Les profils PDF/A, PDF/X et PDF/UA demandent leurs propres mécanismes de conformité.
 
 ## Premiers mécanismes PDF 2.0
 
@@ -40,7 +40,7 @@ implémentés. Des schémas seuls n'implémentent pas ces mécanismes.
 Le core **0.6** nécessite PHP 8.3 ou supérieur et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.6.1'
+composer require 'roukmoute/pdf:^0.6.2'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le

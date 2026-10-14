@@ -36,8 +36,10 @@ The [Adobe reference guide](https://pdftoolkit.github.io/guides/adobe-references
 also presents the 2006 reference, its errata, the redaction addendum and their
 portfolio. All Adobe PDFs supplied to the project retain their original names
 and bytes; the four archived references are excluded from Composer archives.
-The supplied ISO 32000-2:2020 EC3 copy is retained privately; its edition,
-physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
+The supplied [ISO 32000-2:2020 EC3 PDF](ISO_32000-2_sponsored_EC3.pdf),
+obtained through the [PDF Association sponsored access](https://www.pdfa.org/sponsored-standards/),
+is retained unchanged in this repository and excluded from Composer archives.
+Its edition, physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
 PDF/X and PDF/UA profiles require their own conformance mechanisms.
 
 ## First PDF 2.0 mechanisms
@@ -66,7 +68,7 @@ extensions. AES and CMS backends are optional and require `openssl`.
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.6.1'
+composer require 'roukmoute/pdf:^0.6.2'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
