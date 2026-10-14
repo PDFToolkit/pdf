@@ -1,0 +1,31 @@
+{
+  "document": "Well-Tagged-PDF-WTPDF-1.0.pdf",
+  "version": "1.0.0 (2024-02)",
+  "scope": "Construction objects and a partial native-graph audit; no complete WTPDF or PDF/UA-2 certification",
+  "implemented": [
+    {"clauses": "6.1.2–6.1.3", "pages": [9, 10], "mechanisms": "Explicit reuse/accessibility identifiers, caller-supplied declarations and declaration-presence checks"},
+    {"clauses": "6.2, 8.2.4–8.2.5.2", "pages": [10, 16, 17], "mechanisms": "PDF2 version, explicit root Document, standard/custom namespaces, transitive mapping and TS32005 containment"},
+    {"clauses": "8.2.5.12–8.2.5.14.1, 8.8", "pages": [19, 20, 36, 37], "mechanisms": "Forbidden H/Note roles, canonical Ref arrays and reciprocal FENote references"},
+    {"clauses": "8.2.5.23–8.2.5.27", "pages": [23, 24, 25], "mechanisms": "Ruby/Warichu ordering, labelled-list numbering, continued-list flags, table grid/span regularity with bounded expansion, row-group boundaries and caption placement"},
+    {"clauses": "8.2.5.28.2, 8.2.5.29.2", "pages": [26, 27], "mechanisms": "Accessibility Alt/ActualText presence for Figure/Formula"},
+    {"clauses": "8.4.5.3–8.4.5.9", "pages": [33, 34, 35], "mechanisms": "Native typed text usage including Tf/Tr/gs/q/Q/Form invocations; rendered-font embedding versus Tr3 exception; CIDToGID shape, CIDSystemInfo agreement, standard CMap restrictions, native ToUnicode coverage/forbidden values, CID/GID .notdef, symbolic/nonsymbolic TrueType Encoding rules"},
+    {"clauses": "8.6–8.7", "pages": [36], "mechanisms": "Human-readable text-string private-use checks and accessibility optional-content Name/AS requirements"},
+    {"clauses": "8.9.1–8.9.4", "pages": [37, 38, 39, 40, 41, 42, 43], "mechanisms": "Deprecated annotations, artifact flags, annotation appearance-substructure restriction, Popup prohibition, markup/link/widget parent roles, required Contents cases, alternative-description equality, page Tabs and file-attachment AFRelationship"},
+    {"clauses": "8.10.1–8.10.2.3", "pages": [44, 45], "mechanisms": "XFA prohibition, at most one widget per Form, additional-action description requirement"},
+    {"clauses": "8.11", "pages": [47, 48], "mechanisms": "Typed XMP dc:title language alternative and accessibility DisplayDocTitle"},
+    {"clauses": "8.14.1", "pages": [49], "mechanisms": "Desc presence on EmbeddedFiles specifications"}
+  ],
+  "additional_validation_required": [
+    "Complete ISO32000-2 conformance is not established by dictionary presence or a successful mechanical audit.",
+    "Font-program formats, cmap subtable requirements, embedding rights, metrics and complete glyph coverage require the independent font modules and external validation. The example oracle checks its actual shown glyph widths against its embedded TrueType program.",
+    "Opaque content, generic XMP and external predefined CMap mappings require independent parsing/validation; the audit does not silently infer their semantics.",
+    "MathML presentation grammar and semantic suitability require external MathML validation. Core namespace recognition is not a MathML validator.",
+    "Full Unicode-language inheritance, table-header assignment, continued-list segment completeness, structural destinations, page-label correspondence and rich-text equivalence are not exhaustively validated by this audit."
+  ],
+  "human_review_required": [
+    "Real-content/artifact classification, logical reading order, grouping intent and semantic structure-type choice",
+    "Appropriate language, glyph/text semantics, alternate descriptions, captions, labels, headings and meaningful layout attributes",
+    "Annotation and form context, semantic equivalence, multimedia alternatives, action descriptions and accessibility of necessary attachments"
+  ],
+  "evidence": ["tests/StructureNamespaceTest.php", "tests/WtPdfAuditTest.php", "examples/pdf20-tagged-namespaces.php", "tools/validate_pdf20_tagging.py"]
+}
