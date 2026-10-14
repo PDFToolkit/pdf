@@ -9,6 +9,7 @@ permissions:
 
 env:
   COMPOSER_ROOT_VERSION: 0.7.x-dev
+  COMPOSER_MAX_PARALLEL_HTTP: 4
   PDFTOOLKIT_OPENSSL: /usr/bin/openssl
 
 jobs:
