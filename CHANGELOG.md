@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+## [0.5.4] - 2026-10-14
+
+### Distribution
+
+- Publish `roukmoute/pdf` and the three optional PDFToolkit modules on Packagist.
+  Applications install stable releases with `composer require`; custom VCS
+  repository declarations are no longer needed.
+- Remove custom VCS repositories from the development manifest and lock the
+  published optional module 0.1.5 releases. Preserve the selected tool versions
+  and keep the core independent of optional modules in production.
+- Link Composer metadata and installation guides to the shared documentation
+  and package pages. Verify stable consumers, indexed tag commits and package
+  synchronization as part of releases.
+
+The PHP API, PHP 8.3 minimum, original reference PDFs and runtime source are
+unchanged.
+
 ## [0.5.3] - 2026-10-14
 
 ### Documentation

@@ -29,4 +29,6 @@
 - Before tagging, require successful checks for the exact candidate commit on PHP 8.3, 8.4 and 8.5, including the repository's independent PDF validations.
 - Do not rewrite a published tag or edit an old release to include new changes. Publish a new version instead.
 - Keep optional development dependencies locked to published module versions for core examples and validation. Shared documentation source pins and publication belong to the documentation repository.
+- Publish Composer packages through Packagist using their declared names. Keep normal installation instructions and manifests free of custom VCS repositories. Verify fresh stable consumers with an isolated Composer home, no repositories configuration, and the exact indexed tag commits.
+- After a tag is published, verify Packagist indexes its version, source and distribution references before updating documentation source pins. Keep GitHub push synchronization working for the package repository.
 - Report the versions and release links when the work is complete.
