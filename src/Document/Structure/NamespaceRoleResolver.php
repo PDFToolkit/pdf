@@ -19,6 +19,7 @@ final readonly class NamespaceRoleResolver
     public function resolve(StructureRole $role): ?StructureRole
     {
         $seen = [];
+        $initial = true;
         for ($step = 0; $step < $this->maximumMappings; ++$step) {
             $this->namespaces->require($role->namespace);
             $key = $role->namespaceName() . "\0" . $role->type->value;
@@ -26,6 +27,13 @@ final readonly class NamespaceRoleResolver
                 return null;
             }
             $seen[$key] = true;
+            $explicitMapping = $role->namespace?->roleMap->target($role->type);
+            if ($initial && $explicitMapping !== null) {
+                $role = $explicitMapping;
+                $initial = false;
+                continue;
+            }
+            $initial = false;
             $namespace = StandardStructureNamespace::tryFrom($role->namespaceName());
             if ($namespace === StandardStructureNamespace::PDF17) {
                 // Only the default namespace uses the root RoleMap (14.8.6.2).
@@ -37,7 +45,14 @@ final readonly class NamespaceRoleResolver
                     $role = new StructureRole($mapping);
                     continue;
                 }
-                return StandardStructureType::tryFrom($role->type->value) !== null ? $role : null;
+                if (StandardStructureType::tryFrom($role->type->value) !== null) {
+                    return $role;
+                }
+                if ($explicitMapping !== null) {
+                    $role = $explicitMapping;
+                    continue;
+                }
+                return null;
             }
             if ($namespace === StandardStructureNamespace::PDF20 && isset(StructureInclusionTable::RULES[$role->tableType()]) && !in_array($role->type->value, ['StructTreeRoot', 'Hn', 'Art', 'BlockQuote', 'TOC', 'TOCI', 'Index', 'Private', 'Quote', 'Note', 'Reference', 'BibEntry', 'Code'], true)) {
                 return $role;
@@ -45,7 +60,7 @@ final readonly class NamespaceRoleResolver
             if ($namespace === StandardStructureNamespace::MathML) {
                 return $role;
             }
-            $target = $role->namespace?->roleMap->target($role->type);
+            $target = $explicitMapping;
             if ($target === null) {
                 return null;
             }

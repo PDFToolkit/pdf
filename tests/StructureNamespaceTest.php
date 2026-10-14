@@ -68,6 +68,13 @@ final class StructureNamespaceTest extends TestCase
         self::assertSame('P', $resolver->resolve(new StructureRole(StandardStructureType::P))?->type->value);
     }
 
+    public function testExplicitPdf17NamespaceUsesItsOwnRoleMapForCustomNames(): void
+    {
+        $legacy = new StructureNamespace(StandardStructureNamespace::PDF17, new NamespaceRoleMap(new NamespaceRoleMapping(new NameType('CustomNote'), new StructureRole(StandardStructureType::Note))));
+        $resolver = new NamespaceRoleResolver(new StructureNamespaces($legacy));
+        self::assertSame('Note', $resolver->resolve(new StructureRole(new NameType('CustomNote'), $legacy))?->type->value);
+    }
+
     public function testNamespaceSetRejectsDuplicateIdentifiersEvenOnDifferentObjects(): void
     {
         $this->expectException(\InvalidArgumentException::class);
