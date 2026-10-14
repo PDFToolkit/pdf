@@ -220,7 +220,7 @@ final readonly class WtPdfGraphChecks
             foreach ($dictionary->entries() as $entry) {
                 $value = $entry->value;
                 $text = $this->dereference($value);
-                if (in_array($entry->key->value, ['Alt', 'ActualText', 'Contents', 'TU', 'Title', 'Desc', 'T'], true) && $text instanceof StringType && $this->privateUse($decoder->decode($text))) {
+                if (in_array($entry->key->value, ['Alt', 'ActualText', 'TU', 'Title', 'Desc', 'T'], true) && $text instanceof StringType && $this->privateUse($decoder->decode($text))) {
                     $fail('8.6', 36, 'A human-readable ' . $entry->key->value . ' string contains Unicode private-use characters.');
                 }
                 if ($entry->key->value === 'EmbeddedFiles') {
@@ -241,6 +241,12 @@ final readonly class WtPdfGraphChecks
     /** @param callable(string, int, string): void $fail */
     private function annotation(DictionaryType $annotation, ?StructureElement $parent, ?string $role, WtPdfConformanceLevel $level, callable $fail, TextStringDecoder $decoder): void
     {
+        // Contents is human-readable on an annotation. Signature/timestamp
+        // dictionaries use the same key for opaque CMS bytes, not PDF text.
+        $contents = $this->dereference($annotation->get('Contents'));
+        if ($contents instanceof StringType && $this->privateUse($decoder->decode($contents))) {
+            $fail('8.6', 36, 'A human-readable Contents string contains Unicode private-use characters.');
+        }
         $subtype = $this->dereference($annotation->get('Subtype'));
         $name = $subtype instanceof NameType ? $subtype->value : '';
         if (in_array($name, ['Sound', 'Movie', 'TrapNet'], true)) {

@@ -326,6 +326,34 @@ final class WtPdfAuditTest extends TestCase
         new WtPdfFontUsageChecks(maximumTextBytes: 0);
     }
 
+    public function testCryptographicAndPrivateContentsRemainOpaqueBytes(): void
+    {
+        $checks = new WtPdfGraphChecks();
+        $catalog = new DictionaryType(new Entry(new NameType('Type'), new NameType('Catalog')));
+        $baseline = $checks->inspect($catalog, null, WtPdfConformanceLevel::Reuse);
+        foreach (['Sig', 'DocTimeStamp', 'PrivateData'] as $type) {
+            foreach (["\x30\x82\x7F\x00", "\xFE\xFF\xE0\x00"] as $bytes) {
+                $binary = new DictionaryType(new Entry(new NameType('Type'), new NameType($type)), new Entry(new NameType('Contents'), new LiteralString($bytes)));
+                self::assertEquals($baseline, $checks->inspect($catalog->with(new Entry(new NameType('Binary'), new IndirectReference($binary))), null, WtPdfConformanceLevel::Reuse));
+            }
+        }
+    }
+
+    public function testAnnotationContentsStillRejectPrivateUseWithOptionalType(): void
+    {
+        foreach ([true, false] as $typed) {
+            $annotation = new DictionaryType(...[
+                ...($typed ? [new Entry(new NameType('Type'), new NameType('Annot'))] : []),
+                new Entry(new NameType('Subtype'), new NameType('Text')),
+                new Entry(new NameType('Contents'), new TextString("\u{E000}")),
+            ]);
+            $page = $this->page(new DictionaryType(), null, new Entry(new NameType('Annots'), new ArrayType(new IndirectReference($annotation))), new Entry(new NameType('Tabs'), new NameType('S')));
+            $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+            $findings = (new WtPdfGraphChecks())->inspect($catalog, null, WtPdfConformanceLevel::Reuse);
+            self::assertContains('8.6', array_map(static fn ($finding): string => $finding->clause, $findings));
+        }
+    }
+
     private function multipleUnicodeMaps(): DictionaryType
     {
         $code = static fn (string $byte): \PDF\Document\Fonts\CMaps\CMapCode => new \PDF\Document\Fonts\CMaps\CMapCode(new \PDF\Syntax\Object\StringObject\HexadecimalString($byte));
