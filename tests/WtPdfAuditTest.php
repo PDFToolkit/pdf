@@ -232,6 +232,113 @@ final class WtPdfAuditTest extends TestCase
         self::assertSame('http://pdfa.org/declarations/wtpdf/#accessibility1.0', WtPdfConformanceLevel::Accessibility->declarationIdentifier());
     }
 
+    public function testInvalidReferenceReturnsAnAuditFailureWithoutReindexingFatal(): void
+    {
+        [$root, $document, $pdf] = $this->tree();
+        $catalog = $this->catalog($root, WtPdfConformanceLevel::Reuse);
+        $paragraph = $this->element('P', $pdf);
+        $document->addKid($paragraph);
+        $paragraph->addReference($this->element('FENote', $pdf));
+        $report = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+        self::assertNotEmpty($report->failures());
+        self::assertStringContainsString('Ref associations', implode(' ', array_map(static fn ($finding): string => $finding->message, $report->failures())));
+    }
+
+    public function testUnresolvedReferencedRoleProducesFindingsWithoutStorageAccessFailure(): void
+    {
+        [$root, $document, $pdf] = $this->tree();
+        $catalog = $this->catalog($root, WtPdfConformanceLevel::Reuse);
+        $unknown = $this->element('UnknownRole', $pdf);
+        $paragraph = $this->element('P', $pdf);
+        $paragraph->addReference($unknown);
+        $document->addKid($paragraph)->addKid($unknown);
+        $report = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+        self::assertNotEmpty($report->failures());
+        self::assertStringContainsString('role', strtolower(implode(' ', array_map(static fn ($finding): string => $finding->message, $report->failures()))));
+    }
+
+    public function testIndirectMarkAndDisplayTitleBooleansRemainValid(): void
+    {
+        [$root] = $this->tree();
+        $catalog = $this->catalog($root, WtPdfConformanceLevel::Accessibility)
+            ->with(new Entry(new NameType('MarkInfo'), new IndirectReference(new DictionaryType(new Entry(new NameType('Marked'), new IndirectReference(new BooleanType(true))), new Entry(new NameType('UserProperties'), new IndirectReference(new BooleanType(false))), new Entry(new NameType('Suspects'), new IndirectReference(new BooleanType(false)))))))
+            ->with(new Entry(new NameType('ViewerPreferences'), new IndirectReference(new DictionaryType(new Entry(new NameType('DisplayDocTitle'), new IndirectReference(new BooleanType(true)))))));
+        self::assertSame([], (new WtPdfGraphChecks())->inspect($catalog, $root, WtPdfConformanceLevel::Accessibility));
+        $report = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Accessibility);
+        self::assertSame([], $report->failures());
+    }
+
+    public function testMalformedHumanTextEncodingIsReportedAsAnAuditFailure(): void
+    {
+        [$root] = $this->tree();
+        $catalog = $this->catalog($root, WtPdfConformanceLevel::Reuse)->with(new Entry(new NameType('Title'), new LiteralString("\xFE\xFF\xD8\x00")));
+        $report = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+        self::assertNotEmpty($report->failures());
+        self::assertContains('6.2', array_map(static fn ($finding): string => $finding->clause, $report->failures()));
+    }
+
+    public function testRepeatedPageTreeIsReportedWithoutAnUncaughtTraversalError(): void
+    {
+        $page = new DictionaryType(new Entry(new NameType('Type'), new NameType('Page')), new Entry(new NameType('Resources'), new DictionaryType()));
+        $pages = new DictionaryType(new Entry(new NameType('Type'), new NameType('Pages')), new Entry(new NameType('Kids'), new ArrayType(new IndirectReference($page), new IndirectReference($page))));
+        $catalog = new DictionaryType(new Entry(new NameType('Type'), new NameType('Catalog')), new Entry(new NameType('Pages'), new IndirectReference($pages)));
+        $report = (new WtPdfAudit())->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+        self::assertStringContainsString('repeated nodes', implode(' ', array_map(static fn ($finding): string => $finding->message, $report->failures())));
+    }
+
+    public function testRecursiveFormIsReportedAsACycleBeforeTheDepthBudgetIsExhausted(): void
+    {
+        $form = new class (new ContentStreams(new \PDF\Syntax\ContentStreamsResources\Operators\InvokeXObject(new NameType('Self')))) extends StreamObject {
+            public function dictionary(): DictionaryType
+            {
+                return new DictionaryType(new Entry(new NameType('Subtype'), new NameType('Form')), new Entry(new NameType('Resources'), new DictionaryType(new Entry(new NameType('XObject'), new DictionaryType(new Entry(new NameType('Self'), new IndirectReference($this)))))));
+            }
+        };
+        $resources = new DictionaryType(new Entry(new NameType('XObject'), new DictionaryType(new Entry(new NameType('Form'), new IndirectReference($form)))));
+        $content = new StreamObject(new ContentStreams(new \PDF\Syntax\ContentStreamsResources\Operators\InvokeXObject(new NameType('Form'))));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($this->page($resources, $content)));
+        $report = (new WtPdfAudit(fonts: new WtPdfFontUsageChecks(maximumDepth: 2)))->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+        self::assertStringContainsString('cycle', implode(' ', array_map(static fn ($finding): string => $finding->message, $report->failures())));
+    }
+
+    public function testUnicodeMappingBudgetIsCumulativeAcrossDifferentCmaps(): void
+    {
+        $catalog = $this->multipleUnicodeMaps();
+        self::assertNotEmpty((new WtPdfGraphChecks(maximumUnicodeMappings: 4))->inspect($catalog, null, WtPdfConformanceLevel::Reuse));
+        $this->expectException(\OverflowException::class);
+        (new WtPdfGraphChecks(maximumUnicodeMappings: 3))->inspect($catalog, null, WtPdfConformanceLevel::Reuse);
+    }
+
+    public function testTextByteBudgetIsCumulativeAcrossTextShowingOperations(): void
+    {
+        $font = new Type1Font(StandardFont::Helvetica, new Entry(new NameType('Encoding'), new NameType('WinAnsiEncoding')));
+        $resources = new DictionaryType(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
+        $stream = new StreamObject(new ContentStreams(new BeginTextObject(), new SetTextFontAndSize(new NameType('F1'), new IntegerType(12)), new ShowText(new LiteralString('AB')), new ShowText(new LiteralString('CD')), new EndTextObject()));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($this->page($resources, $stream)));
+        self::assertNotEmpty((new WtPdfFontUsageChecks(maximumTextBytes: 4))->inspect($catalog));
+        $this->expectException(\OverflowException::class);
+        (new WtPdfAudit(fonts: new WtPdfFontUsageChecks(maximumTextBytes: 3)))->inspect($catalog, new EffectivePdfVersion(new FileHeader('2.0'), $catalog), WtPdfConformanceLevel::Reuse);
+    }
+
+    public function testAuditBudgetsMustBePositiveCallerPolicies(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new WtPdfFontUsageChecks(maximumTextBytes: 0);
+    }
+
+    private function multipleUnicodeMaps(): DictionaryType
+    {
+        $code = static fn (string $byte): \PDF\Document\Fonts\CMaps\CMapCode => new \PDF\Document\Fonts\CMaps\CMapCode(new \PDF\Syntax\Object\StringObject\HexadecimalString($byte));
+        $mappings = new \PDF\Document\Fonts\CMaps\UnicodeMappings(
+            new \PDF\Document\Fonts\CMaps\UnicodeChar($code('A'), (new \PDF\Document\Fonts\CMaps\UnicodeScalar(new IntegerType(65)))->sequence()),
+            new \PDF\Document\Fonts\CMaps\UnicodeChar($code('B'), (new \PDF\Document\Fonts\CMaps\UnicodeScalar(new IntegerType(66)))->sequence()),
+        );
+        $spaces = new \PDF\Document\Fonts\CMaps\CodeSpaces(new \PDF\Document\Fonts\CMaps\CodeSpaceRange($code("\0"), $code("\xFF")));
+        $first = new \PDF\Document\Fonts\ToUnicodeCMap(new \PDF\Document\Fonts\CMaps\UnicodeCMap(new \PDF\Document\Fonts\CMaps\CMapName(new NameType('First')), $spaces, $mappings));
+        $second = new \PDF\Document\Fonts\ToUnicodeCMap(new \PDF\Document\Fonts\CMaps\UnicodeCMap(new \PDF\Document\Fonts\CMaps\CMapName(new NameType('Second')), $spaces, $mappings));
+        return new DictionaryType(new Entry(new NameType('Type'), new NameType('Catalog')), new Entry(new NameType('First'), new IndirectReference($first)), new Entry(new NameType('Second'), new IndirectReference($second)));
+    }
+
     /** @return array{StructureTreeRoot, StructureElement, StructureNamespace} */
     private function tree(): array
     {

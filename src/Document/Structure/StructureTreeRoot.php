@@ -278,6 +278,8 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
         $flags = [];
         foreach (['Marked', 'UserProperties', 'Suspects'] as $key) {
             $flag = $information?->get($key) ?? new BooleanType(false);
+            $flag = $flag instanceof IndirectReference ? $flag->target() : $flag;
+            $flag = $flag instanceof NullType ? new BooleanType(false) : $flag;
             if (!$flag instanceof BooleanType) {
                 throw new \InvalidArgumentException('MarkInfo.' . $key . ' must be a boolean.');
             }

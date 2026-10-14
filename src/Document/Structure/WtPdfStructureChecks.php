@@ -45,6 +45,9 @@ final readonly class WtPdfStructureChecks
             }
             $roles[$element] = $role;
         }
+        if (count($roles) !== count($index->elements)) {
+            return $findings; // No descendant/Ref lookup may assume that an unresolved role has an index entry.
+        }
         $document = $root->kids()[0] ?? null;
         if (count($root->kids()) !== 1 || $document === null || !$roles->offsetExists($document) || $roles[$document]->type->value !== 'Document' || $document->namespace?->identifier !== StandardStructureNamespace::PDF20->value) {
             $fail('8.2.5.2', 17, 'The only root child must explicitly declare Document in the PDF 2.0 namespace.');

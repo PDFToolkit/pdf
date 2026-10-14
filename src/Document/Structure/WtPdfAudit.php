@@ -34,8 +34,16 @@ final readonly class WtPdfAudit
                 $findings[] = new WtPdfFinding('8.2', 14, WtPdfFindingStatus::Failed, $error->getMessage());
             }
         }
-        array_push($findings, ...$this->graph->inspect($catalog, $root instanceof StructureTreeRoot ? $root : null, $level));
-        array_push($findings, ...$this->fonts->inspect($catalog));
+        try {
+            array_push($findings, ...$this->graph->inspect($catalog, $root instanceof StructureTreeRoot ? $root : null, $level));
+        } catch (\InvalidArgumentException|\LogicException $error) {
+            $findings[] = new WtPdfFinding('6.2', 10, WtPdfFindingStatus::Failed, 'Document graph: ' . $error->getMessage());
+        }
+        try {
+            array_push($findings, ...$this->fonts->inspect($catalog));
+        } catch (\InvalidArgumentException|\LogicException $error) {
+            $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::Failed, 'Font usage: ' . $error->getMessage());
+        }
         // These judgments cannot be inferred from syntactic correctness or an XMP assertion.
         foreach ([
             ['6.2', 10, 'Verify full ISO 32000-2 compliance and accessibility of any necessary embedded content.'],

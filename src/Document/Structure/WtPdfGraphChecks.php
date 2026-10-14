@@ -63,12 +63,12 @@ final readonly class WtPdfGraphChecks
             $fail($level === WtPdfConformanceLevel::Reuse ? '6.1.2' : '6.1.3', $level === WtPdfConformanceLevel::Reuse ? 9 : 10, 'The selected WTPDF declaration is absent from typed document metadata.');
         }
         $preferences = $this->dictionary($catalog->get('ViewerPreferences'));
-        $title = $preferences?->get('DisplayDocTitle');
+        $title = $this->dereference($preferences?->get('DisplayDocTitle'));
         if ($level === WtPdfConformanceLevel::Accessibility && (!$title instanceof BooleanType || !$title->value)) {
             $fail('8.11.2', 48, 'Accessibility requires ViewerPreferences.DisplayDocTitle=true.');
         }
         $markInfo = $this->dictionary($catalog->get('MarkInfo'));
-        $marked = $markInfo?->get('Marked');
+        $marked = $this->dereference($markInfo?->get('Marked'));
         if (!$marked instanceof BooleanType || !$marked->value) {
             $fail('8.2', 14, 'WTPDF requires a tagged document with MarkInfo.Marked=true.');
         }
@@ -96,8 +96,17 @@ final readonly class WtPdfGraphChecks
             }
         }
         $parents = new \SplObjectStorage();
+        $unavailableRoot = null;
         if ($root !== null) {
-            foreach ($root->index()->elements as $element) {
+            try {
+                $index = $root->index();
+            } catch (\InvalidArgumentException|\LogicException $error) {
+                $fail('8.2', 14, $error->getMessage());
+                $unavailableRoot = $root;
+                $root = null;
+                $index = null;
+            }
+            foreach ($index->elements ?? [] as $element) {
                 foreach ($element->kids() as $kid) {
                     if ($kid instanceof ObjectReference) {
                         $parents[$kid->object] = $element;
@@ -112,6 +121,7 @@ final readonly class WtPdfGraphChecks
         $seen = new \SplObjectStorage();
         $queue = [$catalog];
         $hasFonts = false;
+        $unicodeMappings = 0;
         $decoder = new TextStringDecoder(PdfVersion::PDF20);
         while ($queue !== []) {
             $object = array_pop($queue);
@@ -122,6 +132,9 @@ final readonly class WtPdfGraphChecks
                 throw new \OverflowException('WTPDF graph inspection exceeds its explicit object budget.');
             }
             $seen->offsetSet($object);
+            if ($object === $unavailableRoot) {
+                continue; // Its derived entries require the structural index that already produced a failure.
+            }
             if ($object instanceof IndirectReference) {
                 $queue[] = $object->target();
                 continue;
@@ -134,11 +147,10 @@ final readonly class WtPdfGraphChecks
                 $fail('8.6', 36, 'A human-readable text string contains a Unicode private-use character.');
             }
             if ($object instanceof ToUnicodeCMap) {
-                $used = 0;
                 foreach ($object->definition->mappings->items as $mapping) {
                     $range = $mapping->source();
                     $last = $range->distance($this->maximumUnicodeMappings);
-                    if ($last >= $this->maximumUnicodeMappings - $used) {
+                    if ($last >= $this->maximumUnicodeMappings - $unicodeMappings) {
                         throw new \OverflowException('WTPDF Unicode inspection exceeds its explicit mapping budget.');
                     }
                     for ($offset = 0; $offset <= $last; ++$offset) {
@@ -147,7 +159,7 @@ final readonly class WtPdfGraphChecks
                             $fail('8.4.5.8', 35, 'ToUnicode destinations must exclude U+0000, U+FEFF and U+FFFE.');
                         }
                     }
-                    $used += $last + 1;
+                    $unicodeMappings += $last + 1;
                 }
             }
             $dictionary = $object instanceof StreamObject ? $object->dictionary() : ($object instanceof DictionaryType ? $object : null);
@@ -321,6 +333,7 @@ final readonly class WtPdfGraphChecks
         while ($queue !== []) {
             $node = array_pop($queue);
             if ($seen->offsetExists($node)) {
+                $fail('8.14.1', 49, 'The EmbeddedFiles name tree must not repeat a child or contain a cycle.');
                 continue;
             }
             $seen->offsetSet($node);
