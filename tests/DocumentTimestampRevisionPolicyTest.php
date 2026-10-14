@@ -58,10 +58,12 @@ final class DocumentTimestampRevisionPolicyTest extends TestCase
         $form = new AcroForm((new FieldTree())->addRoot($operation->field));
         $stream = new StreamObject("q\nQ");
         $page = new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary(), $stream);
-        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page),
+        $catalog = new DocumentCatalog(
+            (new PageTreeNode())->addKid($page),
             $this->entry('AcroForm', new IndirectReference($form)),
             $this->entry('Perms', $operation->certificationPermissions()),
-            $this->entry('Extensions', new DictionaryType($this->entry('ADBE', new DictionaryType($this->entry('BaseVersion', new NameType('1.7')), $this->entry('ExtensionLevel', new IntegerType(3)))))));
+            $this->entry('Extensions', new DictionaryType($this->entry('ADBE', new DictionaryType($this->entry('BaseVersion', new NameType('1.7')), $this->entry('ExtensionLevel', new IntegerType(3))))))
+        );
         $operation->bindCatalog(new IndirectReference($catalog));
         $signed = $operation->sign((new SignatureWriter())->prepare(new FileStructure(new FileHeader('2.0'), new FileBody($catalog), crossReferenceFormat: $format), $operation->signature));
         return [$signed->revision, $catalog, $page, $stream];

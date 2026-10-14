@@ -19,7 +19,7 @@ final class GcmNonceSequenceTest extends TestCase
 
     public function testEveryInvocationObtainsAllTwelveRandomBytesEvenForReconstructedInstances(): void
     {
-        $random = new class implements RandomSource {
+        $random = new class () implements RandomSource {
             public int $calls = 0;
             public function bytes(int $length): string
             {
@@ -38,7 +38,7 @@ final class GcmNonceSequenceTest extends TestCase
 
     public function testRandomSourceRepeatsAreRejectedWithoutEncryptingAgain(): void
     {
-        $random = new class implements RandomSource {
+        $random = new class () implements RandomSource {
             public function bytes(int $length): string
             {
                 return str_repeat('R', $length);
@@ -52,7 +52,7 @@ final class GcmNonceSequenceTest extends TestCase
 
     public function testExplicitInvocationBudgetFailsBeforeCallingTheRandomSource(): void
     {
-        $random = new class implements RandomSource {
+        $random = new class () implements RandomSource {
             public int $calls = 0;
             public function bytes(int $length): string
             {
