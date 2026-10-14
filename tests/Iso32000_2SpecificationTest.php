@@ -225,6 +225,15 @@ final class Iso32000_2SpecificationTest extends TestCase
         new NameAlternatives(new NameType('OP'), new NameType('OP'));
     }
 
+    public function testNamedVariadicAlternativesStillProduceAnExplicitOrderedList(): void
+    {
+        $names = new NameAlternatives(first: new NameType('OP'), lowercase: new NameType('op'));
+        self::assertSame([0, 1], array_keys($names->names));
+        self::assertSame('OP', $names->names[0]->value);
+        self::assertSame('op', $names->names[1]->value);
+        $names->validate(new NameType('op'));
+    }
+
     public function testReviewedGeospatialCorrectionsKeepSourceTextAndApprovalAuthoritiesDistinct(): void
     {
         $geospatial = (new Pdf20Catalogue())->dictionary('269');

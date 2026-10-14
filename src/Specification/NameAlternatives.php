@@ -15,7 +15,7 @@ final readonly class NameAlternatives
 
     public function __construct(NameType $first, NameType ...$others)
     {
-        $names = [$first, ...$others];
+        $names = [$first, ...array_values($others)];
         $seen = [];
         foreach ($names as $name) {
             if (isset($seen[$name->value])) {
