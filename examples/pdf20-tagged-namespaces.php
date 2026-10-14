@@ -76,7 +76,7 @@ $report = new StructureNamespace('urn:pdftoolkit:example:report', new NamespaceR
 ));
 
 $lines = [
-    'PDF 2.0: explicit structure namespaces',
+    '1. Explicit structure namespaces',
     'A custom report paragraph resolves to the PDF 2.0 P role.',
     'Contents: explicit structure namespaces',
     'The table of contents uses TOC, TOCI and Reference from PDF 1.7.',
@@ -131,7 +131,7 @@ $root->addKid($document);
 // certification. Font program/metric and semantic reviews remain separate evidence.
 $level = WtPdfConformanceLevel::Reuse;
 $metadata = new MetadataStream(new XmpPacket(
-    new XmpLanguageAlternative(new XmpName('dc', new MetadataUri('http://purl.org/dc/elements/1.1/'), 'title'), new XmlText($lines[0]), new XmpLocalizedText('fr', new XmlText('PDF 2.0 : espaces de noms de structure explicites'))),
+    new XmpLanguageAlternative(new XmpName('dc', new MetadataUri('http://purl.org/dc/elements/1.1/'), 'title'), new XmlText('PDF 2.0: explicit structure namespaces'), new XmpLocalizedText('fr', new XmlText('PDF 2.0 : espaces de noms de structure explicites'))),
     new Declarations(new Declaration(new MetadataUri('https://pdfa.org/declarations#iso32005')), new Declaration(new MetadataUri($level->declarationIdentifier()))),
 ));
 $catalog = new DocumentCatalog($pages, ...[...$root->catalogEntries(new MarkInformation(new BooleanType(true))), new MetadataEntry($metadata), new Entry(new NameType('Lang'), new TextString('en-US'))]);

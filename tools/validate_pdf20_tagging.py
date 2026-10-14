@@ -124,7 +124,7 @@ def validate(path, qpdf, poppler_glib_bin=None, pdftotext=None):
             width = pdf_widths.get(cid, float(cidfont.get("/DW", 1000)))
             require(abs(width - advances[gid] * 1000 / upem) <= 1, "PDF and embedded-program glyph metrics disagree")
             glyphs_checked += 1
-    expected = ["PDF 2.0: explicit structure namespaces", "A custom report paragraph resolves", "Contents: explicit structure namespaces", "The table of contents uses TOC", "Mechanical checks support review"]
+    expected = ["1. Explicit structure namespaces", "A custom report paragraph resolves", "Contents: explicit structure namespaces", "The table of contents uses TOC", "Mechanical checks support review"]
     text = page.extract_text()
     for fragment in expected:
         require(fragment in text, f"pypdf text extraction lost {fragment!r}")
