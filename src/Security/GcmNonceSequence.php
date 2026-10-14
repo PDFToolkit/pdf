@@ -4,25 +4,41 @@ declare(strict_types=1);
 
 namespace PDF\Security;
 
-/** One file/key-scoped invocation sequence, NIST SP 800-38D 8.2.1; no nonce reuse. */
+/** NIST SP 800-38D 8.2.2: fresh 96-bit RBG IVs, bounded invocation count and duplicate rejection. */
 final class GcmNonceSequence
 {
     private int $counter = 0;
-    private readonly string $prefix;
+    /** @var array<string,true> */
+    private array $used = [];
 
-    public function __construct(RandomSource $random)
+    public function __construct(private readonly RandomSource $random, private readonly int $maximumInvocations = 4294967296)
     {
-        $this->prefix = $random->bytes(4);
-        if (strlen($this->prefix) !== 4) {
-            throw new \UnexpectedValueException('The nonce fixed field requires four random bytes.');
+        if ($maximumInvocations < 1 || $maximumInvocations > 4294967296) {
+            throw new \InvalidArgumentException('A random-IV GCM operation is bounded by at most 2^32 invocations.');
         }
     }
 
     public function next(): string
     {
-        if ($this->counter === PHP_INT_MAX) {
+        if ($this->counter === $this->maximumInvocations) {
             throw new \OverflowException('The file-scoped GCM invocation counter is exhausted.');
         }
-        return $this->prefix . pack('N2', intdiv($this->counter, 4294967296), $this->counter++ % 4294967296);
+        $nonce = $this->random->bytes(12);
+        if (strlen($nonce) !== 12 || isset($this->used[bin2hex($nonce)])) {
+            throw new \UnexpectedValueException('The GCM random source returned an invalid or repeated 96-bit IV.');
+        }
+        $this->used[bin2hex($nonce)] = true;
+        ++$this->counter;
+        return $nonce;
+    }
+
+    private function __clone(): void
+    {
+    }
+
+    /** @return never */
+    public function __serialize(): array
+    {
+        throw new \LogicException('A live GCM nonce allocator cannot be serialized and restarted.');
     }
 }
