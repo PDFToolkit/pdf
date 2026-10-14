@@ -27,29 +27,10 @@ final readonly class ExplicitDestinationParameters
         if (!$page instanceof IndirectReference || !$fit instanceof NameType) {
             throw new \InvalidArgumentException('A local destination requires an indirect page and a fit name.');
         }
-        $arity = match ($fit->value) {
-            'Fit', 'FitB' => 2,
-            'FitH', 'FitV', 'FitBH', 'FitBV' => 3,
-            'XYZ' => 5,
-            'FitR' => 6,
-            default => throw new \InvalidArgumentException('The explicit destination mode is unknown.'),
-        };
-        if (count($items) !== $arity) {
-            throw new \InvalidArgumentException('The destination has the wrong number of coordinates.');
-        }
-        $coordinates = [];
-        foreach (array_slice($items, 2) as $coordinate) {
-            if (!$coordinate instanceof NumericType && !($fit->value !== 'FitR' && $coordinate instanceof NullType)) {
-                throw new \InvalidArgumentException('Destination coordinates are numbers or permitted null parameters.');
-            }
-            $coordinates[] = $coordinate;
-        }
-        if ($fit->value === 'XYZ' && $coordinates[2] instanceof NumericType && $coordinates[2]->value < 0) {
-            throw new \InvalidArgumentException('Destination zoom cannot be negative.');
-        }
+        $view = new DestinationView($fit, ...array_slice($items, 2));
         $this->reference = $page;
         $this->fit = $fit;
-        $this->coordinates = $coordinates;
+        $this->coordinates = $view->coordinates;
     }
 
     /** The builder view; effective snapshot ownership is checked through DocumentGraphContext. */

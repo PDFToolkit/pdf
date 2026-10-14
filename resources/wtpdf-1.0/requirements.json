@@ -2230,13 +2230,20 @@
         37
       ],
       "aspect": "Every internal destination is structural",
-      "status": "absent",
-      "justification": "Native StructureDestination construction and navigation integration are a separate follow-up; existing page targets are not claimed compliant.",
+      "status": "executed",
+      "justification": "Internal GoTo actions, OpenAction, named destinations, outline and Link targets require SD or a named destination carrying SD. Ordered K traversal resolves the first actual content page, skips empty Pg-only nodes and falls back to the document's first page; D remains an independent required page destination. Semantic adequacy and completeness of cross-references remain human review.",
       "implementation_or_boundary": [
-        "src/Document/Navigation/NavigationGraphValidation.php"
+        "src/Document/Structure/WtPdfNavigationChecks.php",
+        "src/Document/Navigation/StructureDestination.php",
+        "src/Document/Navigation/StructureDestinationResolver.php",
+        "src/Document/Navigation/NavigationGraphValidation.php",
+        "src/Document/Navigation/NamedDestinationIndex.php"
       ],
       "evidence": [
-        "src/Document/Structure/WtPdfAudit.php"
+        "src/Document/Structure/WtPdfAudit.php",
+        "tests/StructureDestinationTest.php",
+        "examples/pdf20-structure-destinations.php",
+        "tools/validate_pdf20_structure_destinations.py"
       ]
     },
     {

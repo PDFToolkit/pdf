@@ -21,13 +21,16 @@ use PDF\Syntax\Object\IndirectReference;
 /** Local GoTo composition only, ISO12.6.4.2/Table199; no action execution. */
 final class GoToDestination extends SchemaDictionary implements DocumentGraphComponent, VersionedComponent
 {
-    public function __construct(public readonly LocalDestination|NamedDestination $destination, public readonly DictionaryType|ArrayType|IndirectReference|null $next = null)
+    public function __construct(public readonly LocalDestination|NamedDestination $destination, public readonly DictionaryType|ArrayType|IndirectReference|null $next = null, public readonly ?StructureDestination $structure = null)
     {
         $entries = [new Entry(new NameType('Type'), new NameType('Action')), new Entry(new NameType('S'), new NameType('GoTo')), new Entry(new NameType('D'), $destination instanceof NamedDestination ? $destination->toObject() : $destination)];
         if ($next !== null) {
             $entries[] = new Entry(new NameType('Next'), $next);
         }
-        parent::__construct(new GoToActionTable199Definition(), ...$entries);
+        if ($structure !== null) {
+            $entries[] = new StructureDestinationEntry($structure);
+        }
+        parent::__construct($structure === null ? new GoToActionTable199Definition() : new \PDF\Specification\Iso32000_2\Definition\GoToActionTable202Definition(), ...$entries);
     }
 
     public function validateCatalog(DictionaryType $catalog): void
@@ -58,6 +61,7 @@ final class GoToDestination extends SchemaDictionary implements DocumentGraphCom
             $version->require(PdfVersion::PDF12, 'Next action chain');
         }
         $this->destination->validateVersion($version);
+        $this->structure?->validateVersion($version);
     }
 
     public function with(Entry $entry): static

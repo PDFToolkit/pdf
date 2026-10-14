@@ -35,6 +35,9 @@ final readonly class NavigationGraphValidation
         if ($destinations->hasNameTree) {
             $version?->require(PdfVersion::PDF12, 'Named destinations name tree');
         }
+        if ($destinations->hasStructure) {
+            $version?->require(PdfVersion::PDF20, 'Named structure destinations');
+        }
         $this->labels($graph, $pages, $version);
         $this->articles($graph, $pages, $version);
         $this->presentation($graph, $pages, $destinations, $version);
@@ -372,6 +375,7 @@ final readonly class NavigationGraphValidation
     {
         $pending = [$root];
         $seen = [];
+        $structureResolver = null;
         while ($pending !== []) {
             $reference = array_pop($pending);
             $key = $pages->key($reference);
@@ -393,14 +397,18 @@ final readonly class NavigationGraphValidation
             if ($subtype->value === 'GoTo') {
                 $value = $action->get('D');
                 $destination = $value === null ? null : $graph->resolve($value);
+                $structureValue = $graph->entry($action, 'SD');
+                $structure = $structureValue === null ? null : $graph->resolve($structureValue);
                 if ($destination instanceof NameType || $destination instanceof StringType) {
+                    $structure ??= $destinations->structure($destination);
                     $destination = $destinations->find($destination);
                 }
                 if (!$destination instanceof ArrayType) {
                     throw new \InvalidArgumentException('An effective GoTo requires its local destination.');
                 }
                 $this->destinationArray($pages, $destination);
-                if ($pages->index($destination->items[0]) !== $pageIndex) {
+                $page = $structure instanceof ArrayType ? ($structureResolver ??= new StructureDestinationResolver($graph, $this->limits))->page($structure) : $destination->items[0];
+                if ($pages->index($page) !== $pageIndex) {
                     return true;
                 }
             }
@@ -433,6 +441,7 @@ final readonly class NavigationGraphValidation
     {
         $pending = [[$graph->catalog, 'other']];
         $seen = [];
+        $structureResolver = null;
         while ($pending !== []) {
             [$value, $kind] = array_pop($pending);
             $key = $pages->key($value) . ':' . $kind;
@@ -471,6 +480,21 @@ final readonly class NavigationGraphValidation
                         }
                         $targets[] = $target;
                         $version?->require(PdfVersion::PDF11, 'Local GoTo action');
+                    }
+                    if (in_array($actionType->value, ['GoTo', 'GoToR', 'GoToE'], true)) {
+                        $sdValue = $graph->entry($dictionary, 'SD');
+                        if ($sdValue !== null) {
+                            $version?->require(PdfVersion::PDF20, 'Structure destination action SD');
+                            $sd = $graph->resolve($sdValue);
+                            if (!$sd instanceof ArrayType) {
+                                throw new \InvalidArgumentException('An action SD requires an explicit structure destination array.');
+                            }
+                            if ($actionType->value === 'GoTo') {
+                                ($structureResolver ??= new StructureDestinationResolver($graph, $this->limits))->page($sd);
+                            } else {
+                                StructureDestinationResolver::remote($sd);
+                            }
+                        }
                     }
                 }
                 if (($annotation && $annotationType instanceof NameType && $annotationType->value === 'Link') || $outline) {

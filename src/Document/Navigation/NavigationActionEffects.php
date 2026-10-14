@@ -9,6 +9,7 @@ use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\StringType;
 
 /** Inspect declared navigation targets only. Script/runtime effects are not inferred. */
@@ -44,10 +45,14 @@ final readonly class NavigationActionEffects
             if ($type->value === 'GoTo') {
                 $destination = $current->get('D');
                 $destination = $destination instanceof IndirectReference ? $destination->target() : $destination;
+                $structure = $current->get('SD');
+                $structure = $structure instanceof IndirectReference ? $structure->target() : $structure;
+                $structure = $structure instanceof NullType ? null : $structure;
                 if ($destination instanceof NameType || $destination instanceof StringType) {
+                    $structure ??= (new DestinationLookup($this->limits))->structure($destination, $catalog);
                     $destination = (new DestinationLookup($this->limits))->find($destination, $catalog);
                 }
-                $reference = $destination instanceof ArrayType ? ($destination->items[0] ?? null) : null;
+                $reference = $structure instanceof ArrayType ? (new StructureDestinationResolver($catalog, $this->limits))->page($structure) : ($destination instanceof ArrayType ? ($destination->items[0] ?? null) : null);
                 if (!$reference instanceof IndirectReference || !$reference->target() instanceof DictionaryType) {
                     throw new \InvalidArgumentException('A declared local GoTo needs a local page destination.');
                 }

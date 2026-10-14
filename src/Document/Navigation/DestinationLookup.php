@@ -8,6 +8,7 @@ use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\StringType;
 
 /** Resolve a local name from its correct catalogue namespace; never load another file. */
@@ -17,7 +18,7 @@ final readonly class DestinationLookup
     {
     }
 
-    public function find(NameType|StringType $name, DictionaryType $catalog): ArrayType
+    private function value(NameType|StringType $name, DictionaryType $catalog): \PDF\Syntax\FileStructure\BasicType
     {
         if ($name instanceof NameType) {
             $dictionary = $catalog->get('Dests');
@@ -75,6 +76,27 @@ final readonly class DestinationLookup
             }
         }
         $value = $value instanceof IndirectReference ? $value->target() : $value;
+        return $value ?? throw new \InvalidArgumentException('The named destination is absent from this catalog namespace.');
+    }
+
+    public function structure(NameType|StringType $name, DictionaryType $catalog): ?ArrayType
+    {
+        $value = $this->value($name, $catalog);
+        $value = $value instanceof DictionaryType ? $value->get('SD') : null;
+        $value = $value instanceof IndirectReference ? $value->target() : $value;
+        if ($value === null || $value instanceof NullType) {
+            return null;
+        }
+        if (!$value instanceof ArrayType) {
+            throw new \InvalidArgumentException('A named SD destination must be an array.');
+        }
+        (new StructureDestinationResolver($catalog, $this->limits))->page($value);
+        return $value;
+    }
+
+    public function find(NameType|StringType $name, DictionaryType $catalog): ArrayType
+    {
+        $value = $this->value($name, $catalog);
         if ($value instanceof DictionaryType) {
             $value = $value->get('D');
             $value = $value instanceof IndirectReference ? $value->target() : $value;

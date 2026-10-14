@@ -12,7 +12,7 @@ use PDF\Syntax\Object\IndirectReference;
 /** Inspects a constructed PDF graph. It never adds declarations or certifies accessibility. */
 final readonly class WtPdfAudit
 {
-    public function __construct(private WtPdfStructureChecks $structure = new WtPdfStructureChecks(), private WtPdfGraphChecks $graph = new WtPdfGraphChecks(), private WtPdfFontUsageChecks $fonts = new WtPdfFontUsageChecks())
+    public function __construct(private WtPdfStructureChecks $structure = new WtPdfStructureChecks(), private WtPdfGraphChecks $graph = new WtPdfGraphChecks(), private WtPdfFontUsageChecks $fonts = new WtPdfFontUsageChecks(), private WtPdfNavigationChecks $navigation = new WtPdfNavigationChecks())
     {
     }
 
@@ -43,6 +43,11 @@ final readonly class WtPdfAudit
             array_push($findings, ...$this->fonts->inspect($catalog, $level));
         } catch (\InvalidArgumentException|\LogicException $error) {
             $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::Failed, 'Font usage: ' . $error->getMessage());
+        }
+        try {
+            array_push($findings, ...$this->navigation->inspect($catalog));
+        } catch (\InvalidArgumentException|\LogicException $error) {
+            $findings[] = new WtPdfFinding('8.8', 36, WtPdfFindingStatus::Failed, 'Navigation: ' . $error->getMessage());
         }
         // These judgments cannot be inferred from syntactic correctness or an XMP assertion.
         foreach ([

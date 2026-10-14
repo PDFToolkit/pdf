@@ -20,6 +20,11 @@ final readonly class NamedDestinationIndex
     private array $names;
     /** @var array<string, ArrayType> */
     private array $strings;
+    /** @var array<string, ArrayType> */
+    private array $structureNames;
+    /** @var array<string, ArrayType> */
+    private array $structureStrings;
+    public bool $hasStructure;
     public bool $hasLegacy;
     public bool $hasNameTree;
 
@@ -30,6 +35,9 @@ final readonly class NamedDestinationIndex
         }
         $names = [];
         $strings = [];
+        $structureNames = [];
+        $structureStrings = [];
+        $structureResolver = null;
         $legacy = $graph->entry($graph->catalog, 'Dests');
         $this->hasLegacy = $legacy !== null;
         if ($legacy !== null) {
@@ -39,6 +47,10 @@ final readonly class NamedDestinationIndex
             foreach ($dictionary->entries() as $entry) {
                 if (!$graph->resolve($entry->value) instanceof NullType) {
                     $names[bin2hex($entry->key->value)] = $this->explicit($graph, $pages, $entry->value);
+                    $sd = $this->structureValue($graph, $entry->value, $structureResolver, $limits);
+                    if ($sd !== null) {
+                        $structureNames[bin2hex($entry->key->value)] = $sd;
+                    }
                 }
                 if (count($names) > $limits->maxNodes) {
                     throw new \LengthException('The destination mapping exceeds its explicit construction budget.');
@@ -52,6 +64,10 @@ final readonly class NamedDestinationIndex
         if ($tree !== null) {
             foreach ($graph->nameTree($tree) as $key => $value) {
                 $strings[$key] = $this->explicit($graph, $pages, $value);
+                $sd = $this->structureValue($graph, $value, $structureResolver, $limits);
+                if ($sd !== null) {
+                    $structureStrings[$key] = $sd;
+                }
                 if (count($names) + count($strings) > $limits->maxNodes) {
                     throw new \LengthException('The destination mapping exceeds its explicit construction budget.');
                 }
@@ -59,12 +75,37 @@ final readonly class NamedDestinationIndex
         }
         $this->names = $names;
         $this->strings = $strings;
+        $this->structureNames = $structureNames;
+        $this->structureStrings = $structureStrings;
+        $this->hasStructure = $structureNames !== [] || $structureStrings !== [];
     }
 
     public function find(NameType|StringType $name): ArrayType
     {
         $mapping = $name instanceof NameType ? $this->names : $this->strings;
         return $mapping[bin2hex($name->value)] ?? throw new \InvalidArgumentException('The named destination is absent from its effective catalogue namespace.');
+    }
+
+    public function structure(NameType|StringType $name): ?ArrayType
+    {
+        $this->find($name);
+        $mapping = $name instanceof NameType ? $this->structureNames : $this->structureStrings;
+        return $mapping[bin2hex($name->value)] ?? null;
+    }
+
+    private function structureValue(DocumentGraphContext $graph, BasicType $value, ?StructureDestinationResolver &$resolver, NavigationLimits $limits): ?ArrayType
+    {
+        $dictionary = $graph->dictionary($value);
+        $sd = $dictionary === null ? null : $graph->entry($dictionary, 'SD');
+        if ($sd === null) {
+            return null;
+        }
+        $sd = $graph->resolve($sd);
+        if (!$sd instanceof ArrayType) {
+            throw new \InvalidArgumentException('Named destination SD requires a structure destination array.');
+        }
+        ($resolver ??= new StructureDestinationResolver($graph, $limits))->page($sd);
+        return $sd;
     }
 
     private function explicit(DocumentGraphContext $graph, NavigationPageIndex $pages, BasicType $value): ArrayType

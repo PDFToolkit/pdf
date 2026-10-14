@@ -31,6 +31,14 @@
       "mechanisms": "Forbidden H/Note roles, canonical Ref arrays and reciprocal FENote references"
     },
     {
+      "clauses": "8.8",
+      "pages": [
+        36,
+        37
+      ],
+      "mechanisms": "Explicit local structure destinations and named SD dictionaries; ordered K first-content resolution and first-page fallback; native audit rejects page-only internal destinations, while semantic reference adequacy requires human review"
+    },
+    {
       "clauses": "8.2.5.23–8.2.5.27",
       "pages": [
         23,
@@ -168,7 +176,10 @@
     "tests/WtPdfAuditTest.php",
     "examples/pdf20-tagged-namespaces.php",
     "tools/validate_pdf20_tagging.py",
-    "tests/WtPdfRequirementsTest.php"
+    "tests/WtPdfRequirementsTest.php",
+    "tests/StructureDestinationTest.php",
+    "examples/pdf20-structure-destinations.php",
+    "tools/validate_pdf20_structure_destinations.py"
   ],
   "requirement_inventory": "resources/wtpdf-1.0/requirements.json"
 }
