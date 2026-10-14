@@ -2,7 +2,7 @@
 
 English | [Français](README.fr.md)
 
-The retained source is [`adobe_supplement_iso32000.pdf`](../../adobe_supplement_iso32000.pdf), Adobe Acrobat SDK 9.0, edition 1.0, June 2008. Its original bytes and filename are preserved. `metadata.json` records the SHA-256 and document identity; every generated PHP definition references the exact physical PDF page, clause and source document.
+The retained source is [`adobe_supplement_iso32000.pdf`](../reference-documents/adobe_supplement_iso32000.pdf), Adobe Acrobat SDK 9.0, edition 1.0, June 2008. Its original bytes and filename are preserved. `metadata.json` records the SHA-256 and document identity; every generated PHP definition references the exact physical PDF page, clause and source document.
 
 This is an Adobe extension to PDF 1.7. Its table identifiers follow the PDF Reference numbering and are kept separate from the ISO 32000-1 catalogue. The supplement itself explains this distinction on pages 5–7.
 

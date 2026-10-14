@@ -17,11 +17,11 @@ def require(condition, message):
 
 
 def validate(directory):
-    source = ROOT / 'adobe_supplement_iso32000.pdf'
-    require(hashlib.sha256(source.read_bytes()).hexdigest() == '50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48', 'Adobe source bytes changed')
-    require(len(PdfReader(source, strict=True).pages) == 140, 'Adobe source page count changed')
     catalogue = ROOT / 'resources/adobe-supplement-iso32000'
     metadata = json.loads((catalogue / 'metadata.json').read_text(encoding='utf-8'))
+    source = ROOT / metadata['path']
+    require(hashlib.sha256(source.read_bytes()).hexdigest() == '50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48', 'Adobe source bytes changed')
+    require(len(PdfReader(source, strict=True).pages) == 140, 'Adobe source page count changed')
     require(metadata['document_sha256'] == hashlib.sha256(source.read_bytes()).hexdigest(), 'Source catalogue fingerprint differs')
     reader = PdfReader(directory / 'adobe-extensions.pdf', strict=True)
     require(len(reader.pages) == 1, 'Expected one extension example page')

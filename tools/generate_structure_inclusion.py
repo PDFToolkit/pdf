@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "resources/iso32000-2-bundle/documents/ISO-TS-32005-2023-sponsored.pdf"
+SOURCE = ROOT / "resources/reference-documents/ISO-TS-32005-2023-sponsored.pdf"
 TARGET = ROOT / "resources/iso-ts-32005/inclusion.json"
 PHP = ROOT / "src/Document/Structure/StructureInclusionTable.php"
 

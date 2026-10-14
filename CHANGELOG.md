@@ -4,6 +4,18 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.7.1] - 2026-10-14
+
+- Group all eighteen original specification PDFs under
+  `resources/reference-documents/`, with a bilingual index and their original
+  filenames and bytes. Keep the test fixtures beside their tests.
+- Record repository paths separately from document identities; update source
+  catalogues, generators, evidence links and validation tools.
+- Exclude the reference collection from Composer archives and retain the
+  documentation site's public PDF download addresses.
+- Lock the reader development dependency to its published 0.1.9 documentation
+  correction.
+
 ## [0.7.0] - 2026-10-14
 
 ### PDF 2.0 objects and companion mechanisms

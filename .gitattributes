@@ -3,15 +3,9 @@
 *.png binary
 *.ttf binary
 *.jpg binary
-/PDF32000_2008.pdf export-ignore
-/adobe_supplement_iso32000.pdf export-ignore
-/pdf_17_errata.pdf export-ignore
-/pdf_reference.pdf export-ignore
-/pdf_reference1-7_addendum_redaction.pdf export-ignore
-/pdf_reference_1-7.pdf export-ignore
+/resources/reference-documents export-ignore
+/resources/reference-documents/** export-ignore
 /.github export-ignore
 /.cache export-ignore
 /vendor export-ignore
-/ISO_32000-2_sponsored_EC3.pdf export-ignore
-/resources/iso32000-2-bundle/documents/ export-ignore
 /resources/iso32000-2-2020/source-extraction.json export-ignore

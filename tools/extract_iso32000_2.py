@@ -167,7 +167,7 @@ def extract(source, destination):
 if __name__ == "__main__":
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, default=root / "ISO_32000-2_sponsored_EC3.pdf")
+    parser.add_argument("--source", type=Path, default=root / "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     extract(args.source, args.output)

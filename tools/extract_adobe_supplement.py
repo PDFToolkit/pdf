@@ -88,7 +88,7 @@ def write(path: Path, value: object, check: bool) -> None:
 
 
 def extract(root: Path, check: bool = False) -> None:
-    source = root / DOCUMENT
+    source = root / 'resources/reference-documents' / DOCUMENT
     if hashlib.sha256(source.read_bytes()).hexdigest() != SHA256:
         raise ValueError('The retained supplement does not match the reviewed source document.')
     destination = root / 'resources' / 'adobe-supplement-iso32000'
@@ -253,7 +253,8 @@ def extract(root: Path, check: bool = False) -> None:
                 entry['implementation_correction'] = correction
                 entry.update(correction['constraints'])
     metadata = {
-        'document': DOCUMENT, 'document_sha256': SHA256, 'standard': STANDARD,
+        'document': DOCUMENT, 'path': 'resources/reference-documents/' + DOCUMENT,
+        'document_sha256': SHA256, 'standard': STANDARD,
         'base_version': '1.7', 'extension_level': 3, 'edition': '1.0', 'date': 'June 2008',
         'pdf_pages': 140, 'part_i_pdf_pages': [9, 103], 'part_ii_pdf_pages': [106, 132],
         'dictionary_tables': len(tables), 'dictionary_entries': sum(len(table['entries']) + len(table['variable_entries']) for table in tables.values()),

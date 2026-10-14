@@ -213,6 +213,6 @@ final class AdobeExtensionObjectsTest extends TestCase
     {
         self::assertSame('PDF32000_2008.pdf', (new SourceReference('50', '7.12', 116))->document);
         $source = (new BatesArtifact())->definition()->source;
-        self::assertSame($source->documentSha256, hash_file('sha256', dirname(__DIR__) . '/' . $source->document));
+        self::assertSame($source->documentSha256, hash_file('sha256', dirname(__DIR__) . '/resources/reference-documents/' . $source->document));
     }
 }

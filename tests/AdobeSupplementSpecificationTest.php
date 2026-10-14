@@ -78,7 +78,7 @@ final class AdobeSupplementSpecificationTest extends TestCase
         self::assertCount($entryCount, array_unique($classNames));
         self::assertSame(
             $metadata['document_sha256'],
-            hash_file('sha256', dirname(__DIR__) . '/' . $metadata['document']),
+            hash_file('sha256', dirname(__DIR__) . '/' . $metadata['path']),
         );
     }
 
@@ -240,7 +240,7 @@ final class AdobeSupplementSpecificationTest extends TestCase
                 $entry = $key === 'Prefix name' ? $definition->variableEntry($key) : $definition->entry($key);
                 self::assertTrue($entry->type->direct);
                 self::assertFalse($entry->type->indirect);
-                self::assertSame('PDF32000_2008.pdf', $entry->correction?->evidenceUrl);
+                self::assertSame('resources/reference-documents/PDF32000_2008.pdf', $entry->correction?->evidenceUrl);
                 self::assertStringContainsString('7.12.1', $entry->correction?->evidenceLocator ?? '');
                 try {
                     $entry->type->validate(new IndirectReference($this->sampleValue($entry)));

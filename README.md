@@ -29,15 +29,18 @@ Before version `1.0`, a new minor version may change names and signatures;
 patch versions preserve their series' API. Implemented scope and limitations
 are listed in the [specification coverage](https://pdftoolkit.github.io/guides/specification.html).
 
-Definitions are based on the Adobe/ISO documents `PDF32000_2008.pdf` and
-`adobe_supplement_iso32000.pdf`, retained in this repository. The
+All eighteen original reference PDFs are kept in
+[`resources/reference-documents/`](resources/reference-documents/README.md),
+with their original filenames and bytes. Definitions are based on the Adobe/ISO
+documents [PDF32000_2008.pdf](resources/reference-documents/PDF32000_2008.pdf) and
+[adobe_supplement_iso32000.pdf](resources/reference-documents/adobe_supplement_iso32000.pdf). The
 [supplement guide](https://pdftoolkit.github.io/guides/adobe-supplement.html)
 explains Adobe PDF 1.7 extension level 3, its provenance and mechanisms.
 The [Adobe reference guide](https://pdftoolkit.github.io/guides/adobe-references.html)
 also presents the 2006 reference, its errata, the redaction addendum and their
 portfolio. All Adobe PDFs supplied to the project retain their original names
 and bytes; reference PDFs are excluded from Composer archives.
-The supplied [ISO 32000-2:2020 EC3 PDF](ISO_32000-2_sponsored_EC3.pdf),
+The supplied [ISO 32000-2:2020 EC3 PDF](resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf),
 obtained through the [PDF Association sponsored access](https://www.pdfa.org/sponsored-standards/),
 is retained unchanged in this repository and excluded from Composer archives.
 Its edition, physical pages and fingerprint are recorded in a separate catalogue. PDF/A,

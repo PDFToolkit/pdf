@@ -3,7 +3,7 @@
 [English](README.md) | Français
 
 Les onze PDF originaux fournis par le propriétaire du projet sont conservés dans
-[`documents/`](documents/), sans modifier leurs noms ni leurs octets.
+[`../reference-documents/`](../reference-documents/), sans modifier leurs noms ni leurs octets.
 Ils proviennent de la [collection de normes sponsorisées de la PDF Association](https://www.pdfa.org/sponsored-standards/).
 [`sources.json`](sources.json) indique pour chaque copie son identité, son
 empreinte SHA-256, sa taille, son nombre de pages PDF physiques et sa collection
@@ -23,9 +23,10 @@ de corrections, lorsqu’elle en possède une.
 | Note d’application 002 | Fichiers associés |
 | Note d’application 003 | Emplacements des flux de métadonnées d’objets |
 
-La copie de la spécification de base précédemment fournie reste à la racine du
-dépôt. La nouvelle copie, dont le nom d’origine se termine par `(1).pdf`, possède
-une empreinte différente et est conservée séparément. L’empreinte identifie une
+La copie de la spécification de base précédemment fournie est conservée dans le
+même dossier `reference-documents`. La nouvelle copie, dont le nom d’origine se
+termine par `(1).pdf`, possède une empreinte différente et est conservée
+séparément. L’empreinte identifie une
 copie fournie précise ; elle ne désigne pas une nouvelle édition de la norme.
 
 Les annotations EC3 font partie de la source : une résolution `Accepted` et une

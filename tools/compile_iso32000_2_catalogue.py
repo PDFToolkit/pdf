@@ -34,7 +34,7 @@ def compile_catalogue(extraction, root, check=False):
     resolved = [{key: value for key, value in issue.items() if key != "resolution"} for issue in reviews["resolved_extraction_anomalies"]]
     if evidence["issues"] != resolved:
         raise ValueError("Extraction anomalies changed and require a new explicit review")
-    source = root / metadata["source"]["document"]
+    source = root / metadata["source"]["path"]
     if hashlib.sha256(source.read_bytes()).hexdigest() != metadata["source"]["sha256"]:
         raise ValueError("The catalogue source must identify the retained canonical PDF")
     source_inventory = evidence["source"]

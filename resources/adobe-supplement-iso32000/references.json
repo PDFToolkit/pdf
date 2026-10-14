@@ -3,6 +3,7 @@
     {
       "id": "iso32000-1-2008",
       "filename": "PDF32000_2008.pdf",
+      "path": "resources/reference-documents/PDF32000_2008.pdf",
       "title": "ISO 32000-1:2008",
       "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
       "pdfPages": 756,
@@ -11,6 +12,7 @@
     {
       "id": "adobe-supplement-iso32000-2008-extension-level-3",
       "filename": "adobe_supplement_iso32000.pdf",
+      "path": "resources/reference-documents/adobe_supplement_iso32000.pdf",
       "title": "Adobe Supplement to the ISO 32000, BaseVersion 1.7, ExtensionLevel 3, June 2008, Edition 1.0",
       "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
       "pdfPages": 140,

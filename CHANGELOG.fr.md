@@ -4,6 +4,18 @@
 
 ## [Non publié]
 
+## [0.7.1] - 2026-10-14
+
+- Regrouper les dix-huit PDF de spécification originaux sous
+  `resources/reference-documents/`, avec un index bilingue et leurs noms et
+  octets d’origine. Garder les fixtures PDF avec leurs tests.
+- Consigner les chemins du dépôt séparément des identités documentaires ;
+  actualiser catalogues, générateurs, liens de preuve et outils de validation.
+- Exclure la collection de références des archives Composer et conserver les
+  adresses publiques des téléchargements PDF du site documentaire.
+- Verrouiller la dépendance de développement du lecteur sur sa correction
+  documentaire publiée 0.1.9.
+
 ## [0.7.0] - 2026-10-14
 
 ### Objets PDF 2.0 et mécanismes complémentaires

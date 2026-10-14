@@ -248,6 +248,7 @@ def extract(source: Path, destination: Path, corrections_path: Path) -> None:
         "standard": "ISO 32000-1:2008",
         "pdf_version": "1.7",
         "source": source.name,
+        "source_path": "resources/reference-documents/" + source.name,
         "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "pdf_pages": len(reader.pages),
         "outline_entries": len(sections),
@@ -271,7 +272,7 @@ def extract(source: Path, destination: Path, corrections_path: Path) -> None:
 if __name__ == "__main__":
     root = Path(__file__).resolve().parents[1]
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", type=Path, default=root / "PDF32000_2008.pdf")
+    parser.add_argument("--source", type=Path, default=root / "resources/reference-documents/PDF32000_2008.pdf")
     parser.add_argument("--output", type=Path, default=root / "resources" / "iso32000-1")
     parser.add_argument('--corrections', type=Path, default=root / 'resources' / 'iso32000-1' / 'corrections.json')
     parser.add_argument('--refresh-constraints', action='store_true', help='Refresh interpreted constraints and explicit corrections without re-extracting PDF table text')

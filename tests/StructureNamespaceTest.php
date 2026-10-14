@@ -95,7 +95,7 @@ final class StructureNamespaceTest extends TestCase
         self::assertSame('1', StructureInclusionTable::RULES['StructTreeRoot']['children']['Document']);
         self::assertSame('c', StructureInclusionTable::RULES['WP']['children']['Figure']);
         self::assertSame('0..1', StructureInclusionTable::RULES['Table']['children']['THead']);
-        self::assertSame(hash_file('sha256', __DIR__ . '/../resources/iso32000-2-bundle/documents/ISO-TS-32005-2023-sponsored.pdf'), StructureInclusionTable::SOURCE_SHA256);
+        self::assertSame(hash_file('sha256', __DIR__ . '/../resources/reference-documents/ISO-TS-32005-2023-sponsored.pdf'), StructureInclusionTable::SOURCE_SHA256);
     }
 
     public function testMixedNamespacesSerializeAnExplicitPdf17TableOfContents(): void

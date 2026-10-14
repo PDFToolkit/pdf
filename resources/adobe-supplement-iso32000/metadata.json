@@ -1,5 +1,6 @@
 {
   "document": "adobe_supplement_iso32000.pdf",
+  "path": "resources/reference-documents/adobe_supplement_iso32000.pdf",
   "document_sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
   "standard": "Adobe Supplement to ISO 32000, BaseVersion 1.7, ExtensionLevel 3 (June 2008)",
   "base_version": "1.7",

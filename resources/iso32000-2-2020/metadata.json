@@ -10,6 +10,7 @@
   },
   "source": {
     "document": "ISO_32000-2_sponsored_EC3.pdf",
+    "path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
     "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
     "physical_pdf_pages": 1023,
     "retention": "supplied original preserved in this public repository",

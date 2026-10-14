@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cacefafa17b526dd8bfcc6338cc369f",
+    "content-hash": "bbaac6df85223f79cd861a28aa95dd7a",
     "packages": [],
     "packages-dev": [
         {
@@ -813,16 +813,16 @@
         },
         {
             "name": "pdftoolkit/pdf-reader",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-reader.git",
-                "reference": "9aef54d7cb575ba4cb6d9db75bc31e649c10fd53"
+                "reference": "81267233e03d8f8ed488ed155d4ecd26d0df0f39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/9aef54d7cb575ba4cb6d9db75bc31e649c10fd53",
-                "reference": "9aef54d7cb575ba4cb6d9db75bc31e649c10fd53",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/81267233e03d8f8ed488ed155d4ecd26d0df0f39",
+                "reference": "81267233e03d8f8ed488ed155d4ecd26d0df0f39",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +872,7 @@
                 "issues": "https://github.com/PDFToolkit/pdf-reader/issues",
                 "source": "https://github.com/PDFToolkit/pdf-reader"
             },
-            "time": "2026-10-14T13:58:02+00:00"
+            "time": "2026-10-14T16:50:10+00:00"
         },
         {
             "name": "phar-io/manifest",

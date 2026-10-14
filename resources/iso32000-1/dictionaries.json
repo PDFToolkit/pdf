@@ -1493,7 +1493,7 @@
             "indirect": false
           },
           "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=116",
           "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
@@ -3682,7 +3682,7 @@
             "introduced_in": null
           },
           "rationale": "The PDF1.7 qualifier describes the UF amendment, not the introduction of F. File specifications exist since PDF1.1 (7.11.1). Preserve the printed wording but do not require PDF1.7 for the original F entry.",
-          "evidence_url": "PDF32000_2008.pdf#page=110",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=110",
           "evidence_locator": "ISO32000-1 7.11.1 physical page107 and Table44 physical page110; UF amendment vs existing F."
         }
       },
@@ -4308,7 +4308,7 @@
             "indirect": false
           },
           "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=116",
           "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
@@ -4340,7 +4340,7 @@
             "indirect": false
           },
           "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=116",
           "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       },
@@ -4372,7 +4372,7 @@
             "indirect": false
           },
           "rationale": "The normative prose in ISO 32000-1, 7.12.1 requires the extensions dictionary, its developer extension dictionaries and their entries to be direct objects. This explicit source clarification applies a requirement stated outside the table cells; it does not change their original descriptions or claim an official erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=116",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=116",
           "evidence_locator": "ISO 32000-1:2008, 7.12.1 General, physical PDF page 116, printed page 108"
         }
       }
@@ -5974,7 +5974,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=193",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=193",
           "evidence_locator": "ISO 32000-1:2008, table 79, Function value prose, physical PDF page 193"
         }
       }
@@ -6058,7 +6058,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=194",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=194",
           "evidence_locator": "ISO 32000-1:2008, table 80, Function value prose, physical PDF page 194"
         }
       },
@@ -6162,7 +6162,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=195",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=195",
           "evidence_locator": "ISO 32000-1:2008, table 81, Function value prose, physical PDF page 195"
         }
       },
@@ -6307,7 +6307,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=198",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=198",
           "evidence_locator": "ISO 32000-1:2008, table 82, Function value prose, physical PDF page 198"
         }
       }
@@ -6431,7 +6431,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=201",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=201",
           "evidence_locator": "ISO 32000-1:2008, table 83, Function value prose, physical PDF page 201"
         }
       }
@@ -6555,7 +6555,7 @@
             "type": "function or array"
           },
           "rationale": "The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=204",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=204",
           "evidence_locator": "ISO 32000-1:2008, table 84, Function value prose, physical PDF page 204"
         }
       }
@@ -28824,7 +28824,7 @@
             "type": "number or array"
           },
           "rationale": "The printed Type column says integer or array, but the normative value prose explicitly permits a single number or a four-entry array of numbers. Fractional padding values must remain constructible. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=611",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=611",
           "evidence_locator": "ISO 32000-1:2008, table 344, TPadding value prose, physical PDF page 611"
         }
       }
@@ -29010,7 +29010,7 @@
             "type": "number or name"
           },
           "rationale": "The printed Type column says name, but the normative value prose allows a numeric multiple of 90 in [-180, +360] or /Auto. Both source-defined representations must be constructible. This is an explicit source clarification, not a claim of an official ISO erratum.",
-          "evidence_url": "PDF32000_2008.pdf#page=614",
+          "evidence_url": "resources/reference-documents/PDF32000_2008.pdf#page=614",
           "evidence_locator": "ISO 32000-1:2008, table 345, GlyphOrientationVertical value prose, physical PDF page 614"
         }
       }

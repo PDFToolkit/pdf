@@ -1,6 +1,6 @@
 # Espaces de noms de structure ISO/TS 32005:2023
 
-La source conservée est `../iso32000-2-bundle/documents/ISO-TS-32005-2023-sponsored.pdf` (49 pages physiques). Son empreinte exacte figure dans `inclusion.json` et dans le catalogue du bundle. Cette copie provient du [programme de normes sponsorisées de la PDF Association](https://www.pdfa.org/sponsored-standards/).
+La source conservée est `../reference-documents/ISO-TS-32005-2023-sponsored.pdf` (49 pages physiques). Son empreinte exacte figure dans `inclusion.json` et dans le catalogue du bundle. Cette copie provient du [programme de normes sponsorisées de la PDF Association](https://www.pdfa.org/sponsored-standards/).
 
 `inclusion.json` conserve toutes les occurrences enfants/parents imprimées dans le tableau 5 des pages physiques 14–46 : 53 lignes, dont `StructTreeRoot`. La classe générée `StructureInclusionTable` contient les mêmes données sans lecture de fichier à l’exécution. `python tools/generate_structure_inclusion.py --check` vérifie sa reproductibilité et l’identité de la source. La réextraction reste explicite : `python tools/generate_structure_inclusion.py --extract` demande uniquement la dépendance de développement `pdfplumber`.
 

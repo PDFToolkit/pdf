@@ -83,7 +83,7 @@ final class Iso32000_2SpecificationTest extends TestCase
         self::assertSame(1709, $entries);
         self::assertSame($entries, $metadata['dictionary_catalogue']['entry_count']);
         self::assertTrue($metadata['source']['public_copy_included']);
-        $originalSource = dirname(__DIR__) . '/' . $metadata['source']['document'];
+        $originalSource = dirname(__DIR__) . '/' . $metadata['source']['path'];
         self::assertFileExists($originalSource);
         self::assertSame($metadata['source']['sha256'], hash_file('sha256', $originalSource));
         self::assertSame($metadata['source']['bytes'], filesize($originalSource));

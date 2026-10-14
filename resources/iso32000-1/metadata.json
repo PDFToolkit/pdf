@@ -2,6 +2,7 @@
   "standard": "ISO 32000-1:2008",
   "pdf_version": "1.7",
   "source": "PDF32000_2008.pdf",
+  "source_path": "resources/reference-documents/PDF32000_2008.pdf",
   "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
   "pdf_pages": 756,
   "outline_entries": 823,

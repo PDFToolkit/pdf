@@ -3,7 +3,7 @@
 English | [Français](README.fr.md)
 
 The eleven PDF originals supplied by the project owner are retained in
-[`documents/`](documents/) without changing their filenames or bytes.
+[`../reference-documents/`](../reference-documents/) without changing their filenames or bytes.
 They come from the [PDF Association sponsored standards collection](https://www.pdfa.org/sponsored-standards/).
 [`sources.json`](sources.json) records each copy's identity, SHA-256, byte count,
 physical PDF page count and correction collection, where applicable.
@@ -22,7 +22,8 @@ physical PDF page count and correction collection, where applicable.
 | Application Note 002 | Associated files |
 | Application Note 003 | Locations of object metadata streams |
 
-The base specification's earlier supplied copy remains at the repository root.
+The base specification's earlier supplied copy is retained in the same
+`reference-documents` directory.
 The new copy, whose original name ends with `(1).pdf`, has a different fingerprint
 and is retained separately. A file fingerprint identifies a particular supplied
 copy; it does not identify a new edition of the specification.

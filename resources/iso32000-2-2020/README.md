@@ -10,7 +10,7 @@ produces **2,322 PHP files**, including an immutable
 dictionary inventory. Conditional, algorithmic and document conformance remain
 separate, explicitly tracked work in [coverage.json](coverage.json).
 
-The canonical source is [the retained original](../../ISO_32000-2_sponsored_EC3.pdf),
+The canonical source is [the retained original](../reference-documents/ISO_32000-2_sponsored_EC3.pdf),
 1,023 physical PDF pages, SHA-256
 `90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
 It comes from the [PDF Association sponsored standards](https://www.pdfa.org/sponsored-standards/)

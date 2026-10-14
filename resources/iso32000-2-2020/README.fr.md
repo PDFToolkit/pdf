@@ -11,7 +11,7 @@ et sept classes de clés variables explicites**. Le générateur produit
 dictionnaires. Les règles conditionnelles, les algorithmes et la conformité globale
 restent suivis séparément dans [coverage.json](coverage.json).
 
-La source canonique est [l’original conservé](../../ISO_32000-2_sponsored_EC3.pdf),
+La source canonique est [l’original conservé](../reference-documents/ISO_32000-2_sponsored_EC3.pdf),
 de 1 023 pages physiques, dont le SHA-256 est
 `90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
 Elle provient des [normes sponsorisées de la PDF Association](https://www.pdfa.org/sponsored-standards/)

@@ -44,7 +44,7 @@ def validate(root: Path) -> None:
     records = catalogue['documents']
     documents = {record['document']: record for record in records}
     require(len(documents) == len(records) and set(documents) == set(SOURCE_SHA256), 'The catalogue must retain all four unique supplied Adobe originals')
-    sources = {name: (root / name).read_bytes() for name in documents}
+    sources = {name: (root / record['path']).read_bytes() for name, record in documents.items()}
     attachments_checked = 0
     duplicates_checked = 0
     for name, record in documents.items():

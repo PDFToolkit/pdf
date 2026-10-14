@@ -2,7 +2,7 @@
 
 [English](README.md) | Français
 
-La source conservée est [`adobe_supplement_iso32000.pdf`](../../adobe_supplement_iso32000.pdf),
+La source conservée est [`adobe_supplement_iso32000.pdf`](../reference-documents/adobe_supplement_iso32000.pdf),
 Adobe Acrobat SDK 9.0, édition 1.0, juin 2008. Ses octets et nom originaux sont
 préservés. `metadata.json` enregistre SHA-256 et identité documentaire ; chaque
 définition PHP générée indique sa page PDF physique exacte, sa clause et sa source.

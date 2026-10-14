@@ -1,6 +1,6 @@
 # ISO/TS 32005:2023 structure namespaces
 
-The retained source is `../iso32000-2-bundle/documents/ISO-TS-32005-2023-sponsored.pdf` (49 physical pages). Its exact hash is recorded in `inclusion.json` and the bundle catalogue. The PDF Association supplied this copy through its [sponsored standards programme](https://www.pdfa.org/sponsored-standards/).
+The retained source is `../reference-documents/ISO-TS-32005-2023-sponsored.pdf` (49 physical pages). Its exact hash is recorded in `inclusion.json` and the bundle catalogue. The PDF Association supplied this copy through its [sponsored standards programme](https://www.pdfa.org/sponsored-standards/).
 
 `inclusion.json` preserves every printed child/parent occurrence from table 5 on physical pages 14–46: 53 rows, including `StructTreeRoot`. The generated `StructureInclusionTable` contains the same data without runtime file access. Run `python tools/generate_structure_inclusion.py --check` to verify the generated class and source identity. Re-extraction is explicit: `python tools/generate_structure_inclusion.py --extract` requires development-only `pdfplumber`.
 

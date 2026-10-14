@@ -34,8 +34,8 @@ final class Iso32000BundleSourcesTest extends TestCase
     public function testDifferentSuppliedCopiesDoNotReplaceTheExistingEditionSource(): void
     {
         $root = dirname(__DIR__);
-        $earlier = $root . '/ISO_32000-2_sponsored_EC3.pdf';
-        $new = $root . '/resources/iso32000-2-bundle/documents/ISO_32000-2_sponsored_EC3(1).pdf';
+        $earlier = $root . '/resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf';
+        $new = $root . '/resources/reference-documents/ISO_32000-2_sponsored_EC3(1).pdf';
         self::assertSame('90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', hash_file('sha256', $earlier));
         self::assertSame('0ab938d855bb142456635fdb60c650b1caecfe3a944583a50da9efad34bbf9f4', hash_file('sha256', $new));
     }

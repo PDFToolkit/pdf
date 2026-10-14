@@ -3,7 +3,7 @@
   "sha256": "ef321647824abd1dd336bf7ab8953ce5b8654590e48b7421990cf7d9ad713385",
   "version": "1.0.0 (2024-02)",
   "physical_pdf_pages": 57,
-  "source": "resources/iso32000-2-bundle/documents/Well-Tagged-PDF-WTPDF-1.0.pdf",
+  "source": "resources/reference-documents/Well-Tagged-PDF-WTPDF-1.0.pdf",
   "license": "CC-BY-4.0; PDF Association",
   "review": "All 57 physical pages and 173 link annotations reviewed. No normative correction annotations are present.",
   "granularity": "One row per independently assessable paragraph obligation, conditional branch, permission or semantic aspect. Colon ordinals distinguish aspects inside a clause; they are inventory identifiers, not printed source paragraph numbers. Source pages refer to the original PDF, not its printed folios.",
