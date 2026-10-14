@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "release": "0.7.0",
+  "source_manifest": "resources/iso32000-2-bundle/sources.json",
+  "interpretation": "Per-document implementation and evidence. Source retention, object definitions, native algorithms, graph validation and conformance are distinct. No aggregate conformance percentage is asserted.",
+  "documents": [
+    {
+      "filename": "ISO_32000-2_sponsored_EC3(1).pdf",
+      "status": "base-dictionary-inventory-and-selected-native-mechanisms",
+      "implementation": ["resources/iso32000-2-2020/metadata.json", "resources/iso32000-2-2020/coverage.json", "src/Specification/Iso32000_2", "src/Document/Signatures", "src/Document/Parts", "src/Document/Metadata"],
+      "validation": ["tests/Iso32000_2SpecificationTest.php", "tests/Pdf20TimestampDssTest.php", "tests/DocumentTimestampRevisionPolicyTest.php", "tools/generate_iso32000_2.py", "tools/validate_pdf20_foundations.py"],
+      "limits": ["The complete base-table inventory does not establish every conditional or semantic rule.", "EC3 annotations retain their approval states; only explicitly reviewed corrections become executable overrides.", "Rendering, arbitrary content transformation and complete PDF conformance are not established by the dictionary inventory."]
+    },
+    {
+      "filename": "ISO_TS_32001-2022_sponsored_EC3.pdf",
+      "status": "native-digests-and-cms-integration",
+      "implementation": ["src/Document/Signatures/Policies/SignatureDigestMethod.php", "src/Security/ModernCmsSignatureBackend.php", "src/Document/Extensions/IsoExtensions.php"],
+      "validation": ["tests/Iso32000CryptographyTest.php", "tools/validate_iso32000_crypto.py"],
+      "limits": ["SHAKE256 output is fixed at 64 bytes as specified.", "EC3 issue 236 deletes clause 5.1.3; that deleted SignatureReference rule is deliberately not extended.", "Algorithm availability does not establish certificate trust or deployment suitability."]
+    },
+    {
+      "filename": "ISO_TS_32002-2022_sponsored_EC3.pdf",
+      "status": "native-named-curve-cms-signatures",
+      "implementation": ["src/Security/ModernCmsSignatureBackend.php", "src/Document/Signatures/SignatureAlgorithmParameters.php"],
+      "validation": ["tests/Iso32000CryptographyTest.php", "tools/validate_iso32000_crypto.py", "examples/pdf20-modern-signature.php"],
+      "limits": ["Curve and digest combinations are checked against the actual certificate.", "Ed25519 and Ed448 require an explicitly selected OpenSSL executable provider.", "Mathematical verification does not establish a trusted certification path, revocation status or qualified-signature status."]
+    },
+    {
+      "filename": "ISO_TS_32003-2023_sponsored.pdf",
+      "status": "native-aes-gcm-and-writer-integration",
+      "implementation": ["src/Security/ModernStandardSecurityHandler.php", "src/Security/ModernFileEncryption.php", "src/Security/GcmNonceSequence.php", "src/Security/AesGcmPlaintextLength.php"],
+      "validation": ["tests/Iso32000CryptographyTest.php", "tests/PdfMacWriterTest.php", "tools/validate_iso32000_crypto.py"],
+      "limits": ["Random 96-bit IVs, invocation bounds and duplicate detection are explicit. Applications sharing a key across independent operations must share its allocation budget.", "The NIST plaintext bit bound is enforced, including the stricter byte interpretation.", "The reader package does not acquire PDF 2.0 or AES-GCM input support from the writer release."]
+    },
+    {
+      "filename": "ISO-TS-32004-2024_sponsored.pdf",
+      "status": "native-pdf-mac-and-revision-integration",
+      "implementation": ["src/Security/PdfMacTokenComposer.php", "src/Security/PdfMacSignatureAttachment.php", "src/Serialization/FileWriter.php", "src/Serialization/IncrementalWriter.php", "src/Serialization/LinearizedWriter.php"],
+      "validation": ["tests/Iso32000CryptographyTest.php", "tests/PdfMacWriterTest.php", "tools/validate_iso32000_crypto.py"],
+      "limits": ["A MAC requires the actual file key, KDF salt and matching permission/extension declarations.", "Every appended revision requires a fresh MAC over its actual bytes.", "MAC integrity is distinct from the identity trust of a certificate signature."]
+    },
+    {
+      "filename": "ISO-TS-32005-2023-sponsored.pdf",
+      "status": "native-qualified-role-graph-and-complete-inclusion-matrix",
+      "implementation": ["src/Document/Structure/StructureNamespace.php", "src/Document/Structure/NamespaceRoleResolver.php", "src/Document/Structure/StructureInclusionRules.php", "resources/iso-ts-32005/inclusion.json"],
+      "validation": ["tests/StructureNamespaceTest.php", "tools/generate_structure_inclusion.py", "tools/validate_pdf20_tagging.py", "examples/pdf20-tagged-namespaces.php"],
+      "limits": ["The original 2023 matrix and explicitly selected resolutions 336/440 remain distinct.", "Correct inclusion relationships do not prove that the chosen roles describe the real content semantics."]
+    },
+    {
+      "filename": "PDF-Declarations.pdf",
+      "status": "native-xmp-declaration-model-and-serialization",
+      "implementation": ["src/Document/Metadata/Declarations", "src/Document/Metadata/XmpPacket.php"],
+      "validation": ["tests/MetadataBundleTest.php", "tools/validate_pdf20_metadata.py", "examples/pdf20-metadata-declarations.php"],
+      "limits": ["Declaration, ClaimData, date, report and PDF/A extension-schema objects express author assertions.", "Writing an assertion neither verifies it nor establishes PDF/A, PDF/UA or WTPDF conformance."]
+    },
+    {
+      "filename": "Well-Tagged-PDF-WTPDF-1.0.pdf",
+      "status": "partial-mechanical-audit-with-explicit-pending-evidence",
+      "implementation": ["src/Document/Structure/WtPdfAudit.php", "src/Document/Structure/WtPdfFontUsageChecks.php", "resources/wtpdf-1.0/coverage.json"],
+      "validation": ["tests/WtPdfAuditTest.php", "tools/validate_pdf20_tagging.py", "examples/pdf20-tagged-namespaces.php"],
+      "limits": ["Detected failures, human review and additional validation are separate report states.", "Role appropriateness, reading order, alternative descriptions, form context and faithful meaning need human evidence.", "Exhaustive font-program checks, licence rights, some metrics and external grammars require additional validation.", "No WTPDF or PDF/UA-2 certification is asserted by assertNoDetectedFailures()."]
+    },
+    {
+      "filename": "PDF20_AN001-BPC.pdf",
+      "status": "native-graphics-state-object-and-version-validation",
+      "implementation": ["src/Graphics/GraphicsState/BlackPointCompensation.php", "src/Graphics/GraphicsState/UseBlackPointCompensation.php", "src/Graphics/GraphicsState/GraphicsStateGraphValidation.php"],
+      "validation": ["tests/MetadataBundleTest.php", "tools/validate_pdf20_metadata.py", "examples/pdf20-metadata-declarations.php"],
+      "limits": ["The writer emits and validates ON/OFF/Default. A rendering processor applies the colour conversion and device behaviour."]
+    },
+    {
+      "filename": "PDF20_AN002-AF.pdf",
+      "status": "native-associated-files-and-encrypted-payload-wrapper",
+      "implementation": ["src/Document/Files/AssociatedFilesGraphValidation.php", "src/Document/Files/AssociatedFilesMarkedContentGraphValidation.php", "src/Document/Files/EncryptedPayloadGraphValidation.php"],
+      "validation": ["tests/AssociatedFilesTest.php", "tests/AssociatedFilesMarkedContentTest.php", "tests/DocumentPartsAndPayloadTest.php", "tools/validate_pdf20_metadata.py", "examples/pdf20-encrypted-payload.php"],
+      "limits": ["Embedded bytes are supplied explicitly; no file or URL is fetched implicitly.", "The wrapper remains unencrypted and its inner payload has independent encryption and access policy."]
+    },
+    {
+      "filename": "PDF20_AN003-ObjectMetadataLocations.pdf",
+      "status": "native-object-and-marked-content-metadata-with-document-parts",
+      "implementation": ["src/Document/Metadata/MetadataGraphValidation.php", "src/Document/Metadata/MetadataMarkedContentFacts.php", "src/Document/Metadata/MetadataMarkedContentGraphValidation.php", "src/Document/Parts/DocumentPartsGraphValidation.php"],
+      "validation": ["tests/MetadataBundleTest.php", "tests/DocumentPartsAndPayloadTest.php", "tools/validate_pdf20_metadata.py", "examples/pdf20-metadata-declarations.php"],
+      "limits": ["Native XMP generation escapes valid UTF-8. Opaque caller-supplied XML is not parsed or certified.", "Named properties resolve through their actual page, form, tiling-pattern or Type 3 resource owner; opaque content bytes need separate analysis."]
+    }
+  ]
+}

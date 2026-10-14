@@ -41,6 +41,8 @@ ISO copyright. Repository source availability does not change those notices.
 The originals are excluded from Composer distribution archives, keeping runtime
 installations independent of the reference collection.
 
-Implementation and validation coverage is recorded separately from this source
-inventory. The [shared documentation](https://pdftoolkit.github.io/guides/pdf-2-0.html)
+[`coverage.json`](coverage.json) records implementation files, independent checks
+and explicit limits for each of the eleven documents. It distinguishes the
+base dictionary inventory from algorithms, graph validation and conformance.
+The [shared bundle guide](https://pdftoolkit.github.io/guides/pdf-2-0-bundle.html)
 describes the supported mechanisms and their limits.

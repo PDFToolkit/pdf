@@ -42,6 +42,8 @@ copyright ISO. La présence des sources dans le dépôt ne modifie pas ces
 mentions. Les originaux sont exclus des archives de distribution Composer :
 l’installation de la bibliothèque ne télécharge pas la collection documentaire.
 
-La couverture de l’implémentation et de ses vérifications est suivie séparément
-de cet inventaire des sources. La [documentation commune](https://pdftoolkit.github.io/fr/guides/pdf-2-0.html)
+[`coverage.json`](coverage.json) consigne les fichiers d’implémentation, les
+vérifications indépendantes et les limites explicites de chacun des onze documents.
+Il distingue l’inventaire des dictionnaires de base, les algorithmes, les contrôles
+de graphe et la conformité. Le [guide partagé du bundle](https://pdftoolkit.github.io/fr/guides/pdf-2-0-bundle.html)
 décrit les mécanismes pris en charge et leurs limites.

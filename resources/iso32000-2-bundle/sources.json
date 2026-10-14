@@ -18,7 +18,8 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "CC-BY-4.0",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 26
     },
     {
       "filename": "Well-Tagged-PDF-WTPDF-1.0.pdf",
@@ -34,7 +35,8 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "CC-BY-4.0",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 173
     },
     {
       "filename": "PDF20_AN003-ObjectMetadataLocations.pdf",
@@ -50,14 +52,15 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "CC-BY-4.0",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 29
     },
     {
       "filename": "PDF20_AN002-AF.pdf",
       "sha256": "c174e881136b613d4e382dc7221a8f37a7c3c7c23a1106e2451911a51f2522b5",
       "bytes": 152635,
       "physical_pdf_pages": 14,
-      "annotation_count": 4,
+      "annotation_count": 47,
       "identifier": "pdf20-an002:2018",
       "title": "PDF 2.0 Application Note 002: Associated Files",
       "edition_date": "2018-10",
@@ -66,7 +69,8 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "CC-BY-4.0",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 4
     },
     {
       "filename": "PDF20_AN001-BPC.pdf",
@@ -82,14 +86,15 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "CC-BY-4.0",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 6
     },
     {
       "filename": "ISO-TS-32005-2023-sponsored.pdf",
       "sha256": "0101bbbc36d4cb764e3468b71c8d689e2e52da9a3bd5bee29c6c62e632acce2d",
       "bytes": 2011791,
       "physical_pdf_pages": 49,
-      "annotation_count": 3,
+      "annotation_count": 95,
       "identifier": "iso-ts-32005:2023",
       "title": "ISO/TS 32005:2023",
       "edition_date": "2023-07",
@@ -98,14 +103,15 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "ISO copyright",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 3
     },
     {
       "filename": "ISO-TS-32004-2024_sponsored.pdf",
       "sha256": "af5f0fe35ac2740e048066f8d9459c3c983cad3ffb2383cb482eea441b334979",
       "bytes": 1300156,
       "physical_pdf_pages": 25,
-      "annotation_count": 0,
+      "annotation_count": 144,
       "identifier": "iso-ts-32004:2024",
       "title": "ISO/TS 32004:2024",
       "edition_date": "2024-04",
@@ -114,14 +120,15 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "ISO copyright",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 0
     },
     {
       "filename": "ISO_TS_32003-2023_sponsored.pdf",
       "sha256": "eab629bb6d9a01cc2a4809d3e2f6c988d726de79e9980a84a73892a16961ec24",
       "bytes": 958145,
       "physical_pdf_pages": 13,
-      "annotation_count": 0,
+      "annotation_count": 37,
       "identifier": "iso-ts-32003:2023",
       "title": "ISO/TS 32003:2023",
       "edition_date": "2023-05",
@@ -130,14 +137,15 @@
       "provider_url": "https://www.pdfa.org/sponsored-standards/",
       "license": "ISO copyright",
       "retention": "supplied original preserved without modification",
-      "composer_distribution_included": false
+      "composer_distribution_included": false,
+      "annotations_with_contents": 0
     },
     {
       "filename": "ISO_TS_32002-2022_sponsored_EC3.pdf",
       "sha256": "fcc5679e7dbbc974b72d8811b719d531b013211af204c11947b87387e7c5d358",
       "bytes": 355562,
       "physical_pdf_pages": 14,
-      "annotation_count": 0,
+      "annotation_count": 75,
       "identifier": "iso-ts-32002:2022",
       "title": "ISO/TS 32002:2022, Errata Collection 3",
       "edition_date": "2022-10",
@@ -150,14 +158,15 @@
       "errata_collection": {
         "number": 3,
         "publication_date": "2026-06-01"
-      }
+      },
+      "annotations_with_contents": 0
     },
     {
       "filename": "ISO_TS_32001-2022_sponsored_EC3.pdf",
       "sha256": "37da96886fc64e33134a43741e1f90ab49ae619e348c0f6daaac87f874bb2907",
       "bytes": 369235,
       "physical_pdf_pages": 14,
-      "annotation_count": 3,
+      "annotation_count": 69,
       "identifier": "iso-ts-32001:2022",
       "title": "ISO/TS 32001:2022, Errata Collection 3",
       "edition_date": "2022-09",
@@ -170,14 +179,15 @@
       "errata_collection": {
         "number": 3,
         "publication_date": "2026-06-01"
-      }
+      },
+      "annotations_with_contents": 3
     },
     {
       "filename": "ISO_32000-2_sponsored_EC3(1).pdf",
       "sha256": "0ab938d855bb142456635fdb60c650b1caecfe3a944583a50da9efad34bbf9f4",
       "bytes": 19205118,
       "physical_pdf_pages": 1023,
-      "annotation_count": 7624,
+      "annotation_count": 11462,
       "identifier": "iso32000-2:2020",
       "title": "ISO 32000-2:2020, Errata Collection 3",
       "edition_date": "2020-12",
@@ -190,6 +200,12 @@
       "errata_collection": {
         "number": 3,
         "publication_date": "2026-06-01"
+      },
+      "annotations_with_contents": 7624,
+      "equivalent_prior_copy": {
+        "path": "ISO_32000-2_sponsored_EC3.pdf",
+        "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+        "comparison": "Same physical page count, extracted normative page text after removing the purchase footer, and annotation subtype/contents/state. Original bytes differ and both copies are preserved."
       }
     }
   ],
