@@ -37,7 +37,7 @@ final readonly class OpenSslSignatureCertificateFacts implements SignatureCertif
         $this->algorithm = match ($details['type']) {
             OPENSSL_KEYTYPE_RSA => SignatureKeyAlgorithm::RSA,
             OPENSSL_KEYTYPE_DSA => SignatureKeyAlgorithm::DSA,
-            default => SignatureKeyAlgorithm::Other,
+            default => (new NamedCurveCertificate($chain->signer))->curve->keyAlgorithm(),
         };
         $issuers = [];
         $current = $signer;

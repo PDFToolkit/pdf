@@ -8,5 +8,7 @@ enum SignatureKeyAlgorithm
 {
     case RSA;
     case DSA;
+    case ECDSA;
+    case EdDSA;
     case Other;
 }

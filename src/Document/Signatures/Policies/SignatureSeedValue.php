@@ -172,7 +172,7 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
         if ($this->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $choice->digest !== SignatureDigestMethod::SHA1) {
             throw new \InvalidArgumentException('ISO seed digest rules require SHA1 for DSA credentials.');
         }
-        if ($certificate->keyAlgorithm() === SignatureKeyAlgorithm::RSA && $this->digests !== null && $this->flags->requires(SignatureSeedFlag::DigestMethod) && !in_array($choice->digest, $this->digests, true)) {
+        if ($certificate->keyAlgorithm() !== SignatureKeyAlgorithm::DSA && $this->digests !== null && $this->flags->requires(SignatureSeedFlag::DigestMethod) && !in_array($choice->digest, $this->digests, true)) {
             throw new \InvalidArgumentException('The selected RSA digest violates the required DigestMethod seed.');
         }
         if ($choice->format === SignatureFormat::X509RsaSha1 && $certificate->keyAlgorithm() !== SignatureKeyAlgorithm::RSA) {
@@ -254,6 +254,11 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
 
     public function validateCatalog(DictionaryType $catalog): void
     {
+        foreach ($this->digests ?? [] as $digest) {
+            if (in_array($digest, [SignatureDigestMethod::SHA3_256, SignatureDigestMethod::SHA3_384, SignatureDigestMethod::SHA3_512, SignatureDigestMethod::SHAKE256], true)) {
+                \PDF\Document\Extensions\IsoTechnicalSpecification::HashAlgorithms->validate($catalog);
+            }
+        }
         $version = $this->get('V');
         if (!$this->has('LockDocument') && !$this->has('AppearanceFilter') && ($this->flags->integer() & 384) === 0 && (!$version instanceof NumericType || $version->value < 3)) {
             return;
@@ -269,6 +274,11 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
 
     public function validateVersion(EffectivePdfVersion $version): void
     {
+        foreach ($this->digests ?? [] as $digest) {
+            if (in_array($digest, [SignatureDigestMethod::SHA3_256, SignatureDigestMethod::SHA3_384, SignatureDigestMethod::SHA3_512, SignatureDigestMethod::SHAKE256], true)) {
+                $version->require(PdfVersion::PDF20, 'ISO/TS 32001 signature seed digests');
+            }
+        }
         $version->require(PdfVersion::PDF15, 'Signature seed values');
         $parser = $this->get('V');
         if ($this->has('LockDocument') || $this->has('AppearanceFilter') || ($this->flags->integer() & 384) !== 0 || ($parser instanceof NumericType && $parser->value >= 3)) {

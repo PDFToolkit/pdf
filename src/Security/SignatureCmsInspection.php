@@ -83,6 +83,10 @@ final readonly class SignatureCmsInspection
             '608648016503040202' => SignatureDigestMethod::SHA384,
             '608648016503040203' => SignatureDigestMethod::SHA512,
             '2b24030201' => SignatureDigestMethod::RIPEMD160,
+            '608648016503040208' => SignatureDigestMethod::SHA3_256,
+            '608648016503040209' => SignatureDigestMethod::SHA3_384,
+            '60864801650304020a' => SignatureDigestMethod::SHA3_512,
+            '60864801650304020c' => SignatureDigestMethod::SHAKE256,
             default => throw new \InvalidArgumentException('The CMS signer digest is outside ISO Table257.'),
         };
     }

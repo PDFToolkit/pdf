@@ -31,7 +31,7 @@ final readonly class SignatureDigestSelection
             if ($seed !== null && $seed->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $candidate !== SignatureDigestMethod::SHA1) {
                 continue;
             }
-            if ($required && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::RSA) {
+            if ($required && $certificate->keyAlgorithm() !== SignatureKeyAlgorithm::DSA) {
                 $accepted = false;
                 foreach ($methods->items as $method) {
                     $accepted = $accepted || ($method instanceof NameType && $method->value === $candidate->value);
