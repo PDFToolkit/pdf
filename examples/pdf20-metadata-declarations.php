@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use PDF\Document\Files as Files;
-use PDF\Document\Fonts\StandardFont;
-use PDF\Document\Fonts\Type1Font;
 use PDF\Document\Metadata as Metadata;
 use PDF\Document\Metadata\Declarations as Declarations;
 use PDF\Document\Parts as Parts;
@@ -59,8 +57,10 @@ $part = new Parts\DocumentPart(new Parts\DocumentPartMetadata(new Entry(new Name
 $partRoot = new Parts\DocumentPartRoot($part, new IntegerType(0), new NameType('Proof'));
 $sequenceMetadata = new Metadata\MetadataStream(new Metadata\XmpPacket(new Metadata\XmpTextProperty(new Metadata\XmpName('sample', new Metadata\MetadataUri('urn:example:sample'), 'purpose'), new Metadata\XmlText('Calibrated colour demonstration'))));
 $state = new GraphicsStateParameters(new UseBlackPointCompensation(BlackPointCompensation::On));
+// PDF 2.0 requires explicit metrics and a descriptor even for standard fonts.
+$font = require __DIR__ . '/fixtures/pdf20-courier-font.php';
 $resources = new ResourceDictionary(
-    new Resources\Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))),
+    new Resources\Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))),
     new Resources\ExtGState(new DictionaryType(new Entry(new NameType('BpcOn'), new IndirectReference($state)))),
     new Resources\ColorSpace(new DictionaryType(new Entry(new NameType('Calibrated'), new CalRGB(new WhitePoint(new NumericType(0.9505), new NumericType(1), new NumericType(1.089)))))),
     new Resources\Properties(new DictionaryType(new Entry(new NameType('ColourInfo'), new Metadata\MetadataPropertyList($sequenceMetadata)))),

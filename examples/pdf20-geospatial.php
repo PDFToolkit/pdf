@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use PDF\Document\Fonts\StandardFont;
-use PDF\Document\Fonts\Type1Font;
 use PDF\Document\Geospatial as G;
 use PDF\Document\Images\DeviceColorSpace;
 use PDF\Document\Images\ImageDimensions;
@@ -74,7 +72,9 @@ foreach ([0.2,0.4,0.6,0.8] as $position) {
 }
 $form = new FormXObject(new ContentStreams(...$grid), new Rectangle(new N(0), new N(0), new N(1), new N(1)), new ResourceDictionary(), extensions: [new Entry(new NameType('Measure'), $geoMeasure), new Entry(new NameType('PtData'), $cloud)]);
 $image = new ImageXObject(new ImageSamples(new ImageDimensions(1, 1), new SampleLayout(DeviceColorSpace::RGB), "\xe3\xe9\xd4"), options: new ImageOptions(extensions: [new Entry(new NameType('Measure'), $projectedMeasure)]));
-$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))), new XObject(new DictionaryType(new Entry(new NameType('Grid'), new IndirectReference($form)), new Entry(new NameType('Raster'), new IndirectReference($image)))));
+// PDF 2.0 requires explicit metrics and a descriptor even for standard fonts.
+$font = require __DIR__ . '/fixtures/pdf20-courier-font.php';
+$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))), new XObject(new DictionaryType(new Entry(new NameType('Grid'), new IndirectReference($form)), new Entry(new NameType('Raster'), new IndirectReference($image)))));
 $operators = [];
 foreach ([['PDF 2.0: geospatial objects',24,48,778], ['Explicit coordinate systems, point pairs and measurement viewports.',11,48,746], ['Geographic / EPSG 4326',12,48,648], ['Projected / EPSG 3857',12,310,648], ['Latitude, longitude',11,48,327], ['Easting, northing',11,310,327], ['GEO metadata is independent of the page illustration.',12,48,278], ['The left form and right raster carry their own GEO measures.',11,48,248], ['A LAT / LON / ALT cloud records the position 48.86, 2.35, 35.',11,48,223], ['PCSM records an explicit affine transformation for projected coordinates.',11,48,198], ['These independent sample regions are illustrative, not a surveyed map.',10,48,143], ['ISO 32000-2:2020, clauses 12.9 and 12.10; selected EC3 corrections.',10,48,118]] as [$text, $size, $x, $y]) {
     array_push($operators, new Op\BeginTextObject(), new Op\SetTextFontAndSize(new NameType('F1'), new N($size)), new Op\MoveTextPosition(new N($x), new N($y)), new Op\ShowText(new LiteralString($text)), new Op\EndTextObject());

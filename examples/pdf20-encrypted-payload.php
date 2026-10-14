@@ -5,8 +5,6 @@ declare(strict_types=1);
 use PDF\Document\Collections\Collection;
 use PDF\Document\Collections\CollectionView;
 use PDF\Document\Files as Files;
-use PDF\Document\Fonts\StandardFont;
-use PDF\Document\Fonts\Type1Font;
 use PDF\Document\ResourceDictionary;
 use PDF\Document\Resources\Font;
 use PDF\FileStructure;
@@ -35,7 +33,9 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 // The content helper creates ordinary explicit PDF page/font/operator objects.
 $createPage = static function (string ...$lines): PageTreeNode {
-    $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))));
+    // Each explicit page construction supplies complete PDF 2.0 font metrics.
+    $font = require __DIR__ . '/fixtures/pdf20-courier-font.php';
+    $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
     $operators = [];
     foreach (array_values($lines) as $index => $line) {
         $operators[] = new Op\BeginTextObject();

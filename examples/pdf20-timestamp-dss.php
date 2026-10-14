@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use PDF\Document\Fonts\StandardFont;
-use PDF\Document\Fonts\Type1Font;
 use PDF\Document\Forms\AcroForm;
 use PDF\Document\Forms\FieldTree;
 use PDF\Document\Forms\PartialFieldName;
@@ -74,10 +72,12 @@ $backend = new Rfc3161TimestampBackend($authority, new OpenSslTimestampTokenVeri
 $pending = new PendingDocumentTimestamp(new SignatureCapacity(8192));
 $field = new SignatureField(new PartialFieldName(new TextString('FirstTimestamp')), value: new IndirectReference($pending));
 $form = new AcroForm((new FieldTree())->addRoot($field));
-$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))));
+// PDF 2.0 requires explicit metrics and a descriptor even for standard fonts.
+$font = require __DIR__ . '/fixtures/pdf20-courier-font.php';
+$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
 $content = new \PDF\Syntax\Object\StreamObject(new ContentStreams(
     new Op\BeginTextObject(),
-    new Op\SetTextFontAndSize(new NameType('F1'), new NumericType(20)),
+    new Op\SetTextFontAndSize(new NameType('F1'), new NumericType(18)),
     new Op\MoveTextPosition(new NumericType(48), new NumericType(740)),
     new Op\ShowText(new LiteralString('PDF 2.0: timestamps and validation evidence')),
     new Op\SetTextFontAndSize(new NameType('F1'), new NumericType(12)),

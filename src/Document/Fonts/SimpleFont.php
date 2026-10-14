@@ -111,6 +111,13 @@ abstract class SimpleFont extends ManagedFontDictionary implements VersionedComp
     }
     public function validateVersion(EffectivePdfVersion $version): void
     {
+        if ($version->value === PdfVersion::PDF20) {
+            foreach (['FirstChar', 'LastChar', 'Widths', 'FontDescriptor'] as $key) {
+                if (!$this->has($key)) {
+                    throw new \LogicException('PDF 2.0 simple fonts require explicit metrics and an indirect FontDescriptor, including the standard 14 fonts (Table109).');
+                }
+            }
+        }
         if ($version->value === PdfVersion::PDF10 && !$this->has('Name')) {
             throw new \LogicException('PDF 1.0 simple-font dictionaries require the resource Name.');
         }

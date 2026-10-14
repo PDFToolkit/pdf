@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use PDF\Document\Extensions\IsoExtensions;
 use PDF\Document\Extensions\IsoTechnicalSpecification;
-use PDF\Document\Fonts\StandardFont;
-use PDF\Document\Fonts\Type1Font;
 use PDF\Document\Forms\AcroForm;
 use PDF\Document\Forms\FieldTree;
 use PDF\Document\Forms\PartialFieldName;
@@ -76,7 +74,9 @@ $extensions = new IsoExtensions(IsoTechnicalSpecification::HashAlgorithms, IsoTe
 $pending = new PendingSignature(new SignatureCapacity(4096), SignatureFormat::Pkcs7Detached, entries: new Entry(new NameType('Reason'), new LiteralString('Public educational fixture')));
 $fields = (new FieldTree())->addRoot(new SignatureField(new PartialFieldName(new TextString('Demonstration')), value: new IndirectReference($pending)));
 $form = new AcroForm($fields);
-$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))));
+// PDF 2.0 requires explicit metrics and a descriptor even for standard fonts.
+$font = require __DIR__ . '/fixtures/pdf20-courier-font.php';
+$resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
 $content = new StreamObject(new ContentStreams(
     new Op\BeginTextObject(),
     new Op\SetTextFontAndSize(new NameType('F1'), new NumericType(20)),
