@@ -1,7 +1,7 @@
 {
     "name": "roukmoute/pdf",
     "type": "library",
-    "description": "An explicit PDF object model and writer with ISO 32000-1 PDF 1.7 and initial ISO 32000-2 PDF 2.0 support",
+    "description": "Explicit PDF 1.7 and PDF 2.0 objects and writing, with modern signatures, AES-GCM, PDF MAC, metadata and tagged-structure validation",
     "keywords": [
         "pdf",
         "pdf-1.7",
@@ -9,7 +9,11 @@
         "iso-32000-1",
         "iso-32000-2",
         "object-model",
-        "php"
+        "php",
+        "tagged-pdf",
+        "xmp",
+        "aes-gcm",
+        "pdf-mac"
     ],
     "homepage": "https://pdftoolkit.github.io/modules/core/",
     "support": {
@@ -21,13 +25,14 @@
         "php": "^8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-zlib": "*"
+        "ext-zlib": "*",
+        "php-64bit": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.7",
-        "pdftoolkit/pdf-images": "^0.1.7",
-        "pdftoolkit/pdf-reader": "^0.1.7",
+        "pdftoolkit/pdf-fonts": "^0.1.8",
+        "pdftoolkit/pdf-images": "^0.1.8",
+        "pdftoolkit/pdf-reader": "^0.1.8",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
@@ -75,7 +80,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.6.x-dev"
+            "dev-master": "0.7.x-dev"
         }
     }
 }

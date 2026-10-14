@@ -4,6 +4,7 @@
 *.ttf binary
 *.jpg binary
 /PDF32000_2008.pdf export-ignore
+/adobe_supplement_iso32000.pdf export-ignore
 /pdf_17_errata.pdf export-ignore
 /pdf_reference.pdf export-ignore
 /pdf_reference1-7_addendum_redaction.pdf export-ignore

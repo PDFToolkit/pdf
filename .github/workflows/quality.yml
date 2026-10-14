@@ -8,7 +8,8 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: 0.6.x-dev
+  COMPOSER_ROOT_VERSION: 0.7.x-dev
+  PDFTOOLKIT_OPENSSL: /usr/bin/openssl
 
 jobs:
   php:
@@ -36,13 +37,18 @@ jobs:
       - run: composer check
       - run: python tools/generate_specification.py --check
       - run: python tools/generate_adobe_supplement.py --check
-      - run: python tools/generate_iso32000_2_pilot.py --check
+      - run: python tools/generate_iso32000_2.py --check
+      - run: python tools/compile_iso32000_2_catalogue.py --check
       - run: python tools/build_saslprep_tables.py --check
       - run: python -m pip install --require-hashes -r tools/public-key-validation-requirements.txt
       - name: Verify retained archival Adobe references and portfolio attachments
         run: python tools/validate_adobe_references.py
       - name: Verify retained ISO 32000-2 bundle originals
         run: python tools/validate_iso32000_bundle.py
+      - name: Verify reproducible structure inclusion rules
+        run: python tools/generate_structure_inclusion.py --check
+      - name: Verify source-linked WTPDF requirement coverage
+        run: python tools/check_wtpdf_requirements.py
       - uses: ./.github/actions/setup-qpdf
       - run: sudo apt-get update && sudo apt-get install -y poppler-utils
       - name: Generate and validate every example
@@ -66,3 +72,13 @@ jobs:
           python tools/validate_public_key_security.py --php php --pdf-version 2.0
       - name: Verify native source mechanisms with independent oracles
         run: python tools/validate_source_mechanisms.py /tmp/pdf-examples --php php --qpdf qpdf
+      - name: Verify PDF 2.0 metadata, declarations and encrypted payloads independently
+        run: python tools/validate_pdf20_metadata.py --php php --qpdf qpdf --work-dir /tmp/pdf20-metadata
+      - name: Verify modern encryption, signatures and PDF MAC independently
+        run: python tools/validate_iso32000_crypto.py --php php --qpdf qpdf --openssl /usr/bin/openssl --work-dir /tmp/pdf20-crypto
+      - name: Verify RFC3161 timestamps and DSS across signed revision histories
+        run: python tools/validate_pdf20_timestamps.py --php php --qpdf qpdf --openssl /usr/bin/openssl --work-dir /tmp/pdf20-timestamps
+      - name: Verify geospatial object relationships and historical revisions
+        run: python tools/validate_pdf20_geospatial.py --php php --qpdf qpdf --work-dir /tmp/pdf20-geospatial
+      - name: Verify PDF 2.0 namespaces and tagged content independently
+        run: python tools/validate_pdf20_tagging.py --php php --qpdf qpdf --example /tmp/pdf-examples/pdf20-tagged-namespaces.pdf
