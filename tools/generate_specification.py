@@ -79,6 +79,9 @@ def value_classes(entry: dict) -> list[str]:
     else:
         classes = []
         for part in re.split(r'\s*,\s*(?:or\s+)?|\s+or\s+', type_name):
+            if part.startswith('array of '):
+                classes.append('ArrayType')
+                continue
             if part not in TYPE_MAP:
                 raise ValueError(f"Unmapped PDF type: {type_name}")
             classes.extend(TYPE_MAP[part])

@@ -1,0 +1,4203 @@
+[
+  {
+    "id": "1",
+    "title": "White-space characters",
+    "section": "7.2.3",
+    "pdf_pages": [
+      37
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "2",
+    "title": "Delimiter characters",
+    "section": "7.2.3",
+    "pdf_pages": [
+      38
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "3",
+    "title": "Escape sequences in literal strings",
+    "section": "7.3.4.2",
+    "pdf_pages": [
+      40
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "4",
+    "title": "Examples of literal names",
+    "section": "7.3.5",
+    "pdf_pages": [
+      43,
+      44
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "5",
+    "title": "Entries common to all stream dictionaries",
+    "section": "7.3.8.2",
+    "pdf_pages": [
+      47,
+      48
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "6",
+    "title": "Standard filters",
+    "section": "7.4.1",
+    "pdf_pages": [
+      50,
+      51
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "7",
+    "title": "Typical LZW encoding sequence",
+    "section": "7.4.4.2",
+    "pdf_pages": [
+      54
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "8",
+    "title": "Optional parameters for LZWDecode and FlateDecode filters",
+    "section": "7.4.4.3",
+    "pdf_pages": [
+      55,
+      56
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "9",
+    "title": "PNG predictor algorithms",
+    "section": "7.4.4.4",
+    "pdf_pages": [
+      56
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "10",
+    "title": "Predictor values",
+    "section": "7.4.4.4",
+    "pdf_pages": [
+      57
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "11",
+    "title": "Optional parameters for the CCITTFaxDecode filter",
+    "section": "7.4.6",
+    "pdf_pages": [
+      59
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "12",
+    "title": "Optional parameter for the JBIG2Decode filter",
+    "section": "7.4.7",
+    "pdf_pages": [
+      61
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "13",
+    "title": "Optional parameter for the DCTDecode filter",
+    "section": "7.4.8",
+    "pdf_pages": [
+      64
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "14",
+    "title": "Optional parameters for Crypt filters",
+    "section": "7.4.10",
+    "pdf_pages": [
+      67,
+      68
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "15",
+    "title": "Entries in the file trailer dictionary",
+    "section": "7.5.5",
+    "pdf_pages": [
+      73,
+      74
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "16",
+    "title": "Additional entries specific to an object stream dictionary",
+    "section": "7.5.7",
+    "pdf_pages": [
+      77
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "17",
+    "title": "Additional entries specific to a cross-reference stream dictionary",
+    "section": "7.5.8.2",
+    "pdf_pages": [
+      81,
+      82
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "18",
+    "title": "Entries in a cross-reference stream",
+    "section": "7.5.8.3",
+    "pdf_pages": [
+      82,
+      83
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "19",
+    "title": "Additional entries in a hybrid-reference file’s trailer dictionary",
+    "section": "7.5.8.4",
+    "pdf_pages": [
+      83
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "20",
+    "title": "Entries common to all encryption dictionaries",
+    "section": "7.6.2",
+    "pdf_pages": [
+      87,
+      88,
+      89
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "21",
+    "title": "Additional encryption dictionary entries for the standard security handler",
+    "section": "7.6.4.2",
+    "pdf_pages": [
+      93,
+      94
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "22",
+    "title": "Standard security handler user access permissions",
+    "section": "7.6.4.2",
+    "pdf_pages": [
+      94,
+      95
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "23",
+    "title": "Additional encryption dictionary entries for public-key security handlers",
+    "section": "7.6.5.2",
+    "pdf_pages": [
+      102
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "24",
+    "title": "Public-key security handler user access permissions",
+    "section": "7.6.5.2",
+    "pdf_pages": [
+      103,
+      1021
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "25",
+    "title": "Entries common to all crypt filter dictionaries",
+    "section": "7.6.6",
+    "pdf_pages": [
+      106,
+      107
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "26",
+    "title": "Standard crypt filter names",
+    "section": "7.6.6",
+    "pdf_pages": [
+      107
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "27",
+    "title": "Additional crypt filter dictionary entries for public-key security handlers",
+    "section": "7.6.6",
+    "pdf_pages": [
+      107,
+      108
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "28",
+    "title": "Entries in an encrypted payload dictionary",
+    "section": "7.6.7",
+    "pdf_pages": [
+      110
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "29",
+    "title": "Entries in the catalog dictionary",
+    "section": "7.7.2",
+    "pdf_pages": [
+      113,
+      114,
+      115,
+      116,
+      117
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "30",
+    "title": "Required entries in a page tree node",
+    "section": "7.7.3.2",
+    "pdf_pages": [
+      118
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "31",
+    "title": "Entries in a page object",
+    "section": "7.7.3.3",
+    "pdf_pages": [
+      119,
+      120,
+      121,
+      122
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "32",
+    "title": "Entries in the name dictionary",
+    "section": "7.7.4",
+    "pdf_pages": [
+      124,
+      125
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "33",
+    "title": "Compatibility operators",
+    "section": "7.8.2",
+    "pdf_pages": [
+      127
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "34",
+    "title": "Entries in a resource dictionary",
+    "section": "7.8.3",
+    "pdf_pages": [
+      128
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "35",
+    "title": "PDF data types",
+    "section": "7.9.1",
+    "pdf_pages": [
+      129,
+      130
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "36",
+    "title": "Entries in a name tree node dictionary",
+    "section": "7.9.6",
+    "pdf_pages": [
+      135
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "37",
+    "title": "Entries in a number tree node dictionary",
+    "section": "7.9.7",
+    "pdf_pages": [
+      137,
+      138
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "38",
+    "title": "Entries common to all function dictionaries",
+    "section": "7.10.1",
+    "pdf_pages": [
+      139
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "39",
+    "title": "Additional entries specific to a Type 0 function dictionary",
+    "section": "7.10.2",
+    "pdf_pages": [
+      140,
+      141
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "40",
+    "title": "Additional entries specific to a Type 2 function dictionary",
+    "section": "7.10.3",
+    "pdf_pages": [
+      143
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "41",
+    "title": "Additional entries specific to a Type 3 function dictionary",
+    "section": "7.10.4",
+    "pdf_pages": [
+      144
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "42",
+    "title": "Operators in Type 4 functions",
+    "section": "7.10.5.2",
+    "pdf_pages": [
+      146
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "43",
+    "title": "Entries in a file specification dictionary",
+    "section": "7.11.3",
+    "pdf_pages": [
+      149,
+      150,
+      151,
+      152
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "44",
+    "title": "Additional entries in an embedded file stream dictionary",
+    "section": "7.11.4.1",
+    "pdf_pages": [
+      153
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "45",
+    "title": "Entries in an embedded file parameter dictionary",
+    "section": "7.11.4.1",
+    "pdf_pages": [
+      153,
+      154
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "46",
+    "title": "Entries in a collection item dictionary",
+    "section": "7.11.6",
+    "pdf_pages": [
+      155,
+      156
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "47",
+    "title": "Entries in a collection subitem dictionary",
+    "section": "7.11.6",
+    "pdf_pages": [
+      156
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "48",
+    "title": "Entries in an extensions dictionary",
+    "section": "7.12.2",
+    "pdf_pages": [
+      157
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "49",
+    "title": "Entries in a developer extensions dictionary",
+    "section": "7.12.3",
+    "pdf_pages": [
+      157
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "50",
+    "title": "Operator categories",
+    "section": "8.2",
+    "pdf_pages": [
+      162
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "51",
+    "title": "Device-independent graphics state parameters",
+    "section": "8.4.1",
+    "pdf_pages": [
+      172,
+      173
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "52",
+    "title": "Device-dependent graphics state parameters",
+    "section": "8.4.1",
+    "pdf_pages": [
+      174
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "53",
+    "title": "Line cap styles",
+    "section": "8.4.3.3",
+    "pdf_pages": [
+      176
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "54",
+    "title": "Line join styles",
+    "section": "8.4.3.4",
+    "pdf_pages": [
+      176,
+      177
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "55",
+    "title": "Examples of line dash patterns",
+    "section": "8.4.3.6",
+    "pdf_pages": [
+      178
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "56",
+    "title": "Graphics state operators",
+    "section": "8.4.4",
+    "pdf_pages": [
+      179,
+      180
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "57",
+    "title": "Entries in a graphics state parameter dictionary",
+    "section": "8.4.5",
+    "pdf_pages": [
+      180,
+      181,
+      182,
+      183
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "58",
+    "title": "Path construction operators",
+    "section": "8.5.2.1",
+    "pdf_pages": [
+      185,
+      186
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "59",
+    "title": "Path-painting operators",
+    "section": "8.5.3.1",
+    "pdf_pages": [
+      188
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "60",
+    "title": "Clipping path operators",
+    "section": "8.5.4",
+    "pdf_pages": [
+      192
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "61",
+    "title": "Colour space families",
+    "section": "8.6.3",
+    "pdf_pages": [
+      196
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "62",
+    "title": "Entries in a CalGray colour space dictionary",
+    "section": "8.6.5.2",
+    "pdf_pages": [
+      201
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "63",
+    "title": "Entries in a CalRGB colour space dictionary",
+    "section": "8.6.5.3",
+    "pdf_pages": [
+      202
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "64",
+    "title": "Entries in a Lab colour space dictionary",
+    "section": "8.6.5.4",
+    "pdf_pages": [
+      204
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "65",
+    "title": "Additional entries specific to an ICC profile stream dictionary",
+    "section": "8.6.5.5",
+    "pdf_pages": [
+      206
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "66",
+    "title": "ICC Specification versions supported by ICC based colour spaces",
+    "section": "8.6.5.5",
+    "pdf_pages": [
+      207
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "67",
+    "title": "ICC profile types",
+    "section": "2.0",
+    "pdf_pages": [
+      207
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "68",
+    "title": "Ranges for typical ICC colour spaces",
+    "section": "8.6.5.5",
+    "pdf_pages": [
+      208
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "69",
+    "title": "Rendering intents",
+    "section": "8.6.5.8",
+    "pdf_pages": [
+      212
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "70",
+    "title": "Entries in a DeviceN colour space attributes dictionary",
+    "section": "8.6.6.5",
+    "pdf_pages": [
+      221,
+      222
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "71",
+    "title": "Entries in a DeviceN process dictionary",
+    "section": "8.6.6.5",
+    "pdf_pages": [
+      223
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "72",
+    "title": "Entries in a DeviceN mixing hints dictionary",
+    "section": "8.6.6.5",
+    "pdf_pages": [
+      224
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "73",
+    "title": "Colour operators",
+    "section": "8.6.8",
+    "pdf_pages": [
+      232,
+      233
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "74",
+    "title": "Additional entries specific to a Type 1 pattern dictionary",
+    "section": "8.7.3.1",
+    "pdf_pages": [
+      236,
+      237
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "75",
+    "title": "Entries in a Type 2 pattern dictionary",
+    "section": "8.7.4.1",
+    "pdf_pages": [
+      243
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "76",
+    "title": "Shading operator",
+    "section": "8.7.4.2",
+    "pdf_pages": [
+      244
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "77",
+    "title": "Entries common to all shading dictionaries",
+    "section": "8.7.4.3",
+    "pdf_pages": [
+      245,
+      246
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "78",
+    "title": "Additional entries specific to a Type 1 shading dictionary",
+    "section": "8.7.4.5.2",
+    "pdf_pages": [
+      248
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "79",
+    "title": "Additional entries specific to a Type 2 shading dictionary",
+    "section": "8.7.4.5.3",
+    "pdf_pages": [
+      249
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "80",
+    "title": "Additional entries specific to a Type 3 shading dictionary",
+    "section": "8.7.4.5.4",
+    "pdf_pages": [
+      251
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "81",
+    "title": "Additional entries specific to a Type 4 shading dictionary",
+    "section": "8.7.4.5.5",
+    "pdf_pages": [
+      254,
+      255
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "82",
+    "title": "Additional entries specific to a Type 5 shading dictionary",
+    "section": "8.7.4.5.6",
+    "pdf_pages": [
+      258,
+      259
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "83",
+    "title": "Additional entries specific to a Type 6 shading dictionary",
+    "section": "8.7.4.5.7",
+    "pdf_pages": [
+      262,
+      263
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "84",
+    "title": "Data Values in a Coons Patch Mesh",
+    "section": "8.7.4.5.7",
+    "pdf_pages": [
+      264,
+      265
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "85",
+    "title": "Data values in a tensor-product patch mesh",
+    "section": "8.7.4.5.8",
+    "pdf_pages": [
+      268
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "86",
+    "title": "XObject operator",
+    "section": "8.8.1",
+    "pdf_pages": [
+      269
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "87",
+    "title": "Additional entries specific to an image dictionary",
+    "section": "8.9.5.1",
+    "pdf_pages": [
+      273,
+      274,
+      275,
+      276
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "88",
+    "title": "Default decode arrays",
+    "section": "8.9.5.2",
+    "pdf_pages": [
+      278
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "89",
+    "title": "Entries in an alternate image dictionary",
+    "section": "8.9.5.4",
+    "pdf_pages": [
+      279
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "90",
+    "title": "Inline image operators",
+    "section": "8.9.7",
+    "pdf_pages": [
+      283
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "91",
+    "title": "Entries in an inline image object",
+    "section": "8.9.7",
+    "pdf_pages": [
+      283,
+      284
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "92",
+    "title": "Additional abbreviations in an inline image object",
+    "section": "8.9.7",
+    "pdf_pages": [
+      284
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "93",
+    "title": "Additional entries specific to a Type 1 form dictionary",
+    "section": "8.10.2",
+    "pdf_pages": [
+      287,
+      288,
+      289
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "94",
+    "title": "Entries common to all group attributes dictionaries",
+    "section": "8.10.3",
+    "pdf_pages": [
+      289,
+      290
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "95",
+    "title": "Entries in a reference dictionary",
+    "section": "8.10.4.1",
+    "pdf_pages": [
+      290,
+      291
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "96",
+    "title": "Entries in an optional content group dictionary",
+    "section": "8.11.2.1",
+    "pdf_pages": [
+      292
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "97",
+    "title": "Entries in an optional content membership dictionary",
+    "section": "8.11.2.2",
+    "pdf_pages": [
+      293
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "98",
+    "title": "Entries in the optional content properties dictionary",
+    "section": "8.11.4.2",
+    "pdf_pages": [
+      299
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "99",
+    "title": "Entries in an optional content configuration dictionary",
+    "section": "8.11.4.3",
+    "pdf_pages": [
+      299,
+      300,
+      301
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "100",
+    "title": "Entries in an optional content usage dictionary",
+    "section": "8.11.4.4",
+    "pdf_pages": [
+      303,
+      304
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "101",
+    "title": "Entries in a usage application dictionary",
+    "section": "8.11.4.4",
+    "pdf_pages": [
+      305
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "102",
+    "title": "Text state parameters",
+    "section": "9.3.1",
+    "pdf_pages": [
+      315
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "103",
+    "title": "Text state operators",
+    "section": "9.3.1",
+    "pdf_pages": [
+      316
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "104",
+    "title": "Text rendering modes",
+    "section": "9.3.6",
+    "pdf_pages": [
+      319
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "105",
+    "title": "Text object operators",
+    "section": "9.4.1",
+    "pdf_pages": [
+      321,
+      322
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "106",
+    "title": "Text-positioning operators",
+    "section": "9.4.2",
+    "pdf_pages": [
+      323
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "107",
+    "title": "Text-showing operators",
+    "section": "9.4.3",
+    "pdf_pages": [
+      324
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "108",
+    "title": "Font types",
+    "section": "9.5",
+    "pdf_pages": [
+      327
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "109",
+    "title": "Entries in a Type 1 font dictionary",
+    "section": "9.6.2.1",
+    "pdf_pages": [
+      328,
+      329
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "110",
+    "title": "Entries in a Type 3 font dictionary",
+    "section": "9.6.4",
+    "pdf_pages": [
+      332,
+      333
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "111",
+    "title": "Type 3 font operators",
+    "section": "9.6.4",
+    "pdf_pages": [
+      335
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "112",
+    "title": "Entries in an encoding dictionary",
+    "section": "9.6.5.1",
+    "pdf_pages": [
+      338
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "113",
+    "title": "Additional entries in Mac OS Roman encoding not in MacRomanEncoding",
+    "section": "9.6.5.4",
+    "pdf_pages": [
+      342
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "114",
+    "title": "Entries in a CIDSystemInfo dictionary",
+    "section": "9.7.3",
+    "pdf_pages": [
+      345
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "115",
+    "title": "Entries in a CIDFont dictionary",
+    "section": "9.7.4.1",
+    "pdf_pages": [
+      345,
+      346
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "116",
+    "title": "Predefined CJK CMap names",
+    "section": "9.7.5.2",
+    "pdf_pages": [
+      350,
+      351,
+      352
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "117",
+    "title": "Character collections for predefined CMaps, by PDF version",
+    "section": "9.7.5.2",
+    "pdf_pages": [
+      353
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "118",
+    "title": "Additional entries in a CMap stream dictionary",
+    "section": "9.7.5.3",
+    "pdf_pages": [
+      353,
+      354
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "119",
+    "title": "Entries in a Type 0 font dictionary",
+    "section": "9.7.6.1",
+    "pdf_pages": [
+      356
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "120",
+    "title": "Entries common to all font descriptors",
+    "section": "9.8.1",
+    "pdf_pages": [
+      358,
+      359,
+      360
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "121",
+    "title": "Font flags",
+    "section": "9.8.2",
+    "pdf_pages": [
+      360,
+      361
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "122",
+    "title": "Additional font descriptor entries for CIDFonts",
+    "section": "9.8.3.1",
+    "pdf_pages": [
+      363
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "123",
+    "title": "Glyph classes in CJK fonts",
+    "section": "9.8.3.3",
+    "pdf_pages": [
+      364,
+      365
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "124",
+    "title": "Embedded font organisation for various font types",
+    "section": "9.9.1",
+    "pdf_pages": [
+      367,
+      368
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "125",
+    "title": "Additional entries in an embedded font stream dictionary",
+    "section": "9.9.1",
+    "pdf_pages": [
+      368,
+      369
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "126",
+    "title": "Predefined spot functions",
+    "section": "10.6.3",
+    "pdf_pages": [
+      383,
+      384,
+      385,
+      386
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "127",
+    "title": "PDF halftone types",
+    "section": "10.6.5.1",
+    "pdf_pages": [
+      388
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "128",
+    "title": "Entries in a Type 1 halftone dictionary",
+    "section": "10.6.5.2",
+    "pdf_pages": [
+      389
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "129",
+    "title": "Additional entries specific to a Type 6 halftone dictionary",
+    "section": "10.6.5.3",
+    "pdf_pages": [
+      390,
+      391
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "130",
+    "title": "Additional entries specific to a Type 10 halftone dictionary",
+    "section": "10.6.5.4",
+    "pdf_pages": [
+      393
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "131",
+    "title": "Additional entries specific to a Type 16 halftone dictionary",
+    "section": "10.6.5.5",
+    "pdf_pages": [
+      394,
+      395
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "132",
+    "title": "Entries in a Type 5 halftone dictionary",
+    "section": "10.6.5.6",
+    "pdf_pages": [
+      395
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "133",
+    "title": "Variables used in the basic compositing formula",
+    "section": "11.3.3",
+    "pdf_pages": [
+      405,
+      406
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "134",
+    "title": "Standard separable blend modes",
+    "section": "11.3.5.2",
+    "pdf_pages": [
+      409,
+      410,
+      411
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "135",
+    "title": "Standard non-separable blend modes",
+    "section": "11.3.5.3",
+    "pdf_pages": [
+      413
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "136",
+    "title": "Variables used in the source shape and opacity formulas",
+    "section": "11.3.7.2",
+    "pdf_pages": [
+      415,
+      416
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "137",
+    "title": "Variables used in the result shape and opacity formulas",
+    "section": "11.3.7.3",
+    "pdf_pages": [
+      416
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "138",
+    "title": "Revised variables for the basic compositing formulas",
+    "section": "11.4.2",
+    "pdf_pages": [
+      419
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "139",
+    "title": "Arguments and results of the group compositing function",
+    "section": "11.4.4",
+    "pdf_pages": [
+      420,
+      421
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "140",
+    "title": "Variables used in the group compositing formulas",
+    "section": "11.4.4",
+    "pdf_pages": [
+      422
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "141",
+    "title": "Variables used in the page group compositing formulas",
+    "section": "11.4.7",
+    "pdf_pages": [
+      427
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "142",
+    "title": "Entries in a soft-mask dictionary",
+    "section": "11.6.5.1",
+    "pdf_pages": [
+      434
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "143",
+    "title": "Restrictions on the entries in a soft-mask image dictionary",
+    "section": "11.6.5.2",
+    "pdf_pages": [
+      435,
+      436
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "144",
+    "title": "Additional entry in a soft-mask image dictionary",
+    "section": "11.6.5.2",
+    "pdf_pages": [
+      436
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "145",
+    "title": "Additional entries specific to a transparency group attributes dictionary",
+    "section": "11.6.6",
+    "pdf_pages": [
+      437
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "146",
+    "title": "Overprinting behaviour in the transparent imaging model",
+    "section": "11.7.4.5",
+    "pdf_pages": [
+      447,
+      448
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "147",
+    "title": "Entries in a viewer preferences dictionary",
+    "section": "12.2",
+    "pdf_pages": [
+      452,
+      453,
+      454,
+      455
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "148",
+    "title": "Names defined for an Enforce array",
+    "section": "12.2",
+    "pdf_pages": [
+      456
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "149",
+    "title": "Destination syntax",
+    "section": "12.3.2.2",
+    "pdf_pages": [
+      457,
+      458
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "150",
+    "title": "Entries in the outline dictionary",
+    "section": "12.3.3",
+    "pdf_pages": [
+      460
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "151",
+    "title": "Entries in an outline item dictionary",
+    "section": "12.3.3",
+    "pdf_pages": [
+      460,
+      461
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "152",
+    "title": "Outline item flags",
+    "section": "12.3.3",
+    "pdf_pages": [
+      461
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "153",
+    "title": "Entries in a collection dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      463,
+      464,
+      465
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "154",
+    "title": "Entries in a collection schema dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      465
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "155",
+    "title": "Entries in a collection field dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      466
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "156",
+    "title": "Entries in a collection sort dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      467
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "157",
+    "title": "Entries in a collection colors dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      467,
+      468
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "158",
+    "title": "Entries in a collection split dictionary",
+    "section": "12.3.5.1",
+    "pdf_pages": [
+      468
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "159",
+    "title": "Entries in a folder dictionary",
+    "section": "12.3.5.2",
+    "pdf_pages": [
+      468,
+      469
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "160",
+    "title": "Entries in a navigator dictionary",
+    "section": "12.3.6",
+    "pdf_pages": [
+      472
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "161",
+    "title": "Entries in a page label dictionary",
+    "section": "12.4.2",
+    "pdf_pages": [
+      474
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "162",
+    "title": "Entries in a thread dictionary",
+    "section": "12.4.3",
+    "pdf_pages": [
+      475
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "163",
+    "title": "Entries in a bead dictionary",
+    "section": "12.4.3",
+    "pdf_pages": [
+      475,
+      476
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "164",
+    "title": "Entries in a transition dictionary",
+    "section": "12.4.4.1",
+    "pdf_pages": [
+      477,
+      478
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "165",
+    "title": "Entries in a navigation node dictionary",
+    "section": "12.4.4.2",
+    "pdf_pages": [
+      479,
+      480
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "166",
+    "title": "Entries common to all annotation dictionaries",
+    "section": "12.5.2",
+    "pdf_pages": [
+      482,
+      483,
+      484,
+      485
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "167",
+    "title": "Annotation flags",
+    "section": "12.5.3",
+    "pdf_pages": [
+      486,
+      487
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "168",
+    "title": "Entries in a border style dictionary",
+    "section": "12.5.4",
+    "pdf_pages": [
+      488
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "169",
+    "title": "Entries in a border effect dictionary",
+    "section": "12.5.4",
+    "pdf_pages": [
+      489
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "170",
+    "title": "Entries in an appearance dictionary",
+    "section": "12.5.5",
+    "pdf_pages": [
+      490
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "171",
+    "title": "Annotation types",
+    "section": "12.5.6.1",
+    "pdf_pages": [
+      491,
+      492
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "172",
+    "title": "Additional entries in an annotation dictionary specific to markup annotations",
+    "section": "12.5.6.2",
+    "pdf_pages": [
+      494,
+      495
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "173",
+    "title": "Additional entries in markup annotation dictionaries specific to external data",
+    "section": "12.5.6.2",
+    "pdf_pages": [
+      496
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "174",
+    "title": "Annotation states",
+    "section": "12.5.6.3",
+    "pdf_pages": [
+      496
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "175",
+    "title": "Additional entries specific to a text annotation",
+    "section": "12.5.6.4",
+    "pdf_pages": [
+      497
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "176",
+    "title": "Additional entries specific to a link annotation",
+    "section": "12.5.6.5",
+    "pdf_pages": [
+      498
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "177",
+    "title": "Additional entries specific to a free text annotation",
+    "section": "12.5.6.6",
+    "pdf_pages": [
+      499,
+      500
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "178",
+    "title": "Additional entries specific to a line annotation",
+    "section": "12.5.6.7",
+    "pdf_pages": [
+      501,
+      502
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "179",
+    "title": "Line ending styles",
+    "section": "12.5.6.7",
+    "pdf_pages": [
+      504
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "180",
+    "title": "Additional entries specific to a square or circle annotation",
+    "section": "12.5.6.8",
+    "pdf_pages": [
+      505
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "181",
+    "title": "Additional entries specific to a polygon or polyline annotation",
+    "section": "12.5.6.9",
+    "pdf_pages": [
+      506,
+      507
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "182",
+    "title": "Additional entries specific to text markup annotations",
+    "section": "12.5.6.10",
+    "pdf_pages": [
+      507,
+      508
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "183",
+    "title": "Additional entries specific to a caret annotation",
+    "section": "12.5.6.11",
+    "pdf_pages": [
+      508,
+      509
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "184",
+    "title": "Additional entries specific to a rubber stamp annotation",
+    "section": "12.5.6.12",
+    "pdf_pages": [
+      509
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "185",
+    "title": "Additional entries specific to an ink annotation",
+    "section": "12.5.6.13",
+    "pdf_pages": [
+      510
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "186",
+    "title": "Additional entries specific to a popup annotation",
+    "section": "12.5.6.14",
+    "pdf_pages": [
+      510,
+      511
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "187",
+    "title": "Additional entries specific to a file attachment annotation",
+    "section": "12.5.6.15",
+    "pdf_pages": [
+      511
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "188",
+    "title": "Additional entries specific to a sound annotation",
+    "section": "12.5.6.16",
+    "pdf_pages": [
+      512
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "189",
+    "title": "Additional entries specific to a movie annotation",
+    "section": "12.5.6.17",
+    "pdf_pages": [
+      512
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "190",
+    "title": "Additional entries specific to a screen annotation",
+    "section": "12.5.6.18",
+    "pdf_pages": [
+      513
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "191",
+    "title": "Additional entries specific to a widget annotation",
+    "section": "12.5.6.19",
+    "pdf_pages": [
+      514
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "192",
+    "title": "Entries in an appearance characteristics dictionary",
+    "section": "12.5.6.19",
+    "pdf_pages": [
+      515,
+      516
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "193",
+    "title": "Additional entries specific to a watermark annotation",
+    "section": "12.5.6.22",
+    "pdf_pages": [
+      517
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "194",
+    "title": "Entries in a fixed print dictionary",
+    "section": "12.5.6.22",
+    "pdf_pages": [
+      517
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "195",
+    "title": "Additional entries specific to a redaction annotation",
+    "section": "12.5.6.23",
+    "pdf_pages": [
+      519,
+      520
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "196",
+    "title": "Entries common to all action dictionaries",
+    "section": "12.6.2",
+    "pdf_pages": [
+      521
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "197",
+    "title": "Entries in an annotation’s additional-actions dictionary",
+    "section": "12.6.3",
+    "pdf_pages": [
+      523
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "198",
+    "title": "Entries in a page object’s additional-actions dictionary",
+    "section": "12.6.3",
+    "pdf_pages": [
+      524
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "199",
+    "title": "Entries in a form field’s additional-actions dictionary",
+    "section": "12.6.3",
+    "pdf_pages": [
+      524
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "200",
+    "title": "Entries in the document catalog’s additional-actions dictionary",
+    "section": "12.6.3",
+    "pdf_pages": [
+      524,
+      525
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "201",
+    "title": "Action types",
+    "section": "12.6.4.1",
+    "pdf_pages": [
+      525,
+      526
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "202",
+    "title": "Additional entries specific to a go-to action",
+    "section": "12.6.4.2",
+    "pdf_pages": [
+      526
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "203",
+    "title": "Additional entries specific to a remote go-to action",
+    "section": "12.6.4.3",
+    "pdf_pages": [
+      527,
+      528
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "204",
+    "title": "Additional entries specific to an embedded go-to action",
+    "section": "12.6.4.4",
+    "pdf_pages": [
+      528,
+      529
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "205",
+    "title": "Entries specific to a target dictionary",
+    "section": "12.6.4.4",
+    "pdf_pages": [
+      529
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "206",
+    "title": "Entries in a GoToDp dictionary",
+    "section": "12.6.4.5",
+    "pdf_pages": [
+      531
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "207",
+    "title": "Additional entries specific to a launch action",
+    "section": "12.6.4.6",
+    "pdf_pages": [
+      532
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "208",
+    "title": "Entries in a Microsoft WindowsTM launch parameter dictionary",
+    "section": "12.6.4.6",
+    "pdf_pages": [
+      532
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "209",
+    "title": "Additional entries specific to a thread action",
+    "section": "12.6.4.7",
+    "pdf_pages": [
+      533
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "210",
+    "title": "Additional entries specific to a URI action",
+    "section": "12.6.4.8",
+    "pdf_pages": [
+      534
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "211",
+    "title": "Entry in a URI dictionary",
+    "section": "12.6.4.8",
+    "pdf_pages": [
+      534
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "212",
+    "title": "Additional entries specific to a sound action",
+    "section": "12.6.4.9",
+    "pdf_pages": [
+      535
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "213",
+    "title": "Additional entries specific to a movie action",
+    "section": "12.6.4.10",
+    "pdf_pages": [
+      536
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "214",
+    "title": "Additional entries specific to a hide action",
+    "section": "12.6.4.11",
+    "pdf_pages": [
+      537
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "215",
+    "title": "Named actions",
+    "section": "12.6.4.12",
+    "pdf_pages": [
+      537
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "216",
+    "title": "Additional entries specific to named actions",
+    "section": "12.6.4.12",
+    "pdf_pages": [
+      537
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "217",
+    "title": "Additional entries specific to a set-OCG-state action",
+    "section": "12.6.4.13",
+    "pdf_pages": [
+      538
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "218",
+    "title": "Additional entries specific to a rendition action",
+    "section": "12.6.4.14",
+    "pdf_pages": [
+      539,
+      540
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "219",
+    "title": "Additional entries specific to a transition action",
+    "section": "12.6.4.15",
+    "pdf_pages": [
+      540
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "220",
+    "title": "Additional entries specific to a go-to-3D-view action",
+    "section": "12.6.4.16",
+    "pdf_pages": [
+      541
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "221",
+    "title": "Additional entries specific to an ECMAScript action",
+    "section": "12.6.4.17",
+    "pdf_pages": [
+      542
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "222",
+    "title": "Additional entries specific to a rich-media-execute action",
+    "section": "12.6.4.18",
+    "pdf_pages": [
+      542
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "223",
+    "title": "Entries in a RichMediaCommand dictionary",
+    "section": "12.6.4.18",
+    "pdf_pages": [
+      543
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "224",
+    "title": "Entries in the interactive form dictionary",
+    "section": "12.7.3",
+    "pdf_pages": [
+      544,
+      545
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "225",
+    "title": "Signature flags",
+    "section": "12.7.3",
+    "pdf_pages": [
+      545
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "226",
+    "title": "Entries common to all field dictionaries",
+    "section": "12.7.4.1",
+    "pdf_pages": [
+      546
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "227",
+    "title": "Field flags common to all field types",
+    "section": "12.7.4.1",
+    "pdf_pages": [
+      547
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "228",
+    "title": "Additional entries common to all fields containing variable text",
+    "section": "12.7.4.3",
+    "pdf_pages": [
+      548
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "229",
+    "title": "Field flags specific to button fields",
+    "section": "12.7.5.2.1",
+    "pdf_pages": [
+      550,
+      551
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "230",
+    "title": "Additional entry specific to check box and radio button fields",
+    "section": "12.7.5.2.3",
+    "pdf_pages": [
+      552
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "231",
+    "title": "Field flags specific to text fields",
+    "section": "12.7.5.3",
+    "pdf_pages": [
+      554,
+      555
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "232",
+    "title": "Additional entry specific to a text field",
+    "section": "12.7.5.3",
+    "pdf_pages": [
+      556
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "233",
+    "title": "Field flags specific to choice fields",
+    "section": "12.7.5.4",
+    "pdf_pages": [
+      557
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "234",
+    "title": "Additional entries specific to a choice field",
+    "section": "12.7.5.4",
+    "pdf_pages": [
+      557,
+      558
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "235",
+    "title": "Additional entries specific to a signature field",
+    "section": "12.7.5.5",
+    "pdf_pages": [
+      559
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "236",
+    "title": "Entries in a signature field lock dictionary",
+    "section": "12.7.5.5",
+    "pdf_pages": [
+      559,
+      560
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "237",
+    "title": "Entries in a signature field seed value dictionary",
+    "section": "12.7.5.5",
+    "pdf_pages": [
+      560,
+      561,
+      562,
+      563
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "238",
+    "title": "Entries in a certificate seed value dictionary",
+    "section": "12.7.5.5",
+    "pdf_pages": [
+      564,
+      565,
+      566
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "239",
+    "title": "Additional entries specific to a submit-form action",
+    "section": "12.7.6.2",
+    "pdf_pages": [
+      567
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "240",
+    "title": "Flags for submit-form actions",
+    "section": "12.7.6.2",
+    "pdf_pages": [
+      568,
+      569
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "241",
+    "title": "Additional entries specific to a reset-form action",
+    "section": "12.7.6.3",
+    "pdf_pages": [
+      571
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "242",
+    "title": "Flag for reset-form actions",
+    "section": "12.7.6.3",
+    "pdf_pages": [
+      571
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "243",
+    "title": "Additional entries specific to an import-data action",
+    "section": "12.7.6.4",
+    "pdf_pages": [
+      571
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "244",
+    "title": "Entry in the FDF trailer dictionary",
+    "section": "12.7.8.2.4",
+    "pdf_pages": [
+      574
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "245",
+    "title": "Entries in the FDF catalog dictionary",
+    "section": "12.7.8.3.1",
+    "pdf_pages": [
+      574,
+      575
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "246",
+    "title": "Entries in the FDF dictionary",
+    "section": "12.7.8.3.1",
+    "pdf_pages": [
+      575,
+      576
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "247",
+    "title": "Additional entry in an embedded file stream dictionary for an encrypted FDF file",
+    "section": "12.7.8.3.1",
+    "pdf_pages": [
+      577
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "248",
+    "title": "Entries in the ECMAScript dictionary",
+    "section": "12.7.8.3.1",
+    "pdf_pages": [
+      577
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "249",
+    "title": "Entries in an FDF field dictionary",
+    "section": "12.7.8.3.2",
+    "pdf_pages": [
+      578,
+      579
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "250",
+    "title": "Entries in an icon fit dictionary",
+    "section": "12.7.8.3.2",
+    "pdf_pages": [
+      579,
+      580
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "251",
+    "title": "Entries in an FDF page dictionary",
+    "section": "12.7.8.3.3",
+    "pdf_pages": [
+      580
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "252",
+    "title": "Entries in an FDF template dictionary",
+    "section": "12.7.8.3.3",
+    "pdf_pages": [
+      581
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "253",
+    "title": "Entries in an FDF named page reference dictionary",
+    "section": "12.7.8.3.3",
+    "pdf_pages": [
+      581
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "254",
+    "title": "Additional entry for annotation dictionaries in an FDF file",
+    "section": "12.7.8.3.4",
+    "pdf_pages": [
+      582
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "255",
+    "title": "Entries in a signature dictionary",
+    "section": "12.8.1",
+    "pdf_pages": [
+      584,
+      585,
+      586
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "256",
+    "title": "Entries in a signature reference dictionary",
+    "section": "12.8.1",
+    "pdf_pages": [
+      587
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "257",
+    "title": "Entries in the DocMDP transform parameters dictionary",
+    "section": "12.8.2.2.2",
+    "pdf_pages": [
+      589
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "258",
+    "title": "Entries in the UR transform parameters dictionary",
+    "section": "12.8.2.3",
+    "pdf_pages": [
+      590,
+      591
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "259",
+    "title": "Entries in the FieldMDP transform parameters dictionary",
+    "section": "12.8.2.4",
+    "pdf_pages": [
+      591,
+      592
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "260",
+    "title": "SubFilter value algorithm support",
+    "section": "12.8.3.1",
+    "pdf_pages": [
+      593
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "261",
+    "title": "Entries in the document security store (DSS) dictionary",
+    "section": "12.8.4.3",
+    "pdf_pages": [
+      601,
+      602
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "262",
+    "title": "Entries in the signature validation-related information (VRI) dictionary",
+    "section": "12.8.4.4",
+    "pdf_pages": [
+      602,
+      603
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "263",
+    "title": "Entries in a permissions dictionary",
+    "section": "12.8.6",
+    "pdf_pages": [
+      608
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "264",
+    "title": "Entries in a legal attestation dictionary",
+    "section": "12.8.7",
+    "pdf_pages": [
+      609,
+      610
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "265",
+    "title": "Entries in a viewport dictionary",
+    "section": "12.9.1",
+    "pdf_pages": [
+      611
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "266",
+    "title": "Entries in a measure dictionary",
+    "section": "12.9.1",
+    "pdf_pages": [
+      612
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "267",
+    "title": "Additional entries in a rectilinear measure dictionary",
+    "section": "12.9.1",
+    "pdf_pages": [
+      613,
+      614
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "268",
+    "title": "Entries in a number format dictionary",
+    "section": "12.9.1",
+    "pdf_pages": [
+      614,
+      615
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "269",
+    "title": "Additional entries in a geospatial measure dictionary",
+    "section": "12.10.2",
+    "pdf_pages": [
+      617,
+      618
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "270",
+    "title": "Entries in a geographic coordinate system dictionary",
+    "section": "12.10.3",
+    "pdf_pages": [
+      619
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "271",
+    "title": "Entries in a projected coordinate system dictionary",
+    "section": "12.10.4",
+    "pdf_pages": [
+      620
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "272",
+    "title": "Entries in a point data dictionary",
+    "section": "12.10.5",
+    "pdf_pages": [
+      621
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "273",
+    "title": "Entries common to all requirement dictionaries",
+    "section": "12.11.1",
+    "pdf_pages": [
+      621,
+      622
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "274",
+    "title": "Entries for specific types of requirements",
+    "section": "12.11.1",
+    "pdf_pages": [
+      622
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "275",
+    "title": "Requirement types",
+    "section": "12.11.2",
+    "pdf_pages": [
+      623,
+      624,
+      625
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "276",
+    "title": "Entries in a requirement handler dictionary",
+    "section": "12.11.5",
+    "pdf_pages": [
+      627
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "277",
+    "title": "Entries common to all rendition dictionaries",
+    "section": "13.2.3.1",
+    "pdf_pages": [
+      632
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "278",
+    "title": "Entries in a rendition MH/BE dictionary",
+    "section": "13.2.3.1",
+    "pdf_pages": [
+      632
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "279",
+    "title": "Entries in a media criteria dictionary",
+    "section": "13.2.3.1",
+    "pdf_pages": [
+      633,
+      634
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "280",
+    "title": "Entries in a minimum bit depth dictionary",
+    "section": "13.2.3.1",
+    "pdf_pages": [
+      634
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "281",
+    "title": "Entries in a minimum screen size dictionary",
+    "section": "13.2.3.1",
+    "pdf_pages": [
+      634
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "282",
+    "title": "Additional entries in a media rendition dictionary",
+    "section": "13.2.3.2",
+    "pdf_pages": [
+      635
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "283",
+    "title": "Additional entries specific to a selector rendition dictionary",
+    "section": "13.2.3.3",
+    "pdf_pages": [
+      635
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "284",
+    "title": "Entries common to all media clip dictionaries",
+    "section": "13.2.4.1",
+    "pdf_pages": [
+      636
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "285",
+    "title": "Additional entries in a media clip data dictionary",
+    "section": "13.2.4.2",
+    "pdf_pages": [
+      636,
+      637
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "286",
+    "title": "Entries in a media permissions dictionary",
+    "section": "13.2.4.2",
+    "pdf_pages": [
+      637,
+      638
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "287",
+    "title": "Entries in a media clip data MH/BE dictionary",
+    "section": "13.2.4.2",
+    "pdf_pages": [
+      638
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "288",
+    "title": "Additional entries in a media clip section dictionary",
+    "section": "13.2.4.3",
+    "pdf_pages": [
+      639
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "289",
+    "title": "Entries in a media clip section MH/BE dictionary",
+    "section": "13.2.4.3",
+    "pdf_pages": [
+      640
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "290",
+    "title": "Entries in a media play parameters dictionary",
+    "section": "13.2.5",
+    "pdf_pages": [
+      640
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "291",
+    "title": "Entries in a media play parameters MH/BE dictionary",
+    "section": "13.2.5",
+    "pdf_pages": [
+      641,
+      642
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "292",
+    "title": "Entries in a media duration dictionary",
+    "section": "13.2.5",
+    "pdf_pages": [
+      642
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "293",
+    "title": "Entries in a media screen parameters dictionary",
+    "section": "13.2.6.1",
+    "pdf_pages": [
+      643
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "294",
+    "title": "Entries in a media screen parameters MH/BE dictionary",
+    "section": "13.2.6.1",
+    "pdf_pages": [
+      643,
+      644
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "295",
+    "title": "Entries in a floating window parameters dictionary",
+    "section": "13.2.6.1",
+    "pdf_pages": [
+      645,
+      646
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "296",
+    "title": "Entries common to all media offset dictionaries",
+    "section": "13.2.6.2",
+    "pdf_pages": [
+      646
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "297",
+    "title": "Additional entries in a media offset time dictionary",
+    "section": "13.2.6.2",
+    "pdf_pages": [
+      646
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "298",
+    "title": "Additional entries in a media offset frame dictionary",
+    "section": "13.2.6.2",
+    "pdf_pages": [
+      647
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "299",
+    "title": "Additional entries in a media offset marker dictionary",
+    "section": "13.2.6.2",
+    "pdf_pages": [
+      647
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "300",
+    "title": "Entries in a timespan dictionary",
+    "section": "13.2.6.3",
+    "pdf_pages": [
+      647
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "301",
+    "title": "Entries in a media players dictionary",
+    "section": "13.2.7.2.1",
+    "pdf_pages": [
+      648
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "302",
+    "title": "Entries in a media player info dictionary",
+    "section": "13.2.7.3",
+    "pdf_pages": [
+      649
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "303",
+    "title": "Entries in a software identifier dictionary",
+    "section": "13.2.7.4.1",
+    "pdf_pages": [
+      650
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "304",
+    "title": "Monitor specifier values",
+    "section": "13.2.7.5",
+    "pdf_pages": [
+      651,
+      652
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "305",
+    "title": "Additional entries specific to a sound object",
+    "section": "13.3",
+    "pdf_pages": [
+      652,
+      653
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "306",
+    "title": "Entries in a movie dictionary",
+    "section": "13.4",
+    "pdf_pages": [
+      654
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "307",
+    "title": "Entries in a movie activation dictionary",
+    "section": "13.4",
+    "pdf_pages": [
+      654,
+      655
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "308",
+    "title": "Entries in a slideshow dictionary",
+    "section": "13.5",
+    "pdf_pages": [
+      656
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "309",
+    "title": "Additional entries specific to a 3D annotation",
+    "section": "13.6.2",
+    "pdf_pages": [
+      659
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "310",
+    "title": "Entries in a 3D activation dictionary",
+    "section": "13.6.2",
+    "pdf_pages": [
+      661,
+      662
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "311",
+    "title": "Entries in a 3D stream dictionary",
+    "section": "13.6.3.1",
+    "pdf_pages": [
+      664
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "312",
+    "title": "Entries in an 3D animation style dictionary",
+    "section": "13.6.3.1",
+    "pdf_pages": [
+      665,
+      666
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "313",
+    "title": "Animation styles",
+    "section": "13.6.3.2",
+    "pdf_pages": [
+      666
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "314",
+    "title": "Entries in a 3D reference dictionary",
+    "section": "13.6.3.2",
+    "pdf_pages": [
+      667
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "315",
+    "title": "Entries in a 3D view dictionary",
+    "section": "13.6.4.1",
+    "pdf_pages": [
+      670,
+      671,
+      672
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "316",
+    "title": "Entries in a projection dictionary",
+    "section": "13.6.4.2",
+    "pdf_pages": [
+      674,
+      675
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "317",
+    "title": "Entries in a 3D background dictionary",
+    "section": "13.6.4.3",
+    "pdf_pages": [
+      678
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "318",
+    "title": "Entries in a render mode dictionary",
+    "section": "13.6.4.3",
+    "pdf_pages": [
+      678,
+      679
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "319",
+    "title": "Render modes",
+    "section": "13.6.4.4",
+    "pdf_pages": [
+      680,
+      681
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "320",
+    "title": "Entries in a 3D lighting scheme dictionary",
+    "section": "13.6.4.4",
+    "pdf_pages": [
+      681
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "321",
+    "title": "3D lighting scheme styles",
+    "section": "13.6.4.4",
+    "pdf_pages": [
+      681
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "322",
+    "title": "Entries in a 3D cross section dictionary",
+    "section": "13.6.4.5",
+    "pdf_pages": [
+      683,
+      684
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "323",
+    "title": "Entries in a 3D node dictionary",
+    "section": "13.6.4.6",
+    "pdf_pages": [
+      689,
+      690
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "324",
+    "title": "Entries in an external data dictionary used to markup 3D annotations",
+    "section": "13.6.6",
+    "pdf_pages": [
+      695
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "325",
+    "title": "Entries in a 3D units dictionary",
+    "section": "13.6.7.2",
+    "pdf_pages": [
+      699,
+      700
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "326",
+    "title": "Entries in a 3D measurement/markup dictionary common to all markup subtypes",
+    "section": "13.6.7.3.1",
+    "pdf_pages": [
+      701,
+      702
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "327",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D linear dimension measurement",
+    "section": "13.6.7.3.2",
+    "pdf_pages": [
+      703,
+      704
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "328",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D perpendicular dimension measurement",
+    "section": "13.6.7.3.2",
+    "pdf_pages": [
+      705,
+      706
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "329",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D angular dimension measurement",
+    "section": "13.6.7.3.4",
+    "pdf_pages": [
+      708,
+      709
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "330",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D radial dimension measurement",
+    "section": "13.6.7.3.5",
+    "pdf_pages": [
+      711,
+      712
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "331",
+    "title": "Additional entries in a 3D measurement/markup dictionary for a 3D comment note",
+    "section": "13.6.7.3.5",
+    "pdf_pages": [
+      713,
+      714
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "332",
+    "title": "Entries in the external data dictionary of a projection annotation",
+    "section": "13.6.7.3.6",
+    "pdf_pages": [
+      714,
+      715
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "333",
+    "title": "Additional entries specific to a RichMedia annotation",
+    "section": "13.7.2.1",
+    "pdf_pages": [
+      715,
+      716,
+      1023
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "334",
+    "title": "Entries in a RichMediaSettings dictionary",
+    "section": "13.7.2.2.1",
+    "pdf_pages": [
+      716,
+      717
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "335",
+    "title": "Entries in a RichMediaActivation dictionary",
+    "section": "13.7.2.2.2",
+    "pdf_pages": [
+      717,
+      718
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "336",
+    "title": "Entries in a RichMediaDeactivation dictionary",
+    "section": "13.7.2.2.3",
+    "pdf_pages": [
+      718
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "337",
+    "title": "Entries in a RichMediaAnimation dictionary",
+    "section": "13.7.2.2.4",
+    "pdf_pages": [
+      719
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "338",
+    "title": "Entries in a RichMediaPresentation dictionary",
+    "section": "13.7.2.2.5",
+    "pdf_pages": [
+      720,
+      721
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "339",
+    "title": "Entries in a RichMediaWindow dictionary",
+    "section": "13.7.2.2.6",
+    "pdf_pages": [
+      721,
+      722
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "340",
+    "title": "Entries in a RichMediaPosition dictionary",
+    "section": "13.7.2.2.6",
+    "pdf_pages": [
+      722
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "341",
+    "title": "Entries in a RichMediaContent dictionary",
+    "section": "13.7.2.3.1",
+    "pdf_pages": [
+      723,
+      724
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "342",
+    "title": "Entries in a RichMediaConfiguration dictionary",
+    "section": "13.7.2.3.3",
+    "pdf_pages": [
+      725
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "343",
+    "title": "Entries in a RichMediaInstance dictionary",
+    "section": "13.7.2.3.4",
+    "pdf_pages": [
+      726
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "344",
+    "title": "Additional entries in a 3D view dictionary",
+    "section": "13.7.2.3.5",
+    "pdf_pages": [
+      726
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "345",
+    "title": "Entries in a View Params dictionary",
+    "section": "13.7.2.3.6.1",
+    "pdf_pages": [
+      727
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "346",
+    "title": "Predefined procedure set",
+    "section": "14.2",
+    "pdf_pages": [
+      729
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "347",
+    "title": "Additional entries in a metadata stream dictionary",
+    "section": "14.3.2",
+    "pdf_pages": [
+      730
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "348",
+    "title": "Additional entry for components having metadata",
+    "section": "14.3.2",
+    "pdf_pages": [
+      730
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "349",
+    "title": "Entries in the document information dictionary",
+    "section": "14.3.3",
+    "pdf_pages": [
+      731,
+      732
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "350",
+    "title": "Entries in a page-piece dictionary",
+    "section": "14.5",
+    "pdf_pages": [
+      734
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "351",
+    "title": "Entries in a data dictionary",
+    "section": "14.5",
+    "pdf_pages": [
+      735
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "352",
+    "title": "Marked-content operators",
+    "section": "14.6.1",
+    "pdf_pages": [
+      736
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "353",
+    "title": "Entries in the mark information dictionary",
+    "section": "14.7.1",
+    "pdf_pages": [
+      738
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "354",
+    "title": "Entries in the structure tree root",
+    "section": "14.7.2",
+    "pdf_pages": [
+      738,
+      739
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "355",
+    "title": "Entries in a structure element dictionary",
+    "section": "14.7.2",
+    "pdf_pages": [
+      740,
+      741,
+      742
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "356",
+    "title": "Entries in a namespace dictionary",
+    "section": "14.7.4.2",
+    "pdf_pages": [
+      744
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "357",
+    "title": "Entries in a marked-content reference dictionary",
+    "section": "14.7.5.2",
+    "pdf_pages": [
+      746
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "358",
+    "title": "Entries in an object reference dictionary",
+    "section": "14.7.5.3",
+    "pdf_pages": [
+      749
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "359",
+    "title": "Additional dictionary entries for structure element access",
+    "section": "14.7.5.4",
+    "pdf_pages": [
+      750
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "360",
+    "title": "Entries common to all attribute object dictionaries",
+    "section": "14.7.6.1",
+    "pdf_pages": [
+      753
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "361",
+    "title": "Additional entries in an attribute object dictionary for user properties",
+    "section": "14.7.6.4",
+    "pdf_pages": [
+      755
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "362",
+    "title": "Entries in a user property dictionary",
+    "section": "14.7.6.4",
+    "pdf_pages": [
+      755,
+      756
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "363",
+    "title": "Property list entries for artifacts",
+    "section": "14.8.2.2.2",
+    "pdf_pages": [
+      762,
+      763
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "364",
+    "title": "Document level structure types",
+    "section": "14.8.4.3",
+    "pdf_pages": [
+      771
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "365",
+    "title": "Grouping level structure types",
+    "section": "14.8.4.4",
+    "pdf_pages": [
+      772,
+      773
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "366",
+    "title": "Block level structure types",
+    "section": "14.8.4.5",
+    "pdf_pages": [
+      774,
+      775
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "367",
+    "title": "Sub-block level structure type",
+    "section": "14.8.4.6",
+    "pdf_pages": [
+      776
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "368",
+    "title": "General inline level structure types",
+    "section": "14.8.4.7.2",
+    "pdf_pages": [
+      777,
+      778,
+      779
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "369",
+    "title": "Ruby and Warichu structure types",
+    "section": "14.8.4.7.3",
+    "pdf_pages": [
+      780
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "370",
+    "title": "List standard structure types",
+    "section": "14.8.4.8.2",
+    "pdf_pages": [
+      781
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "371",
+    "title": "Table standard structure types",
+    "section": "14.8.4.8.3",
+    "pdf_pages": [
+      782
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "372",
+    "title": "Standard structure type Caption",
+    "section": "14.8.4.8.4",
+    "pdf_pages": [
+      783
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "373",
+    "title": "Standard structure type Figure",
+    "section": "14.8.4.8.5",
+    "pdf_pages": [
+      784
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "374",
+    "title": "Standard structure type Formula",
+    "section": "14.8.4.8.6",
+    "pdf_pages": [
+      785
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "375",
+    "title": "standard structure type Artifact",
+    "section": "14.8.4.8.7",
+    "pdf_pages": [
+      785
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "376",
+    "title": "Standard structure attribute owners",
+    "section": "14.8.5.2",
+    "pdf_pages": [
+      786,
+      787
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "377",
+    "title": "Standard layout attributes",
+    "section": "14.8.5.4.1",
+    "pdf_pages": [
+      788,
+      789,
+      790,
+      1013
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "378",
+    "title": "Standard layout attributes common to all standard structure types",
+    "section": "14.8.5.4.2",
+    "pdf_pages": [
+      791,
+      792,
+      793,
+      794
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "379",
+    "title": "Additional standard layout attributes specific to block-level structure elements",
+    "section": "14.8.5.4.3",
+    "pdf_pages": [
+      795,
+      796,
+      797,
+      798
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "380",
+    "title": "Standard layout attributes specific to inline-level structure elements",
+    "section": "14.8.5.4.4",
+    "pdf_pages": [
+      799,
+      800,
+      801,
+      802
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "381",
+    "title": "Standard layout attributes specific to standard column attributes",
+    "section": "14.8.5.4.7",
+    "pdf_pages": [
+      803,
+      804
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "382",
+    "title": "Standard list attributes",
+    "section": "14.8.5.5",
+    "pdf_pages": [
+      805
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "383",
+    "title": "PrintField attributes",
+    "section": "14.8.5.6",
+    "pdf_pages": [
+      806
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "384",
+    "title": "Standard table attributes",
+    "section": "14.8.5.7",
+    "pdf_pages": [
+      807,
+      808
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "385",
+    "title": "Standard artifact attributes",
+    "section": "14.8.5.8",
+    "pdf_pages": [
+      808,
+      809
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "386",
+    "title": "Entries in the Web Capture information dictionary",
+    "section": "14.10.2",
+    "pdf_pages": [
+      818
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "387",
+    "title": "Characters with special meaning in destinations and fields and their byte values",
+    "section": "14.10.3.4",
+    "pdf_pages": [
+      822
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "388",
+    "title": "Entries common to all Web Capture content sets",
+    "section": "14.10.4.2",
+    "pdf_pages": [
+      823
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "389",
+    "title": "Additional entries specific to a Web Capture page set",
+    "section": "14.10.4.2",
+    "pdf_pages": [
+      823,
+      824
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "390",
+    "title": "Additional entries specific to a Web Capture image set",
+    "section": "14.10.4.3",
+    "pdf_pages": [
+      824
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "391",
+    "title": "Entries in a source information dictionary",
+    "section": "14.10.5.1",
+    "pdf_pages": [
+      825
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "392",
+    "title": "Entries in a URL alias dictionary",
+    "section": "14.10.5.2",
+    "pdf_pages": [
+      826
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "393",
+    "title": "Entries in a Web Capture command dictionary",
+    "section": "14.10.5.3",
+    "pdf_pages": [
+      826,
+      827
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "394",
+    "title": "Web Capture command flags",
+    "section": "14.10.5.3",
+    "pdf_pages": [
+      827
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "395",
+    "title": "Entries in a Web Capture command settings dictionary",
+    "section": "14.10.5.4",
+    "pdf_pages": [
+      828
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "396",
+    "title": "Entries in a box colour information dictionary",
+    "section": "14.11.2.2",
+    "pdf_pages": [
+      832
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "397",
+    "title": "Entries in a box style dictionary",
+    "section": "14.11.2.2",
+    "pdf_pages": [
+      833
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "398",
+    "title": "Additional entries specific to a printer’s mark annotation",
+    "section": "14.11.3",
+    "pdf_pages": [
+      834
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "399",
+    "title": "Additional entries specific to a printer’s mark form dictionary",
+    "section": "14.11.3",
+    "pdf_pages": [
+      834
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "400",
+    "title": "Entries in a separation dictionary",
+    "section": "14.11.4",
+    "pdf_pages": [
+      835
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "401",
+    "title": "Entries in an output intent dictionary",
+    "section": "14.11.5",
+    "pdf_pages": [
+      836,
+      837,
+      838
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "402",
+    "title": "Entries in a DestOutputProfileRef dictionary",
+    "section": "14.11.5",
+    "pdf_pages": [
+      838,
+      839
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "403",
+    "title": "Additional entries specific to a trap network annotation",
+    "section": "14.11.6.2",
+    "pdf_pages": [
+      842
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "404",
+    "title": "Additional entries specific to a trap network appearance stream",
+    "section": "14.11.6.3",
+    "pdf_pages": [
+      843
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "405",
+    "title": "Entry in an OPI version dictionary",
+    "section": "14.11.7",
+    "pdf_pages": [
+      844
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "406",
+    "title": "Entries in a version 1.3 OPI dictionary",
+    "section": "14.11.7",
+    "pdf_pages": [
+      845,
+      846,
+      847
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "407",
+    "title": "Entries in a version 2.0 OPI dictionary",
+    "section": "14.11.7",
+    "pdf_pages": [
+      847,
+      848,
+      849
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "408",
+    "title": "Entries in a DPartRoot dictionary",
+    "section": "14.12.4.1",
+    "pdf_pages": [
+      851
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "409",
+    "title": "Entries in a DPart dictionary",
+    "section": "14.12.4.1",
+    "pdf_pages": [
+      851,
+      852
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "A.1",
+    "title": "PDF content stream operators",
+    "section": "A.2",
+    "pdf_pages": [
+      859,
+      860,
+      861,
+      862
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "C.1",
+    "title": "Architectural considerations",
+    "section": "C.2",
+    "pdf_pages": [
+      866
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.1",
+    "title": "Latin-text encodings",
+    "section": "D.1",
+    "pdf_pages": [
+      868,
+      869
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.2",
+    "title": "Latin character set and encodings",
+    "section": "D.2",
+    "pdf_pages": [
+      869,
+      870,
+      871,
+      872,
+      873
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.3",
+    "title": "PDFDocEncoding character set",
+    "section": "D.3",
+    "pdf_pages": [
+      874,
+      875,
+      876,
+      877,
+      878,
+      879,
+      880,
+      881,
+      882,
+      883,
+      884
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.4",
+    "title": "Expert set and MacExpert encoding",
+    "section": "D.4",
+    "pdf_pages": [
+      884,
+      885,
+      886,
+      887
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.5",
+    "title": "Symbol set and encoding",
+    "section": "D.5",
+    "pdf_pages": [
+      887,
+      888,
+      889,
+      890
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "D.6",
+    "title": "ZapfDingbats set and encoding",
+    "section": "D.6",
+    "pdf_pages": [
+      890,
+      891
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.1",
+    "title": "Entries in the linearization parameter dictionary",
+    "section": "F.3.3",
+    "pdf_pages": [
+      899,
+      900
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "F.2",
+    "title": "Standard hint tables",
+    "section": "F.3.6",
+    "pdf_pages": [
+      902
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.3",
+    "title": "Page offset hint table, header section",
+    "section": "F.4.2",
+    "pdf_pages": [
+      907,
+      908
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.4",
+    "title": "Page offset hint table, per-page entry",
+    "section": "F.4.2",
+    "pdf_pages": [
+      908,
+      909
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.5",
+    "title": "Shared object hint table, header section",
+    "section": "F.4.3",
+    "pdf_pages": [
+      910
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.6",
+    "title": "Shared object hint table, shared object group entry",
+    "section": "F.4.3",
+    "pdf_pages": [
+      911
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.7",
+    "title": "Thumbnail hint table, header section",
+    "section": "F.4.4",
+    "pdf_pages": [
+      912
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.8",
+    "title": "Thumbnail hint table, per-page entry",
+    "section": "F.4.4",
+    "pdf_pages": [
+      912
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.9",
+    "title": "Generic hint table",
+    "section": "F.4.5",
+    "pdf_pages": [
+      913
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.10",
+    "title": "Extended generic hint table",
+    "section": "F.4.6",
+    "pdf_pages": [
+      914
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.11",
+    "title": "Embedded file stream hint table, header section",
+    "section": "F.4.7",
+    "pdf_pages": [
+      914,
+      915
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "F.12",
+    "title": "Embedded file stream hint table, per-embedded file stream group entries",
+    "section": "F.4.7",
+    "pdf_pages": [
+      915
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.1",
+    "title": "Objects in minimal example",
+    "section": "H.2",
+    "pdf_pages": [
+      920,
+      921
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.2",
+    "title": "Objects in simple text string example",
+    "section": "H.3",
+    "pdf_pages": [
+      922
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.3",
+    "title": "Objects in simple graphics example",
+    "section": "H.4",
+    "pdf_pages": [
+      925
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.4",
+    "title": "Object usage after adding four text annotations",
+    "section": "H.7.2",
+    "pdf_pages": [
+      934
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.5",
+    "title": "Object usage after modifying text of one annotation",
+    "section": "H.7.3",
+    "pdf_pages": [
+      936
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.6",
+    "title": "Object usage after deleting two text annotations",
+    "section": "H.7.4",
+    "pdf_pages": [
+      936
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "H.7",
+    "title": "Object usage after adding three text annotations",
+    "section": "H.7.5",
+    "pdf_pages": [
+      937,
+      938
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "323a",
+    "title": "Interpretation of 3D Node Subtype entry",
+    "section": "Q.5",
+    "pdf_pages": [
+      1008
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "352a",
+    "title": "Marked content tags defined in PDF 2.0 (informative)",
+    "section": "Q.5",
+    "pdf_pages": [
+      1009
+    ],
+    "dictionary": false
+  },
+  {
+    "id": "409a",
+    "title": "Property list entries for associated files",
+    "section": "14.13.5",
+    "pdf_pages": [
+      1015
+    ],
+    "dictionary": true
+  },
+  {
+    "id": "125a",
+    "title": "Additional entries in a ToUnicode CMap stream dictionary",
+    "section": "9.10.3",
+    "pdf_pages": [
+      1022
+    ],
+    "dictionary": true
+  }
+]

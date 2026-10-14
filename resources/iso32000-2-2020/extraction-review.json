@@ -1,0 +1,2255 @@
+{
+  "source": "ISO_32000-2_sponsored_EC3.pdf",
+  "review_scope": "Base dictionary grids, missing continuation captions, exact entry/type domains, source-cell extraction anomalies and common table inheritance. EC3 annotations remain explicit reviewed overlays, not blanket acceptance.",
+  "table_patches": [
+    {
+      "table": "48",
+      "section": "7.12.2",
+      "rationale": "The third-column cells are not detected by the printed grid. The two entries are transcribed from physical PDF page 157, table 48; the namespace prefix is a variable key.",
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional; shall be a direct object if present) The type of PDF object that this dictionary describes; if present, shall be Extensions.",
+          "qualifier": "Optional; shall be a direct object if present",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": true,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "Extensions",
+          "pdf_page": 157,
+          "errata": null
+        }
+      ],
+      "variable_entries": [
+        {
+          "name": "Prefix name",
+          "type": "array or dictionary",
+          "description": "(Required; PDF 1.7; shall be a direct object) A developer extensions dictionary, or an array of developer extension dictionaries (PDF 2.0), denoting extensions used (See \"Table 49 — Entries in a developer extensions dictionary\"). The key shall be a registered prefix name as described in Annex E, “Extending PDF\". This entry is repeated for each different developer’s extensions used. Multiple distinct registered prefix names for different developers may be used for each different developer’s extensions used. See Example 3 below. NOTE Arrays of developer extension dictionaries were introduced in this document (2020).",
+          "qualifier": "Required; PDF 1.7; shall be a direct object",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": null,
+          "direct": true,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 157,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "383",
+      "section": "14.8.5.6",
+      "rationale": "Physical PDF page 806 table 383 explicitly lists two case-sensitive PDF names in one cell. Both get distinct PHP classes; only the lowercase spelling is deprecated.",
+      "entries": [
+        {
+          "name": "Checked",
+          "type": "name",
+          "description": "(Optional; not inheritable; PDF 1.7; lower case form is deprecated in PDF 2.0) The state of a radio button or check box field. The value shall be one of: on, off, or neutral. NOTE 2 In earlier versions of PDF the case (capitalization) used for this key did not conform to the same conventions used elsewhere in this standard. Default value: off.",
+          "qualifier": "Optional; not inheritable; PDF 1.7",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 806,
+          "errata": null
+        },
+        {
+          "name": "checked",
+          "type": "name",
+          "description": "(Optional; not inheritable; PDF 1.7; lower case form is deprecated in PDF 2.0) The state of a radio button or check box field. The value shall be one of: on, off, or neutral. NOTE 2 In earlier versions of PDF the case (capitalization) used for this key did not conform to the same conventions used elsewhere in this standard. Default value: off.",
+          "qualifier": "Optional; not inheritable; PDF 1.7; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 806,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "159",
+      "rationale": "Parenthetical capitalization hints in the printed key cell describe spelling; they are not part of the case-sensitive PDF name.",
+      "entries": [
+        {
+          "name": "CI",
+          "type": "dictionary",
+          "description": "(Optional; PDF 2.0) The collection item dictionary. Beginning with PDF 1.7, a collection item dictionary shall contain the data described by the collection schema dictionary for a particular file in a collection (see 12.3.5, \"Collections\"). \"Table 46 — Entries in a collection item dictionary\" describes the entries in a collection item dictionary.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 469,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "178",
+      "rationale": "Parenthetical capitalization hints in the printed key cell describe spelling; they are not part of the case-sensitive PDF name.",
+      "entries": [
+        {
+          "name": "LLO",
+          "type": "number",
+          "description": "(Optional; PDF 1.7) A non-negative number that shall represent the length of the leader line offset, which is the amount of empty space between the endpoints of the annotation and the beginning of the leader lines.",
+          "qualifier": "Optional; PDF 1.7",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 502,
+          "errata": null
+        },
+        {
+          "name": "CO",
+          "type": "array",
+          "description": "(Optional; meaningful only if Cap is true; PDF 1.7) An array of two numbers that shall specify the offset of the caption text from its normal position. The first value shall be the horizontal offset along the annotation line from its midpoint, with a positive value indicating offset to the right and a negative value indicating offset to the left. The second value shall be the vertical offset perpendicular to the annotation line, with a positive value indicating a shift up and a negative value indicating a shift down. Default value: [0, 0] (no offset from normal positioning)",
+          "qualifier": "Optional; meaningful only if Cap is true; PDF 1.7",
+          "required": false,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 502,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "315",
+      "rationale": "Parenthetical capitalization hints in the printed key cell describe spelling; they are not part of the case-sensitive PDF name.",
+      "entries": [
+        {
+          "name": "O",
+          "type": "stream",
+          "description": "(Optional; meaningful only if MS and P are present) A form XObject that shall be used to overlay 2D graphics on top of the rendered 3D artwork (see 13.6.6, \"3D markup\").",
+          "qualifier": "Optional; meaningful only if MS and P are present",
+          "required": false,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 671,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "125a",
+      "section": "9.10.3",
+      "rationale": "EC3 Issue 462 inserts this new ToUnicode table after the bulleted list in 9.10.3; the nearest PDF bookmark at the appended physical page describes unrelated body text. Completed review replies 4361 0 / 4364 0 on physical page372 explicitly approve the insertions.",
+      "entry_errata": {
+        "id": "tounicode-cmap-stream-dictionary",
+        "pdf_page": 1022,
+        "review_status": "Completed",
+        "annotation_name": "e92d023d-0599-48a8-81d29b635822bcb1",
+        "issue_number": 462
+      }
+    },
+    {
+      "table": "45",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        153,
+        154
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 153,
+          "bbox": [
+            51.57333333333334,
+            725.496,
+            511.97375,
+            782.04
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "Size",
+              "integer",
+              "(Optional) The size of the uncompressed embedded file, in bytes. See \"Table 155 — Entries in a collection field dictionary\"."
+            ]
+          ]
+        },
+        {
+          "pdf_page": 154,
+          "bbox": [
+            82.48707692307691,
+            91.51999999999998,
+            545.83,
+            308.56999999999994
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "CreationDate",
+              "date",
+              "(Optional) The date and time when the embedded file was created. See \"Table 155 — Entries in a collection field dictionary\"."
+            ],
+            [
+              "ModDate",
+              "date",
+              "(Optional, required in the case of an embedded file stream used as an associated file) The date and time when the embedded file was last modified. See \"Table 155 — Entries in a collection field dictionary\"."
+            ],
+            [
+              "Mac",
+              "dictionary",
+              "(Optional; deprecated in PDF 2.0) A subdictionary containing additional information specific to Mac OS files."
+            ],
+            [
+              "CheckSum",
+              "string",
+              "(Optional) A 16-byte string that is the checksum of the bytes of the uncompressed embedded file. The checksum shall be calculated by applying the standard MD5 message-digest algorithm (defined in Internet RFC 1321) to the bytes of the embedded file stream. NOTE This is strictly a checksum, and is not used for security purposes."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "Size",
+          "type": "integer",
+          "description": "(Optional) The size of the uncompressed embedded file, in bytes. See \"Table 155 — Entries in a collection field dictionary\".",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 153,
+          "errata": null
+        },
+        {
+          "name": "CreationDate",
+          "type": "date",
+          "description": "(Optional) The date and time when the embedded file was created. See \"Table 155 — Entries in a collection field dictionary\".",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 154,
+          "errata": null
+        },
+        {
+          "name": "ModDate",
+          "type": "date",
+          "description": "(Optional, required in the case of an embedded file stream used as an associated file) The date and time when the embedded file was last modified. See \"Table 155 — Entries in a collection field dictionary\".",
+          "qualifier": "Optional, required in the case of an embedded file stream used as an associated file",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 154,
+          "errata": null
+        },
+        {
+          "name": "Mac",
+          "type": "dictionary",
+          "description": "(Optional; deprecated in PDF 2.0) A subdictionary containing additional information specific to Mac OS files.",
+          "qualifier": "Optional; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 154,
+          "errata": null
+        },
+        {
+          "name": "CheckSum",
+          "type": "string",
+          "description": "(Optional) A 16-byte string that is the checksum of the bytes of the uncompressed embedded file. The checksum shall be calculated by applying the standard MD5 message-digest algorithm (defined in Internet RFC 1321) to the bytes of the embedded file stream. NOTE This is strictly a checksum, and is not used for security purposes.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 154,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "212",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        535
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 535,
+          "bbox": [
+            70.30517647058824,
+            238.9459999999999,
+            493.2475,
+            556.27
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "S",
+              "name",
+              "(Required) The type of action that this dictionary describes; shall be Sound for a sound action."
+            ],
+            [
+              "Sound",
+              "stream",
+              "(Required) A sound object defining the sound that shall be played (see 13.3, \"Sounds\")."
+            ],
+            [
+              "Volume",
+              "number",
+              "(Optional) The volume at which to play the sound, in the range -1.0 to 1.0. Default value: 1.0."
+            ],
+            [
+              "Synchronous",
+              "boolean",
+              "(Optional) A flag specifying whether to play the sound synchronously or asynchronously. If this flag is true, the interactive PDF processor retains control, allowing no further user interaction other than cancelling the sound, until the sound has been completely played. Default value: false."
+            ],
+            [
+              "Repeat",
+              "boolean",
+              "(Optional) A flag specifying whether to repeat the sound indefinitely. If this entry is present, the Synchronous entry shall be ignored. Default value: false."
+            ],
+            [
+              "Mix",
+              "boolean",
+              "(Optional) A flag specifying whether to mix this sound with any other sound already playing. If this flag is false, any previously playing sound shall be stopped before starting this sound; this can be used to stop a repeating sound (see Repeat). Default value: false."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "S",
+          "type": "name",
+          "description": "(Required) The type of action that this dictionary describes; shall be Sound for a sound action.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        },
+        {
+          "name": "Sound",
+          "type": "stream",
+          "description": "(Required) A sound object defining the sound that shall be played (see 13.3, \"Sounds\").",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        },
+        {
+          "name": "Volume",
+          "type": "number",
+          "description": "(Optional) The volume at which to play the sound, in the range -1.0 to 1.0. Default value: 1.0.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        },
+        {
+          "name": "Synchronous",
+          "type": "boolean",
+          "description": "(Optional) A flag specifying whether to play the sound synchronously or asynchronously. If this flag is true, the interactive PDF processor retains control, allowing no further user interaction other than cancelling the sound, until the sound has been completely played. Default value: false.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        },
+        {
+          "name": "Repeat",
+          "type": "boolean",
+          "description": "(Optional) A flag specifying whether to repeat the sound indefinitely. If this entry is present, the Synchronous entry shall be ignored. Default value: false.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        },
+        {
+          "name": "Mix",
+          "type": "boolean",
+          "description": "(Optional) A flag specifying whether to mix this sound with any other sound already playing. If this flag is false, any previously playing sound shall be stopped before starting this sound; this can be used to stop a repeating sound (see Repeat). Default value: false.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 535,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "250",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        579,
+        580
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 580,
+          "bbox": [
+            102.78800000000001,
+            91.51999999999998,
+            525.6466666666668,
+            382.12999999999994
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "S",
+              "name",
+              "(Optional) The type of scaling that shall be used: A Anamorphic scaling: Scale the icon to fill the annotation rectangle exactly, without regard to its original aspect ratio (ratio of width to height). P Proportional scaling: Scale the icon to fit the width or height of the annotation rectangle while maintaining the icon’s original aspect ratio. If the required horizontal and vertical scaling factors are different, use the smaller of the two, centring the icon within the annotation rectangle in the other dimension. Default value: P."
+            ],
+            [
+              "A",
+              "array",
+              "(Optional) An array of two numbers that shall be between 0.0 and 1.0 indicating the fraction of leftover space to allocate at the left and bottom of the icon. A value of [0.0 0.0] shall position the icon at the bottom-left corner of the annotation rectangle. A value of [0.5 0.5] shall centre it within the rectangle. This entry shall be used only if the icon is scaled proportionally. Default value: [0.5 0.5]."
+            ],
+            [
+              "FB",
+              "boolean",
+              "(Optional; PDF 1.5) If true, indicates that the button appearance shall be scaled to fit fully within the bounds of the annotation without taking into consideration the line width of the border. Default value: false."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "SW",
+          "type": "name",
+          "description": "(Optional) The circumstances under which the icon shall be scaled inside the annotation rectangle: A Always scale. B Scale only when the icon is bigger than the annotation rectangle. S Scale only when the icon is smaller than the annotation rectangle. N Never scale. Default value: A.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 579,
+          "errata": null
+        },
+        {
+          "name": "S",
+          "type": "name",
+          "description": "(Optional) The type of scaling that shall be used: A Anamorphic scaling: Scale the icon to fill the annotation rectangle exactly, without regard to its original aspect ratio (ratio of width to height). P Proportional scaling: Scale the icon to fit the width or height of the annotation rectangle while maintaining the icon’s original aspect ratio. If the required horizontal and vertical scaling factors are different, use the smaller of the two, centring the icon within the annotation rectangle in the other dimension. Default value: P.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 580,
+          "errata": null
+        },
+        {
+          "name": "A",
+          "type": "array",
+          "description": "(Optional) An array of two numbers that shall be between 0.0 and 1.0 indicating the fraction of leftover space to allocate at the left and bottom of the icon. A value of [0.0 0.0] shall position the icon at the bottom-left corner of the annotation rectangle. A value of [0.5 0.5] shall centre it within the rectangle. This entry shall be used only if the icon is scaled proportionally. Default value: [0.5 0.5].",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 580,
+          "errata": null
+        },
+        {
+          "name": "FB",
+          "type": "boolean",
+          "description": "(Optional; PDF 1.5) If true, indicates that the button appearance shall be scaled to fit fully within the bounds of the annotation without taking into consideration the line width of the border. Default value: false.",
+          "qualifier": "Optional; PDF 1.5",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.5",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 580,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "262",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        602,
+        603
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 603,
+          "bbox": [
+            69.972,
+            91.51999999999998,
+            493.61642857142857,
+            459.30999999999995
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "Cert",
+              "array",
+              "(Optional) An array of (indirect references to) streams, each containing one DER-encoded X.509 certificate (see Internet RFC 5280). This array contains certificates that were used in the validation of this signature."
+            ],
+            [
+              "CRL",
+              "array",
+              "(Required, if a CRL is present) An array of indirect references to streams that are all CRLs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference a CRL that is an entry in the CRLs array in the DSS dictionary."
+            ],
+            [
+              "OCSP",
+              "array",
+              "(Required, if an OCSP is present) An array of indirect references to streams that are all OCSPs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference an OCSP that is an entry in the OCSPs array in the DSS dictionary."
+            ],
+            [
+              "TU",
+              "date",
+              "(Optional) The date/time at which this signature VRI dictionary was created. TU shall be a date string as defined in 7.9.4, \"Dates\"."
+            ],
+            [
+              "TS",
+              "stream",
+              "(Optional) A stream containing the DER-encoded timestamp (see Internet RFC 3161 as updated by Internet RFC 5816) that contains the date/time at which this signature VRI dictionary was created. NOTE 1 The date/time contained in the timestamp token can be used for audit purposes. NOTE 2 The hash value to be contained in the timestamp token is left undefined. For PKCS #7 signatures the datum that is hashed and included in the messageImprint field of the DER encoded timestamp stored in the TS entry (see Internet RFC 3161 as updated by Internet RFC 5816) is the encryptedDigest field in the signature's PKC S#7 object (as defined in Internet RFC 2315)."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional) If present, shall be VRI for a validation-related information dictionary.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "VRI",
+          "pdf_page": 602,
+          "errata": null
+        },
+        {
+          "name": "Cert",
+          "type": "array",
+          "description": "(Optional) An array of (indirect references to) streams, each containing one DER-encoded X.509 certificate (see Internet RFC 5280). This array contains certificates that were used in the validation of this signature.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": null
+        },
+        {
+          "name": "CRL",
+          "type": "array",
+          "description": "(Required, if a CRL is present) An array of indirect references to streams that are all CRLs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference a CRL that is an entry in the CRLs array in the DSS dictionary.",
+          "qualifier": "Required, if a CRL is present",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": null
+        },
+        {
+          "name": "OCSP",
+          "type": "array",
+          "description": "(Required, if an OCSP is present) An array of indirect references to streams that are all OCSPs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference an OCSP that is an entry in the OCSPs array in the DSS dictionary.",
+          "qualifier": "Required, if an OCSP is present",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": null
+        },
+        {
+          "name": "TU",
+          "type": "date",
+          "description": "(Optional) The date/time at which this signature VRI dictionary was created. TU shall be a date string as defined in 7.9.4, \"Dates\".",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": null
+        },
+        {
+          "name": "TS",
+          "type": "stream",
+          "description": "(Optional) A stream containing the DER-encoded timestamp (see Internet RFC 3161 as updated by Internet RFC 5816) that contains the date/time at which this signature VRI dictionary was created. NOTE 1 The date/time contained in the timestamp token can be used for audit purposes. NOTE 2 The hash value to be contained in the timestamp token is left undefined. For PKCS #7 signatures the datum that is hashed and included in the messageImprint field of the DER encoded timestamp stored in the TS entry (see Internet RFC 3161 as updated by Internet RFC 5816) is the encryptedDigest field in the signature's PKC S#7 object (as defined in Internet RFC 2315).",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "280",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        634
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 634,
+          "bbox": [
+            102.73379310344828,
+            238.46599999999998,
+            525.5846153846154,
+            392.93
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "Type",
+              "name",
+              "(Optional) The type of PDF object that this dictionary describes; if present, shall be MinBitDepth for a minimum bit depth dictionary."
+            ],
+            [
+              "V",
+              "integer",
+              "(Required) A positive integer specifying the minimum screen depth (in bits) of the monitor for the rendition to be viable."
+            ],
+            [
+              "M",
+              "integer",
+              "(Optional) A monitor specifier (see \"Table 304 — Monitor specifier values\") that specifies which monitor the value of V should be tested against. If the value is unrecognised, the object shall not be viable. Default value: 0."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional) The type of PDF object that this dictionary describes; if present, shall be MinBitDepth for a minimum bit depth dictionary.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "MinBitDepth",
+          "pdf_page": 634,
+          "errata": null
+        },
+        {
+          "name": "V",
+          "type": "integer",
+          "description": "(Required) A positive integer specifying the minimum screen depth (in bits) of the monitor for the rendition to be viable.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 634,
+          "errata": null
+        },
+        {
+          "name": "M",
+          "type": "integer",
+          "description": "(Optional) A monitor specifier (see \"Table 304 — Monitor specifier values\") that specifies which monitor the value of V should be tested against. If the value is unrecognised, the object shall not be viable. Default value: 0.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 634,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "305",
+      "dictionary_table": true,
+      "rationale": "The source has a blank ruled row above the real Key/Type/Value header, or broken vertical rules. Reviewed against the actual printed text; continuation grids are explicitly retained. Only icon-fit SW (page579) and VRI Type (page602) require text-cell transcription.",
+      "pdf_pages": [
+        652,
+        653
+      ],
+      "source_grids": [
+        {
+          "pdf_page": 652,
+          "bbox": [
+            93.64707692307692,
+            563.116,
+            534.5500000000001,
+            691.7800000000001
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "Type",
+              "name",
+              "(Optional) The type of PDF object that this dictionary describes; if present, shall be Sound for a sound object."
+            ],
+            [
+              "R",
+              "number",
+              "(Required) The sampling rate, in samples per second."
+            ],
+            [
+              "C",
+              "integer",
+              "(Optional) The number of sound channels. Default value: 1."
+            ],
+            [
+              "B",
+              "integer",
+              "(Optional) The number of bits per sample value per channel. Default value: 8."
+            ]
+          ]
+        },
+        {
+          "pdf_page": 653,
+          "bbox": [
+            61.294909090909094,
+            91.51999999999998,
+            502.16700000000003,
+            341.80999999999995
+          ],
+          "rows": [
+            [
+              "Key",
+              "Type",
+              "Value"
+            ],
+            [
+              "E",
+              "name",
+              "(Optional) The encoding format for the sample data: Raw Unspecified or unsigned values in the range 0 to 2B - 1 Signed Twos-complement values muLaw m-law–encoded samples ALaw A-law–encoded samples Default value: Raw."
+            ],
+            [
+              "CO",
+              "name",
+              "(Optional) The sound compression format used on the sample data. (This is separate from any stream compression specified by the sound object’s Filter entry; see \"Table 5 — Entries common to all stream dictionaries\" and 7.4, \"Filters\") If this entry is absent, sound compression shall not be used; the data contains sampled waveforms that shall be played at R samples per second per channel."
+            ],
+            [
+              "CP",
+              "(various)",
+              "(Optional) Optional parameters specific to the sound compression format used."
+            ]
+          ]
+        }
+      ],
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional) The type of PDF object that this dictionary describes; if present, shall be Sound for a sound object.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "Sound",
+          "pdf_page": 652,
+          "errata": null
+        },
+        {
+          "name": "R",
+          "type": "number",
+          "description": "(Required) The sampling rate, in samples per second.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 652,
+          "errata": null
+        },
+        {
+          "name": "C",
+          "type": "integer",
+          "description": "(Optional) The number of sound channels. Default value: 1.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 652,
+          "errata": null
+        },
+        {
+          "name": "B",
+          "type": "integer",
+          "description": "(Optional) The number of bits per sample value per channel. Default value: 8.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 652,
+          "errata": null
+        },
+        {
+          "name": "E",
+          "type": "name",
+          "description": "(Optional) The encoding format for the sample data: Raw Unspecified or unsigned values in the range 0 to 2B - 1 Signed Twos-complement values muLaw m-law–encoded samples ALaw A-law–encoded samples Default value: Raw.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 653,
+          "errata": null
+        },
+        {
+          "name": "CO",
+          "type": "name",
+          "description": "(Optional) The sound compression format used on the sample data. (This is separate from any stream compression specified by the sound object’s Filter entry; see \"Table 5 — Entries common to all stream dictionaries\" and 7.4, \"Filters\") If this entry is absent, sound compression shall not be used; the data contains sampled waveforms that shall be played at R samples per second per channel.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 653,
+          "errata": null
+        },
+        {
+          "name": "CP",
+          "type": "(various)",
+          "description": "(Optional) Optional parameters specific to the sound compression format used.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 653,
+          "errata": null
+        }
+      ]
+    },
+    {
+      "table": "269",
+      "rationale": "Explicit EC3 geospatial corrections preserve the base paragraphs and separate ISO Completed (#358) from TWG Accepted (#533/#534/#284). Native graph mechanisms enforce projected-only PCSM and context-dependent coordinate dimensions; the schema enforces numeric members and the twelve-element affine matrix.",
+      "entry_patches": {
+        "LPTS": {
+          "required": true,
+          "conditional": false,
+          "qualifier": "Required; PDF 2.0",
+          "array_member_type": "number",
+          "errata": {
+            "id": "geospatial-533",
+            "pdf_page": 618,
+            "review_status": "Accepted",
+            "annotation_name": "ddcd61c0-2d86-47f9-846b5d296bcad1c8",
+            "issue_number": 533
+          },
+          "additional_errata": [
+            {
+              "id": "geospatial-284",
+              "pdf_page": 618,
+              "review_status": "Accepted",
+              "annotation_name": "7554c7ed-75da-4187-9c0a8842d31f82c3",
+              "issue_number": 284
+            }
+          ]
+        },
+        "GPTS": {
+          "array_member_type": "number",
+          "errata": {
+            "id": "geospatial-284",
+            "pdf_page": 618,
+            "review_status": "Accepted",
+            "annotation_name": "36793af6-d488-4460-bd10435241e69d96",
+            "issue_number": 284
+          }
+        },
+        "PCSM": {
+          "array_member_type": "number",
+          "array_length": 12,
+          "errata": {
+            "id": "geospatial-534",
+            "pdf_page": 618,
+            "review_status": "Accepted",
+            "annotation_name": "ddb79e67-57e2-4acd-bdbe0a0319433f06",
+            "issue_number": 534
+          },
+          "additional_errata": [
+            {
+              "id": "geospatial-358",
+              "pdf_page": 618,
+              "review_status": "Completed",
+              "annotation_name": "6276c0b5-8454-45f4-9eed-c0f30477786f",
+              "issue_number": 358
+            }
+          ],
+          "affine_matrix": {
+            "rows": 4,
+            "columns": 4,
+            "stored_elements": 12,
+            "implicit_last_column": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "vector": "[x y z 1]",
+            "order": "row",
+            "coordinate_system": "PROJCS",
+            "nonzero_z_context": "Geospatial3D-enabled annotation"
+          }
+        }
+      }
+    }
+  ],
+  "common_tables": {
+    "16": [
+      "5"
+    ],
+    "17": [
+      "5",
+      "15"
+    ],
+    "19": [
+      "15"
+    ],
+    "21": [
+      "20"
+    ],
+    "23": [
+      "20"
+    ],
+    "27": [
+      "25"
+    ],
+    "39": [
+      "5",
+      "38"
+    ],
+    "40": [
+      "38"
+    ],
+    "41": [
+      "38"
+    ],
+    "44": [
+      "5"
+    ],
+    "65": [
+      "5"
+    ],
+    "74": [
+      "5"
+    ],
+    "78": [
+      "77"
+    ],
+    "79": [
+      "77"
+    ],
+    "80": [
+      "77"
+    ],
+    "81": [
+      "5",
+      "77"
+    ],
+    "82": [
+      "5",
+      "77"
+    ],
+    "83": [
+      "5",
+      "77"
+    ],
+    "87": [
+      "5"
+    ],
+    "93": [
+      "5"
+    ],
+    "118": [
+      "5"
+    ],
+    "122": [
+      "120"
+    ],
+    "125": [
+      "5"
+    ],
+    "129": [
+      "5"
+    ],
+    "130": [
+      "5"
+    ],
+    "131": [
+      "5"
+    ],
+    "144": [
+      "5",
+      "87"
+    ],
+    "145": [
+      "94"
+    ],
+    "172": [
+      "166"
+    ],
+    "175": [
+      "166",
+      "172"
+    ],
+    "176": [
+      "166"
+    ],
+    "177": [
+      "166",
+      "172"
+    ],
+    "178": [
+      "166",
+      "172"
+    ],
+    "180": [
+      "166",
+      "172"
+    ],
+    "181": [
+      "166",
+      "172"
+    ],
+    "182": [
+      "166",
+      "172"
+    ],
+    "183": [
+      "166",
+      "172"
+    ],
+    "184": [
+      "166",
+      "172"
+    ],
+    "185": [
+      "166",
+      "172"
+    ],
+    "186": [
+      "166"
+    ],
+    "187": [
+      "166",
+      "172"
+    ],
+    "188": [
+      "166"
+    ],
+    "189": [
+      "166"
+    ],
+    "190": [
+      "166"
+    ],
+    "191": [
+      "166"
+    ],
+    "193": [
+      "166"
+    ],
+    "195": [
+      "166",
+      "172"
+    ],
+    "202": [
+      "196"
+    ],
+    "203": [
+      "196"
+    ],
+    "204": [
+      "196"
+    ],
+    "206": [
+      "196"
+    ],
+    "207": [
+      "196"
+    ],
+    "209": [
+      "196"
+    ],
+    "210": [
+      "196"
+    ],
+    "213": [
+      "196"
+    ],
+    "214": [
+      "196"
+    ],
+    "216": [
+      "196"
+    ],
+    "217": [
+      "196"
+    ],
+    "218": [
+      "196"
+    ],
+    "219": [
+      "196"
+    ],
+    "220": [
+      "196"
+    ],
+    "221": [
+      "196"
+    ],
+    "222": [
+      "196"
+    ],
+    "239": [
+      "196"
+    ],
+    "241": [
+      "196"
+    ],
+    "243": [
+      "196"
+    ],
+    "228": [
+      "226"
+    ],
+    "230": [
+      "226"
+    ],
+    "232": [
+      "226",
+      "228"
+    ],
+    "234": [
+      "226",
+      "228"
+    ],
+    "235": [
+      "226"
+    ],
+    "347": [
+      "5"
+    ],
+    "361": [
+      "360"
+    ],
+    "378": [
+      "360"
+    ],
+    "379": [
+      "360"
+    ],
+    "380": [
+      "360"
+    ],
+    "381": [
+      "360"
+    ],
+    "382": [
+      "360"
+    ],
+    "383": [
+      "360"
+    ],
+    "384": [
+      "360"
+    ],
+    "385": [
+      "360"
+    ],
+    "389": [
+      "388"
+    ],
+    "390": [
+      "388"
+    ],
+    "398": [
+      "166"
+    ],
+    "399": [
+      "5",
+      "93"
+    ],
+    "403": [
+      "166"
+    ],
+    "404": [
+      "5",
+      "93"
+    ],
+    "173": [
+      "166",
+      "172"
+    ],
+    "247": [
+      "5",
+      "44"
+    ],
+    "254": [
+      "166"
+    ],
+    "267": [
+      "266"
+    ],
+    "269": [
+      "266"
+    ],
+    "274": [
+      "273"
+    ],
+    "282": [
+      "277"
+    ],
+    "283": [
+      "277"
+    ],
+    "285": [
+      "284"
+    ],
+    "288": [
+      "284"
+    ],
+    "297": [
+      "296"
+    ],
+    "298": [
+      "296"
+    ],
+    "299": [
+      "296"
+    ],
+    "309": [
+      "166"
+    ],
+    "311": [
+      "5"
+    ],
+    "327": [
+      "326"
+    ],
+    "328": [
+      "326"
+    ],
+    "329": [
+      "326"
+    ],
+    "330": [
+      "326"
+    ],
+    "331": [
+      "326"
+    ],
+    "333": [
+      "166"
+    ],
+    "344": [
+      "315"
+    ],
+    "125a": [
+      "5"
+    ],
+    "212": [
+      "196"
+    ],
+    "305": [
+      "5"
+    ]
+  },
+  "common_table_review": "Relationships explicitly described as additional/common in source clauses. Function/stream, annotation/markup, action, field, attribute and form ancestors stay in the ISO 32000-2 family; no ISO 32000-1 definition is imported. Conditional owner requirements and algorithms remain explicit native mechanisms.",
+  "non_dictionary_issues": [
+    {
+      "table": "117",
+      "pdf_page": 353,
+      "resolution": "Intentionally empty in the published standard to retain numbering; no dictionary grid exists."
+    },
+    {
+      "table": "321",
+      "pdf_page": 681,
+      "resolution": "Lighting style enumeration, not a key/type/value dictionary. Initial Artwork row is unruled; further rows continue on physical pages 682–683. Preserved in source table inventory; no dictionary object is inferred."
+    }
+  ],
+  "fixed_name_constraints": {
+    "14": {
+      "Type": "CryptFilterDecodeParms"
+    },
+    "16": {
+      "Type": "ObjStm"
+    },
+    "17": {
+      "Type": "XRef"
+    },
+    "25": {
+      "Type": "CryptFilter"
+    },
+    "28": {
+      "Type": "EncryptedPayload"
+    },
+    "29": {
+      "Type": "Catalog"
+    },
+    "30": {
+      "Type": "Pages"
+    },
+    "43": {
+      "Type": "Filespec"
+    },
+    "44": {
+      "Type": "EmbeddedFile"
+    },
+    "46": {
+      "Type": "CollectionItem"
+    },
+    "47": {
+      "Type": "CollectionSubitem"
+    },
+    "48": {
+      "Type": "Extensions"
+    },
+    "49": {
+      "Type": "DeveloperExtensions"
+    },
+    "57": {
+      "Type": "ExtGState"
+    },
+    "74": {
+      "Type": "Pattern"
+    },
+    "75": {
+      "Type": "Pattern"
+    },
+    "87": {
+      "Type": "XObject",
+      "Subtype": "Image"
+    },
+    "93": {
+      "Type": "XObject",
+      "Subtype": "Form"
+    },
+    "94": {
+      "Type": "Group"
+    },
+    "96": {
+      "Type": "OCG"
+    },
+    "97": {
+      "Type": "OCMD"
+    },
+    "109": {
+      "Type": "Font",
+      "Subtype": "Type1"
+    },
+    "110": {
+      "Type": "Font",
+      "Subtype": "Type3"
+    },
+    "112": {
+      "Type": "Encoding"
+    },
+    "115": {
+      "Type": "Font"
+    },
+    "118": {
+      "Type": "CMap"
+    },
+    "119": {
+      "Type": "Font",
+      "Subtype": "Type0"
+    },
+    "120": {
+      "Type": "FontDescriptor"
+    },
+    "125a": {
+      "Type": "CMap"
+    },
+    "128": {
+      "Type": "Halftone"
+    },
+    "129": {
+      "Type": "Halftone"
+    },
+    "130": {
+      "Type": "Halftone"
+    },
+    "131": {
+      "Type": "Halftone"
+    },
+    "132": {
+      "Type": "Halftone"
+    },
+    "142": {
+      "Type": "Mask"
+    },
+    "145": {
+      "S": "Transparency"
+    },
+    "150": {
+      "Type": "Outlines"
+    },
+    "153": {
+      "Type": "Collection"
+    },
+    "154": {
+      "Type": "CollectionSchema"
+    },
+    "155": {
+      "Type": "CollectionField"
+    },
+    "156": {
+      "Type": "CollectionSort"
+    },
+    "157": {
+      "Type": "CollectionColors"
+    },
+    "158": {
+      "Type": "CollectionSplit"
+    },
+    "159": {
+      "Type": "Folder"
+    },
+    "160": {
+      "Type": "Navigator"
+    },
+    "161": {
+      "Type": "PageLabel"
+    },
+    "162": {
+      "Type": "Thread"
+    },
+    "163": {
+      "Type": "Bead"
+    },
+    "164": {
+      "Type": "Trans"
+    },
+    "165": {
+      "Type": "NavNode"
+    },
+    "166": {
+      "Type": "Annot"
+    },
+    "168": {
+      "Type": "Border"
+    },
+    "175": {
+      "Subtype": "Text"
+    },
+    "176": {
+      "Subtype": "Link"
+    },
+    "177": {
+      "Subtype": "FreeText"
+    },
+    "178": {
+      "Subtype": "Line"
+    },
+    "183": {
+      "Subtype": "Caret"
+    },
+    "184": {
+      "Subtype": "Stamp"
+    },
+    "185": {
+      "Subtype": "Ink"
+    },
+    "186": {
+      "Subtype": "Popup"
+    },
+    "187": {
+      "Subtype": "FileAttachment"
+    },
+    "188": {
+      "Subtype": "Sound"
+    },
+    "189": {
+      "Subtype": "Movie"
+    },
+    "190": {
+      "Subtype": "Screen"
+    },
+    "191": {
+      "Subtype": "Widget"
+    },
+    "193": {
+      "Subtype": "Watermark"
+    },
+    "195": {
+      "Subtype": "Redact"
+    },
+    "196": {
+      "Type": "Action"
+    },
+    "202": {
+      "S": "GoTo"
+    },
+    "203": {
+      "S": "GoToR"
+    },
+    "204": {
+      "S": "GoToE"
+    },
+    "206": {
+      "S": "GoToDp"
+    },
+    "207": {
+      "S": "Launch"
+    },
+    "209": {
+      "S": "Thread"
+    },
+    "210": {
+      "S": "URI"
+    },
+    "212": {
+      "S": "Sound"
+    },
+    "213": {
+      "S": "Movie"
+    },
+    "214": {
+      "S": "Hide"
+    },
+    "216": {
+      "S": "Named"
+    },
+    "217": {
+      "S": "SetOCGState"
+    },
+    "218": {
+      "S": "Rendition"
+    },
+    "219": {
+      "S": "Trans"
+    },
+    "220": {
+      "S": "GoTo3DView"
+    },
+    "221": {
+      "S": "JavaScript"
+    },
+    "222": {
+      "S": "RichMediaExecute"
+    },
+    "223": {
+      "Type": "RichMediaCommand"
+    },
+    "236": {
+      "Type": "SigFieldLock"
+    },
+    "237": {
+      "Type": "SV"
+    },
+    "238": {
+      "Type": "SVCert"
+    },
+    "239": {
+      "S": "SubmitForm"
+    },
+    "241": {
+      "S": "ResetForm"
+    },
+    "243": {
+      "S": "ImportData"
+    },
+    "256": {
+      "Type": "SigRef"
+    },
+    "257": {
+      "Type": "TransformParams",
+      "V": "1.2"
+    },
+    "258": {
+      "Type": "TransformParams"
+    },
+    "259": {
+      "Type": "TransformParams"
+    },
+    "261": {
+      "Type": "DSS"
+    },
+    "262": {
+      "Type": "VRI"
+    },
+    "265": {
+      "Type": "Viewport"
+    },
+    "266": {
+      "Type": "Measure"
+    },
+    "268": {
+      "Type": "NumberFormat"
+    },
+    "270": {
+      "Type": "GEOGCS"
+    },
+    "271": {
+      "Type": "PROJCS"
+    },
+    "272": {
+      "Type": "PtData"
+    },
+    "273": {
+      "Type": "Requirement"
+    },
+    "276": {
+      "Type": "ReqHandler"
+    },
+    "277": {
+      "Type": "Rendition"
+    },
+    "279": {
+      "Type": "MediaCriteria"
+    },
+    "280": {
+      "Type": "MinBitDepth"
+    },
+    "281": {
+      "Type": "MinScreenSize"
+    },
+    "284": {
+      "Type": "MediaClip"
+    },
+    "286": {
+      "Type": "MediaPermissions"
+    },
+    "290": {
+      "Type": "MediaPlayParams"
+    },
+    "292": {
+      "Type": "MediaDuration"
+    },
+    "293": {
+      "Type": "MediaScreenParams"
+    },
+    "295": {
+      "Type": "FWParams"
+    },
+    "296": {
+      "Type": "MediaOffset"
+    },
+    "300": {
+      "Type": "Timespan",
+      "S": "S"
+    },
+    "301": {
+      "Type": "MediaPlayers"
+    },
+    "302": {
+      "Type": "MediaPlayerInfo"
+    },
+    "303": {
+      "Type": "SoftwareIdentifier"
+    },
+    "305": {
+      "Type": "Sound"
+    },
+    "308": {
+      "Type": "SlideShow",
+      "Subtype": "Embedded"
+    },
+    "309": {
+      "Subtype": "3D"
+    },
+    "311": {
+      "Type": "3D"
+    },
+    "312": {
+      "Type": "3DAnimationStyle"
+    },
+    "314": {
+      "Type": "3DRef"
+    },
+    "315": {
+      "Type": "3DView"
+    },
+    "317": {
+      "Type": "3DBG",
+      "Subtype": "SC"
+    },
+    "318": {
+      "Type": "3DRenderMode"
+    },
+    "320": {
+      "Type": "3DLightingScheme"
+    },
+    "322": {
+      "Type": "3DCrossSection"
+    },
+    "323": {
+      "Type": "3DNode"
+    },
+    "324": {
+      "Type": "ExData",
+      "Subtype": "Markup3D"
+    },
+    "326": {
+      "Type": "3DMeasure"
+    },
+    "332": {
+      "Type": "ExData",
+      "Subtype": "3DM"
+    },
+    "333": {
+      "Subtype": "RichMedia"
+    },
+    "334": {
+      "Type": "RichMediaSettings"
+    },
+    "335": {
+      "Type": "RichMediaActivation"
+    },
+    "336": {
+      "Type": "RichMediaDeactivation"
+    },
+    "337": {
+      "Type": "RichMediaAnimation"
+    },
+    "338": {
+      "Type": "RichMediaPresentation"
+    },
+    "339": {
+      "Type": "RichMediaWindow"
+    },
+    "340": {
+      "Type": "RichMediaPosition"
+    },
+    "341": {
+      "Type": "RichMediaContent"
+    },
+    "342": {
+      "Type": "RichMediaConfiguration"
+    },
+    "343": {
+      "Type": "RichMediaInstance"
+    },
+    "347": {
+      "Type": "Metadata",
+      "Subtype": "XML"
+    },
+    "354": {
+      "Type": "StructTreeRoot"
+    },
+    "355": {
+      "Type": "StructElem"
+    },
+    "356": {
+      "Type": "Namespace"
+    },
+    "357": {
+      "Type": "MCR"
+    },
+    "358": {
+      "Type": "OBJR"
+    },
+    "388": {
+      "Type": "SpiderContentSet"
+    },
+    "389": {
+      "S": "SPS"
+    },
+    "390": {
+      "S": "SIS"
+    },
+    "398": {
+      "Subtype": "PrinterMark"
+    },
+    "401": {
+      "Type": "OutputIntent"
+    },
+    "403": {
+      "Subtype": "TrapNet"
+    },
+    "406": {
+      "Type": "OPI"
+    },
+    "407": {
+      "Type": "OPI"
+    }
+  },
+  "name_alternatives": {
+    "31": {
+      "Type": [
+        "Page",
+        "Template"
+      ]
+    },
+    "70": {
+      "Subtype": [
+        "DeviceN",
+        "NChannel"
+      ]
+    },
+    "115": {
+      "Subtype": [
+        "CIDFontType0",
+        "CIDFontType2"
+      ]
+    },
+    "125": {
+      "Subtype": [
+        "Type1C",
+        "CIDFontType0C",
+        "OpenType"
+      ]
+    },
+    "178": {
+      "IT": [
+        "LineArrow",
+        "LineDimension"
+      ]
+    },
+    "180": {
+      "Subtype": [
+        "Square",
+        "Circle"
+      ]
+    },
+    "181": {
+      "Subtype": [
+        "Polygon",
+        "PolyLine"
+      ]
+    },
+    "182": {
+      "Subtype": [
+        "Highlight",
+        "Underline",
+        "Squiggly",
+        "StrikeOut"
+      ]
+    },
+    "255": {
+      "Type": [
+        "Sig",
+        "DocTimeStamp"
+      ],
+      "Prop_AuthType": [
+        "PIN",
+        "Password",
+        "Fingerprint"
+      ]
+    },
+    "276": {
+      "S": [
+        "JS",
+        "NoOp"
+      ]
+    },
+    "316": {
+      "Subtype": [
+        "O",
+        "P"
+      ],
+      "CS": [
+        "XNF",
+        "ANF"
+      ]
+    }
+  },
+  "name_constraint_review": {
+    "method": "Every inferred name was read against its complete source sentence. The compiler now uses only these explicit singleton and closed-alternative lists; no prose regex establishes a name restriction. Source prose and physical page remain on each entry.",
+    "contextual_not_singleton": [
+      {
+        "table": "25",
+        "key": "CFM",
+        "reason": "The sentence requiring 128 describes the Length key, not CFM. Crypt filter methods have their own versioned native mechanism."
+      },
+      {
+        "table": "99",
+        "key": "BaseState",
+        "reason": "ON is required for the default configuration only, not for every optional content configuration."
+      },
+      {
+        "table": "112",
+        "key": "BaseEncoding",
+        "reason": "StandardEncoding describes one fallback branch, not all permitted encodings."
+      },
+      {
+        "table": "258",
+        "key": "V",
+        "reason": "Version2.2 is specified but unknown versions are explicitly tolerated with no enabled rights."
+      },
+      {
+        "table": "259",
+        "key": "V",
+        "reason": "The source requires1.2 for PDF1.5 and later; that is a version-dependent condition, not an unconditional name singleton for all represented historical values."
+      }
+    ],
+    "conditional_alternatives": "Enumeration membership alone does not establish each contextual branch, deprecation status or document-profile conformance."
+  },
+  "geospatial_review_replies": {
+    "358": {
+      "state": "Completed",
+      "source": "6114 0",
+      "reply_chain": [
+        "6112 0",
+        "6116 0",
+        "6117 0"
+      ]
+    },
+    "534": {
+      "state": "Accepted",
+      "source": [
+        "6118 0",
+        "6119 0"
+      ],
+      "replies": [
+        "6120 0",
+        "6121 0"
+      ]
+    },
+    "533": {
+      "state": "Accepted",
+      "source": [
+        "6122 0",
+        "6123 0"
+      ],
+      "replies": [
+        "6124 0",
+        "6125 0"
+      ]
+    },
+    "284": {
+      "state": "Accepted",
+      "source": [
+        "6126 0",
+        "6128 0"
+      ],
+      "replies": [
+        "6127 0",
+        "6129 0"
+      ]
+    }
+  },
+  "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+  "resolved_extraction_anomalies": [
+    {
+      "kind": "grid_not_extracted",
+      "table": "117",
+      "pdf_page": 353,
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "grid_not_extracted",
+      "table": "321",
+      "pdf_page": 681,
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "48",
+      "pdf_page": 157,
+      "row": [
+        "Type",
+        "name",
+        null
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "48",
+      "pdf_page": 157,
+      "row": [
+        "Prefix name",
+        "array or dictionary",
+        null
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "159",
+      "pdf_page": 469,
+      "row": [
+        "CI (uppercase ci)",
+        "dictionary",
+        "(Optional; PDF 2.0) The collection item dictionary. Beginning with PDF 1.7, a collection item dictionary shall contain the data described by the collection schema dictionary for a particular file in a collection (see 12.3.5, \"Collections\"). \"Table 46 — Entries in a collection item dictionary\" describes the entries in a collection item dictionary."
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "178",
+      "pdf_page": 502,
+      "row": [
+        "LLO (capital letters LLO)",
+        "number",
+        "(Optional; PDF 1.7) A non-negative number that shall represent the length of the leader line offset, which is the amount of empty space between the endpoints of the annotation and the beginning of the leader lines."
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "178",
+      "pdf_page": 502,
+      "row": [
+        "CO (capital letters CO)",
+        "array",
+        "(Optional; meaningful only if Cap is true; PDF 1.7) An array of two numbers that shall specify the offset of the caption text from its normal position. The first value shall be the horizontal offset along the annotation line from its midpoint, with a positive value indicating offset to the right and a negative value indicating offset to the left. The second value shall be the vertical offset perpendicular to the annotation line, with a positive value indicating a shift up and a negative value indicating a shift down. Default value: [0, 0] (no offset from normal positioning)"
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "315",
+      "pdf_page": 671,
+      "row": [
+        "O (capital letter O)",
+        "stream",
+        "(Optional; meaningful only if MS and P are present) A form XObject that shall be used to overlay 2D graphics on top of the rendered 3D artwork (see 13.6.6, \"3D markup\")."
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    },
+    {
+      "kind": "dictionary_row_needs_review",
+      "table": "383",
+      "pdf_page": 806,
+      "row": [
+        "Checked, checked",
+        "name",
+        "(Optional; not inheritable; PDF 1.7; lower case form is deprecated in PDF 2.0) The state of a radio button or check box field. The value shall be one of: on, off, or neutral. NOTE 2 In earlier versions of PDF the case (capitalization) used for this key did not conform to the same conventions used elsewhere in this standard. Default value: off."
+      ],
+      "resolution": "Explicit table patch or non-dictionary resolution above"
+    }
+  ]
+}

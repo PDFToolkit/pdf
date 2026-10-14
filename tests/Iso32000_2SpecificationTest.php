@@ -13,6 +13,7 @@ use PDF\Specification\Definition\ViewerPreferencesDictionaryTable150Definition;
 use PDF\Specification\EntryDefinition;
 use PDF\Specification\ErrataCollection;
 use PDF\Specification\ErrataReviewStatus;
+use PDF\Specification\Iso32000_2\Catalogue as Pdf20Catalogue;
 use PDF\Specification\Iso32000_2\Definition\CatalogDictionaryTable29Definition;
 use PDF\Specification\Iso32000_2\Definition\FileSpecificationDictionaryTable43Definition;
 use PDF\Specification\Iso32000_2\Dictionary\AssociatedFilesPropertyListTable409a;
@@ -23,7 +24,10 @@ use PDF\Specification\Iso32000_2\Dictionary\CatalogDictionaryTable29\PagesEntry;
 use PDF\Specification\Iso32000_2\Dictionary\CatalogDictionaryTable29\TypeEntry;
 use PDF\Specification\Iso32000_2\Dictionary\NamespaceDictionaryTable356;
 use PDF\Specification\Iso32000_2\Dictionary\NamespaceDictionaryTable356\NSEntry;
+use PDF\Specification\Iso32000_2\Dictionary\ExtensionsDictionaryTable48\NamedEntry1 as ExtensionPrefix;
+use PDF\Specification\Iso32000_2\Dictionary\OPIVersionDictionaryTable405\NamedEntry1 as OpiVersion;
 use PDF\Specification\ObjectTypeConstraint;
+use PDF\Specification\NameAlternatives;
 use PDF\Specification\Requirement;
 use PDF\Specification\SchemaDictionary;
 use PDF\Specification\SchemaEntry;
@@ -46,7 +50,7 @@ use PHPUnit\Framework\TestCase;
 
 final class Iso32000_2SpecificationTest extends TestCase
 {
-    public function testEveryPilotEntryConstructsItsDeclaredDomainWithPhysicalSourceProvenance(): void
+    public function testEveryEntryConstructsItsDeclaredDomainWithPhysicalSourceProvenance(): void
     {
         $manifest = $this->inventory('classes.json');
         $metadata = $this->inventory('metadata.json');
@@ -64,18 +68,19 @@ final class Iso32000_2SpecificationTest extends TestCase
             self::assertSame('2026-06-01', $definition->source->edition->corrections->publicationDate);
             self::assertSame($metadata['source']['sha256'], $definition->source->documentSha256);
             foreach ($table['entries'] as $entry) {
-                $entryDefinition = $definition->entry($entry['name']);
-                $object = new ($entry['class'])($this->sampleValue($entryDefinition));
+                $entryDefinition = $entry['variable'] ? $definition->variableEntry($entry['name']) : $definition->entry($entry['name']);
+                $key = $table['table'] === '405' ? '1.3' : 'ApplicationKey';
+                $object = $entry['variable'] ? new ($entry['class'])(new NameType($key), $this->sampleValue($entryDefinition)) : new ($entry['class'])($this->sampleValue($entryDefinition));
                 self::assertInstanceOf(SchemaEntry::class, $object);
-                self::assertSame($entry['name'], $object->key()->value);
+                self::assertSame($entry['variable'] ? $key : $entry['name'], $object->key()->value);
                 self::assertSame($table['table'], $object->definition()->source->table);
-                self::assertGreaterThanOrEqual(113, $object->definition()->source->pdfPage);
-                self::assertLessThanOrEqual(1015, $object->definition()->source->pdfPage);
+                self::assertGreaterThanOrEqual(47, $object->definition()->source->pdfPage);
+                self::assertLessThanOrEqual(1022, $object->definition()->source->pdfPage);
                 $entries++;
             }
         }
-        self::assertCount(4, $manifest);
-        self::assertSame(53, $entries);
+        self::assertCount(306, $manifest);
+        self::assertSame(1709, $entries);
         self::assertSame($entries, $metadata['dictionary_catalogue']['entry_count']);
         self::assertTrue($metadata['source']['public_copy_included']);
         $originalSource = dirname(__DIR__) . '/' . $metadata['source']['document'];
@@ -84,8 +89,179 @@ final class Iso32000_2SpecificationTest extends TestCase
         self::assertSame($metadata['source']['bytes'], filesize($originalSource));
         self::assertSame('PDF Association', $metadata['source']['provider']);
         self::assertSame('https://www.pdfa.org/sponsored-standards/', $metadata['source']['provider_url']);
-        self::assertSame('pending', $this->inventory('coverage.json')['complete_dictionary_catalogue']);
+        self::assertSame('implemented-base-inventory', $this->inventory('coverage.json')['complete_dictionary_catalogue']);
         self::assertFalse($this->inventory('coverage.json')['complete_standard_conformance']);
+    }
+
+    public function testExplicitCatalogueIncludesContinuationsRepairedGridsAndAppendixAdditions(): void
+    {
+        $catalogue = new Pdf20Catalogue();
+        self::assertCount(306, iterator_to_array($catalogue->definitions()));
+        self::assertCount(440, $this->inventory('tables.json'));
+        foreach (['5' => 7, '29' => 32, '45' => 5, '48' => 1, '110' => 13, '159' => 12, '178' => 13, '250' => 4, '262' => 6, '280' => 3, '315' => 16, '383' => 4, '125a' => 5] as $table => $count) {
+            $ownEntries = array_filter(iterator_to_array($catalogue->dictionary((string) $table)->entries()), fn (EntryDefinition $entry): bool => $entry->source->table === (string) $table);
+            self::assertCount($count, $ownEntries, 'Table ' . $table);
+        }
+        // Type 1 halftones are dictionaries, whereas sampled halftones are streams.
+        self::assertFalse($catalogue->dictionary('128')->has('Length'));
+        self::assertTrue($catalogue->dictionary('129')->has('Length'));
+        self::assertSame('7.12.2', $catalogue->dictionary('48')->source->clause);
+        self::assertSame('9.10.3', $catalogue->dictionary('125a')->source->clause);
+        self::assertSame('14.8.5.6', $catalogue->dictionary('383')->source->clause);
+        self::assertSame('VRI', $catalogue->dictionary('262')->entry('Type')->type->fixedName);
+        self::assertSame('Line', $catalogue->dictionary('178')->entry('Subtype')->type->fixedName);
+        self::assertSame('CMap', $catalogue->dictionary('125a')->entry('Type')->type->fixedName);
+        self::assertSame(462, $catalogue->dictionary('125a')->entry('Type')->errata?->issueNumber);
+        self::assertSame(ErrataReviewStatus::Completed, $catalogue->dictionary('125a')->entry('Type')->errata->reviewStatus);
+        $this->expectException(\OutOfBoundsException::class);
+        $catalogue->dictionary('117'); // Explicitly empty numbering placeholder, not a dictionary.
+    }
+
+    public function testCaseSensitiveNamesDoNotCollideInPhpOrOnWindows(): void
+    {
+        $catalogue = new Pdf20Catalogue();
+        foreach (['OP', 'op', 'CA', 'ca'] as $name) {
+            self::assertSame($name, $catalogue->dictionary('57')->entry($name)->name);
+        }
+        self::assertSame('Checked', $catalogue->dictionary('383')->entry('Checked')->name);
+        self::assertSame('checked', $catalogue->dictionary('383')->entry('checked')->name);
+        $classes = [];
+        foreach ($this->inventory('classes.json') as $table) {
+            foreach ($table['entries'] as $entry) {
+                $class = strtolower($entry['class']);
+                self::assertArrayNotHasKey($class, $classes);
+                $classes[$class] = true;
+            }
+        }
+    }
+
+    public function testCrossReferenceStreamRequiresDirectArrayMembers(): void
+    {
+        $definition = (new Pdf20Catalogue())->dictionary('17');
+        self::assertSame('iso32000-2', $definition->entry('Length')->source->edition->family);
+        self::assertSame('5', $definition->entry('Length')->source->table);
+        self::assertSame('15', $definition->entry('Root')->source->table);
+        $definition->entry('W')->type->validate(new ArrayType(new IntegerType(1), new IntegerType(2), new IntegerType(1)));
+        $this->expectException(\InvalidArgumentException::class);
+        $definition->entry('W')->type->validate(new ArrayType(new IndirectReference(new IntegerType(1))));
+    }
+
+    public function testExtensionPrefixIsAnExplicitVariableDirectObject(): void
+    {
+        $entry = new ExtensionPrefix(new NameType('ADBE'), new DictionaryType());
+        self::assertSame('ADBE', $entry->key()->value);
+        self::assertTrue($entry->definition()->variable);
+        $this->expectException(\InvalidArgumentException::class);
+        $entry->definition()->type->validate(new IndirectReference(new DictionaryType()));
+    }
+
+    public function testPdf20OpiVersionKeysUseTheirOwnTableIdentity(): void
+    {
+        self::assertSame('1.3', (new OpiVersion(new NameType('1.3'), new DictionaryType()))->key()->value);
+        self::assertSame('2.0', (new OpiVersion(new NameType('2.0'), new DictionaryType()))->key()->value);
+        $this->expectException(\InvalidArgumentException::class);
+        new OpiVersion(new NameType('Custom'), new DictionaryType());
+    }
+
+    public function testConditionalAndInheritableRequirementsArePreservedWithoutBecomingUnconditional(): void
+    {
+        $catalogue = new Pdf20Catalogue();
+        self::assertFalse($catalogue->dictionary('159')->entry('Parent')->requirement->unconditional());
+        self::assertTrue($catalogue->dictionary('159')->entry('Parent')->requirement->conditional);
+        self::assertTrue($catalogue->dictionary('226')->entry('FT')->requirement->inheritable);
+        self::assertFalse($catalogue->dictionary('226')->entry('FT')->requirement->unconditional());
+        self::assertTrue($catalogue->dictionary('262')->entry('CRL')->requirement->conditional);
+        self::assertSame('byte string', $catalogue->dictionary('382')->entry('ContinuedFrom')->type->specificationType);
+        self::assertSame('name or array', $catalogue->dictionary('57')->entry('BM')->type->specificationType);
+        self::assertTrue($catalogue->dictionary('110')->entry('FontDescriptor')->requirement->conditional);
+        self::assertTrue($catalogue->dictionary('109')->entry('Name')->requirement->conditional);
+    }
+
+    public function testReviewedAlternativesAcceptAllSourceBranchesWithoutInventingASingleton(): void
+    {
+        $catalogue = new Pdf20Catalogue();
+        $cases = [
+            ['31', 'Type', ['Page', 'Template']],
+            ['70', 'Subtype', ['DeviceN', 'NChannel']],
+            ['115', 'Subtype', ['CIDFontType0', 'CIDFontType2']],
+            ['125', 'Subtype', ['Type1C', 'CIDFontType0C', 'OpenType']],
+            ['178', 'IT', ['LineArrow', 'LineDimension']],
+            ['180', 'Subtype', ['Square', 'Circle']],
+            ['181', 'Subtype', ['Polygon', 'PolyLine']],
+            ['182', 'Subtype', ['Highlight', 'Underline', 'Squiggly', 'StrikeOut']],
+            ['255', 'Type', ['Sig', 'DocTimeStamp']],
+            ['255', 'Prop_AuthType', ['PIN', 'Password', 'Fingerprint']],
+            ['276', 'S', ['JS', 'NoOp']],
+            ['316', 'Subtype', ['O', 'P']],
+            ['316', 'CS', ['XNF', 'ANF']],
+        ];
+        foreach ($cases as [$table, $key, $names]) {
+            $constraint = $catalogue->dictionary($table)->entry($key)->type;
+            self::assertNull($constraint->fixedName);
+            self::assertNotNull($constraint->nameAlternatives);
+            foreach ($names as $name) {
+                $constraint->validate(new NameType($name));
+                $constraint->validate(new IndirectReference(new NameType($name)));
+            }
+            try {
+                $constraint->validate(new NameType('NotASourceAlternative'));
+                self::fail('The explicitly closed source alternatives must reject other names.');
+            } catch (\InvalidArgumentException) {
+                self::assertTrue(true);
+            }
+        }
+        foreach ([['25', 'CFM'], ['99', 'BaseState'], ['112', 'BaseEncoding'], ['258', 'V']] as [$table, $key]) {
+            self::assertNull($catalogue->dictionary($table)->entry($key)->type->fixedName);
+        }
+    }
+
+    public function testPdfNameAlternativesAreCaseSensitiveAndRejectDuplicates(): void
+    {
+        $names = new NameAlternatives(new NameType('OP'), new NameType('op'));
+        $names->validate(new NameType('OP'));
+        $names->validate(new NameType('op'));
+        self::assertCount(2, $names->names);
+        $this->expectException(\InvalidArgumentException::class);
+        new NameAlternatives(new NameType('OP'), new NameType('OP'));
+    }
+
+    public function testReviewedGeospatialCorrectionsKeepSourceTextAndApprovalAuthoritiesDistinct(): void
+    {
+        $geospatial = (new Pdf20Catalogue())->dictionary('269');
+        $local = $geospatial->entry('LPTS');
+        self::assertTrue($local->requirement->unconditional());
+        self::assertSame(533, $local->errata?->issueNumber);
+        self::assertSame(ErrataReviewStatus::Accepted, $local->errata->reviewStatus);
+        self::assertStringStartsWith('(Optional;', $local->description);
+        self::assertSame(284, $geospatial->entry('GPTS')->errata?->issueNumber);
+        $matrix = $geospatial->entry('PCSM');
+        self::assertSame(534, $matrix->errata?->issueNumber);
+        self::assertSame(ErrataReviewStatus::Accepted, $matrix->errata->reviewStatus);
+        self::assertSame(12, $matrix->type->arrayLength);
+        self::assertSame('number', $matrix->type->arrayElementConstraint?->specificationType);
+        $matrix->type->validate(new ArrayType(...array_fill(0, 12, new IntegerType(0))));
+        $matrix->type->validate(new ArrayType(...array_fill(0, 12, new NumericType(0.5))));
+        $review = $this->inventory('extraction-review.json');
+        self::assertSame('Completed', $review['geospatial_review_replies']['358']['state']);
+        $this->expectException(\InvalidArgumentException::class);
+        $matrix->type->validate(new ArrayType(...array_fill(0, 11, new IntegerType(0))));
+    }
+
+    public function testSourceDescriptionsKeepTheirLanguageAndAuthoredOriginsExplicit(): void
+    {
+        $authored = $normative = $variables = 0;
+        foreach ($this->inventory('dictionaries.json') as $table) {
+            foreach ([...$table['entries'], ...$table['variable_entries']] as $entry) {
+                self::assertSame('en', $entry['description_language']);
+                self::assertContains($entry['description_origin'], ['project-authored', 'normative-source']);
+                $authored += $entry['description_origin'] === 'project-authored' ? 1 : 0;
+                $normative += $entry['description_origin'] === 'normative-source' ? 1 : 0;
+            }
+            $variables += count($table['variable_entries']);
+        }
+        self::assertSame(53, $authored);
+        self::assertSame(1656, $normative);
+        self::assertSame(7, $variables);
     }
 
     public function testRepeatedTableNumbersDoNotMixThe2008And2020Corpora(): void
@@ -235,15 +411,16 @@ final class Iso32000_2SpecificationTest extends TestCase
     {
         $type = $entry->type->classes[0];
         $value = match ($type) {
-            NameType::class => new NameType($entry->type->fixedName ?? 'Value'),
+            NameType::class => $entry->type->nameAlternatives?->names[0] ?? new NameType($entry->type->fixedName ?? 'Value'),
             IntegerType::class => new IntegerType(1),
             NumericType::class => new NumericType(0.5),
             BooleanType::class => new BooleanType(true),
             DictionaryType::class => new DictionaryType(),
-            ArrayType::class => new ArrayType(),
+            ArrayType::class => $entry->type->arrayLength !== null ? new ArrayType(...array_fill(0, $entry->type->arrayLength, new IntegerType(0))) : ($entry->type->specificationType === 'rectangle' ? new ArrayType(new IntegerType(0), new IntegerType(0), new IntegerType(10), new IntegerType(10)) : new ArrayType()),
             StringType::class => new LiteralString('Value'),
             StreamObject::class => new StreamObject('bytes'),
-            default => throw new \LogicException('Unrepresented pilot domain: ' . $type),
+            BasicType::class => new LiteralString('Explicit application value'),
+            default => throw new \LogicException('Unrepresented specification domain: ' . $type),
         };
         return $entry->type->indirect || $value instanceof StreamObject ? new IndirectReference($value) : $value;
     }

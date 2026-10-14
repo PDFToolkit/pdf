@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "standard": "ISO 32000-2:2020",
   "edition_identifier": "iso32000-2:2020",
   "family": "iso32000-2",
@@ -19,17 +19,14 @@
     "provider_url": "https://www.pdfa.org/sponsored-standards/"
   },
   "dictionary_catalogue": {
-    "status": "pilot",
-    "tables": [
-      "29",
-      "43",
-      "356",
-      "409a"
-    ],
-    "dictionary_tables": 4,
-    "entry_count": 53
+    "status": "complete-base-table-inventory-with-explicit-reviewed-overrides",
+    "table_count": 440,
+    "dictionary_tables": 306,
+    "entry_count": 1709,
+    "variable_entry_count": 7,
+    "ec3_semantic_review": "partial-explicit-overrides-only"
   },
-  "interpretation": "Edition-specific pilot schemas. Types, unconditionally required entries and selected EC3 directness constraints are checked. Conditional requirements and the complete ISO 32000-2 catalogue are not claimed.",
+  "interpretation": "Edition-specific dictionary inventory, fixed and variable entry objects, base type/required/indirect constraints and explicitly reviewed EC3 overlays. A complete table inventory does not establish complete conditional, algorithmic or document conformance.",
   "official_references": {
     "standard": "https://www.iso.org/standard/75839.html",
     "sponsored_access": "https://pdfa.org/sponsored-standards/",

@@ -1,78 +1,84 @@
-# ISO 32000-2:2020 EC3 pilot catalogue
+# ISO 32000-2:2020 dictionary catalogue and selected EC3 corrections
 
 English | [Français](README.fr.md)
 
-This directory records the independently identified PDF 2.0 edition and the
-reviewed schemas introduced in this increment. It is **not the complete
-ISO 32000-2 catalogue and does not establish full PDF 2.0 conformance**.
+This edition-specific catalogue inventories all **440 source tables**, including
+appendices and numbering placeholders. Its **306 dictionary definitions** provide
+**1,702 fixed entry classes and seven explicit variable-key classes**. The generator
+produces **2,322 PHP files**, including an immutable
+`PDF\Specification\Iso32000_2\Catalogue` aggregation. These counts describe the
+dictionary inventory. Conditional, algorithmic and document conformance remain
+separate, explicitly tracked work in [coverage.json](coverage.json).
 
-The supplied source is `ISO_32000-2_sponsored_EC3.pdf`, 1,023 physical PDF pages,
-SHA-256 `90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
-Its original bytes and filename are preserved at the
-[repository root](../../ISO_32000-2_sponsored_EC3.pdf). This copy comes from the
-[PDF Association sponsored access](https://www.pdfa.org/sponsored-standards/)
+The canonical source is [the retained original](../../ISO_32000-2_sponsored_EC3.pdf),
+1,023 physical PDF pages, SHA-256
+`90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230`.
+It comes from the [PDF Association sponsored standards](https://www.pdfa.org/sponsored-standards/)
 and is published with the contributor’s confirmed redistribution permission.
-It is excluded from Composer archives.
-The standard edition is ISO 32000-2:2020; EC3 is a separately selected correction
-collection dated 2026-06-01. The PDF container holding the standard is PDF 1.7,
-which does not change the PDF 2.0 version specified by its contents.
+The [complete supplied bundle](../iso32000-2-bundle/) also preserves the separately
+supplied copy. Source PDFs and extraction evidence are excluded from Composer
+archives. The logical edition is ISO 32000-2:2020, with EC3 selected separately
+(2026-06-01). The source PDF’s PDF 1.7 container does not change the specified
+PDF 2.0 version.
 
-| Table | Physical PDF pages | Reviewed entry schemas |
-| --- | --- | --- |
-| 29, document catalog | 113–117 | 32 |
-| 43, file specification | 149–152 | 16 |
-| 356, namespace | 744 | 4 |
-| 409a, associated-file marked-content property list | 1015 | 1 |
+The review preserves table identities, physical pages, actual preceding clause
+headings, continued grids without repeated captions, case-sensitive names such as
+`/OP` and `/op`, variable keys, value families, directness, conditional and inheritable
+requirements, and introduction/deprecation wording. Common stream, function,
+annotation, action, field and attribute tables come from this same edition.
+No ISO 32000-1 definition is silently substituted. Table 117 is explicitly empty
+in the standard and creates no dictionary class.
 
-`dictionaries.json` contains concise implementation descriptions written for
-this project. It preserves the physical source locations and selected reviewed
-constraints, with structured correction provenance. It does not reproduce the
-standard's paragraphs. `coverage.json` explicitly lists remaining work.
+The retained inputs are:
 
-The source explains the review states on physical page 2: `Completed` means
-approval by ISO TC 171 SC 2 WG 8; `Accepted` means approval by the PDF Association
-PDF Technical Working Group. These authorities remain distinct in the immutable
-`ErrataReviewStatus` and `ErrataResolution` objects. Annotation/reply relations
-were checked for the pilot's direct-object and indirect-reference corrections.
-Table 409a is the replacement property-list model from
-[erratum 374](https://github.com/pdf-association/pdf-issues/issues/374): MCAF is
-an array inside a dictionary, and marked content uses a named property resource.
+- `source-extraction.json`: raw table grids, dictionary rows and anomalies tied
+  to the canonical source fingerprint;
+- `extraction-review.json`: reviewed broken grids, capitalization hints, exact
+  clauses, common table relationships, singleton names and closed name alternatives;
+- `reviewed-overrides.json`: the 53 existing authored summaries and selected EC3
+  constraints, retaining their public class names;
+- `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
+  reproducible compiled inventories and concrete class mapping.
 
-The concrete classes live in `PDF\Specification\Iso32000_2`. A `SourceEdition`
-identifies the logical standard independently of the supplied copy's hash and
-the output file version. ISO 32000-1 and the Adobe PDF 1.7 supplement remain
-separate from this corpus. `Catalogue` rejects definitions from mixed families,
-even when their table identifiers differ.
+New normative descriptions identify `description_origin: normative-source` and
+`description_language: en`. The 53 project summaries remain `project-authored`.
+English source prose is identified separately from translated documentation.
+Whitespace and obvious extraction punctuation are normalized; the retained PDF
+remains the reference. Source prose is kept intact when an explicit errata overlay
+changes a constraint.
 
-Reproduce or compare the 61 generated PHP files and their manifests:
+Name restrictions are reviewed explicitly. The compiler does not turn the first
+“shall be X” into a singleton: that phrase may concern another key, a conditional
+branch or several alternatives. `NameAlternatives` represents closed sets such as
+`Sig`/`DocTimeStamp`, `Square`/`Circle` and `CIDFontType0`/`CIDFontType2`. Contextual
+cases such as `BaseEncoding` keep their wording without an invented singleton.
+Array-only blend-mode deprecation does not deprecate every value of `/BM`.
+
+Correction authorities stay distinct: `Completed` means ISO TC 171 SC 2 WG 8
+approval; `Accepted` means PDF Association PDF Technical Working Group approval.
+`ErrataResolution` retains physical page, issue and annotation identity. Examples
+include completed ToUnicode table 125a (issue 462) and associated-file property
+list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
+implementation review.
+
+Regenerate from retained evidence and compare PHP objects without PDF extraction
+dependencies:
 
 ```console
-python tools/generate_iso32000_2_pilot.py
-python tools/generate_iso32000_2_pilot.py --check
+python tools/compile_iso32000_2_catalogue.py --check
+python tools/generate_iso32000_2.py --check
 ```
 
-The generator consumes the authored, reviewed pilot JSON; it does not extract
-the source PDF. A future complete extractor must recognise letter-suffixed
-errata tables, continued grids without repeated captions, annotation review
-replies and appended replacement pages. Plain page text alone is insufficient.
+To update extraction deliberately, install development-only pypdf and pdfplumber,
+run `tools/extract_iso32000_2.py --output <directory>`, review all source changes
+and anomalies, then compile with
+`tools/compile_iso32000_2_catalogue.py --extraction <directory>`. Raw extraction
+never automatically becomes reviewed conformance data.
 
-The object schemas enforce declared PDF value families, fixed Type names,
-unconditional required entries and selected directness constraints. Native
-graph mechanisms are responsible for context-dependent associated-file rules.
-The mere presence of entries for namespaces, DSS or DPartRoot does not implement
-those mechanisms. Tests: `tests/Iso32000_2SpecificationTest.php`.
-
-Native additions are listed separately in `coverage.json`, with their actual
-implementation, unit-test and independent-validator files: PDF20 header/catalog
-and frozen incremental-version checks; typed UTF-8/UTF-16BE/PDFDoc strings;
-AF dictionary associations; named MCAF content with frozen emission facts;
-PDF20 Form XObjects' own resources; bounded source date validation; R5 prohibition
-and explicit document-CMS permission constraints. The example associates the
-same CSV with catalog, page and named marked content, while keeping visible
-CID text separate from UTF-8 metadata. `BeginAssociatedFilesMarkedContent`
-composes the existing BDC token and adds no operator to Annex A.
-
-These stated domains do not cover arbitrary opaque content interpretation,
-R6 encryption, native namespace/role graphs, DSS/timestamps, DPart hierarchies,
-encrypted wrappers or complete PDF 2.0 conformance. Date/MIME checks preserve
-supplied information; the core does not invent or fetch source file metadata.
+`tests/Iso32000_2SpecificationTest.php` exercises every constructor, repaired grids,
+name alternatives, negative constraints, OPI keys and edition isolation. Native
+namespaces, TS 32005 inclusion, associated files, document parts, encrypted wrappers,
+metadata, password encryption, signatures, DSS and timestamps have separate test
+and external-validator evidence in `coverage.json` and bundle coverage.
+A schema object does not certify rendering, accessibility, PKI trust, content
+semantics or complete PDF 2.0 conformance.

@@ -1,10 +1,148 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "edition_identifier": "iso32000-2:2020",
   "errata_collection": 3,
-  "complete_dictionary_catalogue": "pending",
+  "complete_dictionary_catalogue": "implemented-base-inventory",
   "complete_standard_conformance": false,
   "implemented_schemas": [
+    {
+      "table": "5",
+      "physical_pdf_pages": [
+        47,
+        48
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "8",
+      "physical_pdf_pages": [
+        55,
+        56
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "11",
+      "physical_pdf_pages": [
+        59
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "12",
+      "physical_pdf_pages": [
+        61
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "13",
+      "physical_pdf_pages": [
+        64
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "14",
+      "physical_pdf_pages": [
+        67,
+        68
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "15",
+      "physical_pdf_pages": [
+        73,
+        74
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "16",
+      "physical_pdf_pages": [
+        77
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "17",
+      "physical_pdf_pages": [
+        81,
+        82
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "19",
+      "physical_pdf_pages": [
+        83
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "20",
+      "physical_pdf_pages": [
+        87,
+        88,
+        89
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "21",
+      "physical_pdf_pages": [
+        93,
+        94
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "23",
+      "physical_pdf_pages": [
+        102
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "25",
+      "physical_pdf_pages": [
+        106,
+        107
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "27",
+      "physical_pdf_pages": [
+        107,
+        108
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "28",
+      "physical_pdf_pages": [
+        110
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
     {
       "table": "29",
       "physical_pdf_pages": [
@@ -15,7 +153,93 @@
         117
       ],
       "entry_count": 32,
-      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "30",
+      "physical_pdf_pages": [
+        118
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "31",
+      "physical_pdf_pages": [
+        119,
+        120,
+        121,
+        122
+      ],
+      "entry_count": 33,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "32",
+      "physical_pdf_pages": [
+        124,
+        125
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "34",
+      "physical_pdf_pages": [
+        128
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "36",
+      "physical_pdf_pages": [
+        135
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "37",
+      "physical_pdf_pages": [
+        137,
+        138
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "38",
+      "physical_pdf_pages": [
+        139
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "39",
+      "physical_pdf_pages": [
+        140,
+        141
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "40",
+      "physical_pdf_pages": [
+        143
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "41",
+      "physical_pdf_pages": [
+        144
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
     },
     {
       "table": "43",
@@ -26,7 +250,2026 @@
         152
       ],
       "entry_count": 16,
-      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "44",
+      "physical_pdf_pages": [
+        153
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "45",
+      "physical_pdf_pages": [
+        153,
+        154
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "46",
+      "physical_pdf_pages": [
+        155,
+        156
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "47",
+      "physical_pdf_pages": [
+        156
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "48",
+      "physical_pdf_pages": [
+        157
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "49",
+      "physical_pdf_pages": [
+        157
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "57",
+      "physical_pdf_pages": [
+        180,
+        181,
+        182,
+        183
+      ],
+      "entry_count": 29,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "62",
+      "physical_pdf_pages": [
+        201
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "63",
+      "physical_pdf_pages": [
+        202
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "64",
+      "physical_pdf_pages": [
+        204
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "65",
+      "physical_pdf_pages": [
+        206
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "70",
+      "physical_pdf_pages": [
+        221,
+        222
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "71",
+      "physical_pdf_pages": [
+        223
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "72",
+      "physical_pdf_pages": [
+        224
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "74",
+      "physical_pdf_pages": [
+        236,
+        237
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "75",
+      "physical_pdf_pages": [
+        243
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "77",
+      "physical_pdf_pages": [
+        245,
+        246
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "78",
+      "physical_pdf_pages": [
+        248
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "79",
+      "physical_pdf_pages": [
+        249
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "80",
+      "physical_pdf_pages": [
+        251
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "81",
+      "physical_pdf_pages": [
+        254,
+        255
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "82",
+      "physical_pdf_pages": [
+        258,
+        259
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "83",
+      "physical_pdf_pages": [
+        262,
+        263
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "87",
+      "physical_pdf_pages": [
+        273,
+        274,
+        275,
+        276
+      ],
+      "entry_count": 23,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "89",
+      "physical_pdf_pages": [
+        279
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "93",
+      "physical_pdf_pages": [
+        287,
+        288,
+        289
+      ],
+      "entry_count": 19,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "94",
+      "physical_pdf_pages": [
+        289,
+        290
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "95",
+      "physical_pdf_pages": [
+        290,
+        291
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "96",
+      "physical_pdf_pages": [
+        292
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "97",
+      "physical_pdf_pages": [
+        293
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "98",
+      "physical_pdf_pages": [
+        299
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "99",
+      "physical_pdf_pages": [
+        299,
+        300,
+        301
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "100",
+      "physical_pdf_pages": [
+        303,
+        304
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "101",
+      "physical_pdf_pages": [
+        305
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "109",
+      "physical_pdf_pages": [
+        328,
+        329
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "110",
+      "physical_pdf_pages": [
+        332,
+        333
+      ],
+      "entry_count": 13,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "112",
+      "physical_pdf_pages": [
+        338
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "114",
+      "physical_pdf_pages": [
+        345
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "115",
+      "physical_pdf_pages": [
+        345,
+        346
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "118",
+      "physical_pdf_pages": [
+        353,
+        354
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "119",
+      "physical_pdf_pages": [
+        356
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "120",
+      "physical_pdf_pages": [
+        358,
+        359,
+        360
+      ],
+      "entry_count": 22,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "122",
+      "physical_pdf_pages": [
+        363
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "125",
+      "physical_pdf_pages": [
+        368,
+        369
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "125a",
+      "physical_pdf_pages": [
+        1022
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "128",
+      "physical_pdf_pages": [
+        389
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "129",
+      "physical_pdf_pages": [
+        390,
+        391
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "130",
+      "physical_pdf_pages": [
+        393
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "131",
+      "physical_pdf_pages": [
+        394,
+        395
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "132",
+      "physical_pdf_pages": [
+        395
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "142",
+      "physical_pdf_pages": [
+        434
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "144",
+      "physical_pdf_pages": [
+        436
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "145",
+      "physical_pdf_pages": [
+        437
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "147",
+      "physical_pdf_pages": [
+        452,
+        453,
+        454,
+        455
+      ],
+      "entry_count": 18,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "150",
+      "physical_pdf_pages": [
+        460
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "151",
+      "physical_pdf_pages": [
+        460,
+        461
+      ],
+      "entry_count": 12,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "153",
+      "physical_pdf_pages": [
+        463,
+        464,
+        465
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "154",
+      "physical_pdf_pages": [
+        465
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "155",
+      "physical_pdf_pages": [
+        466
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "156",
+      "physical_pdf_pages": [
+        467
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "157",
+      "physical_pdf_pages": [
+        467,
+        468
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "158",
+      "physical_pdf_pages": [
+        468
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "159",
+      "physical_pdf_pages": [
+        468,
+        469
+      ],
+      "entry_count": 12,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "160",
+      "physical_pdf_pages": [
+        472
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "161",
+      "physical_pdf_pages": [
+        474
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "162",
+      "physical_pdf_pages": [
+        475
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "163",
+      "physical_pdf_pages": [
+        475,
+        476
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "164",
+      "physical_pdf_pages": [
+        477,
+        478
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "165",
+      "physical_pdf_pages": [
+        479,
+        480
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "166",
+      "physical_pdf_pages": [
+        482,
+        483,
+        484,
+        485
+      ],
+      "entry_count": 19,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "168",
+      "physical_pdf_pages": [
+        488
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "169",
+      "physical_pdf_pages": [
+        489
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "170",
+      "physical_pdf_pages": [
+        490
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "172",
+      "physical_pdf_pages": [
+        494,
+        495
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "173",
+      "physical_pdf_pages": [
+        496
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "175",
+      "physical_pdf_pages": [
+        497
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "176",
+      "physical_pdf_pages": [
+        498
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "177",
+      "physical_pdf_pages": [
+        499,
+        500
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "178",
+      "physical_pdf_pages": [
+        501,
+        502
+      ],
+      "entry_count": 13,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "180",
+      "physical_pdf_pages": [
+        505
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "181",
+      "physical_pdf_pages": [
+        506,
+        507
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "182",
+      "physical_pdf_pages": [
+        507,
+        508
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "183",
+      "physical_pdf_pages": [
+        508,
+        509
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "184",
+      "physical_pdf_pages": [
+        509
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "185",
+      "physical_pdf_pages": [
+        510
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "186",
+      "physical_pdf_pages": [
+        510,
+        511
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "187",
+      "physical_pdf_pages": [
+        511
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "188",
+      "physical_pdf_pages": [
+        512
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "189",
+      "physical_pdf_pages": [
+        512
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "190",
+      "physical_pdf_pages": [
+        513
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "191",
+      "physical_pdf_pages": [
+        514
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "192",
+      "physical_pdf_pages": [
+        515,
+        516
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "193",
+      "physical_pdf_pages": [
+        517
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "194",
+      "physical_pdf_pages": [
+        517
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "195",
+      "physical_pdf_pages": [
+        519,
+        520
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "196",
+      "physical_pdf_pages": [
+        521
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "197",
+      "physical_pdf_pages": [
+        523
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "198",
+      "physical_pdf_pages": [
+        524
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "199",
+      "physical_pdf_pages": [
+        524
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "200",
+      "physical_pdf_pages": [
+        524,
+        525
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "202",
+      "physical_pdf_pages": [
+        526
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "203",
+      "physical_pdf_pages": [
+        527,
+        528
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "204",
+      "physical_pdf_pages": [
+        528,
+        529
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "205",
+      "physical_pdf_pages": [
+        529
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "206",
+      "physical_pdf_pages": [
+        531
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "207",
+      "physical_pdf_pages": [
+        532
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "208",
+      "physical_pdf_pages": [
+        532
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "209",
+      "physical_pdf_pages": [
+        533
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "210",
+      "physical_pdf_pages": [
+        534
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "211",
+      "physical_pdf_pages": [
+        534
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "212",
+      "physical_pdf_pages": [
+        535
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "213",
+      "physical_pdf_pages": [
+        536
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "214",
+      "physical_pdf_pages": [
+        537
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "216",
+      "physical_pdf_pages": [
+        537
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "217",
+      "physical_pdf_pages": [
+        538
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "218",
+      "physical_pdf_pages": [
+        539,
+        540
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "219",
+      "physical_pdf_pages": [
+        540
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "220",
+      "physical_pdf_pages": [
+        541
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "221",
+      "physical_pdf_pages": [
+        542
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "222",
+      "physical_pdf_pages": [
+        542
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "223",
+      "physical_pdf_pages": [
+        543
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "224",
+      "physical_pdf_pages": [
+        544,
+        545
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "226",
+      "physical_pdf_pages": [
+        546
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "228",
+      "physical_pdf_pages": [
+        548
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "230",
+      "physical_pdf_pages": [
+        552
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "232",
+      "physical_pdf_pages": [
+        556
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "234",
+      "physical_pdf_pages": [
+        557,
+        558
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "235",
+      "physical_pdf_pages": [
+        559
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "236",
+      "physical_pdf_pages": [
+        559,
+        560
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "237",
+      "physical_pdf_pages": [
+        560,
+        561,
+        562,
+        563
+      ],
+      "entry_count": 14,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "238",
+      "physical_pdf_pages": [
+        564,
+        565,
+        566
+      ],
+      "entry_count": 13,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "239",
+      "physical_pdf_pages": [
+        567
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "241",
+      "physical_pdf_pages": [
+        571
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "243",
+      "physical_pdf_pages": [
+        571
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "244",
+      "physical_pdf_pages": [
+        574
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "245",
+      "physical_pdf_pages": [
+        574,
+        575
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "246",
+      "physical_pdf_pages": [
+        575,
+        576
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "247",
+      "physical_pdf_pages": [
+        577
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "248",
+      "physical_pdf_pages": [
+        577
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "249",
+      "physical_pdf_pages": [
+        578,
+        579
+      ],
+      "entry_count": 16,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "250",
+      "physical_pdf_pages": [
+        579,
+        580
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "251",
+      "physical_pdf_pages": [
+        580
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "252",
+      "physical_pdf_pages": [
+        581
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "253",
+      "physical_pdf_pages": [
+        581
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "254",
+      "physical_pdf_pages": [
+        582
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "255",
+      "physical_pdf_pages": [
+        584,
+        585,
+        586
+      ],
+      "entry_count": 18,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "256",
+      "physical_pdf_pages": [
+        587
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "257",
+      "physical_pdf_pages": [
+        589
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "258",
+      "physical_pdf_pages": [
+        590,
+        591
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "259",
+      "physical_pdf_pages": [
+        591,
+        592
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "261",
+      "physical_pdf_pages": [
+        601,
+        602
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "262",
+      "physical_pdf_pages": [
+        602,
+        603
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "263",
+      "physical_pdf_pages": [
+        608
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "264",
+      "physical_pdf_pages": [
+        609,
+        610
+      ],
+      "entry_count": 22,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "265",
+      "physical_pdf_pages": [
+        611
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "266",
+      "physical_pdf_pages": [
+        612
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "267",
+      "physical_pdf_pages": [
+        613,
+        614
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "268",
+      "physical_pdf_pages": [
+        614,
+        615
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "269",
+      "physical_pdf_pages": [
+        617,
+        618
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "270",
+      "physical_pdf_pages": [
+        619
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "271",
+      "physical_pdf_pages": [
+        620
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "272",
+      "physical_pdf_pages": [
+        621
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "273",
+      "physical_pdf_pages": [
+        621,
+        622
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "274",
+      "physical_pdf_pages": [
+        622
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "276",
+      "physical_pdf_pages": [
+        627
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "277",
+      "physical_pdf_pages": [
+        632
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "278",
+      "physical_pdf_pages": [
+        632
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "279",
+      "physical_pdf_pages": [
+        633,
+        634
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "280",
+      "physical_pdf_pages": [
+        634
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "281",
+      "physical_pdf_pages": [
+        634
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "282",
+      "physical_pdf_pages": [
+        635
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "283",
+      "physical_pdf_pages": [
+        635
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "284",
+      "physical_pdf_pages": [
+        636
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "285",
+      "physical_pdf_pages": [
+        636,
+        637
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "286",
+      "physical_pdf_pages": [
+        637,
+        638
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "287",
+      "physical_pdf_pages": [
+        638
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "288",
+      "physical_pdf_pages": [
+        639
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "289",
+      "physical_pdf_pages": [
+        640
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "290",
+      "physical_pdf_pages": [
+        640
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "291",
+      "physical_pdf_pages": [
+        641,
+        642
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "292",
+      "physical_pdf_pages": [
+        642
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "293",
+      "physical_pdf_pages": [
+        643
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "294",
+      "physical_pdf_pages": [
+        643,
+        644
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "295",
+      "physical_pdf_pages": [
+        645,
+        646
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "296",
+      "physical_pdf_pages": [
+        646
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "297",
+      "physical_pdf_pages": [
+        646
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "298",
+      "physical_pdf_pages": [
+        647
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "299",
+      "physical_pdf_pages": [
+        647
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "300",
+      "physical_pdf_pages": [
+        647
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "301",
+      "physical_pdf_pages": [
+        648
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "302",
+      "physical_pdf_pages": [
+        649
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "303",
+      "physical_pdf_pages": [
+        650
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "305",
+      "physical_pdf_pages": [
+        652,
+        653
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "306",
+      "physical_pdf_pages": [
+        654
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "307",
+      "physical_pdf_pages": [
+        654,
+        655
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "308",
+      "physical_pdf_pages": [
+        656
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "309",
+      "physical_pdf_pages": [
+        659
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "310",
+      "physical_pdf_pages": [
+        661,
+        662
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "311",
+      "physical_pdf_pages": [
+        664
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "312",
+      "physical_pdf_pages": [
+        665,
+        666
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "314",
+      "physical_pdf_pages": [
+        667
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "315",
+      "physical_pdf_pages": [
+        670,
+        671,
+        672
+      ],
+      "entry_count": 16,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "316",
+      "physical_pdf_pages": [
+        674,
+        675
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "317",
+      "physical_pdf_pages": [
+        678
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "318",
+      "physical_pdf_pages": [
+        678,
+        679
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "320",
+      "physical_pdf_pages": [
+        681
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "322",
+      "physical_pdf_pages": [
+        683,
+        684
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "323",
+      "physical_pdf_pages": [
+        689,
+        690
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "324",
+      "physical_pdf_pages": [
+        695
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "325",
+      "physical_pdf_pages": [
+        699,
+        700
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "326",
+      "physical_pdf_pages": [
+        701,
+        702
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "327",
+      "physical_pdf_pages": [
+        703,
+        704
+      ],
+      "entry_count": 14,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "328",
+      "physical_pdf_pages": [
+        705,
+        706
+      ],
+      "entry_count": 15,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "329",
+      "physical_pdf_pages": [
+        708,
+        709
+      ],
+      "entry_count": 17,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "330",
+      "physical_pdf_pages": [
+        711,
+        712
+      ],
+      "entry_count": 19,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "331",
+      "physical_pdf_pages": [
+        713,
+        714
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "332",
+      "physical_pdf_pages": [
+        714,
+        715
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "333",
+      "physical_pdf_pages": [
+        715,
+        716,
+        1023
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "334",
+      "physical_pdf_pages": [
+        716,
+        717
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "335",
+      "physical_pdf_pages": [
+        717,
+        718
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "336",
+      "physical_pdf_pages": [
+        718
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "337",
+      "physical_pdf_pages": [
+        719
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "338",
+      "physical_pdf_pages": [
+        720,
+        721
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "339",
+      "physical_pdf_pages": [
+        721,
+        722
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "340",
+      "physical_pdf_pages": [
+        722
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "341",
+      "physical_pdf_pages": [
+        723,
+        724
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "342",
+      "physical_pdf_pages": [
+        725
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "343",
+      "physical_pdf_pages": [
+        726
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "344",
+      "physical_pdf_pages": [
+        726
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "345",
+      "physical_pdf_pages": [
+        727
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "347",
+      "physical_pdf_pages": [
+        730
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "348",
+      "physical_pdf_pages": [
+        730
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "349",
+      "physical_pdf_pages": [
+        731,
+        732
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "350",
+      "physical_pdf_pages": [
+        734
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "351",
+      "physical_pdf_pages": [
+        735
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "353",
+      "physical_pdf_pages": [
+        738
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "354",
+      "physical_pdf_pages": [
+        738,
+        739
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "355",
+      "physical_pdf_pages": [
+        740,
+        741,
+        742
+      ],
+      "entry_count": 19,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
     },
     {
       "table": "356",
@@ -34,7 +2277,327 @@
         744
       ],
       "entry_count": 4,
-      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "357",
+      "physical_pdf_pages": [
+        746
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "358",
+      "physical_pdf_pages": [
+        749
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "359",
+      "physical_pdf_pages": [
+        750
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "360",
+      "physical_pdf_pages": [
+        753
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "361",
+      "physical_pdf_pages": [
+        755
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "362",
+      "physical_pdf_pages": [
+        755,
+        756
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "363",
+      "physical_pdf_pages": [
+        762,
+        763
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "378",
+      "physical_pdf_pages": [
+        791,
+        792,
+        793,
+        794
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "379",
+      "physical_pdf_pages": [
+        795,
+        796,
+        797,
+        798
+      ],
+      "entry_count": 13,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "380",
+      "physical_pdf_pages": [
+        799,
+        800,
+        801,
+        802
+      ],
+      "entry_count": 9,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "381",
+      "physical_pdf_pages": [
+        803,
+        804
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "382",
+      "physical_pdf_pages": [
+        805
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "383",
+      "physical_pdf_pages": [
+        806
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "384",
+      "physical_pdf_pages": [
+        807,
+        808
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "385",
+      "physical_pdf_pages": [
+        808,
+        809
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "386",
+      "physical_pdf_pages": [
+        818
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "388",
+      "physical_pdf_pages": [
+        823
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "389",
+      "physical_pdf_pages": [
+        823,
+        824
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "390",
+      "physical_pdf_pages": [
+        824
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "391",
+      "physical_pdf_pages": [
+        825
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "392",
+      "physical_pdf_pages": [
+        826
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "393",
+      "physical_pdf_pages": [
+        826,
+        827
+      ],
+      "entry_count": 7,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "395",
+      "physical_pdf_pages": [
+        828
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "396",
+      "physical_pdf_pages": [
+        832
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "397",
+      "physical_pdf_pages": [
+        833
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "398",
+      "physical_pdf_pages": [
+        834
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "399",
+      "physical_pdf_pages": [
+        834
+      ],
+      "entry_count": 2,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "400",
+      "physical_pdf_pages": [
+        835
+      ],
+      "entry_count": 3,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "401",
+      "physical_pdf_pages": [
+        836,
+        837,
+        838
+      ],
+      "entry_count": 10,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "402",
+      "physical_pdf_pages": [
+        838,
+        839
+      ],
+      "entry_count": 6,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "403",
+      "physical_pdf_pages": [
+        842
+      ],
+      "entry_count": 5,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "404",
+      "physical_pdf_pages": [
+        843
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "405",
+      "physical_pdf_pages": [
+        844
+      ],
+      "entry_count": 1,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "406",
+      "physical_pdf_pages": [
+        845,
+        846,
+        847
+      ],
+      "entry_count": 18,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "407",
+      "physical_pdf_pages": [
+        847,
+        848,
+        849
+      ],
+      "entry_count": 11,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "408",
+      "physical_pdf_pages": [
+        851
+      ],
+      "entry_count": 4,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "409",
+      "physical_pdf_pages": [
+        851,
+        852
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
     },
     {
       "table": "409a",
@@ -42,19 +2605,23 @@
         1015
       ],
       "entry_count": 1,
-      "validation": "object types, fixed Type names, unconditional required entries and selected EC3 directness"
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
+    },
+    {
+      "table": "F.1",
+      "physical_pdf_pages": [
+        899,
+        900
+      ],
+      "entry_count": 8,
+      "validation": "declared value families, explicitly reviewed names, unconditional noninherited required entries, source directness and selected reviewed EC3 constraints"
     }
   ],
   "remaining_work": [
-    "Complete reviewed edition-specific table and entry inventory",
-    "Review remaining annotations, reply relations, new errata tables and replacement pages",
-    "Conditional dictionary requirements and enumeration constraints outside native mechanisms",
-    "Revision 6 password-security handler algorithms and integration",
-    "Native namespaces, structure relationships and role-map validation",
-    "Document parts and hierarchy validation",
-    "Encrypted-wrapper graph semantics",
-    "Document Security Store, validation information and timestamps",
-    "Geospatial and other PDF 2.0 mechanisms and conformance rules"
+    "Semantic implementation review of remaining EC3 annotations, reply relationships and replacements",
+    "Conditional requirements, context-dependent enumerations and algorithms outside the explicitly listed native mechanisms",
+    "Complete PDF 2.0 semantic and rendering conformance",
+    "External accessibility and mathematical-content review for WTPDF, and content semantics that cannot be decided from object structure alone"
   ],
   "validation_files": [
     "tests/AssociatedFilesMarkedContentTest.php",
@@ -70,11 +2637,11 @@
     "tools/validate_public_key_security.py"
   ],
   "source_provenance": "metadata.json",
-  "catalogue_descriptions": "Concise implementation summaries authored for the project; not reproduced normative paragraphs.",
+  "catalogue_descriptions": "New normative English source prose is explicitly labelled normative-source/en; the 53 existing authored summaries retain project-authored/en. Source paragraphs are distinct from reviewed correction overlays.",
   "implemented_mechanisms": [
     {
       "id": "edition-provenance",
-      "title": "Edition-scoped definitions and reviewed EC3 provenance",
+      "title": "Complete edition-scoped dictionary inventory and selected EC3 provenance",
       "status": "implemented-in-stated-scope",
       "source": {
         "document": "ISO_32000-2_sponsored_EC3.pdf",
@@ -100,7 +2667,7 @@
         ],
         "errata": []
       },
-      "implemented_scope": "Immutable logical standard identity, separately selected corrections and copy fingerprint; independent ISO1/Adobe/ISO2 catalogue families and ISO2 correction profiles; Completed ISO versus Accepted TWG review provenance.",
+      "implemented_scope": "440 source tables classified; 306 dictionary definitions, 1702 fixed and 7 variable entry classes, 2322 generated PHP files and explicit immutable Catalogue; physical source clauses and grids, repaired continuations, case-sensitive names, finite name alternatives and reviewed EC3 overlays stay separate from native semantics.",
       "implementation_files": [
         "src/Specification/SourceEdition.php",
         "src/Specification/SourceReference.php",
@@ -108,16 +2675,22 @@
         "src/Specification/ErrataReviewStatus.php",
         "src/Specification/ErrataResolution.php",
         "src/Specification/Catalogue.php",
-        "tools/generate_iso32000_2_pilot.py"
+        "tools/generate_iso32000_2.py",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/NameAlternatives.php",
+        "tools/extract_iso32000_2.py",
+        "tools/compile_iso32000_2_catalogue.py"
       ],
       "unit_test_files": [
         "tests/Iso32000_2SpecificationTest.php"
       ],
       "independent_validation_files": [
-        "tools/generate_iso32000_2_pilot.py --check"
+        "tools/generate_iso32000_2.py --check",
+        "tools/compile_iso32000_2_catalogue.py --check"
       ],
       "limits": [
-        "Only four reviewed dictionary tables; complete source extraction and semantic conformance are pending."
+        "Complete dictionary inventory is not complete algorithmic, contextual, EC3 or document conformance.",
+        "Some source entries intentionally have any/various domains; private keys remain explicitly representable."
       ]
     },
     {
@@ -421,15 +2994,255 @@
         "tools/fixtures/public_key_encryption.php"
       ],
       "limits": [
-        "R6 password encryption is pending.",
         "Deprecated earlier algorithms are not silently treated as prohibited.",
         "Explicit encryption and CMS verification do not establish PKI trust or authenticated content."
+      ]
+    },
+    {
+      "id": "native-namespace-and-role-graphs",
+      "title": "Explicit PDF2 namespaces and role graph validation",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          738,
+          739,
+          740,
+          741,
+          743,
+          744,
+          809,
+          810
+        ],
+        "clauses": [
+          "14.7.2",
+          "14.7.4",
+          "14.8.6"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Immutable standard/custom namespaces, direct same-namespace and cross-namespace role mappings, cycle detection, standard-role resolution, namespace membership, structure references, namespace-owned attributes and effective/frozen PDF2 version gates; TS32005 inclusion is selected explicitly.",
+      "implementation_files": [
+        "src/Document/Structure/StructureNamespace.php",
+        "src/Document/Structure/NamespaceRoleResolver.php",
+        "src/Document/Structure/NamespaceGraphValidation.php",
+        "src/Document/Structure/StructureInclusionRules.php"
+      ],
+      "unit_test_files": [
+        "tests/StructureNamespaceTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/generate_structure_inclusion.py --check",
+        "tools/validate_pdf20_tagging.py"
+      ],
+      "limits": [
+        "Semantic tagging, reading-order adequacy and MathML grammar remain external/manual obligations.",
+        "Official TS32005 text and explicitly selected published issue resolutions remain distinct profiles."
+      ]
+    },
+    {
+      "id": "document-part-hierarchies",
+      "title": "Native document parts and effective hierarchy validation",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          850,
+          851,
+          852,
+          853
+        ],
+        "clauses": [
+          "14.12"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit DPartRoot, DPart, metadata and catalog/page entries; finite acyclic hierarchy, unique parents, reciprocal page range references, DFS ordering, record level and effective incremental graph checks.",
+      "implementation_files": [
+        "src/Document/Parts/DocumentPartRoot.php",
+        "src/Document/Parts/DocumentPart.php",
+        "src/Document/Parts/DocumentPartsGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/DocumentPartsAndPayloadTest.php"
+      ],
+      "independent_validation_files": [],
+      "limits": [
+        "Document-part metadata does not infer business record semantics."
+      ]
+    },
+    {
+      "id": "encrypted-payload-wrappers",
+      "title": "Unencrypted wrappers around explicit encrypted payload bytes",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          111,
+          112,
+          152
+        ],
+        "clauses": [
+          "7.6.7",
+          "7.11.3"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit EP descriptors and indirect file specifications, associated payload ownership, exactly one named embedded payload, hidden collection and version constraints validated on the effective graph; wrapper encryption is rejected.",
+      "implementation_files": [
+        "src/Document/Files/EncryptedPayload.php",
+        "src/Document/Files/EncryptedPayloadGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/DocumentPartsAndPayloadTest.php"
+      ],
+      "independent_validation_files": [],
+      "limits": [
+        "Payload content remains opaque and its external security handler is supplied explicitly; no network retrieval or arbitrary payload decryption is inferred."
+      ]
+    },
+    {
+      "id": "xmp-and-black-point-compensation",
+      "title": "Native XMP metadata streams, locations and black-point state",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          183,
+          730,
+          731,
+          732,
+          733,
+          734
+        ],
+        "clauses": [
+          "8.4.5",
+          "14.3"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit immutable XMP packet/property objects and PDF metadata streams, strict XML syntax/domain validation, real catalog/object/resource and marked-content locations, versioned metadata owners, plus native black-point compensation graphics-state values.",
+      "implementation_files": [
+        "src/Document/Metadata/XmpPacket.php",
+        "src/Document/Metadata/MetadataStream.php",
+        "src/Document/Metadata/MetadataGraphValidation.php",
+        "src/Document/Metadata/MetadataMarkedContentGraphValidation.php",
+        "src/Graphics/GraphicsState/UseBlackPointCompensation.php"
+      ],
+      "unit_test_files": [
+        "tests/MetadataBundleTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_metadata.py"
+      ],
+      "limits": [
+        "XMP declarations express caller claims and do not certify their truth.",
+        "The core emits graphics state; ICC colour conversion and visual rendering are external."
+      ]
+    },
+    {
+      "id": "revision6-password-security",
+      "title": "Native revision6 standard password security",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101
+        ],
+        "clauses": [
+          "7.6.4"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit password preparation and bounded iterative hash, owner/user authentication, permission blocks, AES256 CBC file cipher and native writer integration; revision7 AESGCM and PDFMAC are separately tracked ISO technical-specification extensions.",
+      "implementation_files": [
+        "src/Security/Revision6PasswordHash.php",
+        "src/Security/ModernStandardSecurityHandler.php",
+        "src/Security/ModernFileEncryption.php",
+        "src/Security/ModernEncryptionDictionary.php"
+      ],
+      "unit_test_files": [
+        "tests/Iso32000CryptographyTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_iso32000_crypto.py"
+      ],
+      "limits": [
+        "Password encryption does not provide external identity trust.",
+        "Newer extension algorithms require their own declared extension level/revision."
+      ]
+    },
+    {
+      "id": "document-timestamps-and-validation-data",
+      "title": "Native RFC3161 timestamps and DSS/VRI revision relationships",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          584,
+          585,
+          586,
+          587,
+          588,
+          600,
+          601,
+          602,
+          603,
+          604
+        ],
+        "clauses": [
+          "12.8.1",
+          "12.8.3",
+          "12.8.4"
+        ],
+        "errata": []
+      },
+      "implemented_scope": "Explicit timestamp requests/providers/verifiers, bounded DER and CMS signed attributes, message-imprint/nonce/policy/certificate binding, actual writer byte ranges, repeat timestamp revisions, DSS certificate/CRL/OCSP streams, VRI signature binding and permission-aware incremental ordering.",
+      "implementation_files": [
+        "src/Document/Signatures/Rfc3161TimestampBackend.php",
+        "src/Document/Signatures/DocumentTimestampRevisionPolicy.php",
+        "src/Document/Signatures/DocumentSecurityStore.php",
+        "src/Document/Signatures/DssGraphValidation.php",
+        "src/Security/OpenSslTimestampTokenVerifier.php"
+      ],
+      "unit_test_files": [
+        "tests/Pdf20TimestampDssTest.php",
+        "tests/DocumentTimestampRevisionPolicyTest.php",
+        "tests/Rfc3161ValidationTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_pdf20_timestamps.py"
+      ],
+      "limits": [
+        "Cryptographic token verification does not establish an external trust chain, revocation freshness or legal signature validity.",
+        "OCSP/CRL payloads are supplied validation data, not an automatic online PKI service."
       ]
     }
   ],
   "validation_commands": [
-    "python tools/generate_iso32000_2_pilot.py --check",
+    "python tools/generate_iso32000_2.py --check",
     "python tools/validate_pdf20_foundations.py --php php --qpdf qpdf --example <pdf-directory>/pdf20-associated-files.pdf",
-    "python tools/validate_public_key_security.py --pdf-version 2.0 --php php --qpdf qpdf"
-  ]
+    "python tools/validate_public_key_security.py --pdf-version 2.0 --php php --qpdf qpdf",
+    "python tools/compile_iso32000_2_catalogue.py --check",
+    "python tools/validate_pdf20_tagging.py --help",
+    "python tools/validate_pdf20_metadata.py --help",
+    "python tools/validate_iso32000_crypto.py --help",
+    "python tools/validate_pdf20_timestamps.py --help"
+  ],
+  "dictionary_inventory": {
+    "source_tables": 440,
+    "dictionary_tables": 306,
+    "fixed_entries": 1702,
+    "variable_entries": 7,
+    "generated_php_files": 2322,
+    "ec3_semantic_review": "partial-explicit-overrides-only"
+  }
 }

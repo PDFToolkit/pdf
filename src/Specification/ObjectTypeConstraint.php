@@ -28,9 +28,14 @@ final readonly class ObjectTypeConstraint
         public ?string $fixedName = null,
         public bool $indirectArrayElements = false,
         public ?self $arrayElementConstraint = null,
+        public ?NameAlternatives $nameAlternatives = null,
+        public ?int $arrayLength = null,
     ) {
         if ($directArrayElements && $indirectArrayElements) {
             throw new \InvalidArgumentException('Array elements cannot be both direct and indirect.');
+        }
+        if ($arrayLength !== null && $arrayLength < 0) {
+            throw new \InvalidArgumentException('An exact array length cannot be negative.');
         }
         $this->classes = $this->objectTypes($specificationType);
     }
@@ -60,6 +65,7 @@ final readonly class ObjectTypeConstraint
         if ($this->fixedName !== null && (!$target instanceof NameType || $target->value !== $this->fixedName)) {
             throw new \InvalidArgumentException('This dictionary entry shall be /' . $this->fixedName . '.');
         }
+        $this->nameAlternatives?->validate($target);
         if ($this->specificationType === 'rectangle') {
             if (!$target instanceof ArrayType || count($target) !== 4) {
                 throw new \InvalidArgumentException('A rectangle requires four direct numbers.');
@@ -71,6 +77,9 @@ final readonly class ObjectTypeConstraint
             }
         }
         if ($target instanceof ArrayType) {
+            if ($this->arrayLength !== null && count($target) !== $this->arrayLength) {
+                throw new \InvalidArgumentException('This dictionary entry requires exactly ' . $this->arrayLength . ' array elements.');
+            }
             if ($this->arrayElementConstraint !== null) {
                 foreach ($target->items as $item) {
                     $this->arrayElementConstraint->validate($item);
