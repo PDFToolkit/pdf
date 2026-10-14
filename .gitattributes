@@ -12,3 +12,4 @@
 /.cache export-ignore
 /vendor export-ignore
 /ISO_32000-2_sponsored_EC3.pdf export-ignore
+/resources/iso32000-2-bundle/documents/ export-ignore
