@@ -9,6 +9,7 @@ use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 /** Per-filter key/cipher binding, including object-specific RC4/AESV2 and object-independent AESV3. */
 final readonly class PublicKeyCipherOperation
 {
+    private GcmNonceSequence $nonces;
     public function __construct(
         public PublicKeyCipher $cipher,
         public HistoricalEncryptionKey|FileEncryptionKey $key,
@@ -18,10 +19,11 @@ final readonly class PublicKeyCipherOperation
         private Rc4Cipher $rc4 = new Rc4Cipher(),
         private HistoricalObjectKeyDerivation $objectKeys = new HistoricalObjectKeyDerivation()
     ) {
-        if ($cipher === PublicKeyCipher::Aes256 ? (!$key instanceof FileEncryptionKey || $aes256 === null)
+        if (in_array($cipher, [PublicKeyCipher::Aes256, PublicKeyCipher::Aes256Gcm], true) ? (!$key instanceof FileEncryptionKey || ($cipher === PublicKeyCipher::Aes256 && $aes256 === null))
             : (!$key instanceof HistoricalEncryptionKey || ($cipher === PublicKeyCipher::Aes128 && (strlen($key->bytes()) !== 16 || $aes128 === null)))) {
             throw new \InvalidArgumentException('Public-key cipher, key length and explicitly selected backend must agree.');
         }
+        $this->nonces = new GcmNonceSequence($random);
     }
 
     public function encrypt(string $bytes, ObjectIdentifier $identifier): string
@@ -37,6 +39,9 @@ final readonly class PublicKeyCipherOperation
 
     private function encryptWithKey(string $bytes, HistoricalEncryptionKey|FileEncryptionKey $key): string
     {
+        if ($this->cipher === PublicKeyCipher::Aes256Gcm && $key instanceof FileEncryptionKey) {
+            return (new AesGcmCipher())->encrypt($bytes, $key, $this->nonces->next());
+        }
         if ($this->cipher === PublicKeyCipher::Rc4 && $key instanceof HistoricalEncryptionKey) {
             return $this->rc4->transform($bytes, $key);
         }
@@ -59,6 +64,9 @@ final readonly class PublicKeyCipherOperation
 
     private function decryptWithKey(string $bytes, HistoricalEncryptionKey|FileEncryptionKey $key): string
     {
+        if ($this->cipher === PublicKeyCipher::Aes256Gcm && $key instanceof FileEncryptionKey) {
+            return (new AesGcmCipher())->decrypt($bytes, $key);
+        }
         if ($this->cipher === PublicKeyCipher::Rc4 && $key instanceof HistoricalEncryptionKey) {
             return $this->rc4->transform($bytes, $key);
         }

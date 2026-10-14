@@ -22,19 +22,24 @@ final readonly class PublicKeyEncryption implements FileEncryption
     public int $version;
     private DictionaryType $encryptionDictionary;
 
-    public function __construct(public PublicKeyFilterConfiguration $filters, public PublicKeyPermissions $permissions)
+    public function __construct(public PublicKeyFilterConfiguration $filters, public PublicKeyPermissions $permissions, public ?string $kdfSalt = null)
     {
         $version = 4;
         $length = 40;
         $entries = [];
         foreach ($filters->filters() as $filter) {
             if ($filter->operation->cipher === PublicKeyCipher::Aes256) {
-                $version = 5;
+                $version = max($version, 5);
+            } elseif ($filter->operation->cipher === PublicKeyCipher::Aes256Gcm) {
+                $version = 6;
             }
             $length = max($length, $filter->material->length->value->integer());
             $entries[] = new Entry($filter->name, $filter->dictionary());
         }
         $this->version = $version;
+        if ($kdfSalt !== null && (strlen($kdfSalt) !== 32 || $version < 5 || !$filters->selected(new NameType('DefaultCryptFilter'))?->material->key instanceof FileEncryptionKey)) {
+            throw new \InvalidArgumentException('Public-key PDF MAC requires V>=5, a 32-byte salt and DefaultCryptFilter file key.');
+        }
         $this->encryptionDictionary = new DictionaryType(
             new Entry(new NameType('Filter'), new NameType('Adobe.PubSec')),
             new Entry(new NameType('SubFilter'), new NameType('adbe.pkcs7.s5')),
@@ -45,7 +50,8 @@ final readonly class PublicKeyEncryption implements FileEncryption
             new Entry(new NameType('CF'), new DictionaryType(...$entries)),
             new Entry(new NameType('StrF'), $filters->strings),
             new Entry(new NameType('StmF'), $filters->streams),
-            new Entry(new NameType('EFF'), $filters->embeddedFiles)
+            new Entry(new NameType('EFF'), $filters->embeddedFiles),
+            ...($kdfSalt === null ? [] : [new Entry(new NameType('KDFSalt'), new \PDF\Syntax\Object\StringObject\HexadecimalString($kdfSalt))]),
         );
     }
 
@@ -69,9 +75,17 @@ final readonly class PublicKeyEncryption implements FileEncryption
         }
         $minimum = $this->version === 5 ? '1.7' : ($aes128 || $this->filters->embeddedFiles->value !== $this->filters->streams->value ? '1.6' : '1.5');
         $effective = new EffectivePdfVersion($header, $catalog);
+        if ($this->version === 6) {
+            $effective->require(PdfVersion::PDF20, 'Public-key AESV4 encryption');
+            \PDF\Document\Extensions\IsoTechnicalSpecification::AesGcm->validate($catalog);
+        }
+        if ($this->kdfSalt !== null) {
+            $effective->require(PdfVersion::PDF20, 'Public-key PDF MAC');
+            \PDF\Document\Extensions\IsoTechnicalSpecification::IntegrityProtection->validate($catalog);
+        }
         $effective->require(PdfVersion::from($minimum), 'Public-key crypt operation');
         foreach ($this->filters->filters() as $filter) {
-            (new PublicKeyVersionValidation())->validate($effective, $filter->material);
+            (new PublicKeyVersionValidation())->validate($effective, $filter->material, $this->kdfSalt !== null);
         }
         if ($this->version === 5 && $effective->value !== PdfVersion::PDF20) {
             $extensions = $catalog->get('Extensions');

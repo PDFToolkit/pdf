@@ -29,7 +29,8 @@ final readonly class EncryptionVersionPolicy
             $permissions = $encryption->get('P');
             if (!$permissions instanceof IntegerType || $permissions->value < -2147483648 || $permissions->value >= 0 || ($permissions->integer() & 0x203) !== 0x200
                 || ($permissions->integer() & 0xc0) !== 0xc0
-                || ($revision instanceof NumericType && $revision->value >= 3 && ($permissions->integer() & 0xfffff000) !== 0xfffff000)) {
+                || ($revision instanceof NumericType && $revision->value >= 3
+                    && ($permissions->integer() & ($encryption->has('KDFSalt') ? 0xffffe000 : 0xfffff000)) !== ($encryption->has('KDFSalt') ? 0xffffe000 : 0xfffff000))) {
                 throw new \LogicException('PDF 2.0 standard encryption permissions require accessibility bit10 and the prescribed reserved bits.');
             }
         }

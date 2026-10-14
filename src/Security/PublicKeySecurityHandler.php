@@ -41,7 +41,7 @@ final readonly class PublicKeySecurityHandler
         PublicKeyRecipientGroup ...$groups
     ): PublicKeyCryptFilter {
         if (($cipher === PublicKeyCipher::Aes128 && $length->bytes() !== 16)
-            || ($cipher === PublicKeyCipher::Aes256 && $length->bytes() !== 32)
+            || (in_array($cipher, [PublicKeyCipher::Aes256, PublicKeyCipher::Aes256Gcm], true) && $length->bytes() !== 32)
             || ($cipher === PublicKeyCipher::Rc4 && $length->bytes() > 16)
             || ($scope === PublicKeyRecipientScope::IndividualStream && !$metadata->value)) {
             throw new \InvalidArgumentException('The selected cipher key length or metadata/recipient scope is invalid.');

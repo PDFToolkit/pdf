@@ -9,4 +9,5 @@ enum PublicKeyCipher: string
     case Rc4 = 'V2';
     case Aes128 = 'AESV2';
     case Aes256 = 'AESV3';
+    case Aes256Gcm = 'AESV4';
 }
