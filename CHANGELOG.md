@@ -1,6 +1,22 @@
 # Changelog
 
+English | [Français](CHANGELOG.fr.md)
+
 ## [Unreleased]
+
+## [0.5.5] - 2026-10-14
+
+### Bilingual documentation
+
+- Makes English the default README and documentation entrypoint, with complete
+  French counterparts for the README, security policy and release history.
+- Pairs retained guide and tutorial pointers with their French versions and
+  links to the matching language on the central documentation site.
+- Preserves the PHP API, PHP 8.3 minimum, executable examples, specification
+  resources and original reference PDF bytes.
+- Documents all executable example comments in English while preserving every
+  executed token and demonstration value; corrects two source-comment encodings.
+- Locks optional development modules to their published 0.1.6 releases.
 
 ## [0.5.4] - 2026-10-14
 
@@ -271,7 +287,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.5.5...HEAD
 [0.5.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.1
 [0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
 [0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
@@ -280,3 +296,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 [0.2.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.2.0
 [0.1.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.1
 [0.1.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.0
+[0.5.4]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.4
+[0.5.3]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.3
+[0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2
+[0.5.5]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.5
