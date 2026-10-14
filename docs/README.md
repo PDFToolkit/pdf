@@ -1,20 +1,22 @@
-# Documentation du core PDFToolkit
+# PDFToolkit core documentation
 
-Les guides, tutoriels, assets du site et outils de documentation sont maintenus
-dans [PDFToolkit/pdftoolkit.github.io](https://github.com/PDFToolkit/pdftoolkit.github.io)
-et publiés à [pdftoolkit.github.io](https://pdftoolkit.github.io/).
+English | [Français](fr/README.md)
 
-- [Guide du core](https://pdftoolkit.github.io/modules/core/)
-- [Packages et modules optionnels](https://pdftoolkit.github.io/guides/modules.html)
-- [Référence API](https://pdftoolkit.github.io/reference/index.html)
-- [Tutoriels et PDF d'exemple](https://pdftoolkit.github.io/tutorials/index.html)
-- [Couverture de la norme](https://pdftoolkit.github.io/guides/couverture.html)
-- [Construction et contributions à la documentation](https://github.com/PDFToolkit/pdftoolkit.github.io/blob/main/docs/site/README.md)
+Shared guides, tutorials, site assets and documentation tools are maintained in
+[PDFToolkit/pdftoolkit.github.io](https://github.com/PDFToolkit/pdftoolkit.github.io)
+and published at [pdftoolkit.github.io](https://pdftoolkit.github.io/).
 
-Le site documente des versions publiées fixées à leurs commits exacts dans son
-manifeste de sources. Les sources PHP, exemples exécutables, tests, ressources
-structurées et PDF originaux de la spécification restent dans ce dépôt.
+- [Core guide](https://pdftoolkit.github.io/modules/core/)
+- [Packages and optional modules](https://pdftoolkit.github.io/guides/packages.html)
+- [API reference](https://pdftoolkit.github.io/reference/index.html)
+- [Tutorials and example PDFs](https://pdftoolkit.github.io/tutorials/index.html)
+- [Standard coverage](https://pdftoolkit.github.io/guides/specification.html)
+- [Building and contributing to documentation](https://github.com/PDFToolkit/pdftoolkit.github.io/blob/main/docs/site/README.md)
 
-Les quelques pointeurs Markdown conservés ici maintiennent les liens du
-changelog et des commentaires d'exemple. Les textes complets antérieurs restent
-consultables dans [le tag du core 0.5.2](https://github.com/PDFToolkit/pdf/tree/v0.5.2/docs).
+The site documents published versions pinned to exact commits in its source
+manifest. PHP sources, executable examples, tests, structured resources and
+original specification PDFs remain in this repository.
+
+The few Markdown pointers retained here preserve links from the changelog and
+example comments. Earlier complete texts remain accessible in the
+[core 0.5.2 tag](https://github.com/PDFToolkit/pdf/tree/v0.5.2/docs).

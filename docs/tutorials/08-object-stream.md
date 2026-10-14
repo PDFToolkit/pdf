@@ -1,3 +1,5 @@
-# Tutoriel 08 : objets compressés
+# Tutorial 08: compressed objects
 
-Ce tutoriel est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/tutorials/08-objets-compresses.html).
+English | [Français](../fr/tutorials/08-object-stream.md)
+
+This tutorial is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/tutorials/08-object-stream.html).

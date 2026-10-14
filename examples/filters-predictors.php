@@ -51,9 +51,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Construire les mêmes pixels RGB pour les trois images. Les lignes sont
-// rangées de haut en bas ; chaque pixel contient trois composantes de huit bits.
-// Ces octets sont des échantillons PDF bruts, pas un fichier PNG ou TIFF importé.
+// 1. Build the same RGB pixels for all three images. Rows are arranged
+// from top to bottom; each pixel contains three eight-bit components.
+// These bytes are raw PDF samples, not an imported PNG or TIFF file.
 $width = 64;
 $height = 32;
 $pixels = '';
@@ -71,18 +71,18 @@ $imageDictionary = new ImageDictionaryTable89(
     new BitsPerComponentEntry(new IntegerType(8)),
 );
 
-// 2. Décrire les lignes de prédiction avec les valeurs PDF de la table 8 :
-// Colors=3, Columns=64, BitsPerComponent=8 par défaut. TIFF soustrait le sample
-// précédent de la même composante. PNG applique sa prédiction à chaque octet
-// et préfixe chaque ligne par le numéro du filtre utilisé.
+// 2. Describe prediction rows with the PDF values in Table 8:
+// Colors=3, Columns=64, BitsPerComponent=8 by default. TIFF subtracts the
+// preceding sample of the same component. PNG predicts each byte
+// and prefixes each row with the number of the filter used.
 $layout = new PredictorLayout(new IntegerType(3), new IntegerType($width));
 $paeth = new PngPredictor($layout, new FixedPngFilterSelection(PngRowFilter::Paeth));
 $tiff = new TiffPredictor($layout);
 $adaptive = new PngPredictor($layout);
 
-// 3. Le filtre compose la prédiction avant la compression. StreamObject produit
-// /Filter, /DecodeParms et la longueur encodée à partir de ces mêmes objets.
-// EarlyChange détermine uniquement les frontières 9/10/11/12 bits des codes LZW.
+// 3. The filter composes prediction before compression. StreamObject produces
+// /Filter, /DecodeParms and encoded length from these same objects.
+// EarlyChange determines only the 9/10/11/12-bit boundaries of LZW codes.
 $images = [
     new StreamObject($pixels, $imageDictionary, new FlateDecode(6, $paeth)),
     new StreamObject($pixels, $imageDictionary, new LZWDecode(new EarlyChange(new IntegerType(0)), $tiff)),
@@ -110,8 +110,8 @@ $operators = [
     new EndTextObject(),
 ];
 
-// 4. Les matrices changent uniquement la taille et l'emplacement à l'affichage.
-// Les images conservent toutes 64 × 32 pixels ; seuls leurs octets encodés diffèrent.
+// 4. Matrices change only display size and position.
+// All images retain 64 × 32 pixels; only their encoded bytes differ.
 foreach ([['FlatePaeth', 'Flate + PNG Paeth'], ['LzwTiff', 'LZW EarlyChange=0 + TIFF'], ['LzwPng', 'LZW EarlyChange=1 + PNG adaptatif']] as $index => [$name, $label]) {
     $top = 636 - $index * 170;
     array_push(

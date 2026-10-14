@@ -63,8 +63,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Le module optionnel analyse le programme TrueType fourni par l'application.
-// Le core reçoit ensuite des CID, GID et métriques explicites, sans lire de police.
+// The optional module analyzes the TrueType program supplied by the application.
+// The core then receives explicit CIDs, GIDs and metrics without reading a font.
 $bytes = file_get_contents(dirname(__DIR__) . '/vendor/pdftoolkit/pdf-fonts/examples/assets/fonts/NotoSans-Regular.ttf');
 if ($bytes === false) {
     throw new RuntimeException('Cannot read the demonstration font supplied by pdf-fonts.');
@@ -75,9 +75,9 @@ $map = (new CharacterMapFactory($program))->create($fontFile, new UnicodeText('A
 $descriptor = (new FontDescriptorFactory($program))->create($fontFile, new FontDescriptorFlags(4), new NumericType(80));
 $descendant = new CIDFontType2($descriptor, new CIDToGIDMap($map, new FlateDecode()), new CIDWidths($map));
 
-// Ce CMap utilise un octet par code, et n'est donc pas Identity-H. Le premier
-// dictionnaire décrit l'espace et les six lettres. Le second référence ce CMap
-// par /UseCMap et ajoute trois codes distincts A4, A5 et A6.
+// This CMap uses one byte per code, so it is not Identity-H. The first
+// dictionary describes the codespace and six letters. The second references
+// this CMap through /UseCMap and adds three distinct codes A4, A5 and A6.
 $code = static fn (string $bytes): CMapCode => new CMapCode(new HexadecimalString($bytes));
 $spaces = new CodeSpaces(new CodeSpaceRange($code("\0"), $code("\xff")));
 $collection = new CMapSystemInfo(new LiteralString('Adobe'), new LiteralString('Identity'), new IntegerType(0));
@@ -99,9 +99,9 @@ $encoding = new EncodingCMap(
     base: $base,
 );
 
-// /Encoding sélectionne les glyphes ; /ToUnicode explique leur contenu textuel.
-// A..F utilise bfrange incrémental ; A4..A6 utilise des séquences distinctes.
-// La ligature ﬁ est un seul glyphe, dont la séquence Unicode extraite est "fi".
+// /Encoding selects glyphs; /ToUnicode explains their textual content.
+// A..F uses incremental bfrange; A4..A6 uses distinct sequences.
+// The ligature ﬁ is one glyph whose extracted Unicode sequence is "fi".
 $unicode = new ToUnicodeCMap(new UnicodeCMap(
     new CMapName(new NameType('PDFToolkit-OneByte-UCS')),
     $spaces,
@@ -119,8 +119,8 @@ $unicode = new ToUnicodeCMap(new UnicodeCMap(
 $font = new Type0Font($descendant, $unicode, encoding: $encoding);
 $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))), new Entry(new NameType('F2'), new IndirectReference($font)))));
 
-// Chaque code montré reste un objet. La concaténation est validée avec l'espace
-// du CMap ; aucune conversion implicite UTF-8 -> code -> CID n'intervient ici.
+// Each displayed code remains an object. Concatenation is checked against
+// the CMap codespace; no implicit UTF-8 -> code -> CID conversion occurs here.
 $characters = new CMapCodeSequence($encoding->codeSpaces(), $code('A'), $code('B'), $code('C'), $code('D'), $code('E'), $code('F'), $code(' '), $code("\xa4"), $code("\xa5"), $code(' '), $code("\xa6"));
 $contents = new ContentStreams(new BeginTextObject(), new SetTextFontAndSize(new NameType('F1'), new NumericType(24)), new MoveTextPosition(new NumericType(54), new NumericType(738)), new ShowText(new LiteralString('PDFToolkit - CMaps explicites')), new EndTextObject());
 foreach ([['Un encodage incorpore avec des codes sur un octet.', 684], ['Le second CMap herite du premier par UseCMap.', 658], ['CID : selection des glyphes dans la police incorporee.', 612], ['ToUnicode : extraction du sens de chaque code.', 586], ['Resultat ci-dessous : six lettres, accent, grec, ligature.', 540]] as [$text, $y]) {

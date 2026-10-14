@@ -1,3 +1,5 @@
-# Couverture de la norme PDF
+# PDF standard coverage
 
-Ce guide est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/guides/couverture.html).
+English | [Français](fr/specification.md)
+
+This guide is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/guides/specification.html).

@@ -45,16 +45,16 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Un texte bleu est seulement un dessin. Pour le rendre cliquable, il
-// faut une annotation /Link dans /Annots, avec son rectangle et sa cible.
+// 1. Blue text is only drawing. Making it clickable requires
+// a /Link annotation in /Annots with its rectangle and target.
 $font = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference($font)),
 )));
 $mediaBox = new Rectangle(new NumericType(0), new NumericType(0), new NumericType(595), new NumericType(842));
 
-// 2. Construire d'abord la page cible permet au lien interne de viser cette
-// instance. Sa position sera déterminée plus tard par l'ordre de addKid().
+// 2. Building the target page first lets the internal link target this
+// instance. Its position is determined later by addKid() order.
 $targetPage = new PageObject($mediaBox, $resources, new StreamObject(new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(22)),
@@ -66,9 +66,9 @@ $targetPage = new PageObject($mediaBox, $resources, new StreamObject(new Content
     new EndTextObject(),
 )));
 
-// 3. Une action URI décrit la navigation externe : /S /URI sélectionne son
-// type ; /URI contient l'adresse ASCII. Le nom Table206 rattache la classe
-// à sa définition ISO. Il ne s'agit pas d'une API de confort.
+// 3. A URI action describes external navigation: /S /URI selects its
+// type; /URI contains the ASCII address. Table206 connects the class
+// to its ISO definition. It is not a convenience API.
 $externalAction = new URIActionTable206(
     new SEntry(new NameType('URI')),
     new URIEntry(new LiteralString('https://github.com/roukmoute/pdf')),
@@ -82,8 +82,8 @@ $externalLink = new LinkAnnotationTable173(
     new AEntry($externalAction),
 );
 
-// 4. Le lien interne possède /Dest au lieu de /A. Ne pas fournir les deux
-// pour la même annotation. Fit produit [référence-à-la-page /Fit].
+// 4. The internal link has /Dest instead of /A. Do not supply both
+// for one annotation. Fit produces [page-reference /Fit].
 $internalLink = new LinkAnnotationTable173(
     new TypeEntry(new NameType('Annot')),
     new SubtypeEntry(new NameType('Link')),
@@ -93,9 +93,9 @@ $internalLink = new LinkAnnotationTable173(
     new DestEntry(new Fit($targetPage)),
 );
 
-// 5. /Rect emploie les coordonnées de la page, avec origine en bas à gauche.
-// Les textes sont placés à y=678 et y=618, à l'intérieur de ces rectangles.
-// /Border [0 0 0] supprime la bordure automatique de l'annotation.
+// 5. /Rect uses page coordinates with the origin at the lower left.
+// Text is positioned at y=678 and y=618 inside these rectangles.
+// /Border [0 0 0] suppresses the annotation's automatic border.
 $contents = new StreamObject(new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(22)),
@@ -113,9 +113,9 @@ $contents = new StreamObject(new ContentStreams(
     new EndTextObject(),
 ));
 
-// 6. Chaque annotation est référencée indirectement par le tableau /Annots.
-// Le schéma de LinkAnnotation compose aussi les entrées communes Table164.
-// La page doit recevoir ses entrées avant son rattachement à l'arbre.
+// 6. Each annotation is referenced indirectly by the /Annots array.
+// The LinkAnnotation schema also composes common Table164 entries.
+// The page must receive its entries before attachment to the tree.
 $firstPage = new PageObject($mediaBox, $resources, $contents, new AnnotsEntry(new ArrayType(
     new IndirectReference($externalLink),
     new IndirectReference($internalLink),

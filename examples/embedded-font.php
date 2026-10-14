@@ -40,12 +40,12 @@ use PDF\Syntax\Object\StreamObject;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Tutoriel 09 : docs/tutorials/09-embedded-font.md.
-// Le package optionnel PDFToolkit/pdf-fonts analyse les octets TrueType.
-// Le core conserve seulement les objets PDF et leurs valeurs explicites.
-// La lecture du fichier appartient à l'application. FontProgram reçoit des octets,
-// sans connaître de chemin, d'URL ou de mécanisme d'accès aux fichiers.
-// Les données du tutoriel sont distribuées par le module, sans copie dans le core.
+// Tutorial 09: docs/tutorials/09-embedded-font.md.
+// The optional PDFToolkit/pdf-fonts package analyzes TrueType bytes.
+// The core retains only PDF objects and their explicit values.
+// File reading belongs to the application. FontProgram receives bytes
+// without knowing paths, URLs or file-access mechanisms.
+// Tutorial data are distributed by the module without copies in the core.
 $fontBytes = file_get_contents(dirname(__DIR__) . '/vendor/pdftoolkit/pdf-fonts/examples/assets/fonts/NotoSans-Regular.ttf');
 if ($fontBytes === false) {
     throw new RuntimeException('Unable to read the bundled demonstration font.');
@@ -56,16 +56,16 @@ $lines = [
     new UnicodeText('Français : été, cœur, Noël. Ελληνικά : Αθήνα.'),
     new UnicodeText('Chaque caractère conserve son identité Unicode.'),
 ];
-// Le répertoire est connu avant l'écriture : aucun enregistrement global mutable.
-// Deux caractères Unicode peuvent avoir le même GID et des CID différents.
+// The repertoire is known before writing: no mutable global registration.
+// Two Unicode characters can have the same GID and different CIDs.
 $repertoire = new UnicodeText(implode('', array_map(static fn (UnicodeText $text): string => $text->utf8, $lines)));
-// Le programme CID conserve tous les glyphes. La norme exige de retirer cmap
-// pour FontFile2/CIDFontType2 ; les correspondances restent dans nos objets PDF.
-// Le répertoire sfnt et ses checksums sont recalculés, sans sous-ensemble de glyphes.
-// Length1 mesure les octets du programme incorporé après décodage du filtre.
-// StemV est une mesure explicitement fournie (80 unités PDF pour cet exemple),
-// car TrueType n'a pas de champ universel donnant l'épaisseur des fûts verticaux.
-// Le flag Symbolic convient à ce répertoire comprenant du grec (table 123).
+// The CID program retains every glyph. The specification requires removing cmap
+// for FontFile2/CIDFontType2; mappings remain in our PDF objects.
+// The sfnt directory and checksums are recalculated without glyph subsetting.
+// Length1 measures embedded-program bytes after filter decoding.
+// StemV is explicitly supplied (80 PDF units in this example), because
+// TrueType has no universal field giving vertical stem thickness.
+// The Symbolic flag suits this repertoire containing Greek (Table 123).
 $cidProgram = new CIDFontProgram($program);
 $fontFile = new FontFile2($cidProgram->bytes, new FlateDecode());
 $map = (new CharacterMapFactory($cidProgram))->create($fontFile, $repertoire);
@@ -80,9 +80,9 @@ $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference($font)),
 )));
 
-// Identity-H attend des codes de deux octets, et non la chaîne UTF-8 d'origine.
-// L'encodeur fournit ces codes ; ToUnicode fournit la correspondance inverse
-// pour la sélection, la recherche et l'extraction dans le lecteur PDF.
+// Identity-H expects two-byte codes, not the original UTF-8 string.
+// The encoder supplies these codes; ToUnicode supplies the reverse mapping
+// for selection, search and extraction in PDF readers.
 $contents = new StreamObject(new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(22)),

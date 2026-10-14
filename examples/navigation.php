@@ -42,8 +42,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Les trois pages partagent la même police et le même dictionnaire de
-// ressources. /F1 est un nom local utilisé par Tf, pas le nom de la police.
+// 1. All three pages share the same font and resource dictionary.
+// /F1 is a local name used by Tf, not the font name.
 $font = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference($font)),
@@ -52,8 +52,8 @@ $mediaBox = new Rectangle(new NumericType(0), new NumericType(0), new NumericTyp
 $pages = new PageTreeNode();
 $chapterPages = [];
 
-// 2. L'ordre de addKid() est l'ordre de lecture. Les chaînes de contenu
-// restent ASCII ici ; TextString sera utilisé pour les titres des signets.
+// 2. addKid() order is reading order. Content strings remain
+// ASCII here; TextString will be used for bookmark titles.
 foreach (['Le graphe du document', 'Les destinations', 'Les arbres de noms'] as $index => $chapter) {
     $contents = new StreamObject(new ContentStreams(
         new BeginTextObject(),
@@ -72,15 +72,15 @@ foreach (['Le graphe du document', 'Les destinations', 'Les arbres de noms'] as 
     $chapterPages[] = $page;
 }
 
-// 3. /Fit ajuste la page entière. /XYZ choisit un point et un zoom (1 = 100 %).
-// Ces tableaux de destination contiennent une référence indirecte à la Page.
+// 3. /Fit fits the whole page. /XYZ selects a point and zoom (1 = 100%).
+// These destination arrays contain an indirect reference to the Page.
 $firstPage = new Fit($chapterPages[0]);
 $secondPage = new XYZ($chapterPages[1], new NumericType(0), new NumericType(842), new NumericType(1));
 $thirdPage = new Fit($chapterPages[2]);
 
-// 4. Un plan (Outlines) est une hiérarchie distincte de l'arbre des pages.
-// Les relations /Parent, /Prev, /Next, /First, /Last et /Count sont déduites
-// des rattachements. Chaque item doit appartenir à un seul parent.
+// 4. An outline (Outlines) is a hierarchy separate from the page tree.
+// /Parent, /Prev, /Next, /First, /Last and /Count are derived from
+// attachments. Each item must belong to only one parent.
 $outline = new OutlineDictionary();
 $overview = new OutlineItem(new TextString('Comprendre la navigation'), $firstPage);
 $overview->addItem(new OutlineItem(new TextString('1. Le graphe du document'), $firstPage));
@@ -88,10 +88,10 @@ $overview->addItem(new OutlineItem(new TextString('2. Les destinations - zoom à
 $overview->addItem(new OutlineItem(new TextString('3. Les arbres de noms'), $thirdPage));
 $outline->addItem($overview);
 
-// 5. /Names /Dests associe une chaîne stable à une destination explicite.
-// Une clé de NameTree est une chaîne d'octets, pas un NameType (/Nom).
-// NameTree trie ses clés ; des liens peuvent ensuite viser cette clé sans
-// connaître la position du chapitre dans l'arbre des pages.
+// 5. /Names /Dests associates a stable string with an explicit destination.
+// A NameTree key is a byte string, not a NameType (/Nom).
+// NameTree sorts its keys; links can then target a key without
+// knowing the chapter's position in the page tree.
 $destinations = new NameTree(
     new NameTreeEntry(new LiteralString('chapitre-3'), $thirdPage),
     new NameTreeEntry(new LiteralString('chapitre-1'), $firstPage),
@@ -99,9 +99,9 @@ $destinations = new NameTree(
 );
 $names = new NameDictionary(new Entry(new NameType('Dests'), new IndirectReference($destinations)));
 
-// 6. Le catalogue rend le plan et les destinations accessibles. /Outlines
-// exige une référence indirecte. /PageMode demande l'affichage des signets ;
-// le lecteur reste libre de respecter cette préférence d'interface.
+// 6. The catalog makes outlines and destinations accessible. /Outlines
+// requires an indirect reference. /PageMode requests bookmark display;
+// readers remain free to honor this interface preference.
 $catalog = new DocumentCatalog(
     $pages,
     new Outlines(new IndirectReference($outline)),

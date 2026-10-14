@@ -67,8 +67,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. L'application fournit les octets. Ce certificat et cette clé sont PUBLICS
-// et réservés aux tests ; ils ne prouvent aucune identité de production.
+// 1. The application supplies bytes. This certificate and key are PUBLIC
+// and for testing only; they prove no production identity.
 $fixtures = dirname(__DIR__) . '/tests/Fixtures/signing/';
 $certificateBytes = file_get_contents($fixtures . 'signer.der');
 $keyBytes = file_get_contents($fixtures . 'signer-private-key.pem');
@@ -78,9 +78,9 @@ if ($certificateBytes === false || $keyBytes === false) {
 $identity = new OpenSslIdentity(new CertificateChain(new X509Certificate(new HexadecimalString($certificateBytes))), $keyBytes);
 $backend = new OpenSslSignatureBackend($identity);
 
-// 2. Les ressources, coordonnées et apparences restent explicites. Le texte
-// des streams utilise ici des octets ASCII ; les métadonnées Reason/SV sont
-// de véritables TextString et conservent leurs accents.
+// 2. Resources, coordinates and appearances remain explicit. Stream text
+// uses ASCII bytes here; Reason/SV metadata use actual TextString values
+// and retain their accented characters.
 $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))),
     new Entry(new NameType('Title'), new IndirectReference(new Type1Font(StandardFont::HelveticaBold))),
@@ -98,8 +98,8 @@ $referenceAppearance = new FormAppearanceStream(new ContentStreams(...[
     new SetLineWidth(new NumericType(1)),
     new AppendRectangle(new NumericType(0.5), new NumericType(0.5), new NumericType(498), new NumericType(31)),
     new StrokePath(),
-    // ISO 12.7.3.3, p.444 : le lecteur remplace uniquement le texte variable,
-    // en conservant le cadre. Cette apparence reste distincte de la signature.
+    // ISO 12.7.3.3, p.444: readers replace only variable text while
+    // preserving the frame. This appearance stays distinct from the signature.
     new BeginMarkedContent(new NameType('Tx')),
     new SaveGraphicsState(),
     new AppendRectangle(new NumericType(1), new NumericType(1), new NumericType(497), new NumericType(30)),
@@ -120,9 +120,9 @@ $signatureAppearance = new FormAppearanceStream(new ContentStreams(
     ...$text('Apparence fournie explicitement par ce script', 16, 13, 9)->operators,
 ), $rectangle(0, 0, 499, 80), $resources);
 
-// 3. Le seed définit des obligations. Les bits Ff imposent Filter, le premier
-// SubFilter pris en charge, DigestMethod et la raison réellement écrite.
-// Référence : ISO Table234, PDF32000_2008.pdf, pages455–457.
+// 3. The seed defines obligations. Ff bits require Filter, the first
+// supported SubFilter, DigestMethod and the reason actually written.
+// Reference: ISO Table234, PDF32000_2008.pdf, pages455-457.
 $reason = new TextString('Étudié et approuvé');
 $seed = new SignatureSeedValue(
     new SignatureSeedFlags(SignatureSeedFlag::Filter, SignatureSeedFlag::SubFilter, SignatureSeedFlag::DigestMethod, SignatureSeedFlag::Reasons),
@@ -143,9 +143,9 @@ $signing = new SignatureFieldSigning(
     $lock,
 );
 
-// 4. /V du champ Approval désigne la réservation. Son /Lock sélectionne
-// Reference. SignatureFieldSigning copie Action/Fields dans FieldMDP, sans
-// fabriquer de coordonnées ni modifier le champ cible pour l'application.
+// 4. Field Approval's /V designates the reservation. Its /Lock selects
+// Reference. SignatureFieldSigning copies Action/Fields into FieldMDP
+// without inventing coordinates or changing the target field for the application.
 $defaultAppearance = new DefaultAppearance(new SetTextFontAndSize(new NameType('F1'), new NumericType(12)), new SetNonstrokingGray(new NumericType(0)));
 $fields = (new FieldTree($defaultAppearance, $resources))->addRoot($reference)->addRoot($signing->field);
 $referenceWidget = new WidgetAnnotation($rectangle(48, 610, 499, 32), new WidgetAppearance($referenceAppearance), entries: new Entry(new NameType('F'), new IntegerType(4)));
@@ -180,10 +180,10 @@ $referenceWidget->bindToPage($page);
 $signatureWidget->bindToPage($page);
 $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm($fields, entries: new Entry(new NameType('SigFlags'), new IntegerType(3))))));
 
-// 5. Data ferme explicitement la liaison circulaire vers ce catalogue. prepare()
-// écrit le fichier et fixe ByteRange. Le contrat relit les snapshots réellement
-// émis, puis vérifie la signature mathématique, le digest et le certificat du
-// résultat avant de remplir Contents. Il n'accorde aucune confiance PKI.
+// 5. Data explicitly closes the circular connection to this catalog. prepare()
+// writes the file and fixes ByteRange. The contract rereads actually emitted
+// snapshots, then verifies the result's mathematical signature, digest and
+// certificate before filling Contents. It grants no PKI trust.
 $signing->bindCatalog(new IndirectReference($catalog));
 $prepared = (new SignatureWriter())->prepare(new FileStructure(new FileHeader('1.7'), new FileBody($catalog)), $signing->signature);
 $signed = $signing->sign($prepared);

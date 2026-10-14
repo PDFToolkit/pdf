@@ -1,3 +1,5 @@
-# Couverture des mécanismes PDF
+# PDF mechanism coverage
 
-Ce guide est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/guides/mecanismes.html).
+English | [Français](fr/coverage.md)
+
+This guide is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/guides/mechanisms.html).

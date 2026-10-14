@@ -39,9 +39,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Tutoriel 13 : docs/tutorials/13-adobe-extensions.md.
-// Le catalogue annonce le niveau Adobe utilisé ; le flux de page matérialise
-// ensuite l'une de ses extensions, la numérotation Bates (supplément, p.100).
+// Tutorial 13: docs/tutorials/13-adobe-extensions.md.
+// The catalog declares the Adobe level used; the page stream then realizes
+// one of its extensions, Bates numbering (supplement, p.100).
 $extensions = new DeveloperExtensions(new DeveloperExtensionEntry(
     new DeveloperPrefix(new NameType('ADBE')),
     new DeveloperExtension(new NameType('1.7'), new IntegerType(3)),
@@ -52,9 +52,9 @@ $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference($font)),
 )));
 
-// Les propriétés Bates décrivent des numéros déjà choisis par l'application.
-// Elles ne dessinent rien. BDC/EMC classent le texte dessiné comme un artefact
-// de pagination, distinct du contenu documentaire.
+// Bates properties describe numbers already chosen by the application.
+// They draw nothing. BDC/EMC classify the drawn text as a pagination
+// artifact, distinct from document content.
 $numbers = new ArrayType(new LiteralString('DOC-000001'), new LiteralString('EXH-000019'));
 $bates = new BatesArtifact($numbers);
 $contents = new StreamObject(new ContentStreams(
@@ -72,7 +72,7 @@ $contents = new StreamObject(new ContentStreams(
     new MoveTextPosition(new NumericType(0), new NumericType(-26)),
     new ShowText(new LiteralString('Leur liste est fournie par /Contents dans un artefact.')),
     new EndTextObject(),
-    // Le même emplacement peut porter plusieurs index documentaires.
+    // The same position can carry several document indices.
     new BeginMarkedContentWithProperties(new NameType('Artifact'), $bates),
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(11)),

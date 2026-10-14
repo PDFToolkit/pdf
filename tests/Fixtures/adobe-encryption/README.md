@@ -1,5 +1,7 @@
 # Independent historical Adobe R=5 fixtures
 
+English | [Français](README.fr.md)
+
 These two PDFs were encrypted by qpdf 12.4.2 with `--force-R5` from the MIT test document built by `tools/fixtures/adobe_encryption.php`. Their public test passwords are `user` and `owner`. One encrypts the metadata stream; the other uses `--cleartext-metadata`.
 
 `qpdf-r5.json` records each immutable PDF's SHA-256, encryption dictionary byte strings, permissions, metadata flag and qpdf's recovered file encryption key. The PHP tests authenticate against these independent values. The Python validator checks both files with qpdf and checks four PDFs written by this library using qpdf and pypdf.

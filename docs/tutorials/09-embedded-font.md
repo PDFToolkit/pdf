@@ -1,3 +1,5 @@
-# Tutoriel 09 : police TrueType et Unicode
+# Tutorial 09: TrueType font and Unicode
 
-Ce tutoriel est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/tutorials/09-police-incorporee.html).
+English | [Français](../fr/tutorials/09-embedded-font.md)
+
+This tutorial is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/tutorials/09-embedded-font.html).

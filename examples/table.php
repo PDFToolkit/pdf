@@ -38,9 +38,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Le format PDF dessine des chemins et du texte. Cette recette calcule
-// ses cellules dans le script, puis construit chaque opérateur explicitement.
-// Toutes les valeurs visibles sont ASCII pour les polices standard employées.
+// 1. PDF draws paths and text. This recipe calculates its cells
+// in the script, then constructs each operator explicitly.
+// All visible values are ASCII for the standard fonts used.
 $rows = [
     ['Crayon', '12', '0.80', '9.60'],
     ['Cahier', '8', '2.50', '20.00'],
@@ -56,8 +56,8 @@ $rowHeight = 34;
 $tableWidth = array_sum($columnWidths);
 $bottom = $top - (count($rows) + 1) * $rowHeight;
 
-// 2. F1 et F2 sont deux ressources distinctes. Un opérateur Tf sélectionne
-// l'une ou l'autre selon que l'on dessine les données ou les en-têtes.
+// 2. F1 and F2 are distinct resources. A Tf operator selects one
+// or the other when drawing data or headers.
 $regular = new Type1Font(StandardFont::Helvetica);
 $bold = new Type1Font(StandardFont::HelveticaBold);
 $resources = new ResourceDictionary(new Font(new DictionaryType(
@@ -77,8 +77,8 @@ $operators = [
     new EndTextObject(),
 ];
 
-// 3. rg fixe la couleur de remplissage. re construit un rectangle ; f le
-// remplit et termine le chemin. Il faut finir ce chemin avant tout texte.
+// 3. rg sets fill color. re constructs a rectangle; f fills it
+// and ends the path. Finish this path before any text.
 $operators[] = new SetNonstrokingRGBColor(new NumericType(0.12), new NumericType(0.23), new NumericType(0.38));
 $operators[] = new AppendRectangle(new NumericType($left), new NumericType($top - $rowHeight), new NumericType($tableWidth), new NumericType($rowHeight));
 $operators[] = new FillPathNonzero();
@@ -90,8 +90,8 @@ foreach ($rows as $index => $row) {
     }
 }
 
-// 4. RG et w règlent le contour. Chaque couple m/l ajoute un sous-chemin
-// de grille ; S trace le chemin entier. Les y diminuent en descendant.
+// 4. RG and w set outlines. Each m/l pair adds a grid subpath;
+// S strokes the whole path. y decreases while moving downwards.
 $operators[] = new SetStrokingRGBColor(new NumericType(0.55), new NumericType(0.62), new NumericType(0.70));
 $operators[] = new SetLineWidth(new NumericType(0.5));
 $columnX = $left;
@@ -107,9 +107,9 @@ for ($line = 0; $line <= count($rows) + 1; ++$line) {
 }
 $operators[] = new StrokePath();
 
-// 5. Chaque cellule ouvre son objet de texte BT/ET : Td repart ainsi d'une
-// matrice identité. Le décalage de 10 points est notre marge intérieure,
-// et y désigne la ligne de base des lettres, pas le haut de la cellule.
+// 5. Each cell opens its BT/ET text object: Td therefore starts from an
+// identity matrix. The 10-point offset is our inner margin, and
+// y identifies the letter baseline, not the top of the cell.
 foreach ([$headers, ...$rows] as $rowIndex => $row) {
     $header = $rowIndex === 0;
     $component = $header ? 1 : 0.15;
@@ -130,8 +130,8 @@ $operators[] = new MoveTextPosition(new NumericType($left), new NumericType($bot
 $operators[] = new ShowText(new LiteralString('Total : 58.30 EUR  |  Donnees fictives, une ligne par cellule.'));
 $operators[] = new EndTextObject();
 
-// 6. ContentStreams contient les instructions ; StreamObject contient les
-// octets écrits dans /Contents. La page et le catalogue assemblent le graphe.
+// 6. ContentStreams contains instructions; StreamObject contains bytes
+// written in /Contents. The page and catalog assemble the graph.
 $contents = new StreamObject(new ContentStreams(...$operators));
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(595), new NumericType(842)),

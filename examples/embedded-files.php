@@ -32,15 +32,15 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Les octets sont fournis explicitement. Le core n'ouvre aucun fichier externe.
-// Size et CheckSum de Params sont derives avant Flate et avant le chiffrement.
+// Bytes are supplied explicitly. The core opens no external files.
+// Params Size and CheckSum are derived before Flate and encryption.
 $created = new Date(new DateTimeImmutable('2026-10-13T09:00:00+02:00'));
 $csv = new F\EmbeddedFileStream("article,montant\nA,12.50\nB,7.25\n", new NameType('text/csv'), $created, $created, filters: new FlateDecode());
 $json = new F\EmbeddedFileStream('{"total":19.75}', new NameType('application/json'), filters: new FlateDecode());
 $notes = new F\EmbeddedFileStream("Les montants sont exprimes en euros.\n", new NameType('text/plain'), filters: new FlateDecode());
 
-// Une collection nomme et type ses champs. Un prefixe est une presentation ;
-// il n'est jamais concatene au nombre qui servira au tri.
+// A collection names and types its fields. A prefix is presentation data;
+// it is never concatenated to the number used for sorting.
 $schema = new C\CollectionSchema(
     new C\CollectionSchemaField(new NameType('Title'), new C\CollectionField(C\CollectionFieldType::Text, new TextString('Document'), new IntegerType(0))),
     new C\CollectionSchemaField(new NameType('Amount'), new C\CollectionField(C\CollectionFieldType::Number, new TextString('Montant'), new IntegerType(1))),
@@ -58,8 +58,8 @@ $noteItem = new C\CollectionItem(
     new C\CollectionItemValue(new NameType('Amount'), new C\CollectionSubitem(prefix: new TextString('Aucun montant'))),
 );
 
-// EF.F et EF.UF pointent vers le meme flux, avec leurs noms correspondants.
-// RF.F ajoute un export JSON lie au CSV, sans le declarer document initial.
+// EF.F and EF.UF target the same stream with their corresponding names.
+// RF.F adds a JSON export related to the CSV without declaring it the initial document.
 $ef = new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, $csv), new F\EmbeddedFileBinding(F\EmbeddedFileKey::UnicodeFile, $csv));
 $related = new F\RelatedFileBindings($ef, new F\RelatedFileBinding(
     F\EmbeddedFileKey::File,
@@ -79,13 +79,13 @@ $noteFile = new F\FileSpecification(new LiteralString('notes.txt'), new F\FileSp
 ));
 $attachments = new F\EmbeddedFiles(new F\EmbeddedFileAttachment(new LiteralString('Mesures'), $measureFile), new F\EmbeddedFileAttachment(new LiteralString('Notes'), $noteFile));
 
-// S contient deux champs ; A ne fournit qu'une direction. Amount est donc
-// descendant et Title prend le defaut true. D est une cle de Names.EmbeddedFiles.
+// S contains two fields; A supplies only one direction. Amount therefore
+// descends and Title takes default true. D is a Names.EmbeddedFiles key.
 $sort = new C\CollectionSort($schema, new C\CollectionSortFields(new NameType('Amount'), new NameType('Title')), new C\CollectionSortDirections(new BooleanType(false)));
 $collection = new C\Collection($schema, C\CollectionView::Details, new LiteralString('Mesures'), $sort);
 
-// Cette page est le contenant. L'interface de pieces jointes et de collection
-// est geree par le lecteur ; le texte ci-dessous rend le dossier inspectable partout.
+// This page is the container. Readers manage attachment and collection
+// interfaces; the text below makes the portfolio inspectable everywhere.
 $n = static fn (int|float $value): NumericType => new NumericType($value);
 $resources = new ResourceDictionary(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F1'), new IndirectReference(new Type1Font(StandardFont::Helvetica))))));
 $operators = [];

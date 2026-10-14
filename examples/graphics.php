@@ -58,8 +58,8 @@ $resources = new ResourceDictionary(
     )),
 );
 
-// 1. Le dessin utilise les coordonnées du papier : origine en bas à gauche,
-// une unité de user space vaut ici 1/72 de pouce.
+// 1. Drawing uses paper coordinates: origin at the lower left,
+// one user-space unit is 1/72 inch here.
 $contents = new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(24)),
@@ -72,15 +72,15 @@ $contents = new ContentStreams(
     new ShowText(new LiteralString('Chaque forme est une suite d\'operateurs PDF explicites.')),
     new EndTextObject(),
 
-    // 2. q sauvegarde l'état, rg choisit la couleur de remplissage.
-    // re construit le rectangle ; f le remplit et termine le tracé.
+    // 2. q saves the state, rg selects the fill color.
+    // re constructs the rectangle; f fills it and ends the path.
     new SaveGraphicsState(),
     new SetNonstrokingRGBColor(new NumericType(0.12), new NumericType(0.36), new NumericType(0.64)),
     new AppendRectangle(new NumericType(54), new NumericType(546), new NumericType(220), new NumericType(134)),
     new FillPathNonzero(),
     new RestoreGraphicsState(),
 
-    // RG et w règlent le contour. Sa couleur est indépendante du remplissage.
+    // RG and w set the outline. Its color is independent of the fill.
     new SaveGraphicsState(),
     new SetStrokingRGBColor(new NumericType(0.12), new NumericType(0.36), new NumericType(0.64)),
     new SetLineWidth(new NumericType(3)),
@@ -98,8 +98,8 @@ $contents = new ContentStreams(
     new ShowText(new LiteralString('re + S : tracer le contour')),
     new EndTextObject(),
 
-    // 3. La courbe de Bézier part de m et utilise deux points de contrôle.
-    // Les réglages précèdent le tracé ; S le termine avant le Q correspondant.
+    // 3. The Bézier curve begins at m and uses two control points.
+    // Settings precede the path; S ends it before the matching Q.
     new SaveGraphicsState(),
     new SetStrokingRGBColor(new NumericType(0.82), new NumericType(0.34), new NumericType(0.12)),
     new SetLineWidth(new NumericType(5)),
@@ -116,7 +116,7 @@ $contents = new ContentStreams(
     new StrokePath(),
     new RestoreGraphicsState(),
 
-    // La ligne pointillée montre la corde de la courbe, avec un autre état.
+    // The dashed line shows the curve's chord using a separate state.
     new SaveGraphicsState(),
     new SetStrokingRGBColor(new NumericType(0.58), new NumericType(0.62), new NumericType(0.67)),
     new SetLineWidth(new NumericType(1)),
@@ -134,8 +134,8 @@ $contents = new ContentStreams(
     new ShowText(new LiteralString('m + c + S : courbe ; m + l + S : segment pointille')),
     new EndTextObject(),
 
-    // 4. cm concatène [a b c d e f] à la matrice de transformation courante.
-    // [1 0 0 1 130 205] translate l'origine en (130, 205).
+    // 4. cm concatenates [a b c d e f] with the current transformation matrix.
+    // [1 0 0 1 130 205] translates the origin to (130, 205).
     new SaveGraphicsState(),
     new ConcatenateMatrix(new Matrix(
         new NumericType(1),
@@ -152,8 +152,8 @@ $contents = new ContentStreams(
     new FillAndStrokePathNonzero(),
     new RestoreGraphicsState(),
 
-    // cos(30°) ≈ 0,8660254 et sin(30°) = 0,5 : rotation puis translation.
-    // Le même rectangle local est dessiné dans un deuxième repère.
+    // cos(30°) ≈ 0.8660254 and sin(30°) = 0.5: rotation, then translation.
+    // The same local rectangle is drawn in a second coordinate system.
     new SaveGraphicsState(),
     new ConcatenateMatrix(new Matrix(
         new NumericType(0.8660254),
@@ -170,8 +170,8 @@ $contents = new ContentStreams(
     new FillAndStrokePathNonzero(),
     new RestoreGraphicsState(),
 
-    // Q a restauré la matrice et les couleurs : ces légendes sont horizontales,
-    // noires et exprimées à nouveau dans le repère de la page.
+    // Q restored matrix and colors: these labels are horizontal, black
+    // and once again expressed in page coordinates.
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(11)),
     new MoveTextPosition(new NumericType(54), new NumericType(117)),
@@ -184,7 +184,7 @@ $contents = new ContentStreams(
     new EndTextObject(),
 );
 
-// 5. Le graphe de document et son écriture suivent le premier tutoriel.
+// 5. The document graph and writing follow the first tutorial.
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(595.28), new NumericType(841.89)),
     $resources,

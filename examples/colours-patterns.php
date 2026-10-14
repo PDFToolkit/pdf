@@ -95,9 +95,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Les fonctions locales abregent uniquement les valeurs numeriques de cet
-// exemple. Les espaces, fonctions PDF, geometries et ressources restent des
-// objets explicites : aucun moteur de dessin ne choisit les constructions.
+// Local functions only abbreviate numeric values in this example.
+// Color spaces, PDF functions, geometries and resources remain explicit
+// objects: no drawing engine chooses their construction.
 $n = static fn (int|float $value): NumericType => new NumericType($value);
 $point = static fn (int|float $x, int|float $y): Point => new Point($n($x), $n($y));
 $vector = static fn (int|float ...$values): NumberArray => new NumberArray(...array_map($n, $values));
@@ -108,9 +108,9 @@ $gray = new CalGray($white, $n(2.2));
 $calRgb = new CalRGB($white);
 $lab = new Lab($white);
 
-// Le profil ICC vient d'un producteur externe, ici la fixture sRGB documentee
-// dans tests/Fixtures/graphics/srgb.json. ICCProfile conserve ses octets ; le
-// lecteur PDF effectue la gestion ICC. Le core ne fabrique pas le profil.
+// The ICC profile comes from an external producer, here the sRGB fixture
+// documented in tests/Fixtures/graphics/srgb.json. ICCProfile retains its bytes;
+// PDF readers perform ICC management. The core does not create the profile.
 $iccBytes = file_get_contents(dirname(__DIR__) . '/tests/Fixtures/graphics/srgb.icc');
 if ($iccBytes === false) {
     throw new RuntimeException('The supplied sRGB test profile is unavailable.');
@@ -118,13 +118,13 @@ if ($iccBytes === false) {
 $icc = new ICCBased(new ICCProfile($iccBytes, new IntegerType(3), $rgb, filters: new FlateDecode()));
 $indexed = new Indexed($rgb, new IntegerType(2), new HexadecimalString("\xEF\x52\x52\x4F\xA7\x86\x42\x75\xCF"));
 
-// Un nom de ton direct est accompagne d'une vraie fonction d'alternative.
-// Ici, le blanc devient orange lorsque la valeur de teinte passe de 0 a 1.
+// A spot-color name is accompanied by an actual alternate-color function.
+// Here white becomes orange as the tint value changes from 0 to 1.
 $orange = new ExponentialInterpolationFunction(new Domain($unit), $n(1), $vector(1, 1, 1), $vector(1, 0.35, 0.05), new Range($unit, $unit, $unit));
 $separation = new Separation(new NameType('Orange'), new TintTransform($orange, 1, $rgb));
 
-// Cette fonction a deux entrees et trois sorties : (x, y, 1-x).
-// Les operateurs du langage calculateur sont aussi des objets verifies.
+// This function has two inputs and three outputs: (x, y, 1-x).
+// Calculator-language operators are also validated objects.
 $plane = new PostScriptCalculatorFunction(new Domain($unit, $unit), new Range($unit, $unit, $unit), new Procedure(new Number($n(1)), new Number($n(2)), CalculatorOperator::Index, CalculatorOperator::Subtract));
 $deviceN = new DeviceN(new ColourComponentNames(new NameType('MixA'), new NameType('MixB')), new TintTransform($plane, 2, $rgb));
 
@@ -140,8 +140,8 @@ $blue = $vector(0.2, 0.4, 1);
 $yellow = $vector(1, 0.8, 0.15);
 $vertex = static fn (int|float $x, int|float $y, NumberArray $colour): MeshVertex => new MeshVertex($point($x, $y), $colour);
 
-// Les points sont ordonnes comme dans les figures 30 et 33 de la norme,
-// autour du contour, puis les quatre points interieurs du patch tensoriel.
+// Points follow Figures 30 and 33 of the specification, around the boundary,
+// followed by the four interior points of the tensor-product patch.
 $boundary = [$point(0, 0), $point(0, 1 / 3), $point(0, 2 / 3), $point(0, 1), $point(1 / 3, 1), $point(2 / 3, 1), $point(1, 1), $point(1, 2 / 3), $point(1, 1 / 3), $point(1, 0), $point(2 / 3, 0), $point(1 / 3, 0)];
 $corners = new PatchColours($red, $green, $blue, $yellow);
 $shadings = [
@@ -154,8 +154,8 @@ $shadings = [
     new TensorProductPatchShading($rgb, new PatchMesh(new TensorProductPatch(new PatchControlPoints(...[...$boundary, $point(0.6, 1 / 3), $point(1 / 3, 2 / 3), $point(2 / 3, 2 / 3), $point(2 / 3, 1 / 3)]), $corners)), $meshFormat, options: $bounded),
 ];
 
-// Une cellule coloree conserve ses propres couleurs. Une cellule stencil
-// n'en contient aucune : sa couleur sera fournie lors de chaque selection.
+// A colored cell retains its own colors. A stencil cell contains none:
+// its color is supplied every time it is selected.
 $cellBox = new Rectangle($n(0), $n(0), $n(12), $n(12));
 $stencil = new TilingPattern(new ContentStreams(new AppendRectangle($n(1), $n(1), $n(5), $n(5)), new FillPathNonzero()), PaintType::Uncoloured, TilingType::NoDistortion, $cellBox, $n(12), $n(12), new ResourceDictionary());
 $coloured = new TilingPattern(new ContentStreams(new SetNonstrokingRGBColor($n(0.2), $n(0.4), $n(0.8)), new AppendRectangle($n(1), $n(1), $n(5), $n(10)), new FillPathNonzero(), new SetNonstrokingRGBColor($n(0.9), $n(0.6), $n(0.1)), new AppendRectangle($n(7), $n(1), $n(4), $n(10)), new FillPathNonzero()), PaintType::Coloured, TilingType::ConstantSpacing, $cellBox, $n(12), $n(12), new ResourceDictionary());
@@ -188,8 +188,8 @@ array_push($pageOne, ...$text('Motifs : cellule coloree, stencil, puis shading',
 foreach ($patterns as $index => $colour) {
     $x = 42 + $index * 176;
     $spaceName = $index === 1 ? 'Stencil' : 'Pattern';
-    // La matrice locale situe le rectangle. Celle de GradientTile exprime
-    // son emplacement dans l'espace utilisateur initial du motif PDF.
+    // The local matrix positions the rectangle. The GradientTile matrix expresses
+    // its position in the PDF pattern's initial user space.
     array_push($pageOne, new SaveGraphicsState(), new ConcatenateMatrix(new Matrix($n(1), $n(0), $n(0), $n(1), $n($x), $n(192))), new SetNonstrokingColorSpace(new NameType($spaceName)), $colour->nonstroking(), new AppendRectangle($n(0), $n(0), $n(152), $n(70)), new FillPathNonzero(), new RestoreGraphicsState(), ...$text($colour->resourceName->value, $x, 174));
 }
 array_push($pageOne, ...$text('ICC : profil fourni. Teintes : alternatives PDF explicites.', 42, 103), ...$text('ISO 32000-1, 8.6 / 8.7 - les calculs PDF sont preserves.', 42, 82));

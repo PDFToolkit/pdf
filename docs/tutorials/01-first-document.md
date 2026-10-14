@@ -1,3 +1,5 @@
-# Tutoriel 01 : premier document
+# Tutorial 01: first document
 
-Ce tutoriel est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/tutorials/01-premier-document.html).
+English | [Français](../fr/tutorials/01-first-document.md)
+
+This tutorial is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/tutorials/01-first-document.html).

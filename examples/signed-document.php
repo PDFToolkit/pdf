@@ -44,9 +44,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Ces cles sont PUBLIQUES et reservees aux tests. Elles ne prouvent aucune
-// identite et ne servent jamais a signer un document de production. Le script
-// fournit les octets : aucun chemin n'est interprete par l'API de signature.
+// 1. These keys are PUBLIC and for testing only. They prove no identity
+// and must never sign production documents. The script supplies
+// bytes: the signature API interprets no paths.
 $fixtures = dirname(__DIR__) . '/tests/Fixtures/signing/';
 $certificateBytes = file_get_contents($fixtures . 'signer.der');
 $keyBytes = file_get_contents($fixtures . 'signer-private-key.pem');
@@ -58,8 +58,8 @@ $chain = new CertificateChain($certificate);
 $identity = new OpenSslIdentity($chain, $keyBytes);
 $backend = new OpenSslSignatureBackend($identity);
 
-// 2. Le dictionnaire reserve la capacite binaire de Contents. Le champ Sig lui
-// donne une association documentaire V ; un widget visible est un autre objet.
+// 2. The dictionary reserves Contents binary capacity. Field Sig gives
+// it a document association V; a visible widget is another object.
 $pending = new PendingSignature(
     new SignatureCapacity(8192),
     SignatureFormat::Pkcs7Detached,
@@ -84,8 +84,8 @@ $page = new PageObject(new Rectangle(new NumericType(0), new NumericType(0), new
 $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new Entry(new NameType('AcroForm'), new IndirectReference($form)));
 $file = new FileStructure(new FileHeader(), new FileBody($catalog));
 
-// 3. prepare() fixe ByteRange avant le CMS ; sign() remplit uniquement Contents
-// dans sa reservation. Les offsets xref et la longueur du document restent fixes.
+// 3. prepare() fixes ByteRange before CMS; sign() fills only Contents
+// within its reservation. xref offsets and document length stay fixed.
 $prepared = (new SignatureWriter())->prepare($file, $pending);
 $signed = $prepared->sign($backend);
 $path = $argv[1] ?? __DIR__ . '/signed-document.pdf';

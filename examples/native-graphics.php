@@ -53,9 +53,9 @@ $dimensions = new ImageDimensions(16, 16);
 $maskValues = $indexedValues = $grayValues = $rgbValues = $spriteValues = $blueValues = $preblendedValues = $opacityValues = [];
 $matte = new X\MatteColour($colour(1, 1, 1));
 
-// Il s'agit de samples PDF normalises, sans PNG/JPEG ni lecteur de fichiers.
-// Chaque pixel fournit ses composants dans l'ordre ; SamplePacker aligne
-// chaque ligne a l'octet et preserve les profondeurs 1/2/4/8/16 bits.
+// These are normalized PDF samples without PNG/JPEG or file readers.
+// Each pixel supplies its components in order; SamplePacker aligns
+// every row to a byte and preserves depths of 1/2/4/8/16 bits.
 for ($y = 0; $y < 16; ++$y) {
     for ($x = 0; $x < 16; ++$x) {
         $maskValues[] = ($x + $y) % 2;
@@ -78,21 +78,21 @@ $imageIndexed = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($
 $imageGray = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($gray, 4), $grayValues));
 $imageRgb = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($rgb, 16), $rgbValues));
 
-// La cle compare les entiers AVANT Decode : blanc signifie ici (255,255,255).
+// The key compares integers BEFORE Decode: white here means (255,255,255).
 $key = new X\ColourKeyMask(...array_fill(0, 3, new NumberInterval(new IntegerType(255), new IntegerType(255))));
 $sprite = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($rgb), $spriteValues), mask: $key);
 
-// Sans Matte, le masque a ses propres dimensions et est aussi mappe au carre
-// unite. Avec Matte, les dimensions doivent correspondre : c' = alpha*c +
-// (1-alpha)*matte. Les octets ci-dessus sont reellement preblendes en blanc.
+// Without Matte, the mask has its own dimensions and is also mapped to the
+// unit square. With Matte, dimensions must match: c' = alpha*c +
+// (1-alpha)*matte. The bytes above are actually preblended with white.
 $smallAlpha = new X\SoftMaskImage($packer->pack(new ImageDimensions(4, 1), new SampleLayout(DeviceColorSpace::Gray), [0, 85, 170, 255]));
 $soft = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($rgb), $blueValues), softMask: $smallAlpha);
 $matteAlpha = new X\SoftMaskImage($packer->pack($dimensions, new SampleLayout(DeviceColorSpace::Gray), $opacityValues), $matte);
 $preblendedImage = new X\ImageXObject($packer->pack($dimensions, new SampleLayout($rgb), $preblendedValues), softMask: $matteAlpha);
 $images = ['Stencil1' => $mask, 'Indexed2' => $imageIndexed, 'Gray4' => $imageGray, 'Rgb16' => $imageRgb, 'ColourKey' => $sprite, 'SoftMask' => $soft, 'Matte' => $preblendedImage];
 
-// ExtGState ne contient pas de dessin. Les rectangles selectionnent ensuite
-// le mode et l'alpha ; la forme possede sa boite, sa matrice et ses ressources.
+// ExtGState contains no drawing. Rectangles then select mode and
+// alpha; the Form has its own box, matrix and resources.
 $multiply = new G\GraphicsStateParameters(new Entry(new NameType('BM'), (new G\BlendModes(G\BlendMode::Multiply))->value()), new Entry(new NameType('ca'), $n(0.75)));
 $screen = new G\GraphicsStateParameters(new Entry(new NameType('BM'), new NameType('Screen')), new Entry(new NameType('ca'), $n(0.75)));
 $groupResources = new ResourceDictionary(new Entry(new NameType('ExtGState'), new DictionaryType(new Entry(new NameType('Multiply'), new IndirectReference($multiply)), new Entry(new NameType('Screen'), new IndirectReference($screen)))));
@@ -101,8 +101,8 @@ $group = new X\TransparencyGroup(new G\BlendingColourSpace($rgb), new BooleanTyp
 $formMultiply = new X\FormXObject($groupDrawing(new NameType('Multiply')), $box(1, 1), $groupResources, group: $group);
 $formScreen = new X\FormXObject($groupDrawing(new NameType('Screen')), $box(1, 1), $groupResources, group: $group);
 
-// Le masque de luminosite est une autre forme, en DeviceGray. Un degradé de
-// rectangles noirs/blancs fournit ici sa luminosite, sans image ni codec.
+// The luminosity mask is another Form in DeviceGray. A gradient of
+// black/white rectangles supplies luminosity here without an image or codec.
 $maskOperators = [];
 for ($step = 0; $step < 16; ++$step) {
     array_push($maskOperators, new Op\SetNonstrokingGray($n($step / 15)), new Op\AppendRectangle($n($step / 16), $n(0), $n(1 / 16), $n(1)), new Op\FillPathNonzero());
@@ -112,15 +112,15 @@ $luminosity = new G\SoftMask(G\SoftMaskSubtype::Luminosity, $maskGroup);
 $maskedState = new G\GraphicsStateParameters(new Entry(new NameType('SMask'), $luminosity));
 $formMasked = new X\FormXObject(new ContentStreams(new Op\SetGraphicsStateParameters(new NameType('Mask')), new Op\SetNonstrokingRGBColor($n(0.14), $n(0.62), $n(0.48)), new Op\AppendRectangle($n(0), $n(0), $n(1), $n(1)), new Op\FillPathNonzero()), $box(1, 1), new ResourceDictionary(new Entry(new NameType('ExtGState'), new DictionaryType(new Entry(new NameType('Mask'), new IndirectReference($maskedState))))));
 
-// Les halftones sont des objets PDF de sortie, pas des textures simulees par
-// le core. Ces petits tableaux reels restent disponibles dans les ressources.
+// Halftones are output PDF objects, not textures simulated by the
+// core. These actual small arrays remain available in the resources.
 $thresholds = new H\RectangularHalftone(new H\ThresholdRectangle(new ImageDimensions(2, 2), new H\ThresholdArray(8, 4, [0, 85, 170, 255])));
 $thresholds16 = new H\SixteenBitHalftone(new H\ThresholdRectangle(new ImageDimensions(2, 1), new H\ThresholdArray(16, 2, [0x1234, 0xFFFF])));
 $halftoneState = new G\GraphicsStateParameters(new Entry(new NameType('HT'), new IndirectReference($thresholds)));
 $halftone16State = new G\GraphicsStateParameters(new Entry(new NameType('HT'), new IndirectReference($thresholds16)));
 
-// Les groupes sont declares une fois dans OCProperties. Leurs etats sont
-// distincts des dictionnaires : ici Visible est ON et Hidden est OFF.
+// Groups are declared once in OCProperties. Their states are distinct
+// from dictionaries: here Visible is ON and Hidden is OFF.
 $visible = new OC\OptionalContentGroup(new TextString('Couche visible'), usage: new OC\GroupUsage(new OC\EventUsage(OC\UsageEvent::View, new BooleanType(true))));
 $hidden = new OC\OptionalContentGroup(new TextString('Couche masquee'));
 $visibleAssociation = new OC\OptionalContentAssociation(new NameType('Visible'), $visible);

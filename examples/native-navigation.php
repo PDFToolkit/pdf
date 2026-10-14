@@ -44,16 +44,16 @@ $text = static fn (string $value, int $x, int $y, int $size = 12): array => [new
 /** @return list<Operator> */
 $region = static fn (int $x, int $y, int $width, int $height): array => [new Op\SetNonstrokingRGBColor($n(0.88), $n(0.95), $n(0.93)), new Op\AppendRectangle($n($x), $n($y), $n($width), $n($height)), new Op\FillPathNonzero()];
 
-// Les labels sont des plages de NumberTree, distinctes des indices zero-based.
-// La deuxieme page commence a 27 : A repete la meme lettre, donc "AA".
+// Labels are NumberTree ranges, distinct from zero-based indices.
+// The second page starts at 27: A repeats the same letter, giving "AA".
 $labels = new N\PageLabels(
     new N\LabelRange(new IntegerType(0), new N\PageLabel(N\LabelNumbering::LowerRoman)),
     new N\LabelRange(new IntegerType(1), new N\PageLabel(N\LabelNumbering::UpperLetters, start: new IntegerType(27))),
     new N\LabelRange(new IntegerType(2), new N\PageLabel(N\LabelNumbering::Decimal, new TextString('A-'), new IntegerType(8))),
 );
 
-// L'article passe de la page0 a la page2, puis revient a la page1.
-// N/V sont derives de cet ordre et ferment automatiquement l'anneau.
+// The article goes from page0 to page2, then returns to page1.
+// N/V are derived from this order and automatically close the ring.
 $a = new N\ArticleBead($rectangle(42, 440, 570, 624));
 $b = new N\ArticleBead($rectangle(42, 420, 570, 620), includeThread: true);
 $c = new N\ArticleBead($rectangle(42, 250, 570, 422));
@@ -64,8 +64,8 @@ $firstBeads = new N\PageBeads($a);
 $middleBeads = new N\PageBeads($note, $c);
 $lastBeads = new N\PageBeads($b);
 
-// La pageB est l'ordre de dessin, ici Note puis continuation de l'article.
-// Elle peut donc differer de l'ordre de chaque anneau d'article.
+// Page B gives drawing order, here Note then article continuation.
+// It can therefore differ from the order of each article ring.
 $lastPresentation = new N\PagePresentation(transition: new N\Transition(N\TransitionStyle::Dissolve));
 $last = new PageObject($pageBox, $resources, new StreamObject(new ContentStreams(
     ...$text('Articles et destinations', 42, 742, 25),
@@ -80,8 +80,8 @@ $last = new PageObject($pageBox, $resources, new StreamObject(new ContentStreams
     ...$text('Aucun ordre visuel n est infere depuis les octets du contenu.', 42, 115),
 )), $lastBeads->pageEntry(), ...$lastPresentation->entries());
 
-// Les nodes de PresSteps forment une liste avec deux bouts, pas un anneau.
-// Seul le dernier NA sort de la page ; il n'a donc aucun Next.
+// PresSteps nodes form a list with two ends, not a ring.
+// Only the last NA leaves the page, so it has no Next.
 $exit = new N\GoToDestination(new N\LocalDestination(new Fit($last)));
 $initial = new N\NavigationNode(backward: $exit);
 $primary = new N\NavigationNode(new N\GoToDestination(new N\NamedDestination(new LiteralString('lecture'))), duration: new N\PresentationDuration($n(2)));
@@ -120,8 +120,8 @@ $middle = new PageObject($pageBox, $resources, new StreamObject(new ContentStrea
     ...$text('L apparence statique reste une suite explicite d operateurs.', 42, 115),
 )), $middleBeads->pageEntry(), ...$middlePresentation->entries());
 
-// PageObject doit etre rattache avant d'inspecter ses entrees effectives.
-// Les collections se lient ensuite aux pages existantes, sans clone ni registre.
+// PageObject must be attached before inspecting its effective entries.
+// Collections then bind to existing pages without cloning or a registry.
 $pages = (new PageTreeNode())->addKid($first)->addKid($middle)->addKid($last);
 $firstBeads->bindToPage($first);
 $middleBeads->bindToPage($middle);

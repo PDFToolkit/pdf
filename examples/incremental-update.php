@@ -37,8 +37,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Tutoriel 11 : les trois versions du flux restent dans les octets du fichier.
-// Le lecteur suit les derniers xref et n'affiche que le contenu de la révision 2.
+// Tutorial 11: all three stream versions remain in the file's bytes.
+// Readers follow the latest xref and display only revision 2 content.
 $font = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F1'), new IndirectReference($font)),
@@ -70,8 +70,8 @@ $initial = (new FileStructure(
     crossReferenceFormat: CrossReferenceFormat::Stream,
 ))->toRevision();
 
-// L'identifiant appartient à l'instantané, pas à un compteur global.
-// Il est conservé : remplacer un objet vivant ne change pas sa génération.
+// The identifier belongs to the snapshot, not a global counter.
+// It is preserved: replacing a live object does not change its generation.
 $contentIdentifier = $initial->binding($initialContents)->identifier;
 $revision = $initial;
 foreach ([1, 2] as $number) {
@@ -92,8 +92,8 @@ foreach ([1, 2] as $number) {
         new ShowText(new LiteralString('Les anciens octets sont conserves ; Prev relie les trois xref.')),
         new EndTextObject(),
     ));
-    // FileBody sélectionne explicitement le flux à remplacer. Une référence
-    // historique seule ne republierait aucun objet déjà enregistré.
+    // FileBody explicitly selects the stream to replace. A historical
+    // reference alone would not republish any already recorded object.
     $updatedInformation = new DocumentInformation(new Title(new TextString('Révision incrémentale ' . $number)));
     $revision = (new IncrementalUpdate(
         $revision,
@@ -102,8 +102,8 @@ foreach ([1, 2] as $number) {
     ))->toRevision();
 }
 
-// Le premier ID reste identique ; le writer renouvelle le second à chaque fois.
-// Les octets de la révision initiale forment toujours le préfixe exact du PDF.
+// The first ID stays identical; the writer renews the second each time.
+// Initial-revision bytes always form the PDF's exact prefix.
 if (!str_starts_with($revision->bytes, $initial->bytes)) {
     throw new LogicException('The initial revision must remain byte-for-byte intact.');
 }

@@ -48,9 +48,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Construire des pixels, pas un fichier PNG : chaque pixel contient les
-//    trois octets R, G, B. 16 × 16 × 3 = 768 octets, rangés ligne par ligne.
-//    La palette ne contient pas de terminateur EI ambigu pour l'image inline.
+// 1. Build pixels, not a PNG file: each pixel contains three bytes
+//    R, G, B. 16 × 16 × 3 = 768 bytes, arranged row by row.
+//    The palette contains no ambiguous EI terminator for the inline image.
 $palette = [
     [255, 105, 85],
     [255, 204, 96],
@@ -67,10 +67,10 @@ for ($y = 0; $y < 16; ++$y) {
     }
 }
 
-// 2. Décrire les échantillons : /Width et /Height sont des pixels ; 8 bits par
-//    composante donnent 256 valeurs ; /DeviceRGB attend trois composantes.
-//    Ces entrées proviennent de la table 89 de la norme. Interpolate=false
-//    conserve les contours du motif lors de son agrandissement.
+// 2. Describe samples: /Width and /Height count pixels; 8 bits per
+//    component give 256 values; /DeviceRGB expects three components.
+//    These entries come from specification Table 89. Interpolate=false
+//    preserves the pattern's edges when enlarged.
 $width = new WidthEntry(new IntegerType(16));
 $height = new HeightEntry(new IntegerType(16));
 $bits = new BitsPerComponentEntry(new IntegerType(8));
@@ -86,9 +86,9 @@ $imageDictionary = new ImageDictionaryTable89(
     $interpolate,
 );
 
-// 3. L'image XObject est un flux séparé, référencé sous /Im1 dans /XObject.
-//    StreamObject compresse les pixels avec zlib, puis produit /Filter
-//    /FlateDecode et /Length. Les octets d'origine restent le point de départ.
+// 3. The image XObject is a separate stream referenced as /Im1 in /XObject.
+//    StreamObject compresses pixels with zlib, then produces /Filter
+//    /FlateDecode and /Length. Original bytes remain the starting point.
 $image = new StreamObject($pixels, $imageDictionary, new FlateDecode());
 $helvetica = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(
@@ -100,10 +100,10 @@ $resources = new ResourceDictionary(
     )),
 );
 
-// 4. L'image inline contient le dictionnaire et les octets directement dans
-//    le flux de contenu : InlineImage écrit BI, ID puis EI en une instruction.
-//    Elle n'a ni /Type, ni /Subtype, ni entrée dans les ressources /XObject.
-//    Ici les pixels sont bruts : aucun /Filter n'est déclaré.
+// 4. The inline image contains its dictionary and bytes directly in
+//    the content stream: InlineImage writes BI, ID and EI as one instruction.
+//    It has no /Type, /Subtype or entry in /XObject resources.
+//    Pixels are raw here: no /Filter is declared.
 $inlineImage = new InlineImage(new DictionaryType(
     $width,
     $height,
@@ -112,9 +112,9 @@ $inlineImage = new InlineImage(new DictionaryType(
     $interpolate,
 ), $pixels);
 
-// 5. Une image PDF occupe le carré unité. cm transforme ce carré en un carré
-//    de 216 × 216 points et le translate. La résolution de 16 × 16 pixels
-//    ne détermine donc pas sa taille sur la page. q/Q encadrent chaque cm.
+// 5. A PDF image occupies the unit square. cm transforms it into a
+//    216 × 216 point square and translates it. The 16 × 16 pixel resolution
+//    therefore does not determine page size. q/Q enclose each cm.
 $contents = new StreamObject(new ContentStreams(
     new SetNonstrokingRGBColor(new NumericType(0.08), new NumericType(0.18), new NumericType(0.28)),
     new BeginTextObject(),
@@ -172,8 +172,8 @@ $contents = new StreamObject(new ContentStreams(
     new EndTextObject(),
 ));
 
-// 6. Relier la page, son arbre et le catalogue ; le writer découvre les objets
-//    indirects et attribue leurs numéros à partir de ce graphe.
+// 6. Connect the page, its tree and catalog; the writer discovers indirect
+//    objects and assigns their numbers from this graph.
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(612), new NumericType(792)),
     $resources,

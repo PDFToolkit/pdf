@@ -56,14 +56,14 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// ISO 32000-1, 14.7–14.8 : la structure logique et le dessin de chaque page
-// sont deux graphes distincts. Leurs associations restent des objets explicites.
+// ISO 32000-1, 14.7-14.8: logical structure and page drawing are
+// separate graphs. Their associations remain explicit objects.
 $font = new Type1Font(StandardFont::Helvetica, new Entry(new NameType('Encoding'), new NameType('WinAnsiEncoding')));
 $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
 $box = new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(612), new IntegerType(792));
 
-// Ces fonctions locales dessinent seulement du texte. Le balisage est fourni
-// séparément par les objets MCID : aucun moteur de mise en page ne décide du sens.
+// These local functions only draw text. Tagging is supplied separately
+// by MCID objects: no layout engine decides meaning.
 /** @return list<Operator> */
 $line = static fn (string $text, int $y, int $size = 14): array => [
     new BeginTextObject(),
@@ -86,8 +86,8 @@ $headerId = new MarkedContentIdentifier(new IntegerType(1));
 $cellId = new MarkedContentIdentifier(new IntegerType(2));
 $linkId = new MarkedContentIdentifier(new IntegerType(0));
 
-// L'identifiant MCID est local au contenu d'une page. MCID 0 peut donc être
-// utilisé sur trois pages, grâce à trois clés StructParents différentes.
+// The MCID identifier is local to page content. MCID 0 can therefore
+// be used on three pages through three different StructParents keys.
 $page1Contents = new PageContentSequence(new ContentStreams(...[
     $headingId->begin(StandardStructureType::H1),
     ...$line('PDFToolkit : structure logique', 716, 24),
@@ -95,8 +95,8 @@ $page1Contents = new PageContentSequence(new ContentStreams(...[
     $paragraphStartId->begin(StandardStructureType::P),
     ...$line('Ce paragraphe commence sur la premiere page.', 660),
 ]), new ContentStreams(...[
-    // Les deux flux Contents sont consideres comme un seul flux de page :
-    // ce second fragment termine la sequence MCID 1 ouverte dans le premier.
+    // Both Contents streams are considered one page stream:
+    // this second fragment ends the MCID 1 sequence opened in the first.
     ...$line('Son ordre de lecture sera conserve sur la page suivante.', 632),
     new EndMarkedContent(),
     ...$footer('Page 1 - ce pied de page est un artefact'),
@@ -115,8 +115,8 @@ $page2 = new PageObject($box, $resources, new StreamObject(new ContentStreams(..
     ...$footer('Page 2 - tableau avec association explicite de son en-tete'),
 ])), new Entry(new NameType('StructParents'), new IntegerType(1)));
 
-// Le lien visible et sa zone interactive sont deux objets. OBJR les rattache
-// au meme element Link ; StructParent est une quatrieme cle du ParentTree.
+// The visible link and its interactive area are separate objects. OBJR attaches
+// both to the same Link element; StructParent is a fourth ParentTree key.
 $annotation = new LinkAnnotationTable173(
     new Entry(new NameType('Type'), new NameType('Annot')),
     new Entry(new NameType('Subtype'), new NameType('Link')),
@@ -139,8 +139,8 @@ $scope1 = new MarkedContentContainer($page1, new IntegerType(0));
 $scope2 = new MarkedContentContainer($page2, new IntegerType(1));
 $scope3 = new MarkedContentContainer($page3, new IntegerType(2));
 
-// ClassMap partage une valeur d'attribut. Les revisions restent propres aux
-// associations d'un element ; elles ne sont jamais placees dans l'attribut partage.
+// ClassMap shares an attribute value. Revisions remain specific to element
+// associations; they are never placed in the shared attribute.
 $normal = new AttributeClass(new NameType('Normal'), new StructureAttributeObject(new DictionaryType(
     new Entry(new NameType('O'), new NameType('Layout')),
     new Entry(new NameType('TextAlign'), new NameType('Start')),
@@ -150,7 +150,7 @@ $document = new StructureElement(StandardStructureType::Document);
 $heading = (new StructureElement(StandardStructureType::H1, $page1, new LiteralString('heading')))->addKid(new PageMarkedContent($scope1, $headingId));
 $paragraph = new StructureElement(StandardStructureType::P, $page1, new LiteralString('paragraph'), classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('Normal'))));
 $paragraph->addKid(new PageMarkedContent($scope1, $paragraphStartId));
-// La forme entiere MCR indique la seconde page sans changer le Pg du paragraphe.
+// The full MCR form identifies the second page without changing the paragraph's Pg.
 $paragraph->addKid(new MarkedContentReference($scope2, $paragraphEndId));
 $table = new StructureElement(StandardStructureType::Table, $page2, new LiteralString('components'), new StructureAttributes(
     new AttributeAssociation(new StructureAttributeObject(new DictionaryType(new Entry(new NameType('O'), new NameType('Layout')), new Entry(new NameType('BBox'), new Rectangle(new IntegerType(64), new IntegerType(575), new IntegerType(450), new IntegerType(645)))))),
@@ -165,9 +165,9 @@ $table->addKid((new StructureElement(StandardStructureType::TR))->addKid($cell))
 $link = (new StructureElement(StandardStructureType::Link, $page3, new LiteralString('documentation-link')))->addKid(new PageMarkedContent($scope3, $linkId))->addKid(new ObjectReference($page3, $annotation, new IntegerType(3)));
 $root->addKid($document->addKid($heading)->addKid($paragraph)->addKid($table)->addKid($link));
 
-// Cette validation construit P/K, IDTree et ParentTree, controle leurs liens,
-// puis verifie les conventions structurelles Tagged PDF. Le choix des mots,
-// de leur Unicode, de la disposition et de l'ordre de lecture reste explicite.
+// This validation builds P/K, IDTree and ParentTree, checks their links,
+// then verifies Tagged PDF structural conventions. Word choice, Unicode,
+// layout and reading order remain explicit.
 $catalog = new DocumentCatalog($pages, new Lang(new TextString('fr-FR')), ...$root->catalogEntries(new MarkInformation(new BooleanType(true))));
 $file = new FileStructure(new FileHeader('1.7'), new FileBody($catalog), new IndirectReference($catalog));
 $path = $argv[1] ?? __DIR__ . '/tagged-structure.pdf';

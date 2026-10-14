@@ -20,6 +20,10 @@
 - After publishing a package API change, update the documentation repository's `resources/sources.json` with the selected published versions and exact tagged commits. Verify API and example provenance and release the documentation independently.
 - Keep the old `/pdf/` Pages workflow as a compatibility deployment using an immutable documentation-tool commit. It copies published assets unchanged and redirects HTML navigation to the central site.
 
+- Public documentation defaults to English with complete French counterparts.
+  Update both languages together, preserve API identifiers and normative source
+  quotations, and verify equivalent navigation and executable examples.
+
 ## Completion and releases
 
 - Keep commits atomic, with a clear purpose and no WIP commits in the published history.

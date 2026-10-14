@@ -15,7 +15,7 @@ use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 
-/** Embedded Type 0 encoding CMap, ISO 9.7.5.3â€“4, PDF pp.285â€“289. */
+/** Embedded Type 0 encoding CMap, ISO 9.7.5.3-4, PDF pp. 285-289. */
 final class EncodingCMap extends FontStream implements Type0Encoding
 {
     private readonly CodeSpaces $effectiveSpaces;

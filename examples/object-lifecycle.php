@@ -35,8 +35,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// ISO 7.5.4 : un objet indirect possède un numéro ET une génération.
-// L'objet facultatif ci-dessous sert à observer sa suppression et son recyclage.
+// ISO 7.5.4: an indirect object has both a number AND a generation.
+// The optional object below demonstrates deletion and recycling.
 $old = new LiteralString('Valeur indirecte initiale, generation 0.');
 $font = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
@@ -55,13 +55,13 @@ $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new Entry(ne
 $initial = (new FileStructure(new FileHeader(), new FileBody($catalog), crossReferenceFormat: CrossReferenceFormat::Stream))->toRevision();
 $identifier = $initial->binding($old)->identifier;
 
-// La suppression ne retire aucun octet historique. Elle inscrit le numéro dans
-// la liste libre avec la génération suivante, ici 1. L'ancienne référence 0
-// représente désormais null, conformément à ISO 7.3.9.
+// Deletion removes no historical bytes. It records the number in the
+// free list with the next generation, here 1. The old generation 0
+// reference now represents null, following ISO 7.3.9.
 $released = (new IncrementalUpdate($initial, new FileBody(), objectOperations: new ReleaseIndirectObject($identifier)))->toRevision();
 
-// Une nouvelle identité peut reprendre ce numéro avec sa génération libre.
-// Son type est indépendant : l'ancienne chaîne devient ici un dictionnaire.
+// A new identity can reuse this number with its free generation.
+// Its type is independent: the old string becomes a dictionary here.
 $new = new DictionaryType(new Entry(new NameType('Message'), new LiteralString('Nouvelle identite, generation 1.')));
 $updatedCatalog = $released->binding($catalog)->dictionary ?? throw new LogicException('Le catalogue possède un instantané.');
 $updatedCatalog = $updatedCatalog->with(new Entry(new NameType('PrivateCurrent'), new IndirectReference($new)));
@@ -71,9 +71,9 @@ $reused = (new IncrementalUpdate(
     objectOperations: new ReuseObjectNumber($identifier->objectNumber, $new),
 ))->toRevision();
 
-// Les deux références restent distinctes malgré leur numéro commun. Le core
-// garde les alias obsolètes pour écrire leur génération d'origine, sans les
-// transformer en alias de la nouvelle valeur et sans ressusciter l'ancien objet.
+// Both references stay distinct despite sharing a number. The core
+// keeps obsolete aliases to write their original generation without
+// aliasing them to the new value or resurrecting the old object.
 $oldReference = $reused->reference($old);
 $currentReference = $reused->reference($new);
 $path = $argv[1] ?? __DIR__ . '/object-lifecycle.pdf';

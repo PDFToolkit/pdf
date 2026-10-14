@@ -34,8 +34,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Les trois pages utilisent les mêmes instances de polices et de ressources.
-// F1/F2 sont des noms locaux au dictionnaire Resources, pas des noms de polices.
+// 1. All three pages use the same font and resource instances.
+// F1/F2 are local Resource dictionary names, not font names.
 $regular = new Type1Font(StandardFont::Helvetica);
 $bold = new Type1Font(StandardFont::HelveticaBold);
 $resources = new ResourceDictionary(
@@ -45,8 +45,8 @@ $resources = new ResourceDictionary(
     )),
 );
 
-// 2. MediaBox et Resources sont hérités du nœud Pages par ses enfants.
-// Une unité vaut ici 1/72 de pouce : 595,28 × 841,89 correspond à un A4.
+// 2. MediaBox and Resources are inherited by children of the Pages node.
+// A unit is 1/72 inch here: 595.28 × 841.89 corresponds to A4.
 $pages = new PageTreeNode(
     new Entry(new NameType('MediaBox'), new Rectangle(
         new NumericType(0),
@@ -57,8 +57,8 @@ $pages = new PageTreeNode(
     new Entry(new NameType('Resources'), new IndirectReference($resources)),
 );
 
-// Ces données PHP décrivent le contenu de la démonstration, pas une API de mise en page.
-// Les octets ASCII conviennent à l'encodage de ces polices standard.
+// These PHP data describe demonstration content, not a layout API.
+// ASCII bytes suit the encodings of these standard fonts.
 $chapters = [
     [
         'title' => '01 / Une page, un repere',
@@ -113,7 +113,7 @@ $chapters = [
     ],
 ];
 
-// 3. Chaque séquence BT/ET repart avec des matrices de texte identité.
+// 3. Each BT/ET sequence starts again with identity text matrices.
 foreach ($chapters as $index => $chapter) {
     $contents = new ContentStreams(
         new BeginTextObject(),
@@ -132,7 +132,7 @@ foreach ($chapters as $index => $chapter) {
         new MoveTextPosition(new NumericType(54), new NumericType(692)),
     );
 
-    // with() retourne une nouvelle séquence : il faut conserver ce résultat.
+    // with() returns a new sequence: retain that result.
     foreach ($chapter['lines'] as $lineIndex => $line) {
         if ($lineIndex > 0) {
             $contents = $contents->with(new MoveToNextTextLine());
@@ -148,12 +148,12 @@ foreach ($chapters as $index => $chapter) {
         new EndTextObject(),
     );
 
-    // MediaBox et Resources sont volontairement absents de chaque Page.
+    // MediaBox and Resources are deliberately absent from each Page.
     $page = new PageObject(contents: new StreamObject($contents));
     $pages->addKid($page);
 }
 
-// 4. TextString encode le titre Unicode des métadonnées, pas le texte à dessiner.
+// 4. TextString encodes the Unicode metadata title, not text to draw.
 $catalog = new DocumentCatalog($pages);
 $information = new DocumentInformation(new Title(new TextString('Pages, texte et ressources partagées')));
 $file = new FileStructure(

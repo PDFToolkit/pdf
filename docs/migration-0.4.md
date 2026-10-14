@@ -1,3 +1,5 @@
-# Migration vers le core 0.4
+# Migration to core 0.4
 
-Ce guide est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/guides/migration-0-4.html).
+English | [Français](fr/migration-0.4.md)
+
+This guide is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/guides/migration-0-4.html).

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Document\Fonts\Encodings;
 
-/** Annex D.2/D.4/D.5/D.6 vectors transcribed from the retained ISO source, PDF pp. 661â€“680. */
+/** Annex D.2/D.4/D.5/D.6 vectors transcribed from the retained ISO source, PDF pp. 661-680. */
 final readonly class EncodingVectors
 {
     /** @var array<string, array<int, string>> */

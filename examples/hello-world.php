@@ -32,23 +32,23 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Tutoriel 01 : docs/tutorials/01-first-document.md.
-// Ce fichier construit un graphe d'objets PDF, puis confie son écriture au writer.
+// Tutorial 01: docs/tutorials/01-first-document.md.
+// This file builds a graph of PDF objects, then delegates writing to the writer.
 
-// 1. Déclarer une police et lui donner un nom local dans les ressources de page.
-// /F1 est le nom utilisé par Tf ; /Helvetica est le nom de la police standard.
-// La référence vise l'instance de police. Son numéro sera attribué à l'écriture.
+// 1. Declare a font and give it a local name in page resources.
+// /F1 is the name used by Tf; /Helvetica is the standard font name.
+// The reference targets the font instance. Its number is assigned during writing.
 $helvetica = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(
     new Font(new DictionaryType(
         new Entry(new NameType('F1'), new IndirectReference($helvetica)),
     )),
 );
-// 2. Décrire le texte avec des instructions PDF : BT, Tf, Td, Tj, ET.
-// BT/ET encadrent l'objet texte. Tf sélectionne /F1 à 18 unités ; Td déplace
-// l'origine du texte à (72, 720). Dans cet espace de page, y augmente vers le haut
-// et une unité vaut par défaut 1/72 de pouce. Tj reçoit des octets, ici en ASCII.
-// ContentStreams conserve les opérateurs ; StreamObject en fait un flux PDF.
+// 2. Describe text with PDF instructions: BT, Tf, Td, Tj, ET.
+// BT/ET enclose the text object. Tf selects /F1 at 18 units; Td moves
+// the text origin to (72, 720). In this page space, y increases upwards
+// and a unit defaults to 1/72 inch. Tj receives bytes, here in ASCII.
+// ContentStreams retains operators; StreamObject turns them into a PDF stream.
 $contents = new StreamObject(new ContentStreams(
     new BeginTextObject(),
     new SetTextFontAndSize(new NameType('F1'), new NumericType(18)),
@@ -56,19 +56,19 @@ $contents = new StreamObject(new ContentStreams(
     new ShowText(new LiteralString('Super ! Le PDF est construit objet par objet.')),
     new EndTextObject(),
 ));
-// 3. Assembler la page : /MediaBox est un rectangle [x_min y_min x_max y_max].
-// 612 x 792 correspond au format Letter. La page relie ressources et contenu.
+// 3. Assemble the page: /MediaBox is a rectangle [x_min y_min x_max y_max].
+// 612 x 792 corresponds to Letter size. The page connects resources and content.
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(612), new NumericType(792)),
     $resources,
     $contents,
 );
-// 4. Attacher la page à l'arbre /Pages, puis relier sa racine au /Catalog.
-// Le graphe calcule /Parent, /Kids et /Count ; on ne les remplit pas à la main.
+// 4. Attach the page to the /Pages tree, then connect its root to /Catalog.
+// The graph calculates /Parent, /Kids and /Count; they are not filled manually.
 $pages = (new PageTreeNode())->addKid($page);
 $catalog = new DocumentCatalog($pages);
-// 5. Ajouter un titre documentaire dans /Info. TextString encode explicitement
-// ce texte Unicode ; cette chaîne ne représente pas les glyphes affichés par Tj.
+// 5. Add a document title in /Info. TextString explicitly encodes this Unicode
+// value; this string does not represent the glyphs displayed by Tj.
 $information = new DocumentInformation(new Title(new TextString('Un PDF entièrement objet')));
 $file = new FileStructure(
     new FileHeader('1.7'),
@@ -76,9 +76,9 @@ $file = new FileStructure(
     new IndirectReference($catalog),
     new DictionaryType(new Entry(new NameType('Info'), new IndirectReference($information))),
 );
-// 6. Écrire le fichier. Le writer parcourt les références, attribue les numéros,
-// mesure les octets des flux et produit la table xref ainsi que le trailer.
-// Le premier argument permet de choisir la destination depuis la commande CLI.
+// 6. Write the file. The writer traverses references, assigns numbers,
+// measures stream bytes and produces the xref table and trailer.
+// The first argument selects the destination from the CLI command.
 $path = $argv[1] ?? __DIR__ . '/hello-world.pdf';
 $file->writeTo($path);
 echo $path . PHP_EOL;

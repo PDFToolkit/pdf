@@ -85,10 +85,10 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $number = static fn (int|float $value): NumericType => new NumericType($value);
 $code = static fn (string $bytes): CMapCode => new CMapCode(new HexadecimalString($bytes));
 
-// Une police Type3 contient ses propres instructions PDF de dessin. /CharProcs
-// associe chaque nom de glyphe à un stream indirect ; /Differences choisit ces
-// noms à partir des octets 41 et 42. Les deux d1 annoncent une largeur de 600.
-// La matrice 0.001 convertit les coordonnées des glyphes en espace du texte.
+// A Type3 font contains its own PDF drawing instructions. /CharProcs maps
+// each glyph name to an indirect stream; /Differences selects these
+// names from bytes 41 and 42. Both d1 operators declare width 600.
+// The 0.001 matrix converts glyph coordinates into text space.
 $square = new Type3Glyph(new Type3GlyphContentStream(
     new SetGlyphWidthAndBoundingBox($number(600), $number(0), $number(0), $number(0), $number(500), $number(500)),
     new AppendRectangle($number(0), $number(0), $number(500), $number(500)),
@@ -116,10 +116,10 @@ $shapes = new Type3Font(
     toUnicode: $shapeUnicode,
 );
 
-// Le module de polices optionnel lit la ressource externe. Le core reçoit les
-// programmes normalisés et leurs valeurs PDF : aucun parsing n'a lieu dans les
-// constructeurs de fontes. Le programme simple garde ses tables cmap ; le
-// programme CID normalisé retire la table cmap, conformément à ISO 9.9.
+// The optional font module reads the external resource. The core receives
+// normalized programs and their PDF values: font constructors perform
+// no parsing. The simple program retains cmap tables; the normalized
+// CID program removes cmap following ISO 9.9.
 $bytes = file_get_contents(dirname(__DIR__) . '/vendor/pdftoolkit/pdf-fonts/examples/assets/fonts/NotoSans-Regular.ttf');
 if ($bytes === false) {
     throw new RuntimeException('Cannot read the bundled demonstration font.');
@@ -147,10 +147,10 @@ foreach (range(65, 70) as $scalar) {
 }
 $simple = new TrueTypeFont(new NameType($source->postScriptName), new SimpleFontMetrics(new SimpleWidths(new IntegerType(65), ...$simpleWidths), $simpleDescriptor), new NamedFontEncoding(PredefinedEncoding::WinAnsi));
 
-// Le mode vertical vient d'Identity-V, pas du programme TrueType. DW2 donne
-// [origineY, deplacementY] et W2 donne [deplacementY, origineX, origineY] par CID.
-// Les CID 1 et 2 ont des métriques explicites ; les autres utilisent DW2 et la
-// moitié de leur largeur horizontale pour calculer l'origine X par défaut.
+// Vertical mode comes from Identity-V, not the TrueType program. DW2 supplies
+// [originY, displacementY] and W2 supplies [displacementY, originX, originY] per CID.
+// CIDs 1 and 2 have explicit metrics; others use DW2 and half their
+// horizontal width to calculate the default X origin.
 $vertical = new CIDVerticalMetrics(new CIDDefaultVerticalMetrics($number(880), $number(-1000)), new CIDVerticalWidths(new CIDVerticalRun(
     new IntegerType(1),
     new CIDVerticalMetric($number(-1200), $number(300), $number(800)),

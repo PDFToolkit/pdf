@@ -1,3 +1,5 @@
-# Tutoriel 13 : extensions Adobe
+# Tutorial 13: Adobe extensions
 
-Ce tutoriel est maintenu dans la [documentation centrale PDFToolkit](https://pdftoolkit.github.io/tutorials/13-extensions-adobe.html).
+English | [Français](../fr/tutorials/13-adobe-extensions.md)
+
+This tutorial is maintained in the [central PDFToolkit documentation](https://pdftoolkit.github.io/tutorials/13-adobe-extensions.html).

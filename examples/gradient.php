@@ -52,9 +52,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. La fonction PDF type 2 reçoit un paramètre t dans [0, 1] et renvoie
-//    trois composantes RGB. Avec N=1, C(t)=C0+t*(C1-C0) est linéaire.
-//    Range explicite les trois intervalles de sortie, un par composante.
+// 1. The type 2 PDF function receives a parameter t in [0, 1] and returns
+//    three RGB components. With N=1, C(t)=C0+t*(C1-C0) is linear.
+//    Range explicitly defines three output intervals, one per component.
 $unitInterval = new NumberInterval(new NumericType(0), new NumericType(1));
 $domain = new Domain($unitInterval);
 $function = new ExponentialInterpolationFunction(
@@ -65,11 +65,11 @@ $function = new ExponentialInterpolationFunction(
     new Range($unitInterval, $unitInterval, $unitInterval),
 );
 
-// 2. /ShadingType 2 est un dégradé axial. /Coords décrit ses deux extrémités
-//    dans les coordonnées de la page : [64 500 548 500]. À gauche t=0,
-//    à droite t=1 ; la couleur reste constante perpendiculairement à l'axe.
-//    Les entrées communes viennent de la table 78, les spécifiques de la 80.
-//    La fonction reste un objet indirect distinct du dictionnaire de shading.
+// 2. /ShadingType 2 is an axial gradient. /Coords describes its endpoints
+//    in page coordinates: [64 500 548 500]. On the left t=0,
+//    on the right t=1; color remains constant perpendicular to the axis.
+//    Common entries come from Table 78, specific entries from Table 80.
+//    The function remains an indirect object distinct from the shading dictionary.
 $shading = new Type2ShadingDictionaryTable80(
     new ShadingTypeEntry(new IntegerType(2)),
     new ColorSpaceEntry(new NameType('DeviceRGB')),
@@ -84,8 +84,8 @@ $shading = new Type2ShadingDictionaryTable80(
     new ExtendEntry(new ArrayType(new BooleanType(false), new BooleanType(false))),
 );
 
-// 3. /Shading associe le nom local /Sh1 à ce dictionnaire. L'opérateur sh
-//    invoquera cette ressource ; aucun bitmap ni bandes colorées ne sont créés.
+// 3. /Shading associates local name /Sh1 with this dictionary. The sh operator
+//    will invoke this resource; no bitmap or colored bands are created.
 $helvetica = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(
     new Font(new DictionaryType(
@@ -96,10 +96,10 @@ $resources = new ResourceDictionary(
     )),
 );
 
-// 4. Le shading remplit sa zone dans la limite du clipping courant. re crée
-//    un rectangle ; W demande d'en faire la zone de clipping ; n termine le
-//    chemin sans le peindre et applique ce clipping. q/Q limitent son effet
-//    au dégradé : les textes qui suivent retrouvent le clipping de la page.
+// 4. Shading fills its area within the current clipping path. re creates
+//    a rectangle; W requests using it as the clipping area; n ends the
+//    path without painting and applies clipping. q/Q limit its effect
+//    to the gradient: subsequent text returns to the page clipping path.
 $contents = new StreamObject(new ContentStreams(
     new SetNonstrokingRGBColor(new NumericType(0.08), new NumericType(0.18), new NumericType(0.28)),
     new BeginTextObject(),
@@ -132,8 +132,8 @@ $contents = new StreamObject(new ContentStreams(
     new EndTextObject(),
 ));
 
-// 5. Le même graphe document que dans les autres tutoriels conduit au fichier.
-//    Les références indirectes sont numérotées au moment de la sérialisation.
+// 5. The same document graph as in other tutorials produces the file.
+//    Indirect references are numbered during serialization.
 $page = new PageObject(
     new Rectangle(new NumericType(0), new NumericType(0), new NumericType(612), new NumericType(792)),
     $resources,

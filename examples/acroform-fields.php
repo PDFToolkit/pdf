@@ -77,8 +77,8 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// Chaque texte, police, ressource, champ et apparence est fourni explicitement.
-// L'AcroForm n'effectue aucune mise en page ni mesure de police automatique.
+// Each text value, font, resource, field and appearance is supplied explicitly.
+// The AcroForm performs no automatic layout or font measurement.
 $font = new Type1Font(StandardFont::Helvetica);
 $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('Helv'), new IndirectReference($font)))));
 $default = new DefaultAppearance(new SetTextFontAndSize(new NameType('Helv'), new NumericType(12)), new SetNonstrokingGray(new NumericType(0)));
@@ -89,8 +89,8 @@ $countries = new ChoiceField(
     new PartialFieldName(new TextString('Countries')),
     new ChoiceOptions(new ChoiceOption(new TextString('France'), new TextString('FR')), new ChoiceOption(new TextString('Belgique'), new TextString('BE'))),
     new ChoiceFieldFlags(ChoiceFieldFlag::MultiSelect),
-    // L'interprétation /V est explicite : valeurs exportées, comme les lecteurs
-    // usuels ; la prose ISO p.454 mentionne aussi les noms affichés.
+    // The /V interpretation is explicit: export values, as used by common
+    // readers; the ISO prose on p.454 also mentions display names.
     new ChoiceFieldValue(ChoiceValueDomain::ExportValues, new ArrayType(new TextString('FR'), new TextString('BE'))),
     new ChoiceSelection(new IntegerType(0), new IntegerType(1)),
 );
@@ -101,12 +101,12 @@ $signature = new SignatureField(new PartialFieldName(new TextString('Signature')
 $person->addField($name)->addField($countries)->addField($consent)->addField($delivery)->addField($reset)->addField($signature);
 $tree->addRoot($person);
 
-// Une apparence est un XObject Form dont BBox est local au widget. Les octets
-// visibles sont distincts de /V : changer la valeur demande une nouvelle AP,
-// ou une demande explicite NeedAppearances au lecteur. Ici AP est fournie.
-// Le cadre reste statique. Pour /Tx et /Ch, la section /Tx BMC ... EMC indique
-// au lecteur ce qu'il doit REMPLACER lors d'une saisie (ISO 12.7.3.3, p.444).
-// Sans cette section, Acrobat ajoute le texte et conserve l'ancien dessin.
+// An appearance is a Form XObject whose BBox is local to the widget. Visible
+// bytes are distinct from /V: changing a value requires a new AP,
+// or an explicit NeedAppearances request to the reader. AP is supplied here.
+// The frame remains static. For /Tx and /Ch, /Tx BMC ... EMC tells
+// readers what to REPLACE during editing (ISO 12.7.3.3, p.444).
+// Without this section, Acrobat adds text and retains the old drawing.
 $drawAppearance = static function (ContentStreams $contents, int $width, int $height) use ($resources): FormAppearanceStream {
     return new FormAppearanceStream(new ContentStreams(
         new SetLineWidth(new NumericType(1)),
@@ -135,9 +135,9 @@ $nameAppearance = $drawAppearance(new ContentStreams(...[
     new RestoreGraphicsState(),
     new EndMarkedContent(),
 ]), 320, 32);
-// Une liste dessine ses libellés /Opt, ligne par ligne, et ses deux sélections
-// /I. Les valeurs exportées FR/BE restent exclusivement des données /V.
-// Le surlignage et les lignes sont tous dans la section variable remplaçable.
+// A list draws its /Opt labels line by line and both /I selections.
+// Export values FR/BE remain exclusively /V data.
+// Highlighting and lines are all inside the replaceable variable section.
 $countryAppearance = $drawAppearance(new ContentStreams(
     new BeginMarkedContent(new NameType('Tx')),
     new SaveGraphicsState(),
@@ -163,8 +163,8 @@ $countryAppearance = $drawAppearance(new ContentStreams(
 $nameWidget = new WidgetAnnotation($rectangle(64, 620, 320, 32), new WidgetAppearance($nameAppearance), null, $print);
 $countryWidget = new WidgetAnnotation($rectangle(64, 538, 320, 32), new WidgetAppearance($countryAppearance), null, $print);
 
-// Boutons : /V est le nom de l'état sélectionné. Chaque widget conserve son
-// propre /AS et ses deux apparences /Off et /Yes (ou Email/Paper pour la radio).
+// Buttons: /V names the selected state. Each widget retains its own
+// /AS and both /Off and /Yes appearances (or Email/Paper for radio buttons).
 $checkboxAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance($label('', 24), 24, 24)), new AppearanceState(new NameType('Yes'), $drawAppearance($label('X', 24), 24, 24)));
 $consentWidget = new WidgetAnnotation($rectangle(64, 460, 24, 24), new WidgetAppearance($checkboxAppearances), new NameType('Yes'), $print);
 $emailAppearances = new AppearanceStates(new AppearanceState(new NameType('Off'), $drawAppearance($label('', 24), 24, 24)), new AppearanceState(new NameType('Email'), $drawAppearance($label('X', 24), 24, 24)));
@@ -187,8 +187,8 @@ foreach ([['Nom : Person.Name', 674], ['Pays : choix multiples et valeurs export
 }
 $contents = $contents->with(new BeginTextObject(), new SetTextFontAndSize(new NameType('Helv'), new NumericType(12)), new MoveTextPosition(new NumericType(100), new NumericType(388)), new ShowText(new LiteralString('Email')), new MoveTextPosition(new NumericType(146), new NumericType(0)), new ShowText(new LiteralString('Papier')), new EndTextObject());
 
-// /Parent lie le widget au champ ; /P pointe sa vraie page, qui le référence
-// dans /Annots. Ces relations sont contrôlées avant l'écriture.
+// /Parent links the widget to its field; /P targets its actual page, which
+// references it in /Annots. These relationships are checked before writing.
 $page = new PageObject($rectangle(0, 0, 612, 792), $resources, new StreamObject($contents), new Entry(new NameType('Annots'), new ArrayType(...array_map(static fn (WidgetAnnotation $widget) => new IndirectReference($widget), $widgets))));
 foreach ($widgets as $widget) {
     $widget->bindToPage($page);

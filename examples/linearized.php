@@ -37,9 +37,9 @@ use PDF\Syntax\Object\StringObject\LiteralString;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-// 1. Le graphe garde une seule identité pour chaque police. Helvetica-Bold est
-// utilisée dès la première page ; Courier est partagé par les deux suivantes.
-// Ces dépendances forcent deux emplacements physiques distincts dans le fichier.
+// 1. The graph retains one identity per font. Helvetica-Bold is used
+// on the first page; Courier is shared by the following two.
+// These dependencies require two distinct physical locations in the file.
 $heading = new Type1Font(StandardFont::HelveticaBold);
 $later = new Type1Font(StandardFont::Courier);
 $common = new ResourceDictionary(new Font(new DictionaryType(
@@ -50,9 +50,9 @@ $following = new ResourceDictionary(new Font(new DictionaryType(
     new Entry(new NameType('F2'), new IndirectReference($later)),
 )));
 
-// 2. Les valeurs du nœud Pages sont héritées dans le modèle. La linéarisation
-// les écrit aussi dans chaque dictionnaire Page : un lecteur peut demander
-// une seule page sans charger d'abord ses ancêtres dans l'arbre des pages.
+// 2. Pages-node values are inherited in the model. Linearization also
+// writes them in every Page dictionary: readers can request one page
+// without first loading its ancestors in the page tree.
 $pages = new PageTreeNode(
     new Entry(new NameType('MediaBox'), new Rectangle(new NumericType(0), new NumericType(0), new NumericType(595), new NumericType(842))),
     new Entry(new NameType('Resources'), new IndirectReference($common)),
@@ -80,8 +80,8 @@ foreach ([
     $leaves[] = $leaf;
 }
 
-// 3. Le plan et les informations sont des objets du document. Ils sont regroupés
-// après les pages ; des tables d'indices nommées donnent leurs plages d'octets.
+// 3. The outline and information are document objects. They are grouped
+// after pages; named hint tables provide their byte ranges.
 $outline = new OutlineDictionary();
 foreach ($leaves as $index => $leaf) {
     $outline->addItem(new OutlineItem(new TextString('Page ' . ($index + 1)), new Fit($leaf)));
@@ -95,9 +95,9 @@ $file = new FileStructure(
     new DictionaryType(new Entry(new NameType('Info'), new IndirectReference($information)))
 );
 
-// 4. Le writer calcule l'ordre, renumérote les références dans son propre contexte,
-// encode les indices binaires et écrit les offsets exacts. Le graphe fourni reste
-// intact ; aucun programme externe n'est nécessaire pour produire ces octets.
+// 4. The writer calculates order, renumbers references in its own context,
+// encodes binary hints and writes exact offsets. The supplied graph remains
+// intact; no external program is needed to produce these bytes.
 $path = $argv[1] ?? __DIR__ . '/linearized.pdf';
 (new LinearizedWriter())->writeTo($file, $path);
 echo $path . PHP_EOL;
