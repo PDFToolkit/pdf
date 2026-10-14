@@ -10,6 +10,13 @@ use PHPUnit\Framework\TestCase;
 
 final class GcmNonceSequenceTest extends TestCase
 {
+    public function testNistBitBoundIsConvertedToBytesWithoutAllocatingThePayload(): void
+    {
+        self::assertSame(68719476704, (new \PDF\Security\AesGcmPlaintextLength(68719476704))->bytes);
+        $this->expectException(\InvalidArgumentException::class);
+        new \PDF\Security\AesGcmPlaintextLength(68719476705);
+    }
+
     public function testEveryInvocationObtainsAllTwelveRandomBytesEvenForReconstructedInstances(): void
     {
         $random = new class implements RandomSource {

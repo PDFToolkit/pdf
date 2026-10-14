@@ -18,10 +18,10 @@ final readonly class ModernFileEncryption implements FileEncryption
 {
     private GcmNonceSequence $nonces;
 
-    public function __construct(public FileEncryptionKey $key, public ModernEncryptionDictionary $credentials, private Aes256Backend $backend, private RandomSource $random)
+    public function __construct(public FileEncryptionKey $key, public ModernEncryptionDictionary $credentials, private Aes256Backend $backend, private RandomSource $random, ?GcmNonceSequence $nonces = null)
     {
         (new ModernStandardSecurityHandler($backend, $random))->validatePermissions($key, $credentials);
-        $this->nonces = new GcmNonceSequence($random);
+        $this->nonces = $nonces ?? new GcmNonceSequence($random);
     }
 
     public function encrypt(string $bytes): string

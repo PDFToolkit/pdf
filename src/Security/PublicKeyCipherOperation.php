@@ -17,13 +17,14 @@ final readonly class PublicKeyCipherOperation
         private ?Aes256Backend $aes256 = null,
         private RandomSource $random = new SystemRandomSource(),
         private Rc4Cipher $rc4 = new Rc4Cipher(),
-        private HistoricalObjectKeyDerivation $objectKeys = new HistoricalObjectKeyDerivation()
+        private HistoricalObjectKeyDerivation $objectKeys = new HistoricalObjectKeyDerivation(),
+        ?GcmNonceSequence $nonces = null,
     ) {
         if (in_array($cipher, [PublicKeyCipher::Aes256, PublicKeyCipher::Aes256Gcm], true) ? (!$key instanceof FileEncryptionKey || ($cipher === PublicKeyCipher::Aes256 && $aes256 === null))
             : (!$key instanceof HistoricalEncryptionKey || ($cipher === PublicKeyCipher::Aes128 && (strlen($key->bytes()) !== 16 || $aes128 === null)))) {
             throw new \InvalidArgumentException('Public-key cipher, key length and explicitly selected backend must agree.');
         }
-        $this->nonces = new GcmNonceSequence($random);
+        $this->nonces = $nonces ?? new GcmNonceSequence($random);
     }
 
     public function encrypt(string $bytes, ObjectIdentifier $identifier): string

@@ -9,8 +9,9 @@ final readonly class AesGcmCipher
 {
     public function encrypt(string $plain, FileEncryptionKey $key, string $nonce): string
     {
-        if (strlen($nonce) !== 12 || strlen($plain) > 549755813632) {
-            throw new \InvalidArgumentException('AESV4 requires a 12-byte IV and plaintext no longer than 2^39-256 bytes.');
+        new AesGcmPlaintextLength(strlen($plain));
+        if (strlen($nonce) !== 12) {
+            throw new \InvalidArgumentException('AESV4 requires a 12-byte IV.');
         }
         $encrypted = openssl_encrypt($plain, 'aes-256-gcm', $key->bytes(), OPENSSL_RAW_DATA, $nonce, $tag, '', 16);
         if ($encrypted === false || strlen($tag) !== 16) {
@@ -21,7 +22,7 @@ final readonly class AesGcmCipher
 
     public function decrypt(string $encrypted, FileEncryptionKey $key): string
     {
-        if (strlen($encrypted) < 28 || strlen($encrypted) - 28 > 549755813632) {
+        if (strlen($encrypted) < 28 || strlen($encrypted) - 28 > 68719476704) {
             throw new \UnexpectedValueException('AESV4 ciphertext requires its complete IV and authentication tag.');
         }
         $plain = openssl_decrypt(substr($encrypted, 12, -16), 'aes-256-gcm', $key->bytes(), OPENSSL_RAW_DATA, substr($encrypted, 0, 12), substr($encrypted, -16), '');
