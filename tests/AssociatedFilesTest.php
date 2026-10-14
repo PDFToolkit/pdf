@@ -293,11 +293,11 @@ final class AssociatedFilesTest extends TestCase
         self::assertStringContainsString('/application#2Foctet-stream', $this->file($catalog)->toPdf());
     }
 
-    public function testPrivateMetadataAndPriorEditionAfDoNotAcquirePdf20Semantics(): void
+    public function testPriorEditionAfDoesNotAcquirePdf20Semantics(): void
     {
         $private = new DictionaryType($this->entry('AF', new IntegerType(3)));
         $owner = new DictionaryType($this->entry('Type', new NameType('Catalog')), $this->entry('AF', new IntegerType(3)));
-        $this->validate($private);
+        $this->validate($private, '1.7');
         $this->validate($owner, '1.7');
         self::assertCount(1, $private);
     }

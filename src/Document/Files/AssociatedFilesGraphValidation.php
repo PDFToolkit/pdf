@@ -12,7 +12,6 @@ use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
-use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StringType;
 
@@ -22,7 +21,7 @@ final readonly class AssociatedFilesGraphValidation
     public function validate(DictionaryType $owner, DocumentGraphContext $graph, EffectivePdfVersion $version, ?AssociatedFileOwner $context = null): void
     {
         // Prior editions and explicit extensions retain their own semantics.
-        if ($version->value !== PdfVersion::PDF20 || ($context === null && !$this->isOwner($owner, $graph))) {
+        if ($version->value !== PdfVersion::PDF20) {
             return;
         }
         $value = $graph->entry($owner, 'AF');
@@ -91,29 +90,4 @@ final readonly class AssociatedFilesGraphValidation
         }
     }
 
-    private function isOwner(DictionaryType $dictionary, DocumentGraphContext $graph): bool
-    {
-        $type = $graph->entry($dictionary, 'Type');
-        $type = $type === null ? null : $graph->resolve($type);
-        if (!$type instanceof NameType) {
-            return false;
-        }
-        if (in_array($type->value, ['Catalog', 'Page', 'StructElem', 'DPart', 'Annot', 'Metadata'], true)) {
-            return true;
-        }
-        if ($type->value !== 'XObject') {
-            return false;
-        }
-        $subtype = $graph->entry($dictionary, 'Subtype');
-        $subtype = $subtype === null ? null : $graph->resolve($subtype);
-        if (!$subtype instanceof NameType) {
-            return false;
-        }
-        if ($subtype->value === 'Image') {
-            return true;
-        }
-        $formType = $graph->entry($dictionary, 'FormType');
-        $formType = $formType === null ? null : $graph->resolve($formType);
-        return $subtype->value === 'Form' && ($formType === null || $formType instanceof IntegerType && $formType->integer() === 1);
-    }
 }

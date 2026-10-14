@@ -24,6 +24,9 @@ final class GraphicsStateParameters extends SchemaDictionary implements \PDF\Doc
     public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
     {
         $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF12, 'ExtGState parameter dictionary');
+        if ($this->has('UseBlackPtComp')) {
+            $version->require(\PDF\Syntax\FileStructure\PdfVersion::PDF20, 'Black point compensation');
+        }
     }
 
     public const string TABLE = '58';
@@ -73,6 +76,9 @@ final class GraphicsStateParameters extends SchemaDictionary implements \PDF\Doc
     {
         $key = $entry->key->value;
         $value = $entry->value instanceof IndirectReference ? $entry->value->target() : $entry->value;
+        if ($key === 'UseBlackPtComp' && (!$value instanceof NameType || BlackPointCompensation::tryFrom($value->value) === null)) {
+            throw new \InvalidArgumentException('UseBlackPtComp requires exactly ON, OFF or Default.');
+        }
         if (in_array($key, ['LW', 'ML', 'FL', 'SM', 'CA', 'ca'], true)) {
             $minimum = $key === 'ML' ? 1 : 0;
             $maximum = $key === 'FL' ? 100 : (in_array($key, ['SM', 'CA', 'ca'], true) ? 1 : null);

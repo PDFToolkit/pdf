@@ -20,11 +20,20 @@ final class FileSpecification extends SchemaDictionary implements DocumentGraphC
 {
     public const string TABLE = '44';
 
-    public function __construct(public readonly StringType $fileName, FileSpecificationOptions $options = new FileSpecificationOptions(), public readonly ?AssociatedFileRelationship $relationship = null)
+    public function __construct(public readonly StringType $fileName, FileSpecificationOptions $options = new FileSpecificationOptions(), public readonly ?AssociatedFileRelationship $relationship = null, ?\PDF\Document\Metadata\MetadataStream $metadata = null, ?EncryptedPayload $encryptedPayload = null)
     {
         $entries = [new Entry(new NameType('Type'), new NameType('Filespec')), new Entry(new NameType('F'), $fileName), ...iterator_to_array($options->entries(), false)];
         if ($relationship !== null) {
             $entries[] = new Entry(new NameType('AFRelationship'), $relationship->name);
+        }
+        if ($metadata !== null) {
+            $entries[] = new \PDF\Document\Metadata\MetadataEntry($metadata);
+        }
+        if ($encryptedPayload !== null) {
+            if ($relationship?->name->value !== 'EncryptedPayload' || $options->embedded === null) {
+                throw new \InvalidArgumentException('An encrypted payload requires embedded data and AFRelationship EncryptedPayload.');
+            }
+            $entries[] = new Entry(new NameType('EP'), $encryptedPayload);
         }
         parent::__construct(new FileSpecificationDictionaryTable44Definition(), ...$entries);
         (new FileSpecificationRules())->validate($this);
