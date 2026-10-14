@@ -117,7 +117,7 @@ final class DocumentGraphValidation
                 $value->validateVersion($version);
             }
             if ($dictionary !== null) {
-                (new \PDF\Document\Geospatial\GeospatialGraphValidation())->validate($dictionary, $projection, $version);
+                (new \PDF\Document\Geospatial\GeospatialGraphValidation())->validate($value, $dictionary, $projection, $version);
                 (new \PDF\Document\Signatures\DocumentTimestampGraphValidation())->validate($value, $dictionary, $projection, $version, $previous);
                 (new \PDF\Document\Metadata\MetadataGraphValidation())->validate($dictionary, $projection, $version);
                 $resolvedType = $type instanceof IndirectReference ? $projection->resolve($type) : $type;
@@ -218,9 +218,6 @@ final class DocumentGraphValidation
     /** @param array<int, true> $pages */
     private function validatePageAssociations(array $pages, DocumentGraphContext $graph, EffectivePdfVersion $version): void
     {
-        if ($version->value !== PdfVersion::PDF20) {
-            return;
-        }
         $associations = new \PDF\Document\Files\AssociatedFilesGraphValidation();
         foreach ($pages as $number => $_) {
             $page = $this->effective[$number]->value ?? $this->context->objects()[$number] ?? null;
@@ -234,7 +231,10 @@ final class DocumentGraphValidation
                 $projection = $annotation instanceof IndirectReference ? $graph : $graph->forDirectValue($annotation);
                 $dictionary = $projection->dictionary($annotation);
                 if ($dictionary !== null) {
-                    $associations->validate($dictionary, $projection, $version, \PDF\Document\Files\AssociatedFileOwner::Annotation);
+                    (new \PDF\Document\Geospatial\GeospatialGraphValidation())->validateAnnotation($dictionary, $projection, $version);
+                    if ($version->value === PdfVersion::PDF20) {
+                        $associations->validate($dictionary, $projection, $version, \PDF\Document\Files\AssociatedFileOwner::Annotation);
+                    }
                 }
             }
         }

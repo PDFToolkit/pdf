@@ -177,6 +177,72 @@ final class Pdf20GeospatialTest extends TestCase
         self::assertStringContainsString('/GEO', (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toPdf(new \PDF\Serialization\SerializationContext()));
     }
 
+    /** @return iterable<string,array{?string}> */
+    public static function privateOwners(): iterable
+    {
+        foreach ([null, 'Image', 'Form', '3D', 'RichMedia'] as $subtype) {
+            yield $subtype ?? 'no subtype' => [$subtype];
+        }
+    }
+
+    #[DataProvider('privateOwners')]
+    public function testPrivateHomonymsRemainOpaqueInCurrentAndFrozenDictionaries(?string $subtype): void
+    {
+        $private = new DictionaryType($this->entry('GEO', new LiteralString('application geometry')), $this->entry('Measure', new LiteralString('application measure')), $this->entry('PtData', new LiteralString('application point data')));
+        if ($subtype !== null) {
+            $private = $private->with($this->entry('Subtype', new NameType($subtype)));
+        }
+        $catalog = (new DocumentCatalog((new PageTreeNode())->addKid(new PageObject($this->rectangle(), new ResourceDictionary()))))->with($this->entry('ACME_Private', new IndirectReference($private)));
+        $initial = (new FileStructure(new FileHeader('1.7'), new FileBody($catalog)))->toRevision();
+        $retained = (new IncrementalUpdate($initial, new FileBody()))->toRevision();
+        self::assertStringStartsWith($initial->bytes, $retained->bytes);
+        $record = $retained->binding($private);
+        $updated = $record->dictionary->with($this->entry('GEO', new IntegerType(42)));
+        $following = (new IncrementalUpdate($retained, new FileBody(new IndirectObject($updated, $record->identifier))))->toRevision();
+        self::assertStringStartsWith($retained->bytes, $following->bytes);
+    }
+
+    /** @return iterable<string,array{string}> */
+    public static function xObjectSubtypes(): iterable
+    {
+        yield 'image' => ['Image'];
+        yield 'form' => ['Form'];
+    }
+
+    #[DataProvider('xObjectSubtypes')]
+    public function testStreamOwnersRetainGeospatialValidationWhenOptionalTypeIsAbsent(string $subtype): void
+    {
+        $raw = (new DictionaryType(...iterator_to_array($this->measure()->entries(), false)))->without('LPTS');
+        $stream = new StreamObject('', new DictionaryType($this->entry('Subtype', new NameType($subtype)), $this->entry('Resources', new ResourceDictionary()), $this->entry('Measure', $raw)));
+        $catalog = (new DocumentCatalog((new PageTreeNode())->addKid(new PageObject($this->rectangle(), new ResourceDictionary()))))->with($this->entry('ACME_Stream', new IndirectReference($stream)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('numeric array');
+        (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
+    }
+
+    #[DataProvider('annotationContexts')]
+    public function testPageRelationshipIdentifiesAnnotationsWhoseOptionalTypeIsAbsent(string $subtype, int $dimension): void
+    {
+        $raw = new DictionaryType(...iterator_to_array($this->measure(dimension: $dimension)->entries(), false));
+        $annotation = new DictionaryType($this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $raw));
+        $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
+        $initial = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toRevision();
+        self::assertStringStartsWith($initial->bytes, (new IncrementalUpdate($initial, new FileBody()))->toRevision()->bytes);
+        $record = $initial->binding($annotation);
+        $invalid = $record->dictionary->with($this->entry('GEO', $raw->without('LPTS')));
+        $this->expectException(\InvalidArgumentException::class);
+        (new IncrementalUpdate($initial, new FileBody(new IndirectObject($invalid, $record->identifier))))->toRevision();
+    }
+
+    public function testRawGeoAnnotationWithoutOptionalTypeStillRequiresPdf20(): void
+    {
+        $raw = new DictionaryType(...iterator_to_array($this->measure(dimension: 3)->entries(), false));
+        $annotation = new DictionaryType($this->entry('Subtype', new NameType('3D')), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $raw));
+        $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
+        $this->expectException(\LogicException::class);
+        (new FileStructure(new FileHeader('1.7'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toRevision();
+    }
+
     public function testTwoDimensionalOwnerRejectsTriplesAndOldPdfVersionRejectsRawGeo(): void
     {
         $viewport = new DictionaryType($this->entry('BBox', $this->rectangle()), $this->entry('Measure', $this->measure(dimension: 3)));

@@ -15,11 +15,12 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringType;
+use PDF\Syntax\Object\StreamObject;
 
 /** Context, tuple and cross-entry rules for Tables 265/266/269-272, including frozen raw dictionaries. */
 final readonly class GeospatialGraphValidation
 {
-    public function validate(DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    public function validate(BasicType $object, DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
     {
         $type = $this->value($dictionary, 'Type', $graph);
         $subtype = $this->value($dictionary, 'Subtype', $graph);
@@ -39,17 +40,11 @@ final readonly class GeospatialGraphValidation
         if ($type instanceof NameType && $type->value === 'Viewport') {
             $this->viewport($dictionary, $graph, $version);
         }
-        if ($subtype instanceof NameType && in_array($subtype->value, ['Form', 'Image'], true)) {
+        if ($object instanceof StreamObject && $subtype instanceof NameType && in_array($subtype->value, ['Form', 'Image'], true)) {
             $this->owner($dictionary, $graph, $version);
         }
-        $geo = $graph->entry($dictionary, 'GEO');
-        if ($geo !== null) {
-            if (!$subtype instanceof NameType || !in_array($subtype->value, ['3D', 'RichMedia'], true)) {
-                throw new \InvalidArgumentException('Three-dimensional GEO belongs to a 3D or RichMedia annotation (EC3 #284 Accepted).');
-            }
-            $version->require(PdfVersion::PDF20, 'Geospatial3D annotation geometry');
-            [$measure, $scope] = $this->dictionary($geo, $graph);
-            $this->measure($measure, $scope, $version, 3);
+        if ($type instanceof NameType && $type->value === 'Annot') {
+            $this->validateAnnotation($dictionary, $graph, $version);
         }
         if ($type instanceof NameType && in_array($type->value, ['GEOGCS', 'PROJCS'], true)) {
             $version->require(PdfVersion::PDF20, 'Geospatial coordinate systems');
@@ -59,6 +54,19 @@ final readonly class GeospatialGraphValidation
             $version->require(PdfVersion::PDF20, 'Geospatial point data');
             $this->pointData($dictionary, $graph);
         }
+    }
+
+    /** Type is optional for annotations identified by their actual Page.Annots relationship. */
+    public function validateAnnotation(DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        $subtype = $this->value($dictionary, 'Subtype', $graph);
+        $geo = $graph->entry($dictionary, 'GEO');
+        if ($geo === null || !$subtype instanceof NameType || !in_array($subtype->value, ['3D', 'RichMedia'], true)) {
+            return;
+        }
+        $version->require(PdfVersion::PDF20, 'Geospatial3D annotation geometry');
+        [$measure, $scope] = $this->dictionary($geo, $graph);
+        $this->measure($measure, $scope, $version, 3);
     }
 
     private function viewport(DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
