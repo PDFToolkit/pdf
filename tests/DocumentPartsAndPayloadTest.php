@@ -107,6 +107,19 @@ final class DocumentPartsAndPayloadTest extends TestCase
         new P\DocumentPartMetadata($this->entry('Job', new DictionaryType($this->entry('not a name', new IntegerType(2)))));
     }
 
+    public function testDpmAllowsIndirectValuesWithPermittedResolvedTypes(): void
+    {
+        $array = new ArrayType(new IndirectReference(new TextString('A permitted text value')));
+        $metadata = new P\DocumentPartMetadata($this->entry('Values', new IndirectReference($array)));
+        $part = new P\DocumentPart($metadata);
+        $root = new P\DocumentPartRoot($part);
+        $page = $this->page($part);
+        $pages = (new PageTreeNode())->addKid($page);
+        $part->setPageRange($page);
+        $catalog = new DocumentCatalog($pages, $root->catalogEntry());
+        self::assertStringContainsString('(A permitted text value)', (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toPdf());
+    }
+
     public function testDocumentPartsCannotRepeatChildrenOrBecomeTheirOwnAncestors(): void
     {
         $parent = new P\DocumentPart();

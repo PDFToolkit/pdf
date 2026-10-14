@@ -9,6 +9,7 @@ use PDF\Syntax\DataStructure\XmlName;
 use PDF\Syntax\Object\BooleanType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\DictionaryType;
+use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringType;
@@ -24,6 +25,9 @@ final class DocumentPartMetadata extends DictionaryType
         $active = new \SplObjectStorage();
         while ($pending !== []) {
             [$value, $exit] = array_pop($pending);
+            if ($value instanceof IndirectReference) {
+                $value = $value->target();
+            }
             if ($exit) {
                 $active->offsetUnset($value);
                 $seen->offsetSet($value);
