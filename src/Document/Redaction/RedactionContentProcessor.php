@@ -321,7 +321,7 @@ final class RedactionContentProcessor
             if ($seen->offsetExists($item)) {
                 continue;
             }
-            $seen->attach($item);
+            $seen->offsetSet($item);
             if (count($seen) > $this->limits->objects) {
                 throw new \OverflowException('Dependent resource closure exceeds its explicit graph budget.');
             }
@@ -349,7 +349,7 @@ final class RedactionContentProcessor
             if ($this->registered->offsetExists($item)) {
                 continue;
             }
-            $this->registered->attach($item);
+            $this->registered->offsetSet($item);
             if (count($this->registered) > $this->limits->objects || $depth > $this->limits->depth) {
                 throw new \OverflowException('Redaction resource dependencies exceed their explicit graph budget.');
             }
@@ -406,7 +406,7 @@ final class RedactionContentProcessor
             if ($seen->offsetExists($item)) {
                 continue;
             }
-            $seen->attach($item);
+            $seen->offsetSet($item);
             if (count($seen) > $this->limits->objects) {
                 throw new \OverflowException('Affected resource closure exceeds its explicit graph budget.');
             }
@@ -414,7 +414,7 @@ final class RedactionContentProcessor
                 $subtype = $this->value($item->dictionary()->get('Subtype'));
                 if ($subtype instanceof NameType && in_array($subtype->value, ['Image', 'Form'], true)) {
                     if (!$this->tainted->offsetExists($item)) {
-                        $this->tainted->attach($item);
+                        $this->tainted->offsetSet($item);
                         $added[] = $item;
                     }
                 }

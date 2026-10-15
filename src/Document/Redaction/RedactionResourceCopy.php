@@ -59,7 +59,7 @@ final class RedactionResourceCopy
                 if ($seen->offsetExists($value)) {
                     continue;
                 }
-                $seen->attach($value);
+                $seen->offsetSet($value);
                 if (count($seen) > $this->limits->objects) {
                     throw new \OverflowException('Sanitized font resources exceed their explicit object budget.');
                 }
@@ -69,7 +69,7 @@ final class RedactionResourceCopy
                     foreach ($value->entries() as $entry) {
                         if (in_array($entry->key->value, ['FontFile', 'FontFile2', 'FontFile3'], true)) {
                             $program = $entry->value instanceof IndirectReference ? $entry->value->target() : $entry->value;
-                            $this->sanitizedPrograms->attach($program);
+                            $this->sanitizedPrograms->offsetSet($program);
                         }
                         $queue[] = $entry->value;
                     }
@@ -99,7 +99,7 @@ final class RedactionResourceCopy
         if (++$this->objects > $this->limits->objects || $depth > $this->limits->depth) {
             throw new \OverflowException('Retained redaction resources exceed their explicit graph budget.');
         }
-        $this->active->attach($object);
+        $this->active->offsetSet($object);
         $source = $object;
         try {
             if ($object instanceof IndirectReference) {
@@ -163,7 +163,7 @@ final class RedactionResourceCopy
             $this->copies[$source] = $copy;
             return $copy;
         } finally {
-            $this->active->detach($source);
+            $this->active->offsetUnset($source);
         }
     }
 

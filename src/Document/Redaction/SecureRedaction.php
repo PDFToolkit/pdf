@@ -157,7 +157,7 @@ final readonly class SecureRedaction
             if ($seen->offsetExists($node)) {
                 throw new \InvalidArgumentException('A redacted page tree must have unique, acyclic page ownership.');
             }
-            $seen->attach($node);
+            $seen->offsetSet($node);
             if (count($seen) > $this->limits->objects) {
                 throw new \OverflowException('Redaction pages exceed their explicit object budget.');
             }
