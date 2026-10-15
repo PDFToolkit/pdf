@@ -64,6 +64,9 @@ final readonly class TaggedStructureValidator
                     throw new \InvalidArgumentException('Tagged PDF figures and formulas require alternate description or replacement text (PDF page 601).');
                 }
                 $placement = $this->attributes->resolve($element, new NameType('Layout'), new NameType('Placement'));
+                if ($placement === null) {
+                    throw new \InvalidArgumentException('An illustration requires explicit Placement when its structure context does not determine a default.');
+                }
                 $dimension = $placement instanceof NameType ? match ($placement->value) {
                     'Inline' => 'Width',
                     'Block' => 'Height',

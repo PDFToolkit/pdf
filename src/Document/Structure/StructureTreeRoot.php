@@ -43,6 +43,7 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
         public readonly StructureLimits $limits = new StructureLimits(),
         public readonly StructureNamespaces $namespaces = new StructureNamespaces(),
         public readonly ?StructureInclusionRules $inclusionRules = null,
+        public readonly StructureAttributeSemantics $attributeSemantics = StructureAttributeSemantics::Pdf17,
     ) {
         if ($pages->parent() !== null) {
             throw new \InvalidArgumentException('A structure tree requires the document page-tree root.');
@@ -238,7 +239,7 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
         if ($this->namespaces->items !== [] || $this->inclusionRules !== null) {
             ($this->inclusionRules ?? new StructureInclusionRules())->validate($this, $index);
         } else {
-            $validator = new TaggedStructureValidator($this->roleMap, new AttributeResolver($this->classMap, roles: $this->roleMap));
+            $validator = new TaggedStructureValidator($this->roleMap, new AttributeResolver($this->classMap, new StandardStructureAttributes($this->attributeSemantics), $this->roleMap));
             $validator->validate($index);
         }
         (new StructureContentValidator())->validate($index, true, $this->pages);
@@ -326,8 +327,14 @@ final class StructureTreeRoot extends SchemaDictionary implements CatalogCompone
 
     public function validateVersion(EffectivePdfVersion $version): void
     {
+        if ($this->attributeSemantics === StructureAttributeSemantics::Pdf20) {
+            $version->require(PdfVersion::PDF20, 'PDF2 structure attribute semantics');
+        }
         if ($this->namespaces->items !== [] || $this->inclusionRules !== null) {
             $version->require(PdfVersion::PDF20, 'Structure namespaces and TS 32005 inclusion rules');
+        } elseif ($version->value === PdfVersion::PDF20 && $this->markInformation?->marked->value) {
+            // The actual file edition also checks callers that kept the historical construction default.
+            (new TaggedStructureValidator($this->roleMap, new AttributeResolver($this->classMap, new StandardStructureAttributes(StructureAttributeSemantics::Pdf20), $this->roleMap)))->validate($this->index());
         }
     }
 

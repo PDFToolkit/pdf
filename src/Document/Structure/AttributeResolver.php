@@ -49,6 +49,9 @@ final readonly class AttributeResolver
         if ($element->parent() instanceof StructureElement && $this->standard->inheritable($owner, $attribute) && !($owner->value === 'Layout' && $attribute->value === 'LineHeight' && $this->blockLevel($element))) {
             return $this->resolve($element->parent(), $owner, $attribute, $exportOwner, $contextDefault);
         }
+        if ($owner->value === 'Layout' && $attribute->value === 'Placement' && $this->standard->semantics === StructureAttributeSemantics::Pdf20) {
+            return $contextDefault ?? $this->placementDefault($element);
+        }
         return $this->standard->defaultValue($owner, $attribute) ?? $contextDefault;
     }
 
@@ -85,7 +88,35 @@ final readonly class AttributeResolver
             }
             $placement = $this->find($classes, new NameType('Layout'), new NameType('Placement'), lastWins: true);
         }
+        if ($placement === null && $this->standard->semantics === StructureAttributeSemantics::Pdf20) {
+            $placement = $this->placementDefault($element);
+        }
         return $placement instanceof NameType && $placement->value !== 'Inline';
+    }
+
+    /** EC3 #188, physical p.791: known standard contexts only; ambiguous layout needs caller context. */
+    private function placementDefault(StructureElement $element): ?NameType
+    {
+        $role = $this->roles->resolve($element->type);
+        $blocks = [StandardStructureType::P, StandardStructureType::H, StandardStructureType::H1, StandardStructureType::H2, StandardStructureType::H3, StandardStructureType::H4, StandardStructureType::H5, StandardStructureType::H6, StandardStructureType::L, StandardStructureType::Table];
+        $inline = [StandardStructureType::Span, StandardStructureType::Quote, StandardStructureType::Note, StandardStructureType::Reference, StandardStructureType::BibEntry, StandardStructureType::Code, StandardStructureType::Link, StandardStructureType::Annot, StandardStructureType::Ruby, StandardStructureType::RB, StandardStructureType::RT, StandardStructureType::RP, StandardStructureType::Warichu, StandardStructureType::WT, StandardStructureType::WP];
+        if (in_array($role, $blocks, true)) {
+            return new NameType('Block');
+        }
+        if (in_array($role, $inline, true)) {
+            return new NameType('Inline');
+        }
+        $parent = $element->parent();
+        if (in_array($role, [StandardStructureType::Figure, StandardStructureType::Formula, StandardStructureType::Form], true) && $parent instanceof StructureElement) {
+            $parentRole = $this->roles->resolve($parent->type);
+            if ($parentRole?->grouping()) {
+                return new NameType('Block');
+            }
+            if (in_array($parentRole, [...$blocks, ...$inline], true) && !in_array($parentRole, [StandardStructureType::L, StandardStructureType::Table], true)) {
+                return new NameType('Inline');
+            }
+        }
+        return null;
     }
 
     /**

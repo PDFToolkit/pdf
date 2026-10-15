@@ -25,6 +25,10 @@ use PDF\Syntax\Object\StringType;
 /** Standard owner domains composed from tables 343–349, PDF pages 606–624. */
 final readonly class StandardStructureAttributes
 {
+    public function __construct(public StructureAttributeSemantics $semantics = StructureAttributeSemantics::Pdf17)
+    {
+    }
+
     public function definition(NameType $owner): ?TableDefinition
     {
         return match ($owner->value) {
@@ -164,7 +168,7 @@ final readonly class StandardStructureAttributes
     {
         if ($owner->value === 'Layout') {
             return match ($attribute->value) {
-                'Placement' => new NameType('Inline'),
+                'Placement' => $this->semantics === StructureAttributeSemantics::Pdf17 ? new NameType('Inline') : null,
                 'WritingMode' => new NameType('LrTb'),
                 'BorderStyle', 'TBorderStyle', 'TextDecorationType' => new NameType('None'),
                 'Padding', 'TPadding', 'SpaceBefore', 'SpaceAfter', 'StartIndent', 'EndIndent', 'TextIndent', 'BaselineShift' => new IntegerType(0),

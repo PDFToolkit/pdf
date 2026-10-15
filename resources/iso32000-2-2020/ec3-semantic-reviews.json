@@ -3048,6 +3048,81 @@
         "tools/validate_pdf20_metadata.py",
         "tools/fixtures/xmp-utf8-revisions.php"
       ]
+    },
+    {
+      "issue": 188,
+      "physical_pdf_page": 791,
+      "annotation_name": "126dd68b-c698-4efb-ab8d-21676b592b48",
+      "approval_chain": [
+        "558957da-86fc-4226-859d-b0d5eff88e0c"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Explicit StructureAttributeSemantics::Pdf20 uses contextual Placement defaults for supported native structure roles: Figure below P is Inline, below Sect is Block. Direct and class attributes precede caller context and known-role defaults. Historical Pdf17 construction keeps Inline; native PDF2 structure objects recheck their actual edition. Ambiguous contexts require an explicit value. Generic retained/imported trees and namespace/TS32005 layout interpretation are not claimed by this resolver.",
+      "implementation": [
+        "src/Document/Structure/StructureAttributeSemantics.php",
+        "src/Document/Structure/StandardStructureAttributes.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StructureTreeRoot.php",
+        "src/Document/Structure/TaggedStructureValidator.php"
+      ],
+      "validation": [
+        "tests/Ec3StructurePlacementTest.php",
+        "tools/fixtures/structure-placement-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 188,
+      "physical_pdf_page": 791,
+      "annotation_name": "74f5d0a7-a34f-4f52-9a5e-6186f537b719",
+      "approval_chain": [
+        "8bb618fe-ce96-44e0-a4e8-f44eb4aba7dd"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Explicit StructureAttributeSemantics::Pdf20 uses contextual Placement defaults for supported native structure roles: Figure below P is Inline, below Sect is Block. Direct and class attributes precede caller context and known-role defaults. Historical Pdf17 construction keeps Inline; native PDF2 structure objects recheck their actual edition. Ambiguous contexts require an explicit value. Generic retained/imported trees and namespace/TS32005 layout interpretation are not claimed by this resolver.",
+      "implementation": [
+        "src/Document/Structure/StructureAttributeSemantics.php",
+        "src/Document/Structure/StandardStructureAttributes.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StructureTreeRoot.php",
+        "src/Document/Structure/TaggedStructureValidator.php"
+      ],
+      "validation": [
+        "tests/Ec3StructurePlacementTest.php",
+        "tools/fixtures/structure-placement-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 188,
+      "physical_pdf_page": 791,
+      "annotation_name": "5ec26227-6ff5-4494-81c8-42b43e86f251",
+      "approval_chain": [
+        "71b94886-568b-4929-8905-c70c144c4144"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Explicit StructureAttributeSemantics::Pdf20 uses contextual Placement defaults for supported native structure roles: Figure below P is Inline, below Sect is Block. Direct and class attributes precede caller context and known-role defaults. Historical Pdf17 construction keeps Inline; native PDF2 structure objects recheck their actual edition. Ambiguous contexts require an explicit value. Generic retained/imported trees and namespace/TS32005 layout interpretation are not claimed by this resolver.",
+      "implementation": [
+        "src/Document/Structure/StructureAttributeSemantics.php",
+        "src/Document/Structure/StandardStructureAttributes.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StructureTreeRoot.php",
+        "src/Document/Structure/TaggedStructureValidator.php"
+      ],
+      "validation": [
+        "tests/Ec3StructurePlacementTest.php",
+        "tools/fixtures/structure-placement-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
     }
   ]
 }

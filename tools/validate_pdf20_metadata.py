@@ -197,6 +197,26 @@ def main() -> None:
             assert ET.fromstring(xml).find("{urn:example:utf8}label").text == "Révisé — 日本語"
             utf8_paths.append(path)
 
+    placement_paths = []
+    for format_name in ("table", "stream", "hybrid"):
+        path = output / f"structure-placement-{format_name}.pdf"
+        run(arguments.php, str(source / "tools/fixtures/structure-placement-ec3.php"), str(path), format_name)
+        run(arguments.qpdf, "--check", str(path))
+        pdf = PdfReader(path, strict=True)
+        root = pdf.trailer["/Root"]["/StructTreeRoot"]
+        document = root["/K"][0].get_object()
+        assert document["/S"] == "/Document"
+        for reference, parent_role, dimension in zip(document["/K"], ("/P", "/Sect"), ("/Width", "/Height"), strict=True):
+            parent = reference.get_object()
+            figure = parent["/K"]
+            assert parent["/S"] == parent_role and figure["/S"] == "/Figure"
+            assert figure.raw_get("/P") == parent.indirect_reference
+            attributes = figure["/A"]
+            assert attributes["/O"] == "/Layout" and attributes[dimension] == 10
+            assert "/Placement" not in attributes, "The default is contextual, not emitted as an invented explicit attribute"
+            assert ("/Height" if dimension == "/Width" else "/Width") not in attributes
+        placement_paths.append(path)
+
     wrapper = PdfReader(wrapper_path)
     assert not wrapper.is_encrypted and len(wrapper.pages) == 1
     wrapper_root = wrapper.trailer["/Root"]
@@ -220,6 +240,8 @@ def main() -> None:
     proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations, script identity and MIME Subtype of named and unnamed embedded assets in all three xref formats", "independent AES-256 R6 decryption", "EC3 empty-path painting leaves Poppler pixels unchanged in all three xref formats"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths, *empty_paths)}}
     proof["checks"].append("EC3 #296 exact UTF-8 XMP under two decoding filters, immutable PDF1.7-to-PDF2 upgrades and retained revisions in all three xref formats")
     proof["examples"].update({path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in utf8_paths})
+    proof["checks"].append("EC3 #188 PDF2 Figure/P and Figure/Sect contextual Placement, preserving absent Placement and the required Width/Height in three xref formats")
+    proof["examples"].update({path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in placement_paths})
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

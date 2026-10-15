@@ -60,7 +60,7 @@ final readonly class WtPdfStructureChecks
                 }
             }
         }
-        $attributes = new AttributeResolver($root->classMap, roles: $root->roleMap);
+        $attributes = new AttributeResolver($root->classMap, new StandardStructureAttributes(StructureAttributeSemantics::Pdf20), $root->roleMap);
         $hasReference = new \SplObjectStorage();
         foreach (array_reverse($index->elements) as $element) {
             $ref = $this->target($element->get('Ref'));
