@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace PDF\Security;
 
-/** The signed P flags, with the reserved bits required by ISO 32000-1 Table 22. */
+/** Historical R5 P flags, ISO1 Table22; TS32004 Table3 (retained PDF p11) assigns bit13 to MAC policy. */
 final readonly class Revision5Permissions
 {
-    public function __construct(public int $value)
+    public function __construct(public int $value, public bool $requireMac = false)
     {
-        if ($value < -2147483648 || $value > -1 || ($value & 3) !== 0 || ($value & -3904) !== -3904) {
-            throw new \InvalidArgumentException('Permissions must be signed 32-bit P flags with the prescribed reserved bits.');
+        $reserved = $requireMac ? -8000 : -3904;
+        if ($value < -2147483648 || $value > -1 || ($value & 3) !== 0 || ($value & $reserved) !== $reserved
+            || (($value & 0x1000) === 0) !== $requireMac) {
+            throw new \InvalidArgumentException('Historical R5 permissions require signed 32-bit P flags, prescribed reserved bits and a consistent MAC policy.');
         }
     }
 
