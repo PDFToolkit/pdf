@@ -126,16 +126,24 @@ des 197 règles intrinsèques. Aucune apparence n’est générée implicitement
 
 ## Révisions incrémentales protégées
 
-La version 0.8.1 impose les restrictions DocMDP et FieldMDP historiques à chaque
-point d’écriture incrémentale. Elle vérifie toutes les différences entre les
-révisions figées : catalogue, pages, contenu, champs, trailer et nouveaux objets.
-Les changements protégés pris en charge se limitent à la signature terminale et
-à la maintenance DSS/horodatage documentaire PDF 2.0 ; les verrous historiques
-restent applicables. Le remplissage général des formulaires, la modification
-des annotations et les mises à jour de droits d’usage sont refusés lorsque
-leurs permissions complètes ne peuvent pas être établies. Les entrées `/Lock`
-et `/Reference` existantes peuvent rester inchangées
-dans une opération par ailleurs autorisée.
+La version candidate 0.10.0, non publiée, étend le garde natif commun au
+remplissage P2/P3 borné des champs existants de texte, choix, case à cocher et
+bouton radio, et à l’édition P3 des annotations de marquage listées. Il compare
+les révisions figées complètes et conserve DocMDP, FieldMDP, verrous Adobe,
+héritage des champs et ressources partagées. Les apparences à texte variable
+conservent les octets hors d’une région `/Tx` isolée ; les boutons gardent leurs
+programmes d’apparence existants. Signature terminale et maintenance DSS/horodatage
+documentaire PDF 2.0 conservent leurs preuves restreintes séparées.
+
+Les historiques UR3 natifs non chiffrés exigent une `UsageRightsAuthorization`
+explicite par mise à jour : l’autorité applicative doit reconnaître l’identité
+signataire vérifiée, et chaque opération doit respecter droits signés, sélection,
+conditions de sauvegarde et toutes les autres restrictions historiques. La
+validité mathématique seule n’accorde ni droits d’usage ni confiance PKI. UR ancien,
+UR chiffré et PDF 2.0 `P=false`/absent restent hors périmètre, comme les modèles,
+le texte enrichi, les nouvelles ressources, la classification de chaînes externes
+et les mises à jour mêlant remplissage, signature ou maintenance.
+Voir les [opérations prises en charge, migration et preuves indépendantes](resources/signature-revisions/README.fr.md).
 
 Conserver la `FileRevision` originale renvoyée par l’écriture ou la signature
 native dans l’exécution courante. Une révision reconstruite manuellement ou

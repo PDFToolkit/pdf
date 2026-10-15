@@ -4,6 +4,32 @@
 
 ## [Non publié]
 
+- Étendre le garde des révisions natives protégées au remplissage P2/P3 borné des
+  champs texte/choix/case à cocher/bouton radio existants et à la création,
+  modification et suppression par détachement d’annotations P3. Conserver verrous,
+  valeurs héritées, propriétaires, objets étrangers et ressources partagées
+  immuables ; refuser les changements cachés ou mêlés à la maintenance.
+- Prouver le remplacement d’apparence à texte variable non enrichi depuis les
+  octets bruts/Flate figés : région Tx unique isolée, octets extérieurs inchangés,
+  analyse lexicale bornée et aucune fuite de chemin/texte/état graphique.
+  Conserver géométrie et liaisons de ressources ; équivalence visuelle de la valeur
+  et régénération générale des apparences restent hors périmètre.
+- Ajouter UsageRightsAuthorization et UsageRightsAuthority explicites par mise à
+  jour, à partir des faits de la vraie VerifiedRevisionSignature. Croiser droits
+  UR3 natifs non chiffrés, opérations sélectionnées, sauvegarde et règles historiques
+  DocMDP/FieldMDP/Adobe. FillField applicatif suffit au remplissage persisté si la
+  politique signée permet sa sauvegarde ; UR ancien/chiffré et PDF2 P=false/absent
+  restent hors périmètre.
+- Étendre la preuve indépendante sous PHP 8.3–8.5 à 97 refus natifs, 148 PDF contrôlés
+  et 198 pixels par runtime, avec 32 combinaisons de formulaire, quatre chaînes
+  d’annotations P3 et 11 CMS UR3. Conserver les écarts pyHanko non modifié pour les
+  boutons, ReadOnly, annotations et hybrides sans assimiler tous les fichiers à
+  des approbations de permissions. La validité mathématique n’établit pas la PKI.
+- Suivre explicitement modèles de pages, texte enrichi, nouvelles ressources,
+  classification de chaînes externes et autres opérations protégées non prises en
+  charge dans la couverture bilingue. Les exigences de provenance native et
+  contraintes stables des modules optionnels restent inchangées.
+
 ## [0.9.1] - 2026-10-15
 
 - Refuser les véritables annotations de page PDF 2.0 sans AP requis, en conservant les exceptions de rectangle réduit à un point, Popup/Projection/Link et le caractère facultatif en PDF 1.7. Vérifier AP.N, la géométrie des streams Form et les noms d’état requis dans les graphes natifs/figés effectifs ; préserver le repli prévu pour un AS inconnu. Une Projection dont une dimension est nulle interdit AP (§12.5.6.24, page physique520).
@@ -647,7 +673,7 @@ pour PHP 8.5.
   incrémentales, linéarisation et autres contraintes sémantiques restent à venir.
   Voir [le document de couverture](docs/fr/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.9.1...HEAD
 [0.5.4]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.4
 [0.5.3]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.3
 [0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2

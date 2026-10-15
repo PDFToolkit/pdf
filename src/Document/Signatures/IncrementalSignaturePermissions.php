@@ -21,13 +21,14 @@ use PDF\Syntax\Object\StringType;
  */
 final readonly class IncrementalSignaturePermissions
 {
-    public function validate(FileRevision $current): void
+    public function validate(FileRevision $current, ?UsageRightsAuthorization $authorization = null): void
     {
         $previous = $current->previous ?? throw new \LogicException('Incremental permissions require an actual previous revision.');
         $protected = false;
         $seen = [];
         $signatures = [];
         $rules = new SignatureDocumentSigningRules();
+        $usage = new AuthenticatedUsageRights($authorization);
         for ($revision = $previous; $revision !== null; $revision = $revision->previous) {
             if (!$revision->isNativeEmission()) {
                 throw new \LogicException('Permission history requires native emitted revisions, not supplied snapshots.');
@@ -37,10 +38,19 @@ final readonly class IncrementalSignaturePermissions
             if ($perms !== null && !$perms instanceof DictionaryType) {
                 throw new \LogicException('Historical catalog permissions are an actual dictionary.');
             }
-            if ($perms instanceof DictionaryType && ($graph->resolve($perms->get('UR')) !== null || $graph->resolve($perms->get('UR3')) !== null)) {
-                throw new \LogicException('Historical usage rights require an authorized granting identity and a complete rights-change classifier; native incremental writing cannot grant those rights.');
+            if ($perms instanceof DictionaryType && $graph->resolve($perms->get('UR')) !== null) {
+                throw new \LogicException('Legacy UR signatures require an external digest/authority adapter and remain unsupported.');
             }
             $protected = $protected || ($perms instanceof DictionaryType && $graph->resolve($perms->get('DocMDP')) !== null);
+            $protected = $protected || ($perms instanceof DictionaryType && $graph->resolve($perms->get('UR3')) !== null);
+            if ($perms instanceof DictionaryType && $graph->resolve($perms->get('UR3')) !== null) {
+                $target = $perms->get('UR3');
+                $usageDictionary = $target instanceof \PDF\Syntax\Object\IndirectReference ? $graph->record($target)->dictionary : null;
+                if ($usageDictionary === null || !isset($rules->methods($graph, $usageDictionary)['UR'])
+                    || !$usageDictionary->get('Contents') instanceof StringType || $usageDictionary->get('Contents') instanceof SignatureContentsReservation) {
+                    throw new \LogicException('Historical UR3 declarations require an actual completed usage-rights signature.');
+                }
+            }
             foreach ($revision->objects() as $record) {
                 $dictionary = $record->dictionary;
                 if ($dictionary === null || !$dictionary->has('ByteRange') || !$dictionary->has('Contents')) {
@@ -61,10 +71,7 @@ final readonly class IncrementalSignaturePermissions
                     continue;
                 }
                 $methods = $rules->methods($graph, $dictionary);
-                if (isset($methods['UR'])) {
-                    throw new \LogicException('Historical usage-rights transforms are not an authenticated native change authority.');
-                }
-                $protected = $protected || isset($methods['DocMDP']) || isset($methods['FieldMDP']);
+                $protected = $protected || isset($methods['DocMDP']) || isset($methods['FieldMDP']) || isset($methods['UR']);
                 $range = $dictionary->get('ByteRange');
                 if (!$contents instanceof StringType || !$range instanceof ArrayType || count($range->items) !== 4
                     || !$range->items[2] instanceof IntegerType || !$range->items[3] instanceof IntegerType) {
@@ -88,6 +95,15 @@ final readonly class IncrementalSignaturePermissions
                     $proof = null;
                 }
                 $signatures[$key] = $proof;
+                if (isset($methods['UR'])) {
+                    if ($proof === null) {
+                        throw new \LogicException('Usage-rights authority requires mathematical verification of the actual signed bytes.');
+                    }
+                    $sourceGraph = new FrozenSignatureGraph($source);
+                    $sourceDictionary = $source->binding($record->identifier)->dictionary ?? throw new \LogicException('Verified usage rights retain their original signature dictionary.');
+                    $sourceMethods = $rules->methods($sourceGraph, $sourceDictionary);
+                    $usage->add($sourceGraph, $proof, $sourceMethods['UR'] ?? throw new \LogicException('Usage-rights policy belongs to the actual signed revision.'));
+                }
             }
         }
         if (!$protected) {
@@ -115,11 +131,23 @@ final readonly class IncrementalSignaturePermissions
             throw new \LogicException('Protected native incremental signing introduces exactly one signature reservation.');
         }
         if ($pending === []) {
-            if (!$allowDss) {
-                throw new \LogicException('Protected native revisions support only proven signing; DSS maintenance requires PDF 2.0.');
+            $changes = new ProtectedRevisionChanges($graph);
+            if (!$changes->same($prior->catalog->get('DSS'), $graph->catalog->get('DSS'))) {
+                if (!$allowDss) {
+                    throw new \LogicException('Protected DSS maintenance requires PDF 2.0.');
+                }
+                $history->assertDssMaintenance();
+                $usage->assertChanges(0, []);
+                (new SignatureRevisionDelta())->validate($graph, null, null);
+                return;
             }
-            $history->assertDssMaintenance();
-            (new SignatureRevisionDelta())->validate($graph, null, null);
+            $fields = (new ProtectedFormFillChanges())->classify($changes, $history);
+            $annotations = (new ProtectedAnnotationChanges())->classify($changes, $history);
+            if ($fields === 0 && $annotations === []) {
+                throw new \LogicException('A protected revision requires a classified form-fill, annotation, signing or maintenance operation.');
+            }
+            $changes->finish();
+            $usage->assertChanges($fields, $annotations);
             return;
         }
         $signature = $pending[0];
@@ -133,8 +161,10 @@ final readonly class IncrementalSignaturePermissions
                 throw new \LogicException('Document timestamp maintenance requires PDF 2.0.');
             }
             $history->assertDocumentTimestamp($graph, $bindings[0], $signature);
+            $usage->assertChanges(0, []);
         } else {
             $history->assertSigning($bindings[0]);
+            $usage->assertChanges(0, [], true);
         }
         // The entire delta is proved even for P2/P3 and FieldMDP-only histories.
         (new SignatureRevisionDelta())->validate($graph, $bindings[0], $signature, $allowDss);

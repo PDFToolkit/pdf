@@ -1,22 +1,32 @@
 {
-  "release": "0.8.1",
-  "status": "native-conservative-authenticated-revision-guard",
+  "release": null,
+  "status": "unreleased-native-bounded-authenticated-classification",
   "completeGeneralMdpClassification": false,
   "sources": [
     {
       "document": "PDF32000_2008.pdf",
       "repositoryPath": "resources/reference-documents/PDF32000_2008.pdf",
       "clauses": [
+        "12.7.3.1",
+        "12.7.3.2",
+        "12.7.3.3",
         "12.8.2.2",
         "12.8.2.3",
-        "12.8.2.4"
+        "12.8.2.4",
+        "12.8.4"
       ],
       "physicalPages": [
+        440,
+        441,
+        442,
+        443,
+        444,
         478,
         479,
         480,
         481,
-        482
+        482,
+        485
       ],
       "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3"
     },
@@ -24,11 +34,21 @@
       "document": "ISO_32000-2_sponsored_EC3.pdf",
       "repositoryPath": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
       "clauses": [
+        "12.7.4.1",
+        "12.7.4.2",
+        "12.7.4.3",
+        "12.7.5.5",
         "12.8.2",
         "12.8.5.3",
         "12.8.6"
       ],
       "physicalPages": [
+        545,
+        546,
+        547,
+        548,
+        549,
+        560,
         588,
         589,
         590,
@@ -59,27 +79,107 @@
     "src/Document/Signatures/PreparedSignature.php",
     "src/Serialization/NativeRevisionEmission.php",
     "src/Serialization/IncrementalWriter.php",
-    "src/Syntax/FileStructure/FileRevision.php"
+    "src/Syntax/FileStructure/FileRevision.php",
+    "src/Document/Signatures/ProtectedRevisionChanges.php",
+    "src/Document/Signatures/FrozenFormFields.php",
+    "src/Document/Signatures/FrozenFormField.php",
+    "src/Document/Signatures/ProtectedFormFillChanges.php",
+    "src/Document/Signatures/VariableTextAppearanceChanges.php",
+    "src/Document/Signatures/ProtectedAnnotationChanges.php",
+    "src/Document/Signatures/AuthenticatedUsageRights.php",
+    "src/Document/Signatures/UsageRightsAuthority.php",
+    "src/Document/Signatures/UsageRightsAuthorization.php"
   ],
   "implemented": [
-    "One shared guard on every native incremental emission, including empty bodies, direct writers, root/trailer changes and lifecycle operations.",
-    "Exact native emission provenance and final-byte mathematical verification, independently of SignedRevision naming and PKI trust.",
-    "Complete frozen delta proof for restricted native P2/P3 approvals and PDF2 DSS/document timestamp maintenance, preserving historical FieldMDP and Adobe field locks.",
-    "Historical declarations cannot be erased by detaching or replacing their current catalogue/form links.",
-    "Unsupported protected changes and usage-rights histories fail closed."
+    "One common guard on every native incremental emission with exact native provenance, final-byte mathematical verification and complete frozen delta accounting.",
+    "Historical DocMDP, FieldMDP and Adobe field locks remain effective after detachment, renaming or replacement of current policy links; unsupported changes fail closed.",
+    "Existing terminal plain-text, choice, checkbox and radio filling under P2/P3 and applicable historical field locks, with inherited value/flag checks, fixed field/widget identity and ReadOnly protection.",
+    "Non-rich variable-text appearance replacement within one isolated Tx BMC/EMC region, or append when absent; frozen plain/Flate bytes, strict outside-byte preservation and bounded lexical/state proof.",
+    "P3 bounded markup create/modify/detach for Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight, Underline, Squiggly, StrikeOut, Caret, Ink and Stamp; immutable page ownership, unrelated data and shared resources.",
+    "Native terminal signing and PDF2 DSS/document timestamp maintenance retain their separate complete delta proof; mixed fill/annotation and signature/maintenance updates are refused.",
+    "Clear authenticated native UR3 version2.2 with explicit per-update granting authority, verified signature facts, actual-operation scope and saving intersection; restrictive PDF2 P=true only.",
+    "Application FillField scope authorizes a persisted classified fill when the signed rights permit saving; signed FullSave as a saving condition does not also require application FullSave scope."
   ],
   "evidence": [
     "tests/IncrementalSignaturePermissionsTest.php",
     "tests/DocumentTimestampRevisionPolicyTest.php",
     "tests/SignaturePermissionHistoryTest.php",
     "tools/fixtures/incremental-permissions.php",
-    "tools/validate_incremental_permissions.py"
+    "tools/validate_incremental_permissions.py",
+    "tests/ProtectedFormFillChangesTest.php",
+    "tests/VariableTextAppearanceChangesTest.php",
+    "tests/ProtectedAnnotationChangesTest.php",
+    "tests/AuthenticatedUsageRightsTest.php",
+    "tests/Support/ProtectedRevisionFixture.php",
+    "examples/protected-form-fill.php"
   ],
   "remaining": [
-    "General authenticated P2 form-fill and template-instantiation classification.",
-    "General P3 annotation and appearance-edit classification.",
+    "Page-template instantiation and general field creation/deletion/renaming or reparenting.",
+    "Rich-text/file-selection filling and arbitrary appearance regeneration or new resource objects.",
+    "Complete graphics operand validation, rendered-value equivalence and human appearance/intent assessment.",
+    "Annotation subtypes, relationships and dependencies outside the listed bounded markup scope.",
     "External PDF revision-history parsing, normalization and authentication adapters.",
-    "Usage-rights granting authority and complete handler/security-rights/change intersection.",
-    "PKI path, revocation and human appearance/intent review remain explicit separate responsibilities."
-  ]
+    "Legacy UR digest adapters, encrypted UR/security-handler permission intersections and PDF2 unrestricted UR semantics.",
+    "PKI path and revocation validation remain explicit application responsibilities."
+  ],
+  "candidateRelease": "0.10.0",
+  "limits": {
+    "appearanceEncodedBytes": 1048576,
+    "appearanceDecodedBytes": 1048576,
+    "appearanceTokens": 100000,
+    "appearanceNesting": 64,
+    "appearanceSupportedFilters": [
+      "unfiltered",
+      "single FlateDecode without predictors"
+    ],
+    "appearanceProof": "Region/state invariance, not complete graphics operand conformity, rendered-value equivalence or human intent.",
+    "usageRightsRejected": [
+      "Legacy UR",
+      "encrypted UR histories",
+      "opaque or unverified signatures",
+      "PDF2 P=false or absent",
+      "unclassified maintenance/general saves"
+    ]
+  },
+  "independentValidation": {
+    "status": "passed on uncommitted 0.10.0 candidate",
+    "phpVersions": [
+      "8.3.29",
+      "8.4.13",
+      "8.5.2"
+    ],
+    "pyHanko": "0.37.0",
+    "qpdf": "12.4.2",
+    "poppler": "22.12.0",
+    "perRuntime": {
+      "nativeRefusals": 97,
+      "independentlyCheckedPdfs": 148,
+      "nativeFormCombinations": 32,
+      "independentFormFills": 32,
+      "p3AnnotationChains": 4,
+      "p3AnnotationOperations": 12,
+      "pixels": {
+        "buttons": 144,
+        "annotations": 48,
+        "sharedAppearanceAttack": 6
+      },
+      "ur3": {
+        "signedSources": 8,
+        "permittedFills": 3,
+        "independentlyVerifiedCmsFiles": 11,
+        "tamperedSignedByteRejected": true
+      }
+    },
+    "policy": "Unmodified pyHanko default; CMS mathematics, structure/rendering, modification policy and PKI trust remain separate.",
+    "boundaries": [
+      "The 16 Tx/Ch combinations agree with the unmodified pyHanko modification policy.",
+      "All 32 filled button outputs and all 12 P3 annotation operations report docmdp_ok=false and modificationLevel=OTHER; values, states, CMS and rendering are verified separately.",
+      "Two ReadOnly value changes are accepted by pyHanko but rejected natively.",
+      "Strict pyHanko cannot validate hybrid signatures; independent matrix uses Table/Stream, with native hybrid coverage separate.",
+      "UR3 independent evidence validates actual CMS bytes and declarations, not a third-party granting-authority or PKI decision.",
+      "The executable protected-form-fill example changes AP on a widget child without T; pyHanko reports OTHER. Its qpdf/rendering and CMS/ByteRange checks do not imply pyHanko DocMDP approval."
+    ],
+    "implicitPkiTrust": false,
+    "fetching": false
+  }
 }

@@ -417,7 +417,7 @@ final class IncrementalWriter
             $section->freeListHead(),
             ...[$emission, ...array_values($effective), ...array_values($spans), ...$context->references(), ...$lifecycle->retiredObjects, ...array_values($effectiveCompressed), $freeList, ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
         );
-        (new \PDF\Document\Signatures\IncrementalSignaturePermissions())->validate($revision);
+        (new \PDF\Document\Signatures\IncrementalSignaturePermissions())->validate($revision, $update->usageRights);
         return $revision;
     }
 

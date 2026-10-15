@@ -210,7 +210,7 @@ final class SignaturePermissionHistoryTest extends TestCase
         // Mathematical signing does not assert that this public test identity is a granting authority.
         $signed = (new SignatureWriter())->prepare(new FileStructure(new FileHeader(), new FileBody($catalog)), $first)->sign($this->backend());
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('authorized granting identity');
+        $this->expectExceptionMessage('explicit granting authority');
         for ($index = 2; $index <= 3; ++$index) {
             $pending = $this->usageReservation();
             $replacement = new DocumentCatalog((new FrozenSignatureGraph($signed->revision))->catalog->get('Pages'), $this->entry('Perms', new DictionaryType($this->entry('UR3', new IndirectReference($pending)))));

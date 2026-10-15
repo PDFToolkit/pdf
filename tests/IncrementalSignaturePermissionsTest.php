@@ -30,6 +30,9 @@ final class IncrementalSignaturePermissionsTest extends TestCase
     {
         foreach (DocMdpPermissions::cases() as $permission) {
             foreach (['lang', 'remove-perms', 'remove-form', 'root', 'trailer', 'release', 'field-value', 'field-name', 'content', 'page', 'fake-xref', 'orphan'] as $attack) {
+                if ($attack === 'field-value' && $permission !== DocMdpPermissions::NoChanges) {
+                    continue; // Existing unlocked fields are now a classified P2/P3 operation.
+                }
                 yield $permission->name . ':' . $attack => [$permission, $attack];
             }
         }
@@ -113,6 +116,9 @@ final class IncrementalSignaturePermissionsTest extends TestCase
             if (!in_array($attack, ['release', 'trailer', 'root'], true)) {
                 yield $name => [$permission, $attack];
             }
+        }
+        foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::FormsTemplatesSigningAndAnnotations] as $permission) {
+            yield $permission->name . ':field-value' => [$permission, 'field-value'];
         }
     }
 

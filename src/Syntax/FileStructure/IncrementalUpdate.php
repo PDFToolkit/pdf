@@ -13,19 +13,33 @@ final readonly class IncrementalUpdate implements \Stringable
 {
     /** @var list<ReleaseIndirectObject|ReuseObjectNumber> */
     public array $objectOperations;
+    public ?\PDF\Document\Signatures\UsageRightsAuthorization $usageRights;
     public function __construct(
         public FileRevision $previous,
         public FileBody $body,
         public ?IndirectReference $root = null,
         public ?DictionaryType $trailerEntries = null,
-        ReleaseIndirectObject|ReuseObjectNumber ...$objectOperations,
+        ReleaseIndirectObject|ReuseObjectNumber|\PDF\Document\Signatures\UsageRightsAuthorization ...$objectOperations,
     ) {
         foreach (['Size', 'Root', 'Prev', 'XRefStm', 'Encrypt'] as $managed) {
             if ($trailerEntries?->has($managed)) {
                 throw new \InvalidArgumentException('Managed or unsupported incremental trailer entry: ' . $managed);
             }
         }
-        $this->objectOperations = array_values($objectOperations);
+        $operations = [];
+        $usageRights = null;
+        foreach ($objectOperations as $operation) {
+            if ($operation instanceof \PDF\Document\Signatures\UsageRightsAuthorization) {
+                if ($usageRights !== null) {
+                    throw new \InvalidArgumentException('An incremental update selects one usage-rights authorization.');
+                }
+                $usageRights = $operation;
+            } else {
+                $operations[] = $operation;
+            }
+        }
+        $this->objectOperations = $operations;
+        $this->usageRights = $usageRights;
     }
 
     public function toRevision(): FileRevision

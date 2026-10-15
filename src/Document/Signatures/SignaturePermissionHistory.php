@@ -15,6 +15,7 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringType;
 
@@ -102,6 +103,26 @@ final readonly class SignaturePermissionHistory
             throw new \LogicException('Historical DocMDP/Adobe P1 forbids changing a field value by a later signature.');
         }
         $this->assertFieldRestrictions($field);
+    }
+
+    /** A fill is allowed only when every historical certification and field selection permits it. */
+    public function assertFormFilling(ObjectIdentifier $identifier, string $qualifiedName): void
+    {
+        if ($this->permissions->integer() < 2) {
+            throw new \LogicException('Historical DocMDP/Adobe P1 forbids protected form filling.');
+        }
+        foreach ($this->fieldRestrictions as [$source, $restriction]) {
+            $names = [$qualifiedName];
+            $original = (new FrozenFormFields($source))->fields()[(string) $identifier] ?? null;
+            if ($original !== null) {
+                $names[] = $original->qualifiedName;
+            }
+            foreach ($names as $name) {
+                if ($restriction->locks($name)) {
+                    throw new \LogicException('A historical FieldMDP transform forbids changing this field, its widgets or appearances.');
+                }
+            }
+        }
     }
 
     /** ISO 32000-2 12.8.5.3: prove the entire maintenance delta before DocMDP exclusion. */

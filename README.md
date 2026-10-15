@@ -147,14 +147,22 @@ from the 197 intrinsic rules. No appearance is generated implicitly.
 
 ## Protected incremental revisions
 
-Version 0.8.1 enforces historical DocMDP and FieldMDP restrictions at every
-incremental writing entry point. It checks the complete frozen revision delta,
-including catalog, pages, content, fields, trailer and new objects. Supported
-protected changes are limited to terminal signing and PDF 2.0 DSS/document
-timestamp maintenance; historical field locks still apply. General form filling,
-annotation editing and usage-rights updates are rejected when their complete
-permission semantics cannot be established. Existing `/Lock` and `/Reference`
-entries may remain unchanged in an otherwise permitted operation.
+The unreleased 0.10.0 candidate extends the shared native guard to bounded P2/P3
+filling of existing text, choice, checkbox and radio fields, and P3 editing of
+listed markup annotations. It compares the complete frozen delta and preserves
+historical DocMDP, FieldMDP, Adobe locks, field inheritance and shared resources.
+Variable-text appearances preserve bytes outside an isolated `/Tx` region;
+buttons keep their existing appearance programs. Terminal signing and PDF 2.0
+DSS/document-timestamp maintenance retain their separate restricted proofs.
+
+Clear native UR3 histories require explicit per-update `UsageRightsAuthorization`:
+an application authority must recognize the verified signing identity, and each
+operation must satisfy signed rights, selected scope, saving conditions and all
+other historical restrictions. Mathematical validity alone grants no usage
+rights or PKI trust. Legacy/encrypted UR and PDF 2.0 `P=false`/absent declarations
+remain unsupported. Templates, rich text, new resources, external revision-chain
+classification and mixed fill/signing/maintenance updates remain outside scope.
+See the [supported operations, migration and independent evidence](resources/signature-revisions/README.md).
 
 Keep the original `FileRevision` returned by native writing or signing in the
 current runtime. A manually reconstructed or cloned revision has no native

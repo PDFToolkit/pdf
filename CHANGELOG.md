@@ -4,6 +4,29 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+- Extend the native protected-revision guard to bounded P2/P3 filling of existing
+  text/choice/checkbox/radio fields and P3 markup creation, modification and
+  detachment. Preserve historical locks, inherited values, ownership, unrelated
+  objects and immutable shared resources; reject hidden or mixed maintenance edits.
+- Prove non-rich variable-text appearance replacement from frozen plain/Flate
+  bytes: one isolated Tx region, unchanged outside bytes, bounded lexical parsing
+  and no path/text/graphics-state leakage. Preserve geometry and resource bindings;
+  rendered-value equivalence and general appearance regeneration remain outside scope.
+- Add explicit per-update UsageRightsAuthorization and UsageRightsAuthority over
+  the actual VerifiedRevisionSignature facts. Intersect clear native UR3 rights,
+  operation scope, saving conditions and historical DocMDP/FieldMDP/Adobe rules.
+  Application FillField suffices for persisted filling when the signed policy
+  permits saving; Legacy/encrypted UR and PDF2 P=false/absent remain unsupported.
+- Extend independent evidence on PHP 8.3–8.5 to 97 native refusals, 148 checked PDFs
+  and 198 rendered pixels per runtime, including 32 form combinations, four P3
+  annotation chains and 11 UR3 CMS files. Preserve unmodified pyHanko differences
+  for buttons, ReadOnly, annotations and hybrids instead of treating all files
+  as permission approvals. Mathematical validity does not establish PKI trust.
+- Track page templates, rich text, new resources, external revision-chain
+  classification and other unsupported protected operations explicitly in the
+  bilingual signature-revision coverage. Existing native provenance requirements
+  and stable optional module constraints remain unchanged.
+
 ## [0.9.1] - 2026-10-15
 
 - Reject actual PDF 2.0 page annotations without the required AP, preserving point-rectangle and Popup/Projection/Link exceptions and PDF 1.7 optional behavior. Check AP.N, Form stream geometry and required state names in effective native/frozen graphs; preserve the specified fallback for an unmatched AS. Projection annotations with either collapsed dimension prohibit AP (§12.5.6.24, physical page520).
@@ -458,7 +481,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.9.1...HEAD
 [0.5.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.1
 [0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
 [0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
