@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 80 entrées de résumés/corrections du projet, réparties dans 21 tableaux et leurs
+- `reviewed-overrides.json` : les 117 entrées de résumés/corrections du projet, réparties dans 44 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -65,8 +65,8 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
-`semantic-rules.json` fournit maintenant **118 règles intrinsèques exécutables
-réparties sur 51 tableaux source**, héritées par leurs définitions dérivées.
+`semantic-rules.json` fournit maintenant **120 règles intrinsèques exécutables
+réparties sur 53 tableaux source**, héritées par leurs définitions dérivées.
 Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
 des fonctions, les paramètres de filtres, les sections de références croisées,
 les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 66 annotations distinctes couvrant 35 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 113 annotations distinctes couvrant 59 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -185,3 +185,16 @@ aux Assets de l’annotation par identité objet, imposent Content/Settings prop
 sélections d’activation. L’Asset principal d’une instance peut rester sans nom.
 Les révisions incrémentales revérifient ces liens. Aucun script, codec multimédia
 ou affichage interactif n’est exécuté.
+
+Les qualifications EC3 distinguent désormais les octets bruts de `DA`/`CheckSum`,
+les noms de champs et condensats de références de signature optionnels, et les
+entrées locales d’actions/signatures des propriétés héritables des champs. `RD`
+est un tableau de quatre différences positives ou nulles, sans ordre de
+coordonnées. La liste PDF2 des condensats accepte les noms prévus dans tout ordre ;
+les doublons n’ajoutent pas de restriction d’unicité. Les introductions DSS/VRI,
+versions des styles de bordure et dépréciations Web Capture/3D/structure conservent
+leurs métadonnées d’édition explicites. Ces vérifications de schémas et d’objets
+natifs ne prouvent ni la confiance des certificats ni le rendu d’une visionneuse.
+Les corrections natives examinées séparément pour les boutons radio, boutons
+poussoirs et valeurs textuelles nulles sont reliées à leurs tests exécutables dans
+le registre des ancres exactes.

@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 80 authored summary/overlay entries across 21 tables and selected EC3
+- `reviewed-overrides.json`: 117 authored summary/overlay entries across 44 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **118 executable intrinsic rules across 51
+`semantic-rules.json` now supplies **120 executable intrinsic rules across 53
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 66 distinct annotations across 35 issues. A polygon `Path` ignores
+and approval reply chains for 113 distinct annotations across 59 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -169,3 +169,14 @@ annotation’s Assets by object identity, keep Content/Settings unique per
 annotation, require nonempty Configurations and validate activation selections.
 A primary instance Asset may remain unnamed. Incremental revisions recheck
 these links. No scripts, media codecs or interactive presentation are executed.
+
+EC3 catalogue qualifiers now distinguish raw `DA`/`CheckSum` bytes, optional field
+names and signature-reference digest entries, and local action/signature entries
+from inheritable field properties. `RD` is an array of four nonnegative differences,
+without coordinate ordering. The PDF2 seed digest list accepts the specified names
+in any order; duplicate entries do not invent a uniqueness restriction. DSS/VRI
+introductions, border-style versions and deprecated Web Capture/3D/structure keys
+retain their explicit edition metadata. These are schema and native-object checks,
+not certificate trust decisions or viewer rendering claims. The independently
+reviewed native radio, pushbutton and null text-value corrections are linked to
+their executable tests in the exact-anchor register.

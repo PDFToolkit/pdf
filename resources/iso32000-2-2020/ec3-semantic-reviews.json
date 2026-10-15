@@ -1508,6 +1508,1034 @@
         "tools/fixtures/rich-media-ec3.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 619,
+      "physical_pdf_page": 121,
+      "annotation_name": "c15100fb-a98a-4204-96fa81b1c9b33bcd",
+      "approval_chain": [
+        "d2a130c2-b88b-44d2-a13bc45bf3c609a7"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "Page and image Web Capture ID entries are marked deprecated in PDF 2.0. This scope does not cover rendering-time ignored image entries.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 382,
+      "physical_pdf_page": 154,
+      "annotation_name": "32bf5b59-65ad-4280-b4cd-d2cddf1d8d45",
+      "approval_chain": [
+        "34870286-2f67-4953-bdb5-b52b9e960fe4",
+        "bc6ae643-8e6d-4c88-8cab-e51bf73023fd",
+        "80242d9c-4a16-4f69-b8f98b52adf2e1e9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Embedded CheckSum is a byte string; raw non-text bytes are preserved.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 619,
+      "physical_pdf_page": 275,
+      "annotation_name": "023c7245-5761-44df-a86985e39bc6a07b",
+      "approval_chain": [
+        "fe557514-f6db-40b1-9265382430587401"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "Page and image Web Capture ID entries are marked deprecated in PDF 2.0. This scope does not cover rendering-time ignored image entries.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 299,
+      "physical_pdf_page": 498,
+      "annotation_name": "b40e7361-0783-4b35-b489-88ea5b92beea",
+      "approval_chain": [
+        "43f49f7c-f4a2-45d5-a271-b2033788eead",
+        "89186afa-9a6d-4bcb-8c4e-0c21a4d1981a",
+        "7922e16e-150e-488f-81f2aa62191b1ed4"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Link and FreeText BS are introduced in PDF 1.3, without imposing a later version.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 499,
+      "annotation_name": "d23ee549-2809-4281-a3d3-70d8d43fe2a9",
+      "approval_chain": [
+        "89f16e91-bd67-42cb-b5f6-111c13204bdd",
+        "a8ab27ca-58e6-4f68-bed5-fbd31e9be3bf",
+        "51b51612-448d-4fbd-a9996023bea74610"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 299,
+      "physical_pdf_page": 500,
+      "annotation_name": "5bcc0298-5f03-42b5-be9b-84bdf4a24f16",
+      "approval_chain": [
+        "e51a9190-2378-4a7a-9773-97c6f2db1715",
+        "02d88977-52ab-4579-a638-e642f2394fbe",
+        "4ce8100f-3608-4d64-83c5c8c9a00bc35c"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Link and FreeText BS are introduced in PDF 1.3, without imposing a later version.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 524,
+      "physical_pdf_page": 500,
+      "annotation_name": "93ddebf8-3e30-4f49-9781da410d4feb1b",
+      "approval_chain": [
+        "e9da92bd-dc6c-4df1-ae8bc9e0a76070aa"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "RD contains four nonnegative numerical differences, not rectangle coordinates. PDF2 schemas retain arbitrary component ordering and validate member type, length and sign; page-dependent fit remains a separate annotation check.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 524,
+      "physical_pdf_page": 505,
+      "annotation_name": "8b7d740a-c712-4d4e-a57fa31f4f46a8f0",
+      "approval_chain": [
+        "7d9b59ac-8263-4e12-9302a3aa4af4663f"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "RD contains four nonnegative numerical differences, not rectangle coordinates. PDF2 schemas retain arbitrary component ordering and validate member type, length and sign; page-dependent fit remains a separate annotation check.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 524,
+      "physical_pdf_page": 508,
+      "annotation_name": "5c631c49-266e-469a-a92e3d56dded1f4d",
+      "approval_chain": [
+        "2881308f-fbd3-49f0-a0a606f804c7033f"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "RD contains four nonnegative numerical differences, not rectangle coordinates. PDF2 schemas retain arbitrary component ordering and validate member type, length and sign; page-dependent fit remains a separate annotation check.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 544,
+      "annotation_name": "7a295070-ebeb-4382-8f38-3b1ca48f2637",
+      "approval_chain": [
+        "a813caa6-645f-40d7-9cd3-b4de7eef7018",
+        "647c4e74-8f57-4a64-98d8-c49d46a7b5f2",
+        "f53a8b24-683f-4bb5-82c69cc94a1dd4b6"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 28,
+      "physical_pdf_page": 546,
+      "annotation_name": "a775e8f0-5f67-45ce-84ab-5a288820dc22",
+      "approval_chain": [
+        "6eb5a100-ca28-4c77-aee7-4f8398ed50eb"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Partial field name T is optional; a nameless field dictionary can serialize without inventing a name.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 548,
+      "annotation_name": "7ab008a6-5af7-4775-8c87-9ac4acfbef94",
+      "approval_chain": [
+        "4de09f06-2bd3-4e66-b2f4-fe5808b083f0",
+        "5fb49365-0355-47f8-b6cf-2ce5a679304d",
+        "4f8fa871-5bd4-4b48-b2029fa69aebca41"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 549,
+      "annotation_name": "1a9db07c-b3ee-4655-8f68-18e52d0f0b32",
+      "approval_chain": [
+        "a173c1fb-8545-43e1-9746-4d2b722ef5f4",
+        "27435d2c-6451-4bf4-9770-aa62de054783",
+        "79d47b3b-56e1-44fd-a3122954f0556dc5"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 549,
+      "annotation_name": "7fddfcec-bd65-40d7-893b-db73644d2f6a",
+      "approval_chain": [
+        "e0ac70b5-6faa-4bfc-81df-8cb93863f273",
+        "137a789a-3136-4c62-bf4f-a07d08b1a533",
+        "ee642909-2b42-49af-810934dfa0c0dcd1"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 549,
+      "annotation_name": "f8a52444-a70a-4530-9a10-2a24433451c1",
+      "approval_chain": [
+        "82cc723d-44f3-47ee-91eb-4a1dca2e8969",
+        "d706139d-b773-456c-8499-b8f019b6f88a",
+        "5d879645-a627-4b20-aea3f1884fa9bda9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 549,
+      "annotation_name": "9167aa86-aeef-4d14-9802-5bb6bc6a7c67",
+      "approval_chain": [
+        "1fb36c27-7c7a-4980-9500-6861d07442d7",
+        "538af2df-ab26-4bf4-afbb-c1468d66f158",
+        "1bcc19c7-5b3c-4ee1-95e38f17c8b6eb9c"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 318,
+      "physical_pdf_page": 549,
+      "annotation_name": "c08f6957-e0a5-4989-8fe2-1126e4503923",
+      "approval_chain": [
+        "d18048ba-7e03-4cae-ba6a-0f072742d3c4",
+        "181b238f-9758-437f-a67b-f436cb8e9110",
+        "6c5a698d-ecdf-4c25-97cc6a96e45611de"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DA is a byte string in FreeText, AcroForm and variable-text schemas. The native DefaultAppearance emits operator bytes and retains Tf and at-most-one-Tm checks, without Unicode text transcoding.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Forms/DefaultAppearance.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/AcroFormObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 159,
+      "physical_pdf_page": 561,
+      "annotation_name": "d73dc711-8992-4cf7-bbab-417f0bff849d",
+      "approval_chain": [
+        "06d3fe0d-42bc-47ca-919f-3da5725b7580"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NameArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 159,
+      "physical_pdf_page": 561,
+      "annotation_name": "b38f563f-d97c-4c71-9304-5d649d6a626b",
+      "approval_chain": [
+        "ac094a8b-9e7e-4de7-bc34-070aeee0e244"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NameArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 159,
+      "physical_pdf_page": 561,
+      "annotation_name": "977210c7-d467-4817-8584-831fa0a4e153",
+      "approval_chain": [
+        "a1bbc623-44e9-4109-ada6-7402a2790080"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Specification/Constraint/NameArray.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 680,
+      "physical_pdf_page": 561,
+      "annotation_name": "e180d7ac-3c1c-4b58-9c6ce237c02ee1fc",
+      "approval_chain": [
+        "9edc68c3-9fd2-4fc4-8b14bce9877ff405"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "Seed capability V=2 describes PDF1.7 and earlier, V=3 PDF2.0 and earlier. This review concerns catalogue wording; native version-aware seed construction is tracked separately.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 122,
+      "physical_pdf_page": 567,
+      "annotation_name": "931f99f4-94a9-484d-9a36-fcaac0a026b9",
+      "approval_chain": [
+        "c1a55461-ee9f-4e79-bb5d-961321c7bb0c"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "SubmitForm Flags and CharSet are local action entries and are not inheritable.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 122,
+      "physical_pdf_page": 567,
+      "annotation_name": "6cb1b7bd-06d0-4d1b-9a95-2eb610ccbb1f",
+      "approval_chain": [
+        "3e1269e8-b3c2-4af6-bc2b-c728a92decd9"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "SubmitForm Flags and CharSet are local action entries and are not inheritable.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 683,
+      "physical_pdf_page": 571,
+      "annotation_name": "5a63db7b-63f6-4d16-8c09f1cee7ab28b1",
+      "approval_chain": [
+        "6c224895-ee47-4df5-86330eb904ebc787"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "ResetForm Flags is local and not inheritable.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 685,
+      "physical_pdf_page": 582,
+      "annotation_name": "fbddadfa-1545-40f2-889e396045ec3e59",
+      "approval_chain": [
+        "9a8fcb52-f4b6-4131-b2f4dc8cd233564b"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "The FDF annotation Page entry is unconditionally required in Table254; missing Page is rejected.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 121,
+      "physical_pdf_page": 584,
+      "annotation_name": "35d0e42e-2ffb-4cee-83e4-2a9fc606d7df",
+      "approval_chain": [
+        "67afbf9a-afe7-4915-adde-3b31f7b4fb6a"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature Filter is required locally, not inherited; a schema without it is rejected.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 117,
+      "physical_pdf_page": 587,
+      "annotation_name": "c48f1874-bc75-4c45-bfd6-f94bedb9629b",
+      "approval_chain": [
+        "9a896734-b04e-446f-9834-a2c3565aee97"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "SignatureReference DigestMethod is optional and deprecated in PDF 2.0; omitting it no longer fails schema serialization. Legacy PDF1.x default wording remains recorded.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 448,
+      "physical_pdf_page": 601,
+      "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b",
+      "approval_chain": [
+        "36cb06d9-d4ee-4fd3-9f2391430e797de1",
+        "3c660ab4-2ce3-415d-bdb4521404a66a27"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "All DSS and VRI entries carry their PDF 2.0 introduction. This metadata correction does not claim trust validation or apply the separate document-timestamp prose anchor.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 448,
+      "physical_pdf_page": 602,
+      "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c",
+      "approval_chain": [
+        "623ebca4-03dd-46db-9409fa3cbd392cc7",
+        "25b52e36-1fdb-485f-a5ae8ad65582ad7e"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "All DSS and VRI entries carry their PDF 2.0 introduction. This metadata correction does not claim trust validation or apply the separate document-timestamp prose anchor.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 362,
+      "physical_pdf_page": 664,
+      "annotation_name": "ffce5a2e-5bea-4dc4-8465-c012b7411dc0",
+      "approval_chain": [
+        "1b392db5-80dd-480a-bce2-2791264c5a33",
+        "6e064ae8-ba80-4300-ba52-4f998fcd5ac9",
+        "7091f781-c1d0-41b2-91c8b7b781fbd8e4"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D stream Resources name tree is deprecated in PDF 2.0 because interoperability was insufficiently specified; deprecation does not remove its representation.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 362,
+      "physical_pdf_page": 664,
+      "annotation_name": "57574ea9-02f6-44ce-9f6c-976fbc645115",
+      "approval_chain": [
+        "2c54ef70-4408-42e8-a801-9f1020a8ee72",
+        "9eaee299-7652-47f3-ac62-7e7308318a63",
+        "0f0cc218-c6ac-4ca6-a5b4de5324ec1ea9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D stream Resources name tree is deprecated in PDF 2.0 because interoperability was insufficiently specified; deprecation does not remove its representation.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 93,
+      "physical_pdf_page": 741,
+      "annotation_name": "bcac640b-9979-40ae-9b7a-e1ead210fc20",
+      "approval_chain": [
+        "ce8a2171-2922-49f8-8827-c0936b9a58d9"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The structure-element revision R remains representable and is explicitly marked deprecated in PDF 2.0.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 481,
+      "physical_pdf_page": 153,
+      "annotation_name": "ddbfae9b-9fcb-4552-9c42e96f2179c3d6",
+      "approval_chain": [
+        "f0e9138b-b9be-4c84-9575eefbb7a8d9f1"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Embedded streams in the effective reachable PDF 2.0 graph are referenced only through file-specification EF/RF entries. Optional stream Type is not required when the role is established by EF/RF. FileAttachment annotations require an actual embedded stream. A document-level EmbeddedFiles name-tree entry is not generally required. Incremental revisions preserve prior bytes and ignore historical unreachable attachment objects.",
+      "implementation": [
+        "src/Document/Files/EmbeddedFilePlacementValidation.php",
+        "src/Document/Files/EmbeddedFileReferenceRole.php"
+      ],
+      "validation": [
+        "tests/EmbeddedFilePlacementTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 481,
+      "physical_pdf_page": 656,
+      "annotation_name": "8a2b566f-21bb-4261-adccba4a846073ed",
+      "approval_chain": [
+        "4c18f248-8c5a-45c0-939ab19c80b6aba1"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Embedded streams in the effective reachable PDF 2.0 graph are referenced only through file-specification EF/RF entries. Optional stream Type is not required when the role is established by EF/RF. FileAttachment annotations require an actual embedded stream. A document-level EmbeddedFiles name-tree entry is not generally required. Incremental revisions preserve prior bytes and ignore historical unreachable attachment objects.",
+      "implementation": [
+        "src/Document/Files/EmbeddedFilePlacementValidation.php",
+        "src/Document/Files/EmbeddedFileReferenceRole.php"
+      ],
+      "validation": [
+        "tests/EmbeddedFilePlacementTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 386,
+      "physical_pdf_page": 551,
+      "annotation_name": "8aaaa7b8-7bfb-4f52-94675221cd863f85",
+      "approval_chain": [
+        "4344763a-bd46-4d03-86c43a19733857df"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Explicit PDF2 pushbutton semantics permit V and DV without treating pushbuttons as state-retaining controls; historical button semantics still reject them.",
+      "implementation": [
+        "src/Document/Forms/ButtonField.php",
+        "src/Document/Forms/ButtonFieldSemantics.php",
+        "src/Document/Forms/WidgetAnnotation.php"
+      ],
+      "validation": [
+        "tests/ButtonAndTextFieldEc3Test.php",
+        "tools/validate_incremental_permissions.py"
+      ]
+    },
+    {
+      "issue": 170,
+      "physical_pdf_page": 553,
+      "annotation_name": "2320a7e4-81df-46ce-b8c2-e28fa92ef4df",
+      "approval_chain": [
+        "f118e422-b6e8-4078-8017-755e7c8de17b"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Explicit PDF2 button semantics allow radio appearances to omit Off while retaining named on-state validation. Signed incremental selection and clearing preserve DocMDP and FieldMDP checks. PDF1.x construction retains the historical requirement.",
+      "implementation": [
+        "src/Document/Forms/ButtonField.php",
+        "src/Document/Forms/ButtonFieldSemantics.php",
+        "src/Document/Forms/WidgetAnnotation.php"
+      ],
+      "validation": [
+        "tests/ButtonAndTextFieldEc3Test.php",
+        "tools/validate_incremental_permissions.py"
+      ]
+    },
+    {
+      "issue": 392,
+      "physical_pdf_page": 555,
+      "annotation_name": "2ba83bf4-69c0-4847-8de0af02d25525d6",
+      "approval_chain": [
+        "e1139166-b359-46b3-b385cd9aa18c80ee"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Text fields accept explicit null V as absence of a current value and preserve reset/fill semantics.",
+      "implementation": [
+        "src/Document/Forms/TextField.php"
+      ],
+      "validation": [
+        "tests/ButtonAndTextFieldEc3Test.php",
+        "tools/validate_incremental_permissions.py"
+      ]
+    },
+    {
+      "issue": 16,
+      "physical_pdf_page": 107,
+      "annotation_name": "2b73939a-eecd-4905-911c-06e96b489109",
+      "approval_chain": [
+        "d6c0e1b0-bab1-4e65-ada6-4bf9d5759897"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Public-key crypt-filter Recipients is a byte string or an array of byte strings. Schema array members reject non-string objects without interpreting CMS payloads.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 16,
+      "physical_pdf_page": 107,
+      "annotation_name": "85af6eb9-8f93-46ec-a7b0-3e96f2ea0dc3",
+      "approval_chain": [
+        "2c4508f7-862f-40dc-b861-fe2baa7c3147"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Public-key crypt-filter Recipients is a byte string or an array of byte strings. Schema array members reject non-string objects without interpreting CMS payloads.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 16,
+      "physical_pdf_page": 107,
+      "annotation_name": "d7f120bf-5322-4e31-95c0-e505b35cbac6",
+      "approval_chain": [
+        "7cf407f2-0041-4b21-bc0c-2824a55bcd12"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Public-key crypt-filter Recipients is a byte string or an array of byte strings. Schema array members reject non-string objects without interpreting CMS payloads.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 184,
+      "physical_pdf_page": 107,
+      "annotation_name": "5aaf1862-d404-48de-995d-11069966b2f3",
+      "approval_chain": [
+        "9038a177-8706-4874-901c-77887cdb0d48"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Crypt-filter Length wording distinguishes public-key bit counts AESV2=128/AESV3=256 from Standard byte counts AESV2=16/AESV3=32. Handler-dependent executable encryption constraints are reviewed separately.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 184,
+      "physical_pdf_page": 107,
+      "annotation_name": "c2004a40-47fb-4e96-bd73-ef97e0d6f200",
+      "approval_chain": [
+        "9f848397-a476-4034-b215-329fd83d53a8"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Crypt-filter Length wording distinguishes public-key bit counts AESV2=128/AESV3=256 from Standard byte counts AESV2=16/AESV3=32. Handler-dependent executable encryption constraints are reviewed separately.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 191,
+      "physical_pdf_page": 556,
+      "annotation_name": "ff10cfcc-e98a-4ccd-8f66-d49307b7b640",
+      "approval_chain": [
+        "1d315248-170f-45b4-b52b-754935a81f96",
+        "293b57a6-88c8-41d7-946b-e15d94013771",
+        "1a661b59-1c10-4e90-830b7516962ac5f9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MaxLen is a nonnegative integer; the existing schema rule accepts zero and rejects negative values.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 219,
+      "physical_pdf_page": 584,
+      "annotation_name": "9851ce0e-0038-46cc-b422-584c0692c5e3",
+      "approval_chain": [
+        "e19df33d-a6cd-43aa-892e-79bb40e6bb06"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature SubFilter wording records x509_rsa_sha1 and pkcs7.detached introduction inPDF1.3, pkcs7.sha1 inPDF1.4, and removes the erroneous blanketPDF1.6 qualifier. The unrelated public-key s3/s4/s5 prose anchors are separate.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 219,
+      "physical_pdf_page": 584,
+      "annotation_name": "e9206e79-867e-4abb-9446-1eccfeadeef5",
+      "approval_chain": [
+        "e60d6c7f-15fb-4707-ae56-fedbc49b3dc4"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature SubFilter wording records x509_rsa_sha1 and pkcs7.detached introduction inPDF1.3, pkcs7.sha1 inPDF1.4, and removes the erroneous blanketPDF1.6 qualifier. The unrelated public-key s3/s4/s5 prose anchors are separate.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 219,
+      "physical_pdf_page": 584,
+      "annotation_name": "56fdbe19-d752-4257-9921-e812d565a85f",
+      "approval_chain": [
+        "6f8b5353-6ced-4a2b-b270-44dcfe2cefa4"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature SubFilter wording records x509_rsa_sha1 and pkcs7.detached introduction inPDF1.3, pkcs7.sha1 inPDF1.4, and removes the erroneous blanketPDF1.6 qualifier. The unrelated public-key s3/s4/s5 prose anchors are separate.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 219,
+      "physical_pdf_page": 584,
+      "annotation_name": "a8e30d28-e384-479b-bb08-4b40d18d0c22",
+      "approval_chain": [
+        "6c3ac7f5-aa0d-4d44-9807-b2e2cbcaba6b"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature SubFilter wording records x509_rsa_sha1 and pkcs7.detached introduction inPDF1.3, pkcs7.sha1 inPDF1.4, and removes the erroneous blanketPDF1.6 qualifier. The unrelated public-key s3/s4/s5 prose anchors are separate.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Iso32000_2/Catalogue.php"
+      ],
+      "validation": [
+        "tests/Ec3CatalogueQualifiersTest.php"
+      ]
     }
   ]
 }

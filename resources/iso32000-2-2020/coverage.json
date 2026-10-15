@@ -3477,7 +3477,7 @@
           468
         ]
       },
-      "implemented_scope": "118 explicitly authored immutable intrinsic rules across 51 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries. EC3 local array and numeric domains cover nonempty page trees, radio-button inner collections, FontWeight 1..1000, required developer-extension URLs and nonempty RichMediaContent Configurations; PV and Scripts are typed new dictionary entries.",
+      "implemented_scope": "120 explicitly authored immutable intrinsic rules across 53 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries. EC3 local array and numeric domains cover nonempty page trees, radio-button inner collections, FontWeight 1..1000, required developer-extension URLs and nonempty RichMediaContent Configurations; PV and Scripts are typed new dictionary entries.",
       "implementation_files": [
         "src/Specification/DictionaryConstraint.php",
         "src/Specification/SemanticRule.php",
@@ -3504,7 +3504,7 @@
         "tests/Ec3NativeDomainsTest.php"
       ],
       "limits": [
-        "These 118 rules do not close every conditional requirement in 1711 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
+        "These 120 rules do not close every conditional requirement in 1711 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
         "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
         "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated.",
         "RichMedia Scripts asset-tree membership and 3D/media runtime interpretation are not established by local schema constraints."
@@ -3576,8 +3576,8 @@
   },
   "native_semantic_rules": {
     "resource": "semantic-rules.json",
-    "rule_count": 118,
-    "source_tables": 51,
+    "rule_count": 120,
+    "source_tables": 53,
     "runtime": "Immutable semantic rule composition executed during SchemaDictionary validation and serialization",
     "ec3_reviews": "ec3-semantic-reviews.json",
     "remaining_ec3_review": "unlisted annotations remain unresolved",

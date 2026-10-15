@@ -1700,6 +1700,1212 @@
           "description_language": "en"
         }
       ]
+    },
+    {
+      "id": "45",
+      "name": "EmbeddedFileParameterDictionaryTable45",
+      "title": "Entries in an embedded file parameter dictionary",
+      "section": "7.11.4.1",
+      "pdf_pages": [
+        153,
+        154
+      ],
+      "entries": [
+        {
+          "name": "CheckSum",
+          "type": "byte string",
+          "description": "(Optional) A 16-byte string that is the checksum of the bytes of the uncompressed embedded file. The checksum shall be calculated by applying the standard MD5 message-digest algorithm (defined in Internet RFC 1321) to the bytes of the embedded file stream. NOTE This is strictly a checksum, and is not used for security purposes.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 154,
+          "errata": {
+            "id": "ec3-issue-382",
+            "pdf_page": 154,
+            "review_status": "Completed",
+            "issue_number": 382,
+            "annotation_name": "32bf5b59-65ad-4280-b4cd-d2cddf1d8d45"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "177",
+      "name": "FreeTextAnnotationTable177",
+      "title": "Additional entries specific to a free text annotation",
+      "section": "12.5.6.6",
+      "pdf_pages": [
+        499,
+        500
+      ],
+      "entries": [
+        {
+          "name": "DA",
+          "type": "byte string",
+          "description": "(Required) The default appearance string that shall be used in formatting the text (see 12.7.4.3, \"Variable text\"). The annotation dictionary’s AP entry, if present, shall take precedence over the DA entry (see “Table 170 — Entries in an appearance dictionary” and 12.5.5, “Appearance streams”).",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 499,
+          "errata": {
+            "id": "ec3-issue-318",
+            "pdf_page": 499,
+            "review_status": "Completed",
+            "issue_number": 318,
+            "annotation_name": "d23ee549-2809-4281-a3d3-70d8d43fe2a9"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "BS",
+          "type": "dictionary",
+          "description": "(Optional; PDF 1.3) A border style dictionary (see \"Table 168 — Entries in a border style dictionary\") specifying the line width and dash pattern that shall be used in drawing the annotation’s border.",
+          "qualifier": "Optional; PDF 1.3",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.3",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 500,
+          "errata": {
+            "id": "ec3-issue-299",
+            "pdf_page": 500,
+            "review_status": "Completed",
+            "issue_number": 299,
+            "annotation_name": "5bcc0298-5f03-42b5-be9b-84bdf4a24f16"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "RD",
+          "type": "array",
+          "description": "(Optional; PDF 1.6) A set of four numbers describing the numerical differences between two rectangles: the Rect entry of the annotation and a rectangle contained within that rectangle. The inner rectangle is where the annotation’s text should be displayed. Any border styles and/or border effects specified by BS and BE entries, respectively, shall be applied to the border of the inner rectangle. The four numbers correspond to the differences in default user space between the left, top, right, and bottom coordinates of Rect and those of the inner rectangle, respectively. Each value shall be greater than or equal to 0. The sum of the top and bottom differences shall be less than the height of Rect, and the sum of the left and right differences shall be less than the width of Rect.",
+          "qualifier": "Optional; PDF 1.6",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.6",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 500,
+          "errata": {
+            "id": "ec3-issue-524",
+            "pdf_page": 500,
+            "review_status": "Completed",
+            "issue_number": 524,
+            "annotation_name": "93ddebf8-3e30-4f49-9781da410d4feb1b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en",
+          "array_length": 4,
+          "array_member_type": "number"
+        }
+      ]
+    },
+    {
+      "id": "224",
+      "name": "InteractiveFormDictionaryTable224",
+      "title": "Entries in the interactive form dictionary",
+      "section": "12.7.3",
+      "pdf_pages": [
+        544,
+        545
+      ],
+      "entries": [
+        {
+          "name": "DA",
+          "type": "byte string",
+          "description": "(Optional) A document-wide default value for the DA attribute of variable text fields (see 12.7.4.3, \"Variable text\").",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 544,
+          "errata": {
+            "id": "ec3-issue-318",
+            "pdf_page": 544,
+            "review_status": "Completed",
+            "issue_number": 318,
+            "annotation_name": "7a295070-ebeb-4382-8f38-3b1ca48f2637"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "228",
+      "name": "FieldsContainingVariableTextTable228",
+      "title": "Additional entries common to all fields containing variable text",
+      "section": "12.7.4.3",
+      "pdf_pages": [
+        548
+      ],
+      "entries": [
+        {
+          "name": "DA",
+          "type": "byte string",
+          "description": "(Required; inheritable) The default appearance string containing a sequence of valid page-content graphics or text state operators that define such properties as the field’s text size and colour.",
+          "qualifier": "Required; inheritable",
+          "required": true,
+          "conditional": false,
+          "inheritable": true,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 548,
+          "errata": {
+            "id": "ec3-issue-318",
+            "pdf_page": 548,
+            "review_status": "Completed",
+            "issue_number": 318,
+            "annotation_name": "7ab008a6-5af7-4775-8c87-9ac4acfbef94"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "176",
+      "name": "LinkAnnotationTable176",
+      "title": "Additional entries specific to a link annotation",
+      "section": "12.5.6.5",
+      "pdf_pages": [
+        498
+      ],
+      "entries": [
+        {
+          "name": "BS",
+          "type": "dictionary",
+          "description": "(Optional; PDF 1.3) A border style dictionary (see \"Table 168 — Entries in a border style dictionary\") specifying the line width and dash pattern that shall be used in drawing the annotation’s border.",
+          "qualifier": "Optional; PDF 1.3",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.3",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 498,
+          "errata": {
+            "id": "ec3-issue-299",
+            "pdf_page": 498,
+            "review_status": "Completed",
+            "issue_number": 299,
+            "annotation_name": "b40e7361-0783-4b35-b489-88ea5b92beea"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "180",
+      "name": "SquareOrCircleAnnotationTable180",
+      "title": "Additional entries specific to a square or circle annotation",
+      "section": "12.5.6.8",
+      "pdf_pages": [
+        505
+      ],
+      "entries": [
+        {
+          "name": "RD",
+          "type": "array",
+          "description": "(Optional; PDF 1.5) A set of four numbers that shall describe the numerical differences between two rectangles: the Rect entry of the annotation and the actual boundaries of the underlying square or circle. Such a difference may occur in situations where a border effect (described by BE) causes the size of the Rect to increase beyond that of the square or circle. The four numbers shall correspond to the differences in default user space between the left, top, right, and bottom coordinates of Rect and those of the square or circle, respectively. Each value shall be greater than or equal to 0. The sum of the top and bottom differences shall be less than the height of Rect, and the sum of the left and right differences shall be less than the width of Rect.",
+          "qualifier": "Optional; PDF 1.5",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.5",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 505,
+          "errata": {
+            "id": "ec3-issue-524",
+            "pdf_page": 505,
+            "review_status": "Completed",
+            "issue_number": 524,
+            "annotation_name": "8b7d740a-c712-4d4e-a57fa31f4f46a8f0"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en",
+          "array_length": 4,
+          "array_member_type": "number"
+        }
+      ]
+    },
+    {
+      "id": "183",
+      "name": "CaretAnnotationTable183",
+      "title": "Additional entries specific to a caret annotation",
+      "section": "12.5.6.11",
+      "pdf_pages": [
+        508,
+        509
+      ],
+      "entries": [
+        {
+          "name": "RD",
+          "type": "array",
+          "description": "(Optional; PDF 1.5) A set of four numbers that shall describe the numerical differences between two rectangles: the Rect entry of the annotation and the actual boundaries of the underlying caret. Such a difference can occur. When a paragraph symbol specified by Sy is displayed along with the caret. The four numbers shall correspond to the differences in default user space between the left, top, right, and bottom coordinates of Rect and those of the caret, respectively. Each value shall be greater than or equal to 0. The sum of the top and bottom differences shall be less than the height of Rect, and the sum of the left and right differences shall be less than the width of Rect.",
+          "qualifier": "Optional; PDF 1.5",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.5",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 508,
+          "errata": {
+            "id": "ec3-issue-524",
+            "pdf_page": 508,
+            "review_status": "Completed",
+            "issue_number": 524,
+            "annotation_name": "5c631c49-266e-469a-a92e3d56dded1f4d"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en",
+          "array_length": 4,
+          "array_member_type": "number"
+        }
+      ]
+    },
+    {
+      "id": "311",
+      "name": "ThreeDStreamDictionaryTable311",
+      "title": "Entries in a 3D stream dictionary",
+      "section": "13.6.3.1",
+      "pdf_pages": [
+        664
+      ],
+      "entries": [
+        {
+          "name": "Resources",
+          "type": "name tree",
+          "description": "(Optional; deprecated in PDF 2.0) A name tree that maps name strings to objects that may be used by applications or scripts to modify the default view of the 3D artwork. The names in this name tree shall be text strings so as to be encoded in a way that will be accessible from ECMAScript.",
+          "qualifier": "Optional; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 664,
+          "errata": {
+            "id": "ec3-issue-362",
+            "pdf_page": 664,
+            "review_status": "Completed",
+            "issue_number": 362,
+            "annotation_name": "ffce5a2e-5bea-4dc4-8465-c012b7411dc0"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "355",
+      "name": "StructureElementDictionaryTable355",
+      "title": "Entries in a structure element dictionary",
+      "section": "14.7.2",
+      "pdf_pages": [
+        740,
+        741,
+        742
+      ],
+      "entries": [
+        {
+          "name": "R",
+          "type": "integer",
+          "description": "(Optional; deprecated in PDF 2.0) The current revision number of this structure element (see 14.7.6.3, \"Attribute revision numbers\"). The value shall be a non-negative integer. Default value: 0.",
+          "qualifier": "Optional; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 741,
+          "errata": {
+            "id": "ec3-issue-93",
+            "pdf_page": 741,
+            "review_status": "Completed",
+            "issue_number": 93,
+            "annotation_name": "bcac640b-9979-40ae-9b7a-e1ead210fc20"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "name": "PageObjectTable31",
+      "title": "Entries in a page object",
+      "section": "7.7.3.3",
+      "pdf_pages": [
+        119,
+        120,
+        121,
+        122
+      ],
+      "entries": [
+        {
+          "name": "ID",
+          "type": "byte string",
+          "description": "(Optional; PDF 1.3; indirect reference preferred; deprecated in PDF 2.0) The digital identifier of the page’s parent Web Capture content set (see 14.10.6, \"Object attributes related to web capture\").",
+          "qualifier": "Optional; PDF 1.3; indirect reference preferred; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.3",
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 121,
+          "errata": {
+            "id": "ec3-issue-619",
+            "pdf_page": 121,
+            "review_status": "Accepted",
+            "issue_number": 619,
+            "annotation_name": "c15100fb-a98a-4204-96fa81b1c9b33bcd"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "87",
+      "name": "ImageDictionaryTable87",
+      "title": "Additional entries specific to an image dictionary",
+      "section": "8.9.5.1",
+      "pdf_pages": [
+        273,
+        274,
+        275,
+        276
+      ],
+      "entries": [
+        {
+          "name": "ID",
+          "type": "byte string",
+          "description": "(Optional; PDF 1.3; indirect reference preferred; deprecated in PDF 2.0) The digital identifier of the image’s parent Web Capture content set (see 14.10.6, \"Object attributes related to web capture\").",
+          "qualifier": "Optional; PDF 1.3; indirect reference preferred; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.3",
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 275,
+          "errata": {
+            "id": "ec3-issue-619",
+            "pdf_page": 275,
+            "review_status": "Accepted",
+            "issue_number": 619,
+            "annotation_name": "023c7245-5761-44df-a86985e39bc6a07b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "226",
+      "name": "FieldDictionaryTable226",
+      "title": "Entries common to all field dictionaries",
+      "section": "12.7.4.1",
+      "pdf_pages": [
+        546
+      ],
+      "entries": [
+        {
+          "name": "T",
+          "type": "text string",
+          "description": "(Optional) The partial field name (see 12.7.4.2, \"Field names\").",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 546,
+          "errata": {
+            "id": "ec3-issue-28",
+            "pdf_page": 546,
+            "review_status": "Completed",
+            "issue_number": 28,
+            "annotation_name": "a775e8f0-5f67-45ce-84ab-5a288820dc22"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "239",
+      "name": "SubmitFormActionTable239",
+      "title": "Additional entries specific to a submit-form action",
+      "section": "12.7.6.2",
+      "pdf_pages": [
+        567
+      ],
+      "entries": [
+        {
+          "name": "Flags",
+          "type": "integer",
+          "description": "(Optional) A set of flags specifying various characteristics of the action (see \"Table 240 — Flags for submit-form actions\"). Default value: 0.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 567,
+          "errata": {
+            "id": "ec3-issue-122",
+            "pdf_page": 567,
+            "review_status": "Completed",
+            "issue_number": 122,
+            "annotation_name": "931f99f4-94a9-484d-9a36-fcaac0a026b9"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "CharSet",
+          "type": "string",
+          "description": "(Optional; PDF 2.0) Supported values include: utf-8, utf-16, Shift-JIS, BigFive, GBK, or UHC.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 567,
+          "errata": {
+            "id": "ec3-issue-122",
+            "pdf_page": 567,
+            "review_status": "Completed",
+            "issue_number": 122,
+            "annotation_name": "6cb1b7bd-06d0-4d1b-9a95-2eb610ccbb1f"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "241",
+      "name": "ResetFormActionTable241",
+      "title": "Additional entries specific to a reset-form action",
+      "section": "12.7.6.3",
+      "pdf_pages": [
+        571
+      ],
+      "entries": [
+        {
+          "name": "Flags",
+          "type": "integer",
+          "description": "(Optional) A set of flags specifying various characteristics of the action (see \"Table 242 — Flag for reset-form actions\"). Default value: 0.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 571,
+          "errata": {
+            "id": "ec3-issue-683",
+            "pdf_page": 571,
+            "review_status": "Accepted",
+            "issue_number": 683,
+            "annotation_name": "5a63db7b-63f6-4d16-8c09f1cee7ab28b1"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "255",
+      "name": "SignatureDictionaryTable255",
+      "title": "Entries in a signature dictionary",
+      "section": "12.8.1",
+      "pdf_pages": [
+        584,
+        585,
+        586
+      ],
+      "entries": [
+        {
+          "name": "Filter",
+          "type": "name",
+          "description": "(Required) The name of the preferred signature handler to use when validating this signature. If the Prop_Build entry is not present, it shall be also the name of the signature handler that was used to create the signature. If Prop_Build is present, it may be used to determine the name of the handler that created the signature (which is typically the same as Filter but is not needed to be). A PDF processor may substitute a different handler when verifying the signature, as long as it supports the specified SubFilter format. Example signature handlers are Adobe.PPKLite, Entrust.PPKEF, CICI.SignIt, and VeriSign.PPKVS. The name of the filter (i.e. signature handler) shall be identified in accordance with the rules defined in Annex E, \"Extending PDF\".",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 584,
+          "errata": {
+            "id": "ec3-issue-121",
+            "pdf_page": 584,
+            "review_status": "Completed",
+            "issue_number": 121,
+            "annotation_name": "35d0e42e-2ffb-4cee-83e4-2a9fc606d7df"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "SubFilter",
+          "type": "name",
+          "description": "(Optional) A name that describes the encoding of the signature value and key information in the signature dictionary. A PDF processor may use any handler that supports this format to validate the signature. The following values for public-key cryptographic signatures should be used: adbe.x509.rsa_sha1 (PDF 1.3), adbe.pkcs7.detached (PDF 1.3), adbe.pkcs7.sha1 (PDF 1.4), ETSI.CAdES.detached (PDF 2.0) and ETSI.RFC3161 (PDF 2.0). (PDF 2.0) When the Type of this dictionary is DocTimeStamp, the SubFilter value should be ETSI.RFC3161 and when the Type of this dictionary is Sig (possibly by default) any of the values may be used except ETSI.RFC3161 (see 12.8.3, \"Signature interoperability\"). Other values may be defined by developers, and when used, shall be prefixed with the registered developer identification. All prefix names shall be registered (see Annex E, \"Extending PDF\"). The prefix \"adbe\" and the prefix \"ETSI\" have been registered by Adobe Systems and ETSI, respectively, and the subfilter names listed above and defined in 12.8.3, \"Signature interoperability\" and 12.8.5, \"Document timestamp (DTS) dictionary\" may be used by any developer. The values adbe.x509.rsa_sha1 and adbe.pkcs7.sha1 have been deprecated with PDF 2.0. To support backward compatibility, PDF readers should process these values for this key, but PDF writers shall not use this value for this key.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 584,
+          "errata": {
+            "id": "ec3-issue-219",
+            "pdf_page": 584,
+            "review_status": "Completed",
+            "issue_number": 219,
+            "annotation_name": "a8e30d28-e384-479b-bb08-4b40d18d0c22"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "256",
+      "name": "SignatureReferenceDictionaryTable256",
+      "title": "Entries in a signature reference dictionary",
+      "section": "12.8.1",
+      "pdf_pages": [
+        587
+      ],
+      "entries": [
+        {
+          "name": "DigestMethod",
+          "type": "name",
+          "description": "(Optional; deprecated in PDF 2.0) A name identifying the digest algorithm when not specified in the certificate. Legacy names are MD5, SHA1, SHA256, SHA384, SHA512 and RIPEMD160. MD5 and SHA1 are deprecated in PDF 2.0. The default for PDF 1.5 through 1.7 is MD5.",
+          "qualifier": "Optional; deprecated in PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 587,
+          "errata": {
+            "id": "ec3-issue-117",
+            "pdf_page": 587,
+            "review_status": "Completed",
+            "issue_number": 117,
+            "annotation_name": "c48f1874-bc75-4c45-bfd6-f94bedb9629b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "261",
+      "name": "DocumentSecurityStoreDSSDictionaryTable261",
+      "title": "Entries in the document security store (DSS) dictionary",
+      "section": "12.8.4.3",
+      "pdf_pages": [
+        601,
+        602
+      ],
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional; PDF 2.0) If present, shall be DSS for a document security store dictionary.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "DSS",
+          "pdf_page": 601,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 601,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "VRI",
+          "type": "dictionary",
+          "description": "(Optional; PDF 2.0) This dictionary contains Signature VRI dictionaries (see 12.8.4.4, \"Validation-related information (VRI)\"). The key of each entry in this dictionary is the base-16-encoded (uppercase) SHA-1 digest of the signature to which it appliesa and the value is the Signature VRI dictionary which contains the validation-related information for that signature.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 601,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 601,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "Certs",
+          "type": "array",
+          "description": "(Optional; PDF 2.0) An array of indirect reference to streams, each containing one DER-encoded X.509 certificate (see Internet RFC 5280). This array contains certificates that may be used in the validation of any signatures in the document.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 602,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 601,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "OCSPs",
+          "type": "array",
+          "description": "(Optional; PDF 2.0) An array of indirect references to streams, each containing a DER-encoded Online Certificate Status Protocol (OCSP) response (see Internet RFC 6960). This array contains OCSPs that may be used in the validation of the signatures in the document.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 602,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 601,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "CRLs",
+          "type": "array",
+          "description": "(Optional; PDF 2.0) An array of indirect references to streams, each containing a DER-encoded Certificate Revocation List (CRL) (see Internet RFC 5280). This array contains CRLs that may be used in the validation of the signatures in the document.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 602,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 601,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "758b36b0-b988-460f-80dbca93c0d3739b"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "262",
+      "name": "SignatureValidationRelatedInformationVRIDictionaryTable262",
+      "title": "Entries in the signature validation-related information (VRI) dictionary",
+      "section": "12.8.4.4",
+      "pdf_pages": [
+        602,
+        603
+      ],
+      "entries": [
+        {
+          "name": "Type",
+          "type": "name",
+          "description": "(Optional; PDF 2.0) If present, shall be VRI for a validation-related information dictionary.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": "VRI",
+          "pdf_page": 602,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "Cert",
+          "type": "array",
+          "description": "(Optional; PDF 2.0) An array of (indirect references to) streams, each containing one DER-encoded X.509 certificate (see Internet RFC 5280). This array contains certificates that were used in the validation of this signature.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "CRL",
+          "type": "array",
+          "description": "(Required, if a CRL is present; PDF 2.0) An array of indirect references to streams that are all CRLs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference a CRL that is an entry in the CRLs array in the DSS dictionary.",
+          "qualifier": "Required, if a CRL is present; PDF 2.0",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "OCSP",
+          "type": "array",
+          "description": "(Required, if an OCSP is present; PDF 2.0) An array of indirect references to streams that are all OCSPs used to determine the validity of the certificates in the chains related to this signature. Each stream shall reference an OCSP that is an entry in the OCSPs array in the DSS dictionary.",
+          "qualifier": "Required, if an OCSP is present; PDF 2.0",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "TU",
+          "type": "date",
+          "description": "(Optional; PDF 2.0) The date/time at which this signature VRI dictionary was created. TU shall be a date string as defined in 7.9.4, \"Dates\".",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "TS",
+          "type": "stream",
+          "description": "(Optional; PDF 2.0) A stream containing the DER-encoded timestamp (see Internet RFC 3161 as updated by Internet RFC 5816) that contains the date/time at which this signature VRI dictionary was created. NOTE 1 The date/time contained in the timestamp token can be used for audit purposes. NOTE 2 The hash value to be contained in the timestamp token is left undefined. For PKCS #7 signatures the datum that is hashed and included in the messageImprint field of the DER encoded timestamp stored in the TS entry (see Internet RFC 3161 as updated by Internet RFC 5816) is the encryptedDigest field in the signature's PKC S#7 object (as defined in Internet RFC 2315).",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 603,
+          "errata": {
+            "id": "ec3-issue-448",
+            "pdf_page": 602,
+            "review_status": "Completed",
+            "issue_number": 448,
+            "annotation_name": "4daa1c09-3582-4bc8-bda992d8fb4d1e1c"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "237",
+      "name": "SignatureFieldSeedValueDictionaryTable237",
+      "title": "Entries in a signature field seed value dictionary",
+      "section": "12.7.5.5",
+      "pdf_pages": [
+        560,
+        561,
+        562,
+        563
+      ],
+      "entries": [
+        {
+          "name": "V",
+          "type": "integer",
+          "description": "(Optional) Minimum required seed-value parser capability: 1 recognises PDF 1.5 entries; 2 recognises PDF 1.7 and earlier entries; 3 recognises PDF 2.0 and earlier entries. Ff determines whether this is a required constraint.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 561,
+          "errata": {
+            "id": "ec3-issue-680",
+            "pdf_page": 561,
+            "review_status": "Accepted",
+            "issue_number": 680,
+            "annotation_name": "e180d7ac-3c1c-4b58-9c6ce237c02ee1fc"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "DigestMethod",
+          "type": "array",
+          "description": "(Optional; PDF 1.7) An unordered array of acceptable digest algorithm names. Array values are SHA1 (deprecated in PDF 2.0), SHA256, SHA384, SHA512 or RIPEMD160. The default is implementation-specific. It applies to RSA credentials; intrinsic-digest signature algorithms use their algorithm-defined digest.",
+          "qualifier": "Optional; PDF 1.7",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.7",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 561,
+          "errata": {
+            "id": "ec3-issue-159",
+            "pdf_page": 561,
+            "review_status": "Completed",
+            "issue_number": 159,
+            "annotation_name": "d73dc711-8992-4cf7-bbab-417f0bff849d"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "254",
+      "name": "AnnotationDictionaryInAnFDFFileTable254",
+      "title": "Additional entry for annotation dictionaries in an FDF file",
+      "section": "12.7.8.3.4",
+      "pdf_pages": [
+        582
+      ],
+      "entries": [
+        {
+          "name": "Page",
+          "type": "integer",
+          "description": "(Required) The ordinal page number on which this annotation shall appear, where page 0 is the first page.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 582,
+          "errata": {
+            "id": "ec3-issue-685",
+            "pdf_page": 582,
+            "review_status": "Accepted",
+            "issue_number": 685,
+            "annotation_name": "fbddadfa-1545-40f2-889e396045ec3e59"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "name": "AdditionalCryptFilterDictionaryEntriesForPublicKeySecurityHandlersTable27",
+      "title": "Additional crypt filter dictionary entries for public-key security handlers",
+      "section": "7.6.6",
+      "pdf_pages": [
+        107,
+        108
+      ],
+      "entries": [
+        {
+          "name": "Recipients",
+          "type": "byte string or array",
+          "description": "(Required) If the crypt filter is referenced from StmF or StrF in the encryption dictionary, this entry shall be an array of byte strings, where each byte string shall be a binary-encoded CMS object that shall list recipients that have been granted equal access rights to the document. The enveloped data contained in the CMS object shall include both a 20-byte seed value that shall be used to compute the file encryption key (see 7.6.5.3, \"Public- key encryption algorithms\") followed by 4 bytes of permissions settings (see \"Table 24 — Public-key security handler user access permissions\") that shall apply to the recipient list. There shall be only one object per unique set of access permissions. If a recipient appears in more than one list, the permissions used shall be those in the first matching list. NOTE (2020) The cross-reference to Table 24 in the above paragraph was corrected. If the crypt filter is referenced from a Crypt filter decode parameter dictionary (see \"Table 14 — Optional parameters for Crypt filters\"), this entry shall be a byte string that shall be a binary-encoded CMS object that shall contain a list of all recipients who are permitted to access the corresponding encrypted stream. The enveloped data contained in the CMS object shall be a 20-byte seed value that shall be used to create the file encryption key that shall be used by the algorithm in \"Algorithm 1: Encryption of data using the RC4 or AES algorithms\".",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 107,
+          "errata": {
+            "id": "ec3-issue-16",
+            "pdf_page": 107,
+            "review_status": "Completed",
+            "issue_number": 16,
+            "annotation_name": "2b73939a-eecd-4905-911c-06e96b489109"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en",
+          "array_member_type": "byte string"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "name": "CryptFilterDictionaryTable25",
+      "title": "Entries common to all crypt filter dictionaries",
+      "section": "7.6.6",
+      "pdf_pages": [
+        106,
+        107
+      ],
+      "entries": [
+        {
+          "name": "Length",
+          "type": "integer",
+          "description": "(Required; deprecated in PDF 2.0) Security handlers may define their own use of the Length entry and should use it to define the bit length of the file encryption key. The bit length of the file encryption key shall be a multiple of 8 in the range of 40 to 256. The standard security handler expresses the Length entry in bytes (e.g., 32 means a length of 256 bits) and public-key security handlers express it as is (e.g., 256 means a length of 256 bits). When CFM is AESV2, the Length key shall have the value of 128 for public-key security handlers, and 16 for the standard security handler. When CFM is AESV3, the Length key shall have a value of 256 for public-key security handlers, and 32 for the standard security handler. NOTE (2020) The Length key was corrected to be required and the descriptive text updated.",
+          "qualifier": "Required; deprecated in PDF 2.0",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 107,
+          "errata": {
+            "id": "ec3-issue-184",
+            "pdf_page": 107,
+            "review_status": "Completed",
+            "issue_number": 184,
+            "annotation_name": "5aaf1862-d404-48de-995d-11069966b2f3"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "232",
+      "name": "TextFieldTable232",
+      "title": "Additional entry specific to a text field",
+      "section": "12.7.5.3",
+      "pdf_pages": [
+        556
+      ],
+      "entries": [
+        {
+          "name": "MaxLen",
+          "type": "integer",
+          "description": "(Optional; inheritable) An integer greater than or equal to zero specifying the maximum length of the field text, in characters.",
+          "qualifier": "Optional; inheritable",
+          "required": false,
+          "conditional": false,
+          "inheritable": true,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 556,
+          "errata": {
+            "id": "ec3-issue-191",
+            "pdf_page": 556,
+            "review_status": "Completed",
+            "issue_number": 191,
+            "annotation_name": "ff10cfcc-e98a-4ccd-8f66-d49307b7b640"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
     }
   ]
 }

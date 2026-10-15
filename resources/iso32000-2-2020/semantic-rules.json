@@ -1413,6 +1413,35 @@
         "minimum": 0,
         "maximum": 1
       }
+    },
+    {
+      "id": "signature-seed-digest-names",
+      "table": "237",
+      "physical_pdf_page": 561,
+      "constraint": "NameArray",
+      "arguments": {
+        "key": "DigestMethod",
+        "allowed": [
+          "SHA1",
+          "SHA256",
+          "SHA384",
+          "SHA512",
+          "RIPEMD160"
+        ]
+      }
+    },
+    {
+      "id": "caret-rectangle-differences",
+      "table": "183",
+      "physical_pdf_page": 508,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "RD",
+        "lengths": [
+          4
+        ],
+        "minimum": 0
+      }
     }
   ]
 }
