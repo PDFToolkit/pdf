@@ -31,6 +31,9 @@ final readonly class TextMarkupAnnotationsTable182Definition extends TableDefini
                 new EntryDefinition('QuadPoints', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Required', true, false, false, null), new SourceReference('182', '12.5.6.10', 508, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required) An array of 8×𝑛 numbers specifying the coordinates of n quadrilaterals in default user space. Each quadrilateral shall encompasses a word or group of contiguous words in the text underlying the annotation. The coordinates for each quadrilateral shall be given in the order: 𝑥 𝑦 𝑥 𝑦 𝑥 𝑦 𝑥 𝑦 1 1 2 2 3 3 4 4 specifying the quadrilateral’s four vertices in counterclockwise order (see "Figure 84 — QuadPoints specification"). The text shall be oriented with respect to the edge connecting points (x , y ) and 1 1 (x , y ). 2 2'),
             ],
             [new AnnotationDictionaryTable166Definition(), new AnnotationDictionarySpecificToMarkupAnnotationsTable172Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table182-numberarray-QuadPoints', new SourceReference('182', '12.5.6.10', 508, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'QuadPoints', minimumLength: 8, multipleOf: 8)),
+            ],
         );
     }
 }

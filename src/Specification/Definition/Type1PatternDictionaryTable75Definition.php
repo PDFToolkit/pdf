@@ -32,6 +32,14 @@ final readonly class Type1PatternDictionaryTable75Definition extends TableDefini
                 new EntryDefinition('Matrix', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('75', '8.7.3.1', 183), '(Optional) An array of six numbers specifying the pattern matrix (see 8.7.2, "General Properties of Patterns"). Default value: the identity matrix [ 1 0 0 1 0 0 ].', false),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberentry-PatternType', new SourceReference('75', '8.7.3.1', 182), new \PDF\Specification\Constraint\NumberEntry(key: 'PatternType', integer: true, allowed: [1])),
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberentry-PaintType', new SourceReference('75', '8.7.3.1', 183), new \PDF\Specification\Constraint\NumberEntry(key: 'PaintType', integer: true, allowed: [1, 2])),
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberentry-TilingType', new SourceReference('75', '8.7.3.1', 183), new \PDF\Specification\Constraint\NumberEntry(key: 'TilingType', integer: true, allowed: [1, 2, 3])),
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberentry-XStep', new SourceReference('75', '8.7.3.1', 183), new \PDF\Specification\Constraint\NumberEntry(key: 'XStep', nonzero: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberentry-YStep', new SourceReference('75', '8.7.3.1', 183), new \PDF\Specification\Constraint\NumberEntry(key: 'YStep', nonzero: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table75-numberarray-Matrix', new SourceReference('75', '8.7.3.1', 183), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [6])),
+            ],
         );
     }
 }

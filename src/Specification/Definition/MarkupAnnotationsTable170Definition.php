@@ -33,6 +33,9 @@ final readonly class MarkupAnnotationsTable170Definition extends TableDefinition
                 new EntryDefinition('ExData', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Optional; PDF 1.7', false, false, false, '1.7'), new SourceReference('170', '12.5.6.2', 401), '(Optional; PDF 1.7) An external data dictionary specifying data that shall be associated with the annotation. This dictionary contains the following entries: Type (optional) If present, shall be ExData. Subtype (required) a name specifying the type of data that the markup annotation shall be associated with. The only defined value is Markup3D. Table 298 lists the values that correspond to a subtype of Markup3D.', false),
             ],
             [new AnnotationDictionaryTable164Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table170-numberentry-CA', new SourceReference('170', '12.5.6.2', 400), new \PDF\Specification\Constraint\NumberEntry(key: 'CA', minimum: 0, maximum: 1)),
+            ],
         );
     }
 }

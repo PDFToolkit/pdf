@@ -31,6 +31,10 @@ final readonly class PolygonOrPolylineAnnotationTable178Definition extends Table
                 new EntryDefinition('Measure', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Optional; PDF 1.7', false, false, false, '1.7'), new SourceReference('178', '12.5.6.9', 411), '(Optional; PDF 1.7) A measure dictionary (see Table 261) that shall specify the scale and units that apply to the annotation.', false),
             ],
             [new AnnotationDictionaryTable164Definition(), new MarkupAnnotationsTable170Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table178-numberarray-IC', new SourceReference('178', '12.5.6.9', 411), new \PDF\Specification\Constraint\NumberArray(key: 'IC', lengths: [0, 1, 3, 4], minimum: 0, maximum: 1)),
+                new \PDF\Specification\SemanticRule('pdf17-table178-numberarray-Vertices', new SourceReference('178', '12.5.6.9', 410), new \PDF\Specification\Constraint\NumberArray(key: 'Vertices', minimumLength: 4, multipleOf: 2)),
+            ],
         );
     }
 }

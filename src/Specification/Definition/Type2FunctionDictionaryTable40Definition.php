@@ -26,6 +26,10 @@ final readonly class Type2FunctionDictionaryTable40Definition extends TableDefin
                 new EntryDefinition('N', new ObjectTypeConstraint('number', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('40', '7.10.4', 104), '(Required) The interpolation exponent. Each input value x shall return n values, given by y = C0 + xN × (C1 − C0), for 0 ≤ j < n. j j j j', false),
             ],
             [new FunctionDictionaryTable38Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table40-numberarray-C0', new SourceReference('40', '7.10.4', 104), new \PDF\Specification\Constraint\NumberArray(key: 'C0', minimumLength: 1)),
+                new \PDF\Specification\SemanticRule('pdf17-table40-numberarray-C1', new SourceReference('40', '7.10.4', 104), new \PDF\Specification\Constraint\NumberArray(key: 'C1', minimumLength: 1)),
+            ],
         );
     }
 }

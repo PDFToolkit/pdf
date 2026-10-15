@@ -31,6 +31,10 @@ final readonly class ObjectStreamDictionaryTable16Definition extends TableDefini
                 new EntryDefinition('Extends', new ObjectTypeConstraint('stream', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('16', '7.5.7', 77, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) A reference to another object stream, of which the current object stream is an extension. Both streams are considered part of a collection of object streams (see below). A given collection consists of a set of streams whose Extends links form a directed acyclic graph.'),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table16-numberentry-N', new SourceReference('16', '7.5.7', 77, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'N', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf20-table16-numberentry-First', new SourceReference('16', '7.5.7', 77, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'First', minimum: 0, integer: true)),
+            ],
         );
     }
 }

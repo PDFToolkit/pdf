@@ -31,6 +31,11 @@ final readonly class ICCProfileStreamDictionaryTable65Definition extends TableDe
                 new EntryDefinition('Metadata', new ObjectTypeConstraint('stream', indirect: false, direct: false, fixedName: null), new Requirement('Optional; PDF 1.4', false, false, false, '1.4'), new SourceReference('65', '8.6.5.5', 206, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; PDF 1.4) A metadata stream that shall contain metadata for the colour space ("see 14.3.2, "Metadata streams").'),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table65-numberentry-N', new SourceReference('65', '8.6.5.5', 206, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'N', integer: true, allowed: [1, 3, 4])),
+                new \PDF\Specification\SemanticRule('pdf20-table65-numberarray-Range', new SourceReference('65', '8.6.5.5', 206, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Range', minimumLength: 2, pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf20-table65-icccomponents-relations', new SourceReference('65', '8.6.5.5', 206, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\IccComponents()),
+            ],
         );
     }
 }

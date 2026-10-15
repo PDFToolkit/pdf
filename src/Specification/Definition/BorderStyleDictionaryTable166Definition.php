@@ -27,6 +27,10 @@ final readonly class BorderStyleDictionaryTable166Definition extends TableDefini
                 new EntryDefinition('D', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('166', '12.5.4', 395), '(Optional) A dash array defining a pattern of dashes and gaps that shall be used in drawing a dashed border (border style D in the S entry). The dash array shall be specified in the same format as in the line dash pattern parameter of the graphics state (see 8.4.3.6, “Line Dash Pattern”). The dash phase is not specified and shall be assumed to be 0. EXAMPLE A D entry of [ 3 2 ] specifies a border drawn with 3-point dashes alternating with 2-point gaps. Default value: [ 3 ].', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table166-numberentry-W', new SourceReference('166', '12.5.4', 394), new \PDF\Specification\Constraint\NumberEntry(key: 'W', minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table166-numberarray-D', new SourceReference('166', '12.5.4', 395), new \PDF\Specification\Constraint\NumberArray(key: 'D', minimum: 0)),
+            ],
         );
     }
 }

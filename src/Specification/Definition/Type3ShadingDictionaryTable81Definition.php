@@ -27,6 +27,10 @@ final readonly class Type3ShadingDictionaryTable81Definition extends TableDefini
                 new EntryDefinition('Extend', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('81', '8.7.4.5.4', 195), '(Optional) An array of two boolean values specifying whether to extend the shading beyond the starting and ending circles, respectively. Default value: [ false false ].', false),
             ],
             [new ShadingDictionaryTable78Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table81-numberarray-Coords', new SourceReference('81', '8.7.4.5.4', 195), new \PDF\Specification\Constraint\NumberArray(key: 'Coords', lengths: [6])),
+                new \PDF\Specification\SemanticRule('pdf17-table81-numberarray-Domain', new SourceReference('81', '8.7.4.5.4', 195), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', lengths: [2], pairs: true)),
+            ],
         );
     }
 }

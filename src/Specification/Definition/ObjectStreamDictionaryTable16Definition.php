@@ -27,6 +27,10 @@ final readonly class ObjectStreamDictionaryTable16Definition extends TableDefini
                 new EntryDefinition('Extends', new ObjectTypeConstraint('stream', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('16', '7.5.7', 54), '(Optional) A reference to another object stream, of which the current object stream shall be considered an extension. Both streams are considered part of a collection of object streams (see below). A given collection consists of a set of streams whose Extends links form a directed acyclic graph.', false),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table16-numberentry-N', new SourceReference('16', '7.5.7', 54), new \PDF\Specification\Constraint\NumberEntry(key: 'N', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table16-numberentry-First', new SourceReference('16', '7.5.7', 54), new \PDF\Specification\Constraint\NumberEntry(key: 'First', minimum: 0, integer: true)),
+            ],
         );
     }
 }

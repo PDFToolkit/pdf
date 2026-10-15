@@ -30,6 +30,10 @@ final readonly class Type2FunctionDictionaryTable40Definition extends TableDefin
                 new EntryDefinition('N', new ObjectTypeConstraint('number', indirect: false, direct: false, fixedName: null), new Requirement('Required', true, false, false, null), new SourceReference('40', '7.10.3', 143, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required) The interpolation exponent. Each input value x shall return n values, given by y =C0 +xN×(C1 −C0), for 0≤j<n. j j j j'),
             ],
             [new FunctionDictionaryTable38Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table40-numberarray-C0', new SourceReference('40', '7.10.3', 143, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'C0', minimumLength: 1)),
+                new \PDF\Specification\SemanticRule('pdf20-table40-numberarray-C1', new SourceReference('40', '7.10.3', 143, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'C1', minimumLength: 1)),
+            ],
         );
     }
 }

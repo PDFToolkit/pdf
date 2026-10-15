@@ -28,6 +28,10 @@ final readonly class SquareOrCircleAnnotationTable177Definition extends TableDef
                 new EntryDefinition('RD', new ObjectTypeConstraint('rectangle', false, false, false, null), new Requirement('Optional; PDF 1.5', false, false, false, '1.5'), new SourceReference('177', '12.5.6.8', 410), '(Optional; PDF 1.5) A set of four numbers that shall describe the numerical differences between two rectangles: the Rect entry of the annotation and the actual boundaries of the underlying square or circle. Such a difference may occur in situations where a border effect (described by BE) causes the size of the Rect to increase beyond that of the square or circle. The four numbers shall correspond to the differences in default user space between the left, top, right, and bottom coordinates of Rect and those of the square or circle, respectively. Each value shall be greater than or equal to 0. The sum of the top and bottom differences shall be less than the height of Rect, and the sum of the left and right differences shall be less than the width of Rect.', false),
             ],
             [new AnnotationDictionaryTable164Definition(), new MarkupAnnotationsTable170Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table177-numberarray-IC', new SourceReference('177', '12.5.6.8', 410), new \PDF\Specification\Constraint\NumberArray(key: 'IC', lengths: [0, 1, 3, 4], minimum: 0, maximum: 1)),
+                new \PDF\Specification\SemanticRule('pdf17-table177-numberarray-RD', new SourceReference('177', '12.5.6.8', 410), new \PDF\Specification\Constraint\NumberArray(key: 'RD', lengths: [4], minimum: 0)),
+            ],
         );
     }
 }

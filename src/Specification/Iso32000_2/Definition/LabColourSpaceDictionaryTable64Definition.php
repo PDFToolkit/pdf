@@ -30,6 +30,11 @@ final readonly class LabColourSpaceDictionaryTable64Definition extends TableDefi
                 new EntryDefinition('Range', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('64', '8.6.5.4', 204, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) An array of four numbers [a a b b ] that shall specify the range of min max min max valid values for the a* and b* (B and C) components of the colour space — that is, 𝑎 ≤ 𝑎∗≤ 𝑎 𝑚𝑖𝑛 𝑚𝑎𝑥 and 𝑏 ≤ 𝑏∗≤ 𝑏 𝑚𝑖𝑛 𝑚𝑎𝑥 Component values falling outside the specified range shall be adjusted to the nearest valid value without error indication. Default value: [-100 100 -100 100]'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table64-calibratedcolour-relations', new SourceReference('64', '8.6.5.4', 204, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\CalibratedColour()),
+                new \PDF\Specification\SemanticRule('pdf20-table64-numberarray-BlackPoint', new SourceReference('64', '8.6.5.4', 204, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'BlackPoint', lengths: [3], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf20-table64-numberarray-Range', new SourceReference('64', '8.6.5.4', 204, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Range', lengths: [4], pairs: true)),
+            ],
         );
     }
 }

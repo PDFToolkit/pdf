@@ -27,6 +27,11 @@ final readonly class ICCProfileStreamDictionaryTable66Definition extends TableDe
                 new EntryDefinition('Metadata', new ObjectTypeConstraint('stream', false, false, false, null), new Requirement('Optional; PDF 1.4', false, false, false, '1.4'), new SourceReference('66', '8.6.5.5', 158), '(Optional; PDF 1.4) A metadata stream that shall contain metadata for the colour space (see 14.3.2, "Metadata Streams").', false),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table66-numberentry-N', new SourceReference('66', '8.6.5.5', 157), new \PDF\Specification\Constraint\NumberEntry(key: 'N', integer: true, allowed: [1, 3, 4])),
+                new \PDF\Specification\SemanticRule('pdf17-table66-numberarray-Range', new SourceReference('66', '8.6.5.5', 158), new \PDF\Specification\Constraint\NumberArray(key: 'Range', minimumLength: 2, pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table66-icccomponents-relations', new SourceReference('66', '8.6.5.5', 157), new \PDF\Specification\Constraint\IccComponents()),
+            ],
         );
     }
 }

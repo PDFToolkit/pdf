@@ -32,6 +32,9 @@ final readonly class ShadingDictionaryTable77Definition extends TableDefinition
                 new EntryDefinition('AntiAlias', new ObjectTypeConstraint('boolean', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('77', '8.7.4.3', 246, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts. NOTE 3 The shading operators sample shading functions at a rate determined by the resolution of the output device. Aliasing can occur if the function is not smooth — that is, if it has a high spatial frequency relative to the sampling rate. Anti- aliasing can be computationally expensive and is usually unnecessary, since most shading functions are smooth enough or are sampled at a high enough frequency to avoid aliasing effects. Default value: false.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table77-numberentry-ShadingType', new SourceReference('77', '8.7.4.3', 245, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'ShadingType', integer: true, allowed: [1, 2, 3, 4, 5, 6, 7])),
+            ],
         );
     }
 }

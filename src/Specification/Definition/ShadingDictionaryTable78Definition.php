@@ -28,6 +28,9 @@ final readonly class ShadingDictionaryTable78Definition extends TableDefinition
                 new EntryDefinition('AntiAlias', new ObjectTypeConstraint('boolean', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('78', '8.7.4.3', 191), '(Optional) A flag indicating whether to filter the shading function to prevent aliasing artifacts. NOTE The shading operators sample shading functions at a rate determined by the resolution of the output device. Aliasing can occur if the function is not smooth—that is, if it has a high spatial frequency relative to the sampling rate. Anti-aliasing can be computationally expensive and is usually unnecessary, since most shading functions are smooth enough or are sampled at a high enough frequency to avoid aliasing effects. Anti-aliasing may not be implemented on some output devices, in which case this flag is ignored. Default value: false.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table78-numberentry-ShadingType', new SourceReference('78', '8.7.4.3', 191), new \PDF\Specification\Constraint\NumberEntry(key: 'ShadingType', integer: true, allowed: [1, 2, 3, 4, 5, 6, 7])),
+            ],
         );
     }
 }

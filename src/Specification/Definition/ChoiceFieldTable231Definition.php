@@ -26,6 +26,10 @@ final readonly class ChoiceFieldTable231Definition extends TableDefinition
                 new EntryDefinition('I', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Sometimes required, otherwise optional; PDF 1.4', false, true, false, '1.4'), new SourceReference('231', '12.7.4.4', 453), '(Sometimes required, otherwise optional; PDF 1.4) For choice fields that allow multiple selection (MultiSelect flag set), an array of integers, sorted in ascending order, representing the zero-based indices in the Opt array of the currently selected option items. This entry shall be used when two or more elements in the Opt array have different names but the same export value or when the value of the choice field is an array. This entry should not be used for choice fields that do not allow multiple selection. If the items identified by this entry differ from those in the V entry of the field dictionary (see discussion following this Table), the V entry shall be used.', false),
             ],
             [new FieldDictionaryTable220Definition(), new FieldsContainingVariableTextTable222Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table231-numberentry-TI', new SourceReference('231', '12.7.4.4', 453), new \PDF\Specification\Constraint\NumberEntry(key: 'TI', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table231-choiceoptions-relations', new SourceReference('231', '12.7.4.4', 453), new \PDF\Specification\Constraint\ChoiceOptions()),
+            ],
         );
     }
 }

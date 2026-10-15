@@ -26,6 +26,12 @@ final readonly class FunctionDictionaryTable38Definition extends TableDefinition
                 new EntryDefinition('Range', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Required for type 0 and type 4 functions, optional otherwise; see below', false, true, false, null), new SourceReference('38', '7.10.2', 101), '(Required for type 0 and type 4 functions, optional otherwise; see below) An array of 2 × n numbers, where n shall be the number of output values. For each j from 0 to n − 1, Range shall be less than or 2j equal to Range , and the jth output value, y , shall lie in the interval 2j+1 j Range ≤ y ≤ Range . Output values outside the declared range 2j j 2j+1 shall be clipped to the nearest boundary value. If this entry is absent, no clipping shall be done.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table38-numberentry-FunctionType', new SourceReference('38', '7.10.2', 101), new \PDF\Specification\Constraint\NumberEntry(key: 'FunctionType', integer: true, allowed: [0, 2, 3, 4])),
+                new \PDF\Specification\SemanticRule('pdf17-table38-numberarray-Domain', new SourceReference('38', '7.10.2', 101), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', minimumLength: 2, pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table38-numberarray-Range', new SourceReference('38', '7.10.2', 101), new \PDF\Specification\Constraint\NumberArray(key: 'Range', minimumLength: 2, pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table38-functiondimensions-relations', new SourceReference('38', '7.10.2', 101), new \PDF\Specification\Constraint\FunctionDimensions()),
+            ],
         );
     }
 }

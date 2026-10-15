@@ -31,6 +31,11 @@ final readonly class CCITTFaxDecodeFilterTable11Definition extends TableDefiniti
                 new EntryDefinition('DamagedRowsBeforeError', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement(null, false, false, false, null), new SourceReference('11', '7.4.6', 39), 'The number of damaged rows of data that shall be tolerated before an error occurs. This entry shall apply only if EndOfLine is true and K is non-negative. Tolerating a damaged row shall mean locating its end in the encoded data by searching for an EndOfLine pattern and then substituting decoded data from the previous row if the previous row was not damaged, or a white scan line if the previous row was also damaged. Default value: 0.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table11-numberentry-Columns', new SourceReference('11', '7.4.6', 39), new \PDF\Specification\Constraint\NumberEntry(key: 'Columns', minimum: 1, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table11-numberentry-Rows', new SourceReference('11', '7.4.6', 39), new \PDF\Specification\Constraint\NumberEntry(key: 'Rows', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table11-numberentry-DamagedRowsBeforeError', new SourceReference('11', '7.4.6', 39), new \PDF\Specification\Constraint\NumberEntry(key: 'DamagedRowsBeforeError', minimum: 0, integer: true)),
+            ],
         );
     }
 }

@@ -36,6 +36,14 @@ final readonly class LineAnnotationTable175Definition extends TableDefinition
                 new EntryDefinition('CO', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional; meaningful only if Cap is true; PDF 1.7', false, true, false, '1.7'), new SourceReference('175', '12.5.6.7', 407), '(Optional; meaningful only if Cap is true; PDF 1.7) An array of two numbers that shall specify the offset of the caption text from its normal position. The first value shall be the horizontal offset along the annotation line from its midpoint, with a positive value indicating offset to the right and a negative value indicating offset to the left. The second value shall be the vertical offset perpendicular to the annotation line, with a positive value indicating a shift up and a negative value indicating a shift down. Default value: [0, 0] (no offset from normal positioning)', false),
             ],
             [new AnnotationDictionaryTable164Definition(), new MarkupAnnotationsTable170Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table175-numberarray-L', new SourceReference('175', '12.5.6.7', 406), new \PDF\Specification\Constraint\NumberArray(key: 'L', lengths: [4])),
+                new \PDF\Specification\SemanticRule('pdf17-table175-numberentry-LLE', new SourceReference('175', '12.5.6.7', 406), new \PDF\Specification\Constraint\NumberEntry(key: 'LLE', minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table175-numberentry-LLO', new SourceReference('175', '12.5.6.7', 407), new \PDF\Specification\Constraint\NumberEntry(key: 'LLO', minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table175-conditionalentries-relations', new SourceReference('175', '12.5.6.7', 406), new \PDF\Specification\Constraint\ConditionalEntries(conditionKey: 'LLE', required: ['LL'])),
+                new \PDF\Specification\SemanticRule('pdf17-table175-numberarray-CO', new SourceReference('175', '12.5.6.7', 407), new \PDF\Specification\Constraint\NumberArray(key: 'CO', lengths: [2])),
+                new \PDF\Specification\SemanticRule('pdf17-table175-numberarray-IC', new SourceReference('175', '12.5.6.7', 406), new \PDF\Specification\Constraint\NumberArray(key: 'IC', lengths: [0, 1, 3, 4], minimum: 0, maximum: 1)),
+            ],
         );
     }
 }

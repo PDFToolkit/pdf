@@ -28,6 +28,14 @@ final readonly class LZWDecodeAndFlateDecodeFiltersTable8Definition extends Tabl
                 new EntryDefinition('EarlyChange', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('LZWDecode only', false, false, false, null), new SourceReference('8', '7.4.4.3', 36), '(LZWDecode only) An indication of when to increase the code length. If the value of this entry is 0, code length increases shall be postponed as long as possible. If the value is 1, code length increases shall occur one code early. This parameter is included because LZW sample code distributed by some vendors increases the code length one code earlier than necessary. Default value: 1.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table8-numberentry-Colors', new SourceReference('8', '7.4.4.3', 35), new \PDF\Specification\Constraint\NumberEntry(key: 'Colors', minimum: 1, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table8-numberentry-Columns', new SourceReference('8', '7.4.4.3', 36), new \PDF\Specification\Constraint\NumberEntry(key: 'Columns', minimum: 1, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table8-numberentry-BitsPerComponent', new SourceReference('8', '7.4.4.3', 36), new \PDF\Specification\Constraint\NumberEntry(key: 'BitsPerComponent', integer: true, allowed: [1, 2, 4, 8, 16])),
+                new \PDF\Specification\SemanticRule('pdf17-table8-numberentry-Predictor', new SourceReference('8', '7.4.4.3', 35), new \PDF\Specification\Constraint\NumberEntry(key: 'Predictor', integer: true, allowed: [1, 2, 10, 11, 12, 13, 14, 15])),
+                new \PDF\Specification\SemanticRule('pdf17-table8-numberentry-EarlyChange', new SourceReference('8', '7.4.4.3', 36), new \PDF\Specification\Constraint\NumberEntry(key: 'EarlyChange', integer: true, allowed: [0, 1])),
+                new \PDF\Specification\SemanticRule('pdf17-table8-predictorparameters-relations', new SourceReference('8', '7.4.4.3', 35), new \PDF\Specification\Constraint\PredictorParameters()),
+            ],
         );
     }
 }

@@ -30,6 +30,10 @@ final readonly class Type1ShadingDictionaryTable78Definition extends TableDefini
                 new EntryDefinition('Function', new ObjectTypeConstraint('function or array', indirect: false, direct: false, fixedName: null), new Requirement('Required', true, false, false, null), new SourceReference('78', '8.7.4.5.2', 248, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required) A 2-in, n-out function or an array of n 2-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). Each function’s domain shall be a superset of that of the shading dictionary. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value.'),
             ],
             [new ShadingDictionaryTable77Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table78-numberarray-Domain', new SourceReference('78', '8.7.4.5.2', 248, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', lengths: [4], pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf20-table78-numberarray-Matrix', new SourceReference('78', '8.7.4.5.2', 248, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [6])),
+            ],
         );
     }
 }

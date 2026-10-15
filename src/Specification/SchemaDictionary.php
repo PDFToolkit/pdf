@@ -34,7 +34,7 @@ abstract class SchemaDictionary extends DictionaryType
         return parent::with($entry);
     }
 
-    /** Checks unconditional requirements; conditional and inherited rules remain explicit. */
+    /** Checks declared domains, unconditional requirements and explicit reviewed relations. */
     public function validate(): void
     {
         foreach ($this->entries() as $entry) {
@@ -44,6 +44,9 @@ abstract class SchemaDictionary extends DictionaryType
             if ($definition->requirement->unconditional() && !$this->has($definition->name)) {
                 throw new \InvalidArgumentException('Table ' . $this->definition()->source->table . ': required dictionary entry /' . $definition->name . ' is missing.');
             }
+        }
+        foreach ($this->definition()->semanticRules() as $rule) {
+            $rule->validate($this);
         }
     }
 

@@ -30,6 +30,10 @@ final readonly class Type3FunctionDictionaryTable41Definition extends TableDefin
                 new EntryDefinition('Encode', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Required', true, false, false, null), new SourceReference('41', '7.10.4', 144, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required) An array of 2 × 𝑘 numbers that, taken in pairs, shall map each subset of the domain defined by Domain and the Bounds array to the domain of the corresponding function.'),
             ],
             [new FunctionDictionaryTable38Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table41-numberarray-Bounds', new SourceReference('41', '7.10.4', 144, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Bounds', ascending: true)),
+                new \PDF\Specification\SemanticRule('pdf20-table41-numberarray-Encode', new SourceReference('41', '7.10.4', 144, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Encode', minimumLength: 2, multipleOf: 2)),
+            ],
         );
     }
 }

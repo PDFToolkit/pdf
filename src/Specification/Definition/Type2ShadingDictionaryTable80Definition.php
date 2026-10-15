@@ -27,6 +27,10 @@ final readonly class Type2ShadingDictionaryTable80Definition extends TableDefini
                 new EntryDefinition('Extend', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('80', '8.7.4.5.3', 194), '(Optional) An array of two boolean values specifying whether to extend the shading beyond the starting and ending points of the axis, respectively. Default value: [ false false ].', false),
             ],
             [new ShadingDictionaryTable78Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table80-numberarray-Coords', new SourceReference('80', '8.7.4.5.3', 194), new \PDF\Specification\Constraint\NumberArray(key: 'Coords', lengths: [4])),
+                new \PDF\Specification\SemanticRule('pdf17-table80-numberarray-Domain', new SourceReference('80', '8.7.4.5.3', 194), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', lengths: [2], pairs: true)),
+            ],
         );
     }
 }

@@ -31,6 +31,10 @@ final readonly class BorderStyleDictionaryTable168Definition extends TableDefini
                 new EntryDefinition('D', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('168', '12.5.4', 488, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) A dash array defining a pattern of dashes and gaps that shall be used in drawing a dashed border (border style D in the S entry). The dash array shall be specified in the same format as in the line dash pattern parameter of the graphics state (see 8.4.3.6, "Line dash pattern"). The dash phase shall not be specified and shall be assumed to be 0. EXAMPLE A D entry of [3 2] specifies a border drawn with 3-point dashes alternating with 2-point gaps. Default value: [3].'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table168-numberentry-W', new SourceReference('168', '12.5.4', 488, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'W', minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf20-table168-numberarray-D', new SourceReference('168', '12.5.4', 488, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'D', minimum: 0)),
+            ],
         );
     }
 }

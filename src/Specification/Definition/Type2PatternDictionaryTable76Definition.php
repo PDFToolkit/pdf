@@ -28,6 +28,10 @@ final readonly class Type2PatternDictionaryTable76Definition extends TableDefini
                 new EntryDefinition('ExtGState', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('76', '8.7.4.2', 189), '(Optional) A graphics state parameter dictionary (see 8.4.5, "Graphics State Parameter Dictionaries") containing graphics state parameters to be put into effect temporarily while the shading pattern is painted. Any parameters that are so specified shall be inherited from the graphics state that was in effect at the beginning of the content stream in which the pattern is defined as a resource.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table76-numberentry-PatternType', new SourceReference('76', '8.7.4.2', 189), new \PDF\Specification\Constraint\NumberEntry(key: 'PatternType', integer: true, allowed: [2])),
+                new \PDF\Specification\SemanticRule('pdf17-table76-numberarray-Matrix', new SourceReference('76', '8.7.4.2', 189), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [6])),
+            ],
         );
     }
 }

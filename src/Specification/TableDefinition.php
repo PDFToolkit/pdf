@@ -12,16 +12,21 @@ readonly class TableDefinition
     private array $entries;
     /** @var array<string, EntryDefinition> */
     private array $variableEntries;
+    /** @var list<SemanticRule> */
+    private array $semanticRules;
 
     /**
      * @param list<EntryDefinition> $entries
      * @param list<TableDefinition> $commonTables
+     * @param list<SemanticRule> $semanticRules
      */
-    public function __construct(public SourceReference $source, public string $title, array $entries, array $commonTables = [])
+    public function __construct(public SourceReference $source, public string $title, array $entries, array $commonTables = [], array $semanticRules = [])
     {
         $fixed = [];
         $variable = [];
+        $rules = [];
         foreach ($commonTables as $table) {
+            array_push($rules, ...iterator_to_array($table->semanticRules()));
             foreach ($table->entries() as $entry) {
                 $fixed[$entry->name] = $entry;
             }
@@ -38,6 +43,7 @@ readonly class TableDefinition
         }
         $this->entries = $fixed;
         $this->variableEntries = $variable;
+        $this->semanticRules = [...$rules, ...$semanticRules];
     }
 
     public function entry(NameType|string $name): EntryDefinition
@@ -64,5 +70,11 @@ readonly class TableDefinition
     public function variableEntries(): iterable
     {
         yield from $this->variableEntries;
+    }
+
+    /** @return iterable<SemanticRule> */
+    public function semanticRules(): iterable
+    {
+        yield from $this->semanticRules;
     }
 }

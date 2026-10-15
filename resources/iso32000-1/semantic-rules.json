@@ -1,0 +1,1163 @@
+{
+  "schema_version": 1,
+  "source_document": "PDF32000_2008.pdf",
+  "review_scope": "Explicit intrinsic numeric, array-shape and cross-entry constraints. Conditions requiring a page tree, resource graph, decoded payload or application semantics remain separate. Rules are authored against retained physical source pages, never inferred automatically from normative prose.",
+  "rules": [
+    {
+      "table": "5",
+      "id": "pdf17-table5-numberentry-Length",
+      "physical_pdf_page": 28,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Length",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "5",
+      "id": "pdf17-table5-numberentry-DL",
+      "physical_pdf_page": 29,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "DL",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "5",
+      "id": "pdf17-table5-filterparameters-relations",
+      "physical_pdf_page": 28,
+      "constraint": "FilterParameters",
+      "arguments": {}
+    },
+    {
+      "table": "5",
+      "id": "pdf17-table5-filterparameters-relations-3",
+      "physical_pdf_page": 28,
+      "constraint": "FilterParameters",
+      "arguments": {
+        "filterKey": "FFilter",
+        "parametersKey": "FDecodeParms"
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-numberentry-Colors",
+      "physical_pdf_page": 35,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Colors",
+        "minimum": 1,
+        "integer": true
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-numberentry-Columns",
+      "physical_pdf_page": 36,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Columns",
+        "minimum": 1,
+        "integer": true
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-numberentry-BitsPerComponent",
+      "physical_pdf_page": 36,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerComponent",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          16
+        ]
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-numberentry-Predictor",
+      "physical_pdf_page": 35,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Predictor",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-numberentry-EarlyChange",
+      "physical_pdf_page": 36,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "EarlyChange",
+        "integer": true,
+        "allowed": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "table": "8",
+      "id": "pdf17-table8-predictorparameters-relations",
+      "physical_pdf_page": 35,
+      "constraint": "PredictorParameters",
+      "arguments": {}
+    },
+    {
+      "table": "11",
+      "id": "pdf17-table11-numberentry-Columns",
+      "physical_pdf_page": 39,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Columns",
+        "minimum": 1,
+        "integer": true
+      }
+    },
+    {
+      "table": "11",
+      "id": "pdf17-table11-numberentry-Rows",
+      "physical_pdf_page": 39,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Rows",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "11",
+      "id": "pdf17-table11-numberentry-DamagedRowsBeforeError",
+      "physical_pdf_page": 39,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "DamagedRowsBeforeError",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "16",
+      "id": "pdf17-table16-numberentry-N",
+      "physical_pdf_page": 54,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "N",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "16",
+      "id": "pdf17-table16-numberentry-First",
+      "physical_pdf_page": 54,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "First",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "17",
+      "id": "pdf17-table17-numberentry-Size",
+      "physical_pdf_page": 58,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Size",
+        "minimum": 1,
+        "integer": true
+      }
+    },
+    {
+      "table": "17",
+      "id": "pdf17-table17-numberarray-W",
+      "physical_pdf_page": 58,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "W",
+        "lengths": [
+          3
+        ],
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "17",
+      "id": "pdf17-table17-numberarray-Index",
+      "physical_pdf_page": 58,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Index",
+        "minimum": 0,
+        "integer": true,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "17",
+      "id": "pdf17-table17-crossreferenceindex-relations",
+      "physical_pdf_page": 58,
+      "constraint": "CrossReferenceIndex",
+      "arguments": {}
+    },
+    {
+      "table": "38",
+      "id": "pdf17-table38-numberentry-FunctionType",
+      "physical_pdf_page": 101,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "FunctionType",
+        "integer": true,
+        "allowed": [
+          0,
+          2,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "table": "38",
+      "id": "pdf17-table38-numberarray-Domain",
+      "physical_pdf_page": 101,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Domain",
+        "minimumLength": 2,
+        "pairs": true
+      }
+    },
+    {
+      "table": "38",
+      "id": "pdf17-table38-numberarray-Range",
+      "physical_pdf_page": 101,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Range",
+        "minimumLength": 2,
+        "pairs": true
+      }
+    },
+    {
+      "table": "38",
+      "id": "pdf17-table38-functiondimensions-relations",
+      "physical_pdf_page": 101,
+      "constraint": "FunctionDimensions",
+      "arguments": {}
+    },
+    {
+      "table": "39",
+      "id": "pdf17-table39-numberarray-Size",
+      "physical_pdf_page": 102,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Size",
+        "minimumLength": 1,
+        "minimum": 0,
+        "exclusiveMinimum": true,
+        "integer": true
+      }
+    },
+    {
+      "table": "39",
+      "id": "pdf17-table39-numberentry-BitsPerSample",
+      "physical_pdf_page": 102,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerSample",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ]
+      }
+    },
+    {
+      "table": "39",
+      "id": "pdf17-table39-numberentry-Order",
+      "physical_pdf_page": 102,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Order",
+        "integer": true,
+        "allowed": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "table": "39",
+      "id": "pdf17-table39-numberarray-Encode",
+      "physical_pdf_page": 102,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Encode",
+        "minimumLength": 2,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "39",
+      "id": "pdf17-table39-numberarray-Decode",
+      "physical_pdf_page": 102,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Decode",
+        "minimumLength": 2,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "40",
+      "id": "pdf17-table40-numberarray-C0",
+      "physical_pdf_page": 104,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "C0",
+        "minimumLength": 1
+      }
+    },
+    {
+      "table": "40",
+      "id": "pdf17-table40-numberarray-C1",
+      "physical_pdf_page": 104,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "C1",
+        "minimumLength": 1
+      }
+    },
+    {
+      "table": "41",
+      "id": "pdf17-table41-numberarray-Bounds",
+      "physical_pdf_page": 105,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Bounds",
+        "ascending": true
+      }
+    },
+    {
+      "table": "41",
+      "id": "pdf17-table41-numberarray-Encode",
+      "physical_pdf_page": 105,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Encode",
+        "minimumLength": 2,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "63",
+      "id": "pdf17-table63-calibratedcolour-relations",
+      "physical_pdf_page": 153,
+      "constraint": "CalibratedColour",
+      "arguments": {}
+    },
+    {
+      "table": "63",
+      "id": "pdf17-table63-numberarray-BlackPoint",
+      "physical_pdf_page": 153,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "BlackPoint",
+        "lengths": [
+          3
+        ],
+        "minimum": 0
+      }
+    },
+    {
+      "table": "64",
+      "id": "pdf17-table64-calibratedcolour-relations",
+      "physical_pdf_page": 154,
+      "constraint": "CalibratedColour",
+      "arguments": {}
+    },
+    {
+      "table": "64",
+      "id": "pdf17-table64-numberarray-BlackPoint",
+      "physical_pdf_page": 154,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "BlackPoint",
+        "lengths": [
+          3
+        ],
+        "minimum": 0
+      }
+    },
+    {
+      "table": "65",
+      "id": "pdf17-table65-calibratedcolour-relations",
+      "physical_pdf_page": 156,
+      "constraint": "CalibratedColour",
+      "arguments": {}
+    },
+    {
+      "table": "65",
+      "id": "pdf17-table65-numberarray-BlackPoint",
+      "physical_pdf_page": 156,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "BlackPoint",
+        "lengths": [
+          3
+        ],
+        "minimum": 0
+      }
+    },
+    {
+      "table": "64",
+      "id": "pdf17-table64-numberarray-Gamma",
+      "physical_pdf_page": 154,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Gamma",
+        "lengths": [
+          3
+        ],
+        "minimum": 0,
+        "exclusiveMinimum": true
+      }
+    },
+    {
+      "table": "63",
+      "id": "pdf17-table63-numberentry-Gamma",
+      "physical_pdf_page": 153,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Gamma",
+        "minimum": 0,
+        "exclusiveMinimum": true
+      }
+    },
+    {
+      "table": "64",
+      "id": "pdf17-table64-numberarray-Matrix",
+      "physical_pdf_page": 154,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Matrix",
+        "lengths": [
+          9
+        ]
+      }
+    },
+    {
+      "table": "65",
+      "id": "pdf17-table65-numberarray-Range",
+      "physical_pdf_page": 156,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Range",
+        "lengths": [
+          4
+        ],
+        "pairs": true
+      }
+    },
+    {
+      "table": "66",
+      "id": "pdf17-table66-numberentry-N",
+      "physical_pdf_page": 157,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "N",
+        "integer": true,
+        "allowed": [
+          1,
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "table": "66",
+      "id": "pdf17-table66-numberarray-Range",
+      "physical_pdf_page": 158,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Range",
+        "minimumLength": 2,
+        "pairs": true
+      }
+    },
+    {
+      "table": "66",
+      "id": "pdf17-table66-icccomponents-relations",
+      "physical_pdf_page": 157,
+      "constraint": "IccComponents",
+      "arguments": {}
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberentry-PatternType",
+      "physical_pdf_page": 182,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "PatternType",
+        "integer": true,
+        "allowed": [
+          1
+        ]
+      }
+    },
+    {
+      "table": "76",
+      "id": "pdf17-table76-numberentry-PatternType",
+      "physical_pdf_page": 189,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "PatternType",
+        "integer": true,
+        "allowed": [
+          2
+        ]
+      }
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberentry-PaintType",
+      "physical_pdf_page": 183,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "PaintType",
+        "integer": true,
+        "allowed": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberentry-TilingType",
+      "physical_pdf_page": 183,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "TilingType",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberentry-XStep",
+      "physical_pdf_page": 183,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "XStep",
+        "nonzero": true
+      }
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberentry-YStep",
+      "physical_pdf_page": 183,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "YStep",
+        "nonzero": true
+      }
+    },
+    {
+      "table": "75",
+      "id": "pdf17-table75-numberarray-Matrix",
+      "physical_pdf_page": 183,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Matrix",
+        "lengths": [
+          6
+        ]
+      }
+    },
+    {
+      "table": "76",
+      "id": "pdf17-table76-numberarray-Matrix",
+      "physical_pdf_page": 189,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Matrix",
+        "lengths": [
+          6
+        ]
+      }
+    },
+    {
+      "table": "78",
+      "id": "pdf17-table78-numberentry-ShadingType",
+      "physical_pdf_page": 191,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "ShadingType",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    },
+    {
+      "table": "79",
+      "id": "pdf17-table79-numberarray-Domain",
+      "physical_pdf_page": 193,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Domain",
+        "lengths": [
+          4
+        ],
+        "pairs": true
+      }
+    },
+    {
+      "table": "79",
+      "id": "pdf17-table79-numberarray-Matrix",
+      "physical_pdf_page": 193,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Matrix",
+        "lengths": [
+          6
+        ]
+      }
+    },
+    {
+      "table": "80",
+      "id": "pdf17-table80-numberarray-Coords",
+      "physical_pdf_page": 194,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Coords",
+        "lengths": [
+          4
+        ]
+      }
+    },
+    {
+      "table": "80",
+      "id": "pdf17-table80-numberarray-Domain",
+      "physical_pdf_page": 194,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Domain",
+        "lengths": [
+          2
+        ],
+        "pairs": true
+      }
+    },
+    {
+      "table": "81",
+      "id": "pdf17-table81-numberarray-Coords",
+      "physical_pdf_page": 195,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Coords",
+        "lengths": [
+          6
+        ]
+      }
+    },
+    {
+      "table": "81",
+      "id": "pdf17-table81-numberarray-Domain",
+      "physical_pdf_page": 195,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Domain",
+        "lengths": [
+          2
+        ],
+        "pairs": true
+      }
+    },
+    {
+      "table": "82",
+      "id": "pdf17-table82-numberentry-BitsPerCoordinate",
+      "physical_pdf_page": 197,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerCoordinate",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ]
+      }
+    },
+    {
+      "table": "82",
+      "id": "pdf17-table82-numberentry-BitsPerComponent",
+      "physical_pdf_page": 197,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerComponent",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "table": "82",
+      "id": "pdf17-table82-numberarray-Decode",
+      "physical_pdf_page": 197,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Decode",
+        "minimumLength": 6,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "83",
+      "id": "pdf17-table83-numberentry-BitsPerCoordinate",
+      "physical_pdf_page": 201,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerCoordinate",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ]
+      }
+    },
+    {
+      "table": "83",
+      "id": "pdf17-table83-numberentry-BitsPerComponent",
+      "physical_pdf_page": 201,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerComponent",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "table": "83",
+      "id": "pdf17-table83-numberarray-Decode",
+      "physical_pdf_page": 201,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Decode",
+        "minimumLength": 6,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "84",
+      "id": "pdf17-table84-numberentry-BitsPerCoordinate",
+      "physical_pdf_page": 204,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerCoordinate",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16,
+          24,
+          32
+        ]
+      }
+    },
+    {
+      "table": "84",
+      "id": "pdf17-table84-numberentry-BitsPerComponent",
+      "physical_pdf_page": 204,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerComponent",
+        "integer": true,
+        "allowed": [
+          1,
+          2,
+          4,
+          8,
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "table": "84",
+      "id": "pdf17-table84-numberarray-Decode",
+      "physical_pdf_page": 204,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Decode",
+        "minimumLength": 6,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "82",
+      "id": "pdf17-table82-numberentry-BitsPerFlag",
+      "physical_pdf_page": 197,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerFlag",
+        "integer": true,
+        "allowed": [
+          2,
+          4,
+          8
+        ]
+      }
+    },
+    {
+      "table": "84",
+      "id": "pdf17-table84-numberentry-BitsPerFlag",
+      "physical_pdf_page": 204,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "BitsPerFlag",
+        "integer": true,
+        "allowed": [
+          2,
+          4,
+          8
+        ]
+      }
+    },
+    {
+      "table": "83",
+      "id": "pdf17-table83-numberentry-VerticesPerRow",
+      "physical_pdf_page": 201,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "VerticesPerRow",
+        "minimum": 2,
+        "integer": true
+      }
+    },
+    {
+      "table": "89",
+      "id": "pdf17-table89-numberentry-Width",
+      "physical_pdf_page": 214,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Width",
+        "minimum": 0,
+        "exclusiveMinimum": true,
+        "integer": true
+      }
+    },
+    {
+      "table": "89",
+      "id": "pdf17-table89-numberentry-Height",
+      "physical_pdf_page": 214,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Height",
+        "minimum": 0,
+        "exclusiveMinimum": true,
+        "integer": true
+      }
+    },
+    {
+      "table": "89",
+      "id": "pdf17-table89-numberentry-SMaskInData",
+      "physical_pdf_page": 216,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "SMaskInData",
+        "integer": true,
+        "allowed": [
+          0,
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "table": "89",
+      "id": "pdf17-table89-imagesamples-relations",
+      "physical_pdf_page": 214,
+      "constraint": "ImageSamples",
+      "arguments": {}
+    },
+    {
+      "table": "166",
+      "id": "pdf17-table166-numberentry-W",
+      "physical_pdf_page": 394,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "W",
+        "minimum": 0
+      }
+    },
+    {
+      "table": "166",
+      "id": "pdf17-table166-numberarray-D",
+      "physical_pdf_page": 395,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "D",
+        "minimum": 0
+      }
+    },
+    {
+      "table": "167",
+      "id": "pdf17-table167-numberentry-I",
+      "physical_pdf_page": 395,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "I",
+        "minimum": 0,
+        "maximum": 2
+      }
+    },
+    {
+      "table": "170",
+      "id": "pdf17-table170-numberentry-CA",
+      "physical_pdf_page": 400,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "CA",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-numberarray-L",
+      "physical_pdf_page": 406,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "L",
+        "lengths": [
+          4
+        ]
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-numberentry-LLE",
+      "physical_pdf_page": 406,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "LLE",
+        "minimum": 0
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-numberentry-LLO",
+      "physical_pdf_page": 407,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "LLO",
+        "minimum": 0
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-conditionalentries-relations",
+      "physical_pdf_page": 406,
+      "constraint": "ConditionalEntries",
+      "arguments": {
+        "conditionKey": "LLE",
+        "required": [
+          "LL"
+        ]
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-numberarray-CO",
+      "physical_pdf_page": 407,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "CO",
+        "lengths": [
+          2
+        ]
+      }
+    },
+    {
+      "table": "175",
+      "id": "pdf17-table175-numberarray-IC",
+      "physical_pdf_page": 406,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "IC",
+        "lengths": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    {
+      "table": "177",
+      "id": "pdf17-table177-numberarray-IC",
+      "physical_pdf_page": 410,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "IC",
+        "lengths": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    {
+      "table": "178",
+      "id": "pdf17-table178-numberarray-IC",
+      "physical_pdf_page": 411,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "IC",
+        "lengths": [
+          0,
+          1,
+          3,
+          4
+        ],
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    {
+      "table": "177",
+      "id": "pdf17-table177-numberarray-RD",
+      "physical_pdf_page": 410,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "RD",
+        "lengths": [
+          4
+        ],
+        "minimum": 0
+      }
+    },
+    {
+      "table": "178",
+      "id": "pdf17-table178-numberarray-Vertices",
+      "physical_pdf_page": 410,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "Vertices",
+        "minimumLength": 4,
+        "multipleOf": 2
+      }
+    },
+    {
+      "table": "179",
+      "id": "pdf17-table179-numberarray-QuadPoints",
+      "physical_pdf_page": 411,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "QuadPoints",
+        "minimumLength": 8,
+        "multipleOf": 8
+      }
+    },
+    {
+      "table": "229",
+      "id": "pdf17-table229-numberentry-MaxLen",
+      "physical_pdf_page": 452,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "MaxLen",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "231",
+      "id": "pdf17-table231-numberentry-TI",
+      "physical_pdf_page": 453,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "TI",
+        "minimum": 0,
+        "integer": true
+      }
+    },
+    {
+      "table": "231",
+      "id": "pdf17-table231-choiceoptions-relations",
+      "physical_pdf_page": 453,
+      "constraint": "ChoiceOptions",
+      "arguments": {}
+    }
+  ]
+}

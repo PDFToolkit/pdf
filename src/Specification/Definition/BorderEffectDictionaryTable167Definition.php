@@ -25,6 +25,9 @@ final readonly class BorderEffectDictionaryTable167Definition extends TableDefin
                 new EntryDefinition('I', new ObjectTypeConstraint('number', false, false, false, null), new Requirement('Optional; valid only if the value of S is C', false, true, false, null), new SourceReference('167', '12.5.5', 395), '(Optional; valid only if the value of S is C) A number describing the intensity of the effect, in the range 0 to 2. Default value: 0.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table167-numberentry-I', new SourceReference('167', '12.5.5', 395), new \PDF\Specification\Constraint\NumberEntry(key: 'I', minimum: 0, maximum: 2)),
+            ],
         );
     }
 }

@@ -27,6 +27,12 @@ final readonly class CalRGBColourSpaceDictionaryTable64Definition extends TableD
                 new EntryDefinition('Matrix', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('64', '8.6.5.3', 154), '(Optional) An array of nine numbers [ X Y Z X Y Z X Y Z ] A A A B B B C C C specifying the linear interpretation of the decoded A, B, and C components of the colour space with respect to the final XYZ representation. Default value: the identity matrix [ 1 0 0 0 1 0 0 0 1 ].', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table64-calibratedcolour-relations', new SourceReference('64', '8.6.5.3', 154), new \PDF\Specification\Constraint\CalibratedColour()),
+                new \PDF\Specification\SemanticRule('pdf17-table64-numberarray-BlackPoint', new SourceReference('64', '8.6.5.3', 154), new \PDF\Specification\Constraint\NumberArray(key: 'BlackPoint', lengths: [3], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table64-numberarray-Gamma', new SourceReference('64', '8.6.5.3', 154), new \PDF\Specification\Constraint\NumberArray(key: 'Gamma', lengths: [3], minimum: 0, exclusiveMinimum: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table64-numberarray-Matrix', new SourceReference('64', '8.6.5.3', 154), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [9])),
+            ],
         );
     }
 }

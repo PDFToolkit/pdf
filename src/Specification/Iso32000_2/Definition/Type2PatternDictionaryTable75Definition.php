@@ -32,6 +32,10 @@ final readonly class Type2PatternDictionaryTable75Definition extends TableDefini
                 new EntryDefinition('ExtGState', new ObjectTypeConstraint('dictionary', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('75', '8.7.4.1', 243, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) A graphics state parameter dictionary (see 8.4.5, "Graphics state parameter dictionaries") containing graphics state parameters to be put into effect temporarily while the shading pattern is painted. Any parameters that are not so specified shall be inherited from the graphics state that was in effect at the beginning of the pattern’s parent content stream, and as modified by clause 11.6.7, "Patterns and transparency".'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table75-numberentry-PatternType', new SourceReference('75', '8.7.4.1', 243, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'PatternType', integer: true, allowed: [2])),
+                new \PDF\Specification\SemanticRule('pdf20-table75-numberarray-Matrix', new SourceReference('75', '8.7.4.1', 243, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [6])),
+            ],
         );
     }
 }

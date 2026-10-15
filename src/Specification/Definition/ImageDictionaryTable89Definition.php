@@ -43,6 +43,12 @@ final readonly class ImageDictionaryTable89Definition extends TableDefinition
                 new EntryDefinition('OC', new ObjectTypeConstraint('dictionary', false, false, false, null), new Requirement('Optional; PDF 1.5', false, false, false, '1.5'), new SourceReference('89', '8.9.5.1', 216), '(Optional; PDF 1.5) An optional content group or optional content membership dictionary (see 8.11, "Optional Content"), specifying the optional content properties for this image XObject. Before the image is processed by a conforming reader, its visibility shall be determined based on this entry. If it is determined to be invisible, the entire image shall be skipped, as if there were no Do operator to invoke it.', false),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table89-numberentry-Width', new SourceReference('89', '8.9.5.1', 214), new \PDF\Specification\Constraint\NumberEntry(key: 'Width', minimum: 0, exclusiveMinimum: true, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table89-numberentry-Height', new SourceReference('89', '8.9.5.1', 214), new \PDF\Specification\Constraint\NumberEntry(key: 'Height', minimum: 0, exclusiveMinimum: true, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table89-numberentry-SMaskInData', new SourceReference('89', '8.9.5.1', 216), new \PDF\Specification\Constraint\NumberEntry(key: 'SMaskInData', integer: true, allowed: [0, 1, 2])),
+                new \PDF\Specification\SemanticRule('pdf17-table89-imagesamples-relations', new SourceReference('89', '8.9.5.1', 214), new \PDF\Specification\Constraint\ImageSamples()),
+            ],
         );
     }
 }

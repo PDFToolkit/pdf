@@ -25,6 +25,9 @@ final readonly class TextMarkupAnnotationsTable179Definition extends TableDefini
                 new EntryDefinition('QuadPoints', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('179', '12.5.6.10', 411), '(Required) An array of 8 × n numbers specifying the coordinates of n quadrilaterals in default user space. Each quadrilateral shall encompasses a word or group of contiguous words in the text underlying the annotation. The coordinates for each quadrilateral shall be given in the order x y x y x y x y 1 1 2 2 3 3 4 4 specifying the quadrilateral’s four vertices in counterclockwise order (see Figure 64). The text shall be oriented with respect to the edge connecting points (x , y ) and (x , y ). 1 1 2 2 The annotation dictionary’s AP entry, if present, shall take precedence over QuadPoints; see Table 168 and 12.5.5, “Appearance Streams.”', false),
             ],
             [new AnnotationDictionaryTable164Definition(), new MarkupAnnotationsTable170Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table179-numberarray-QuadPoints', new SourceReference('179', '12.5.6.10', 411), new \PDF\Specification\Constraint\NumberArray(key: 'QuadPoints', minimumLength: 8, multipleOf: 8)),
+            ],
         );
     }
 }

@@ -24,6 +24,9 @@ final readonly class TextFieldTable229Definition extends TableDefinition
                 new EntryDefinition('MaxLen', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Optional; inheritable', false, false, true, null), new SourceReference('229', '12.7.4.3', 452), '(Optional; inheritable) The maximum length of the field’s text, in characters.', false),
             ],
             [new FieldDictionaryTable220Definition(), new FieldsContainingVariableTextTable222Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table229-numberentry-MaxLen', new SourceReference('229', '12.7.4.3', 452), new \PDF\Specification\Constraint\NumberEntry(key: 'MaxLen', minimum: 0, integer: true)),
+            ],
         );
     }
 }

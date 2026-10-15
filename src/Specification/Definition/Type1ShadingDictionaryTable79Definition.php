@@ -26,6 +26,10 @@ final readonly class Type1ShadingDictionaryTable79Definition extends TableDefini
                 new EntryDefinition('Function', new ObjectTypeConstraint('function or array', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('79', '8.7.4.5.3', 193), '(Required) A 2-in, n-out function or an array of n 2-in, 1-out functions (where n is the number of colour components in the shading dictionary’s colour space). Each function’s domain shall be a superset of that of the shading dictionary. If the value returned by the function for a given colour component is out of range, it shall be adjusted to the nearest valid value.', false, new \PDF\Specification\ImplementationCorrection('attribute-type-79-function', 'The printed Type column says function, but the normative value prose explicitly allows either one n-output function or an array of n one-output functions. This is an explicit source clarification, not a claim of an official ISO erratum.', 'resources/reference-documents/PDF32000_2008.pdf#page=193', 'ISO 32000-1:2008, table 79, Function value prose, physical PDF page 193')),
             ],
             [new ShadingDictionaryTable78Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table79-numberarray-Domain', new SourceReference('79', '8.7.4.5.3', 193), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', lengths: [4], pairs: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table79-numberarray-Matrix', new SourceReference('79', '8.7.4.5.3', 193), new \PDF\Specification\Constraint\NumberArray(key: 'Matrix', lengths: [6])),
+            ],
         );
     }
 }

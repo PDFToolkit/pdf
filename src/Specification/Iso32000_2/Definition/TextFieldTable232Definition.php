@@ -28,6 +28,9 @@ final readonly class TextFieldTable232Definition extends TableDefinition
                 new EntryDefinition('MaxLen', new ObjectTypeConstraint('integer', indirect: false, direct: false, fixedName: null), new Requirement('Optional; inheritable', false, false, true, null), new SourceReference('232', '12.7.5.3', 556, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; inheritable) The maximum length of the field’s text, in characters.'),
             ],
             [new FieldDictionaryTable226Definition(), new FieldsContainingVariableTextTable228Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table232-numberentry-MaxLen', new SourceReference('232', '12.7.5.3', 556, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'MaxLen', minimum: 0, integer: true)),
+            ],
         );
     }
 }

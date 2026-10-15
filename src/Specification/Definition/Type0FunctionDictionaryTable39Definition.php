@@ -29,6 +29,13 @@ final readonly class Type0FunctionDictionaryTable39Definition extends TableDefin
                 new EntryDefinition('other stream attributes', new ObjectTypeConstraint('(various)', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('39', '7.10.2', 102), '(Optional) Other attributes of the stream that shall provide the sample values, as appropriate (see Table 5).', true),
             ],
             [new FunctionDictionaryTable38Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table39-numberarray-Size', new SourceReference('39', '7.10.2', 102), new \PDF\Specification\Constraint\NumberArray(key: 'Size', minimumLength: 1, minimum: 0, exclusiveMinimum: true, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table39-numberentry-BitsPerSample', new SourceReference('39', '7.10.2', 102), new \PDF\Specification\Constraint\NumberEntry(key: 'BitsPerSample', integer: true, allowed: [1, 2, 4, 8, 12, 16, 24, 32])),
+                new \PDF\Specification\SemanticRule('pdf17-table39-numberentry-Order', new SourceReference('39', '7.10.2', 102), new \PDF\Specification\Constraint\NumberEntry(key: 'Order', integer: true, allowed: [1, 3])),
+                new \PDF\Specification\SemanticRule('pdf17-table39-numberarray-Encode', new SourceReference('39', '7.10.2', 102), new \PDF\Specification\Constraint\NumberArray(key: 'Encode', minimumLength: 2, multipleOf: 2)),
+                new \PDF\Specification\SemanticRule('pdf17-table39-numberarray-Decode', new SourceReference('39', '7.10.2', 102), new \PDF\Specification\Constraint\NumberArray(key: 'Decode', minimumLength: 2, multipleOf: 2)),
+            ],
         );
     }
 }

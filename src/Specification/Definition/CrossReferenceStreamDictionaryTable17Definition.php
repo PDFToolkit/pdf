@@ -28,6 +28,12 @@ final readonly class CrossReferenceStreamDictionaryTable17Definition extends Tab
                 new EntryDefinition('W', new ObjectTypeConstraint('array', false, true, true, null), new Requirement('Required', true, false, false, null), new SourceReference('17', '7.5.8.3', 58), '(Required) An array of integers representing the size of the fields in a single cross-reference entry. Table 18 describes the types of entries and their fields. For PDF 1.5, W always contains three integers; the value of each integer shall be the number of bytes (in the decoded stream) of the corresponding field. EXAMPLE [1 2 1] means that the fields are one byte, two bytes, and one byte, respectively. A value of zero for an element in the W array indicates that the corresponding field shall not be present in the stream, and the default value shall be used, if there is one. If the first element is zero, the type field shall not be present, and shall default to type 1. The sum of the items shall be the total length of each entry; it can be used with the Index array to determine the starting position of each subsection. Different cross-reference streams in a PDF file may use different values for W.', false),
             ],
             [new StreamDictionaryTable5Definition(), new FileTrailerDictionaryTable15Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table17-numberentry-Size', new SourceReference('17', '7.5.8.3', 58), new \PDF\Specification\Constraint\NumberEntry(key: 'Size', minimum: 1, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table17-numberarray-W', new SourceReference('17', '7.5.8.3', 58), new \PDF\Specification\Constraint\NumberArray(key: 'W', lengths: [3], minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table17-numberarray-Index', new SourceReference('17', '7.5.8.3', 58), new \PDF\Specification\Constraint\NumberArray(key: 'Index', minimum: 0, integer: true, multipleOf: 2)),
+                new \PDF\Specification\SemanticRule('pdf17-table17-crossreferenceindex-relations', new SourceReference('17', '7.5.8.3', 58), new \PDF\Specification\Constraint\CrossReferenceIndex()),
+            ],
         );
     }
 }

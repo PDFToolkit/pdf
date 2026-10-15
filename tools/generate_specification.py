@@ -6,6 +6,7 @@ import argparse
 import json
 import re
 from pathlib import Path
+from generate_semantic_rules import load_rules, render_rules
 
 
 TYPE_MAP = {
@@ -125,6 +126,7 @@ def entry_expression(dictionary: dict, entry: dict, variable: bool) -> str:
 def generate(root: Path, check: bool = False) -> None:
     catalogue_path = root / 'resources' / 'iso32000-1'
     dictionaries = json.loads((catalogue_path / 'dictionaries.json').read_text(encoding='utf-8'))
+    semantic_rules = load_rules(catalogue_path)
     output = root / 'src' / 'Specification' / 'Dictionary'
     if not check:
         output.mkdir(parents=True, exist_ok=True)
@@ -167,7 +169,9 @@ def generate(root: Path, check: bool = False) -> None:
         for variable in [False, True]:
             for entry in dictionary['variable_entries' if variable else 'entries']:
                 definition_php += '                ' + entry_expression(dictionary, entry, variable) + ',\n'
-        definition_php += '            ],\n            [' + ', '.join('new ' + class_name(next(item for item in dictionaries if item['id'] == identifier)['title'], identifier) + 'Definition()' for identifier in common) + '],\n        );\n    }\n}\n'
+        definition_php += '            ],\n            [' + ', '.join('new ' + class_name(next(item for item in dictionaries if item['id'] == identifier)['title'], identifier) + 'Definition()' for identifier in common) + '],\n'
+        definition_php += render_rules(semantic_rules.get(table, []), lambda page: source_expression(dictionary, page))
+        definition_php += '        );\n    }\n}\n'
         definition_path = definitions_output / f'{definition_name}.php'
         save(definition_path, definition_php)
         files.append(str(definition_path.relative_to(root)).replace('\\', '/'))

@@ -30,6 +30,12 @@ final readonly class StreamDictionaryTable5Definition extends TableDefinition
                 new EntryDefinition('DL', new ObjectTypeConstraint('integer', false, false, false, null), new Requirement('Optional; PDF 1.5', false, false, false, '1.5'), new SourceReference('5', '7.3.8.2', 29), '(Optional; PDF 1.5) A non-negative integer representing the number of bytes in the decoded (defiltered) stream. It can be used to determine, for example, whether enough disk space is available to write a stream to a file. This value shall be considered a hint only; for some stream filters, it may not be possible to determine this value precisely.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table5-numberentry-Length', new SourceReference('5', '7.3.8.2', 28), new \PDF\Specification\Constraint\NumberEntry(key: 'Length', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table5-numberentry-DL', new SourceReference('5', '7.3.8.2', 29), new \PDF\Specification\Constraint\NumberEntry(key: 'DL', minimum: 0, integer: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table5-filterparameters-relations', new SourceReference('5', '7.3.8.2', 28), new \PDF\Specification\Constraint\FilterParameters()),
+                new \PDF\Specification\SemanticRule('pdf17-table5-filterparameters-relations-3', new SourceReference('5', '7.3.8.2', 28), new \PDF\Specification\Constraint\FilterParameters(filterKey: 'FFilter', parametersKey: 'FDecodeParms')),
+            ],
         );
     }
 }

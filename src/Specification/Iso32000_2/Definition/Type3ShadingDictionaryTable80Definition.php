@@ -31,6 +31,10 @@ final readonly class Type3ShadingDictionaryTable80Definition extends TableDefini
                 new EntryDefinition('Extend', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('80', '8.7.4.5.4', 251, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) An array of two boolean values specifying whether to extend the shading beyond the starting and ending circles, respectively. Default value: [false false].'),
             ],
             [new ShadingDictionaryTable77Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table80-numberarray-Coords', new SourceReference('80', '8.7.4.5.4', 251, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Coords', lengths: [6])),
+                new \PDF\Specification\SemanticRule('pdf20-table80-numberarray-Domain', new SourceReference('80', '8.7.4.5.4', 251, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'Domain', lengths: [2], pairs: true)),
+            ],
         );
     }
 }

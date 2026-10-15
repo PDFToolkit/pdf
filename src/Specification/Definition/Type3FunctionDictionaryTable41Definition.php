@@ -26,6 +26,10 @@ final readonly class Type3FunctionDictionaryTable41Definition extends TableDefin
                 new EntryDefinition('Encode', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Required', true, false, false, null), new SourceReference('41', '7.10.5.1', 105), '(Required) An array of 2 × k numbers that, taken in pairs, shall map each subset of the domain defined by Domain and the Bounds array to the domain of the corresponding function.', false),
             ],
             [new FunctionDictionaryTable38Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table41-numberarray-Bounds', new SourceReference('41', '7.10.5.1', 105), new \PDF\Specification\Constraint\NumberArray(key: 'Bounds', ascending: true)),
+                new \PDF\Specification\SemanticRule('pdf17-table41-numberarray-Encode', new SourceReference('41', '7.10.5.1', 105), new \PDF\Specification\Constraint\NumberArray(key: 'Encode', minimumLength: 2, multipleOf: 2)),
+            ],
         );
     }
 }

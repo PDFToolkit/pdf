@@ -26,6 +26,11 @@ final readonly class CalGrayColourSpaceDictionaryTable63Definition extends Table
                 new EntryDefinition('Gamma', new ObjectTypeConstraint('number', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('63', '8.6.5.2', 153), '(Optional) A number G defining the gamma for the gray (A) component. G shall be positive and is generally greater than or equal to 1. Default value: 1.', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table63-calibratedcolour-relations', new SourceReference('63', '8.6.5.2', 153), new \PDF\Specification\Constraint\CalibratedColour()),
+                new \PDF\Specification\SemanticRule('pdf17-table63-numberarray-BlackPoint', new SourceReference('63', '8.6.5.2', 153), new \PDF\Specification\Constraint\NumberArray(key: 'BlackPoint', lengths: [3], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table63-numberentry-Gamma', new SourceReference('63', '8.6.5.2', 153), new \PDF\Specification\Constraint\NumberEntry(key: 'Gamma', minimum: 0, exclusiveMinimum: true)),
+            ],
         );
     }
 }

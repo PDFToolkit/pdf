@@ -30,6 +30,11 @@ final readonly class CalGrayColourSpaceDictionaryTable62Definition extends Table
                 new EntryDefinition('Gamma', new ObjectTypeConstraint('number', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('62', '8.6.5.2', 201, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) A number G defining the gamma for the gray (A) component. G shall be positive and is generally greater than or equal to 1. Default value: 1.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf20-table62-calibratedcolour-relations', new SourceReference('62', '8.6.5.2', 201, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\CalibratedColour()),
+                new \PDF\Specification\SemanticRule('pdf20-table62-numberarray-BlackPoint', new SourceReference('62', '8.6.5.2', 201, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberArray(key: 'BlackPoint', lengths: [3], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf20-table62-numberentry-Gamma', new SourceReference('62', '8.6.5.2', 201, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NumberEntry(key: 'Gamma', minimum: 0, exclusiveMinimum: true)),
+            ],
         );
     }
 }

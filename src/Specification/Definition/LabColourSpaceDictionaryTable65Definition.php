@@ -26,6 +26,11 @@ final readonly class LabColourSpaceDictionaryTable65Definition extends TableDefi
                 new EntryDefinition('Range', new ObjectTypeConstraint('array', false, false, false, null), new Requirement('Optional', false, false, false, null), new SourceReference('65', '8.6.5.4', 156), '(Optional) An array of four numbers [ a a b b ] that shall specify min max min max the range of valid values for the a* and b* (B and C) components of the colour space—that is, a ≤ a* ≤ a min max and b ≤ b* ≤ b min max Component values falling outside the specified range shall be adjusted to the nearest valid value without error indication. Default value: [−100 100 −100 100 ].', false),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table65-calibratedcolour-relations', new SourceReference('65', '8.6.5.4', 156), new \PDF\Specification\Constraint\CalibratedColour()),
+                new \PDF\Specification\SemanticRule('pdf17-table65-numberarray-BlackPoint', new SourceReference('65', '8.6.5.4', 156), new \PDF\Specification\Constraint\NumberArray(key: 'BlackPoint', lengths: [3], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table65-numberarray-Range', new SourceReference('65', '8.6.5.4', 156), new \PDF\Specification\Constraint\NumberArray(key: 'Range', lengths: [4], pairs: true)),
+            ],
         );
     }
 }
