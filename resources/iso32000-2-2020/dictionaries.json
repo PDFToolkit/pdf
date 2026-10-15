@@ -13335,10 +13335,10 @@
       {
         "name": "AP",
         "type": "dictionary",
-        "description": "(Optional; PDF 1.2) An appearance dictionary specifying how the annotation shall be presented visually on the page (see 12.5.5, \"Appearance streams\"). A PDF writer shall include an appearance dictionary when writing or updating the PDF file except for the two cases listed below. Every annotation (including those whose Subtype value is Widget, as used for form fields), except for the two cases listed below, shall have at least one appearance dictionary. • Annotations where the value of the Rect key consists of an array where the value at index 1 is equal to the value at index 3 and the value at index 2 is equal to the value at index 4. NOTE (2020) The bullet point above was changed from “or” to “and” in this document to match requirements in other published ISO PDF standards (such as PDF/A). • Annotations whose Subtype value is Popup, Projection or Link.",
-        "qualifier": "Optional; PDF 1.2",
-        "required": false,
-        "conditional": false,
+        "description": "(Required except for the stated conditions in PDF 2.0; optional in PDF 1.2 through 1.7) An appearance dictionary. In PDF 2.0 it is required except for Rect[0]==Rect[2] AND Rect[1]==Rect[3], or Subtype Popup, Projection or Link. AP.N defines the normal appearance; state dictionaries require a name AS. An unmatched state retains the processor fallback defined in 12.5.5.",
+        "qualifier": "Required except for conditions listed below (PDF 2.0); optional in PDF 1.2 through PDF 1.7",
+        "required": true,
+        "conditional": true,
         "inheritable": false,
         "introduced_in": "1.2",
         "deprecated_in": null,
@@ -13347,8 +13347,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 483,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "annotation-ap-pdf20-conditional",
+          "pdf_page": 483,
+          "review_status": "Completed",
+          "annotation_name": "905b784f-3c53-44d9-bc08-d78d2b9d3107",
+          "issue_number": 22
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace PDF\Tests;
 
 use PDF\Document\ResourceDictionary;
+use PDF\Document\Forms\FormAppearanceStream;
 use PDF\FileStructure;
+use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\DataStructure\Rectangle;
 use PDF\Syntax\DataStructure\TextString;
 use PDF\Syntax\DocumentStructure\DocumentCatalog;
@@ -42,7 +44,8 @@ final class AnnotationRelationshipsTest extends TestCase
 
     private function annotation(string $kind = 'Text', Entry ...$entries): DictionaryType
     {
-        return new DictionaryType($this->entry('Subtype', new NameType($kind)), $this->entry('Rect', $this->box()), ...$entries);
+        $appearance = in_array($kind, ['Popup', 'Projection', 'Link'], true) ? [] : [$this->entry('AP', new DictionaryType($this->entry('N', new IndirectReference(new FormAppearanceStream(new ContentStreams(), $this->box(), new DictionaryType())))))];
+        return new DictionaryType($this->entry('Subtype', new NameType($kind)), $this->entry('Rect', $this->box()), ...$appearance, ...$entries);
     }
 
     private function page(BasicType ...$annotations): PageObject

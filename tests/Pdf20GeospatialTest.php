@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace PDF\Tests;
 
 use PDF\Document\Geospatial as G;
+use PDF\Document\Forms\FormAppearanceStream;
 use PDF\Document\ResourceDictionary;
 use PDF\FileStructure;
 use PDF\Graphics\CoordinateSystems\Point;
 use PDF\Serialization\FileWriter;
 use PDF\Serialization\IncrementalWriter;
 use PDF\Serialization\LinearizedWriter;
+use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\DataStructure\AsciiString;
 use PDF\Syntax\DataStructure\Rectangle;
 use PDF\Syntax\DataStructure\TextString;
@@ -172,7 +174,8 @@ final class Pdf20GeospatialTest extends TestCase
     #[DataProvider('annotationContexts')]
     public function testAnnotationGeoUsesWorldCoordinateTriples(string $subtype, int $dimension): void
     {
-        $annotation = new DictionaryType($this->entry('Type', new NameType('Annot')), $this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $this->measure(dimension: $dimension)));
+        $appearance = new DictionaryType($this->entry('N', new IndirectReference(new FormAppearanceStream(new ContentStreams(), $this->rectangle(), new DictionaryType()))));
+        $annotation = new DictionaryType($this->entry('Type', new NameType('Annot')), $this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $this->measure(dimension: $dimension)), $this->entry('AP', $appearance));
         $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
         self::assertStringContainsString('/GEO', (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toPdf(new \PDF\Serialization\SerializationContext()));
     }
@@ -224,7 +227,8 @@ final class Pdf20GeospatialTest extends TestCase
     public function testPageRelationshipIdentifiesAnnotationsWhoseOptionalTypeIsAbsent(string $subtype, int $dimension): void
     {
         $raw = new DictionaryType(...iterator_to_array($this->measure(dimension: $dimension)->entries(), false));
-        $annotation = new DictionaryType($this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $raw));
+        $appearance = new DictionaryType($this->entry('N', new IndirectReference(new FormAppearanceStream(new ContentStreams(), $this->rectangle(), new DictionaryType()))));
+        $annotation = new DictionaryType($this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $raw), $this->entry('AP', $appearance));
         $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
         $initial = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toRevision();
         self::assertStringStartsWith($initial->bytes, (new IncrementalUpdate($initial, new FileBody()))->toRevision()->bytes);

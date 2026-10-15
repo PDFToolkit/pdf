@@ -48,6 +48,46 @@
       "implemented_scope": "PDF 2.0 choice indices are allowed without MultiSelect. Distinct display names sharing an export value require explicit indices. Effective header/catalog version validation preserves the PDF 1.7 restriction. V remains authoritative if V and I disagree.",
       "implementation": ["src/Document/Forms/ChoiceField.php", "src/Specification/Constraint/ChoiceOptions.php"],
       "validation": ["tests/ChoiceFieldEc3Test.php", "tests/SpecificationSemanticsTest.php"]
+    },
+    {
+      "issue": 22,
+      "physical_pdf_page": 483,
+      "annotation_name": "905b784f-3c53-44d9-bc08-d78d2b9d3107",
+      "approval_chain": [
+        "b290d6b6-04c2-4a4a-a0b9-8e860ec6dc81"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The AP qualifier is required except for Table166 exceptions in PDF2, but optional for PDF1.2–1.7. Effective page annotation graphs execute the condition; private dictionaries do not.",
+      "implementation": [
+        "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
+      ],
+      "validation": [
+        "tests/AnnotationAppearanceGraphTest.php",
+        "tools/validate_annotation_appearances.py"
+      ]
+    },
+    {
+      "issue": 124,
+      "physical_pdf_page": 483,
+      "annotation_name": "4ae64587-7ad3-444a-b076-977e578f499d",
+      "approval_chain": [
+        "efd57bd4-5344-4d6d-a674-09e2e0b1caf1"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Rect uses zero-based array indices: the AP exception requires Rect[0]==Rect[2] AND Rect[1]==Rect[3]. A horizontal/vertical line alone remains subject to the PDF2 AP requirement.",
+      "implementation": [
+        "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
+      ],
+      "validation": [
+        "tests/AnnotationAppearanceGraphTest.php",
+        "tools/validate_annotation_appearances.py"
+      ]
     }
   ]
 }

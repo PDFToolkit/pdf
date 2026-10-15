@@ -99,6 +99,7 @@ final readonly class AnnotationGraphValidation
                 }
             }
         }
+        (new AnnotationAppearanceGraphValidation($this->limits))->validate($index, $version);
     }
 
     private function value(PageAnnotation $item, string $key): ?\PDF\Syntax\FileStructure\BasicType

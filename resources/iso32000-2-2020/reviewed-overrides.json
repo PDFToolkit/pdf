@@ -830,6 +830,45 @@
           "array_member_type": "dictionary"
         }
       ]
+    },
+    {
+      "id": "166",
+      "name": "AnnotationDictionaryTable166",
+      "title": "Entries common to all annotation dictionaries",
+      "section": "12.5.2",
+      "pdf_pages": [
+        482,
+        483,
+        484,
+        485
+      ],
+      "entries": [
+        {
+          "name": "AP",
+          "type": "dictionary",
+          "description": "(Required except for the stated conditions in PDF 2.0; optional in PDF 1.2 through 1.7) An appearance dictionary. In PDF 2.0 it is required except for Rect[0]==Rect[2] AND Rect[1]==Rect[3], or Subtype Popup, Projection or Link. AP.N defines the normal appearance; state dictionaries require a name AS. An unmatched state retains the processor fallback defined in 12.5.5.",
+          "qualifier": "Required except for conditions listed below (PDF 2.0); optional in PDF 1.2 through PDF 1.7",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": "1.2",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 483,
+          "errata": {
+            "id": "annotation-ap-pdf20-conditional",
+            "pdf_page": 483,
+            "review_status": "Completed",
+            "annotation_name": "905b784f-3c53-44d9-bc08-d78d2b9d3107",
+            "issue_number": 22
+          },
+          "description_origin": "reviewed-ec3-summary",
+          "description_language": "en"
+        }
+      ]
     }
   ]
 }
