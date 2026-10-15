@@ -126,7 +126,7 @@ des 197 règles intrinsèques. Aucune apparence n’est générée implicitement
 
 ## Révisions incrémentales protégées
 
-La version candidate 0.10.0, non publiée, étend le garde natif commun au
+La version 0.10.0 étend le garde natif commun au
 remplissage P2/P3 borné des champs existants de texte, choix, case à cocher et
 bouton radio, et à l’édition P3 des annotations de marquage listées. Il compare
 les révisions figées complètes et conserve DocMDP, FieldMDP, verrous Adobe,
@@ -164,10 +164,10 @@ incorporés opaques nécessitent toujours un assainisseur explicite ; voir les
 
 ## Installation
 
-Le core **0.9** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
+Le core **0.10** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.9.0'
+composer require 'roukmoute/pdf:^0.10'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
@@ -184,10 +184,10 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Les convertisseurs images et polices sont disponibles en **0.1.10**, le lecteur en **0.3.2** ; ces versions acceptent le core 0.9 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Les convertisseurs images et polices sont disponibles en **0.1.11**, le lecteur en **0.5.1** ; ces versions acceptent le core 0.9/0.10 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.10'
+composer require 'pdftoolkit/pdf-images:^0.1.11'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/fr/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.
@@ -206,9 +206,9 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.fr.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.9.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.9 attendue par les modules. Les
-dépendances de développement utilisent les modules stables 0.1, dont les versions
+`COMPOSER_ROOT_VERSION=0.10.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.10 attendue par les modules. Les
+dépendances de développement utilisent les modules stables publiés, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.
 

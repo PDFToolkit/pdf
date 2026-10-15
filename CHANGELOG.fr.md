@@ -4,6 +4,8 @@
 
 ## [Non publié]
 
+## [0.10.0] - 2026-10-15
+
 - Étendre le garde des révisions natives protégées au remplissage P2/P3 borné des
   champs texte/choix/case à cocher/bouton radio existants et à la création,
   modification et suppression par détachement d’annotations P3. Conserver verrous,
@@ -27,8 +29,10 @@
   des approbations de permissions. La validité mathématique n’établit pas la PKI.
 - Suivre explicitement modèles de pages, texte enrichi, nouvelles ressources,
   classification de chaînes externes et autres opérations protégées non prises en
-  charge dans la couverture bilingue. Les exigences de provenance native et
-  contraintes stables des modules optionnels restent inchangées.
+  charge dans la couverture bilingue. Les exigences de provenance native restent
+  inchangées. Verrouiller les modules de développement publiés Reader 0.5.1 et
+  images/polices 0.1.11, compatibles core 0.10. PHP 8.3–8.5 reste pris en charge ;
+  utiliser COMPOSER_ROOT_VERSION=0.10.x-dev pour ce checkout.
 
 ## [0.9.1] - 2026-10-15
 
@@ -673,7 +677,7 @@ pour PHP 8.5.
   incrémentales, linéarisation et autres contraintes sémantiques restent à venir.
   Voir [le document de couverture](docs/fr/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.9.1...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.10.0...HEAD
 [0.5.4]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.4
 [0.5.3]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.3
 [0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2
@@ -687,3 +691,5 @@ pour PHP 8.5.
 [0.1.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.1.0
 [0.5.5]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.5
 [0.6.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.6.0
+
+[0.10.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.10.0

@@ -4,6 +4,8 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-15
+
 - Extend the native protected-revision guard to bounded P2/P3 filling of existing
   text/choice/checkbox/radio fields and P3 markup creation, modification and
   detachment. Preserve historical locks, inherited values, ownership, unrelated
@@ -25,7 +27,9 @@ English | [Français](CHANGELOG.fr.md)
 - Track page templates, rich text, new resources, external revision-chain
   classification and other unsupported protected operations explicitly in the
   bilingual signature-revision coverage. Existing native provenance requirements
-  and stable optional module constraints remain unchanged.
+  remain unchanged. Lock the development modules to published reader 0.5.1 and
+  images/fonts 0.1.11, whose stable constraints accept core 0.10. PHP 8.3–8.5
+  remains supported; use COMPOSER_ROOT_VERSION=0.10.x-dev for this checkout.
 
 ## [0.9.1] - 2026-10-15
 
@@ -481,7 +485,7 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 - The 0.x API may change before 1.0.
 - This release does not claim complete PDF conformance. Encryption, signatures, font subsetting, specialized image codecs, incremental updates, linearization and additional semantic constraints remain future work. See [the coverage document](docs/specification.md).
 
-[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.9.1...HEAD
+[Unreleased]: https://github.com/PDFToolkit/pdf/compare/v0.10.0...HEAD
 [0.5.1]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.1
 [0.5.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.0
 [0.4.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.4.0
@@ -495,3 +499,5 @@ First public release of the explicit PDF 1.7 / ISO 32000-1:2008 object model for
 [0.5.2]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.2
 [0.5.5]: https://github.com/PDFToolkit/pdf/releases/tag/v0.5.5
 [0.6.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.6.0
+
+[0.10.0]: https://github.com/PDFToolkit/pdf/releases/tag/v0.10.0

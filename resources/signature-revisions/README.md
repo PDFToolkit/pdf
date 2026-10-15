@@ -2,7 +2,7 @@
 
 English | [Français](README.fr.md)
 
-The unreleased 0.10.0 candidate extends the common incremental guard introduced
+Version 0.10.0 extends the common incremental guard introduced
 in 0.8.1. Every `IncrementalUpdate` entry point and direct `IncrementalWriter`
 operation compares the complete frozen delta against authenticated historical
 DocMDP, FieldMDP, Adobe field locks and usage rights. Supported native operations
@@ -140,7 +140,7 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The candidate passes on PHP 8.3/8.4/8.5: 97 native refusals and 148
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 97 native refusals and 148
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
 annotation, six shared-appearance attack). UR3 contributes eight signed sources,

@@ -2,7 +2,7 @@
 
 [English](README.md) | Français
 
-La version candidate 0.10.0, non publiée, étend le garde incrémental commun
+La version 0.10.0 étend le garde incrémental commun
 introduit en 0.8.1. Tous les points d’entrée d’`IncrementalUpdate` et opérations
 directes d’`IncrementalWriter` comparent les révisions figées complètes aux
 restrictions historiques authentifiées DocMDP, FieldMDP, verrous Adobe et droits

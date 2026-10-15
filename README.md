@@ -147,7 +147,7 @@ from the 197 intrinsic rules. No appearance is generated implicitly.
 
 ## Protected incremental revisions
 
-The unreleased 0.10.0 candidate extends the shared native guard to bounded P2/P3
+Version 0.10.0 extends the shared native guard to bounded P2/P3
 filling of existing text, choice, checkbox and radio fields, and P3 editing of
 listed markup annotations. It compares the complete frozen delta and preserves
 historical DocMDP, FieldMDP, Adobe locks, field inheritance and shared resources.
@@ -180,14 +180,14 @@ still require an explicit sanitizer; see the [redaction boundaries](resources/re
 
 ## Installation
 
-Core **0.9** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.10** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.9.0'
+composer require 'roukmoute/pdf:^0.10'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -205,12 +205,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Image and font converters are available as **0.1.10**, and the reader as
-**0.3.2**; these releases accept core 0.9 and PHP 8.3 or newer. Composer automatically installs
+Image and font converters are available as **0.1.11**, and the reader as
+**0.5.1**; these releases accept core 0.9/0.10 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.10'
+composer require 'pdftoolkit/pdf-images:^0.1.11'
 ```
 
 The module installs the core using its stable constraint. The
@@ -237,9 +237,9 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.9.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.9 series expected by modules.
-Development dependencies use stable 0.1 modules whose exact versions and sources
+`COMPOSER_ROOT_VERSION=0.10.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.10 series expected by modules.
+Development dependencies use stable published modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.
 

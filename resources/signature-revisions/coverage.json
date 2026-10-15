@@ -1,6 +1,6 @@
 {
-  "release": null,
-  "status": "unreleased-native-bounded-authenticated-classification",
+  "release": "0.10.0",
+  "status": "native-bounded-authenticated-classification",
   "completeGeneralMdpClassification": false,
   "sources": [
     {
@@ -122,7 +122,6 @@
     "Legacy UR digest adapters, encrypted UR/security-handler permission intersections and PDF2 unrestricted UR semantics.",
     "PKI path and revocation validation remain explicit application responsibilities."
   ],
-  "candidateRelease": "0.10.0",
   "limits": {
     "appearanceEncodedBytes": 1048576,
     "appearanceDecodedBytes": 1048576,
@@ -142,7 +141,7 @@
     ]
   },
   "independentValidation": {
-    "status": "passed on uncommitted 0.10.0 candidate",
+    "status": "passed on PHP 8.3, 8.4 and 8.5; exact-candidate CI required before tagging",
     "phpVersions": [
       "8.3.29",
       "8.4.13",
