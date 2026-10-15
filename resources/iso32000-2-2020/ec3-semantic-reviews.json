@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "source_document": "ISO_32000-2_sponsored_EC3.pdf",
+  "source_path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
+  "source_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+  "scope": "Explicitly reviewed native semantic corrections in addition to the entry-level reviewed overrides. Unlisted annotations retain their unresolved review status.",
+  "reviews": [
+    {
+      "issue": 246,
+      "physical_pdf_page": 81,
+      "annotation_name": "f51092e5-d40c-4f05-a048-e382c8de7ec8",
+      "approval_chain": ["89e3a689-f725-4523-9c42-f09b30fdbc5b", "a4875418-f093-4905-b8eb-613b2dc89305", "d76dfdb4-5da7-4ce6-8163f5555355da91"],
+      "approval_states": ["Completed", "Accepted", "Completed"],
+      "effective_approval": "Completed",
+      "implemented_scope": "All common stream entry values and recursively contained array/dictionary values in cross-reference streams are direct; F is prohibited. Trailer Root and Encrypt references remain permitted.",
+      "implementation": ["src/Specification/Constraint/CrossReferenceDirectObjects.php"],
+      "validation": ["tests/SpecificationSemanticsTest.php"]
+    },
+    {
+      "issue": 403,
+      "physical_pdf_page": 81,
+      "annotation_name": "f860cfd8-e218-48fe-8fb579822cdbe4de",
+      "approval_chain": ["731ff327-61f2-4377-9987d1bc6522062e", "0bfead54-bc3d-432b-ba5a7e0edb1e2a5c"],
+      "approval_states": ["Accepted", "Completed"],
+      "effective_approval": "Completed",
+      "implemented_scope": "Cross-reference streams cannot carry Metadata or associated files, including unknown-key extension entries in generated schemas.",
+      "implementation": ["src/Specification/Constraint/CrossReferenceDirectObjects.php"],
+      "validation": ["tests/SpecificationSemanticsTest.php"]
+    },
+    {
+      "issue": 444,
+      "physical_pdf_page": 507,
+      "annotation_name": "3545c186-27a7-45f8-b660f6293c3f9046",
+      "approval_chain": ["8b3584a4-49cb-4bbf-a6be81d670199f83", "8e499a20-10a5-4e51-8ebc4c806401e728"],
+      "approval_states": ["Accepted", "Completed"],
+      "effective_approval": "Completed",
+      "implemented_scope": "A polygon/polyline Path takes precedence over Vertices. The original grid's prohibition is not enforced: accompanying Vertices are ignored, even if they are not numeric coordinates. Path validates the initial moveto and subsequent line/curve operand lengths.",
+      "implementation": ["src/Specification/Constraint/AnnotationPath.php"],
+      "validation": ["tests/SpecificationSemanticsTest.php"]
+    },
+    {
+      "issue": 468,
+      "physical_pdf_page": 558,
+      "annotation_name": "3ac564e9-d046-4884-8dcf3951e32b1dae",
+      "approval_chain": ["ef4ce228-0ecd-470b-b0bdb2f80d98439c"],
+      "approval_states": ["Accepted"],
+      "effective_approval": "Accepted",
+      "implemented_scope": "PDF 2.0 choice indices are allowed without MultiSelect. Distinct display names sharing an export value require explicit indices. Effective header/catalog version validation preserves the PDF 1.7 restriction. V remains authoritative if V and I disagree.",
+      "implementation": ["src/Document/Forms/ChoiceField.php", "src/Specification/Constraint/ChoiceOptions.php"],
+      "validation": ["tests/ChoiceFieldEc3Test.php", "tests/SpecificationSemanticsTest.php"]
+    }
+  ]
+}

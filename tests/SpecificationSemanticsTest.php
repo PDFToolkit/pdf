@@ -106,12 +106,12 @@ final class SpecificationSemanticsTest extends TestCase
         yield 'leader extension needs leader' => ['178', ['LLE' => 1], '/LL'];
         yield 'annotation colour components' => ['178', ['IC' => [0, 1]], '/IC'];
         yield 'polygon missing geometry' => ['181', [], '/Vertices or /Path'];
-        yield 'polygon contradictory geometry' => ['181', ['Vertices' => [0, 0, 1, 1], 'Path' => [[0, 0], [1, 1]]], 'forbids /Vertices'];
         yield 'polygon first operator cubic' => ['181', ['Path' => [[0, 0, 1, 1, 2, 2]]], 'array length'];
         yield 'quadpoint packing' => ['182', ['QuadPoints' => [0, 0, 1, 1]], 'array length'];
         yield 'choice export pair' => ['234', ['Opt' => [[new LiteralString('export')]]], 'two-string'];
         yield 'choice sorted selections' => ['234', ['Opt' => [new LiteralString('a'), new LiteralString('b')], 'I' => [1, 0]], 'strictly increasing'];
         yield 'choice selection bounds' => ['234', ['Opt' => [new LiteralString('a')], 'I' => [1]], '/Opt item'];
+        yield 'choice EC3 duplicate exports require index' => ['234', ['Opt' => [[new LiteralString('a'), new LiteralString('first')], [new LiteralString("\xfe\xff\x00a"), new LiteralString('second')]]], 'require /I'];
     }
 
     public function testFilterNullSlotsEmptyFilterAndIndirectParameterTargetsArePreserved(): void
@@ -153,6 +153,12 @@ final class SpecificationSemanticsTest extends TestCase
         (new ConditionalEntries('Trigger', prohibited: ['Forbidden'], whenAbsent: true))->validate($dictionary);
         (new NumberEntry('Missing', minimum: 0))->validate($dictionary);
         (new NumberArray('Missing', lengths: [6]))->validate($dictionary);
+        self::assertTrue(true);
+    }
+
+    public function testEc3PathOverridesVerticesWithoutRequiringTheirRemoval(): void
+    {
+        $this->validateRelations((new Pdf20Catalogue())->dictionary('181'), $this->dictionary(['Path' => [[0, 0], [10, 10], [10, 20, 20, 30, 40, 40]], 'Vertices' => ['/Ignored', '/Legacy']]));
         self::assertTrue(true);
     }
 

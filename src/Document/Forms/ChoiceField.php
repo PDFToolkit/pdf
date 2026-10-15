@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PDF\Document\Forms;
 
+use PDF\Document\VersionedComponent;
 use PDF\Specification\Definition\ChoiceFieldTable231Definition;
 use PDF\Syntax\DataStructure\TextString;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\IntegerType;
@@ -13,9 +16,9 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NullType;
 
 /** Explicit option ordering; no locale-dependent sorting or automatic value selection. */
-final class ChoiceField extends TerminalField
+final class ChoiceField extends TerminalField implements VersionedComponent
 {
-    public function __construct(?PartialFieldName $name, public readonly ChoiceOptions $options, ?ChoiceFieldFlags $flags = null, public readonly ?ChoiceFieldValue $value = null, ?ChoiceSelection $selection = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, public readonly ?ChoiceFieldValue $defaultValue = null, public readonly ?ChoiceValueDomain $inheritedValueDomain = null, Entry ...$entries)
+    public function __construct(?PartialFieldName $name, public readonly ChoiceOptions $options, ?ChoiceFieldFlags $flags = null, public readonly ?ChoiceFieldValue $value = null, ?ChoiceSelection $selection = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, public readonly ?ChoiceFieldValue $defaultValue = null, public readonly ?ChoiceValueDomain $inheritedValueDomain = null, public readonly ChoiceIndexSemantics $indexSemantics = ChoiceIndexSemantics::Pdf17, Entry ...$entries)
     {
         $managed = [new Entry(new NameType('Opt'), $options->object())];
         if ($value !== null) {
@@ -69,8 +72,11 @@ final class ChoiceField extends TerminalField
             }
         }
         $indices = $this->get('I');
-        if ($indices !== null && (!$indices instanceof ArrayType || !$multiple)) {
-            throw new \InvalidArgumentException('Selection indices require a MultiSelect field.');
+        if ($indices !== null && !$indices instanceof ArrayType) {
+            throw new \InvalidArgumentException('Selection indices require an array.');
+        }
+        if ($indices !== null && !$multiple && $this->indexSemantics === ChoiceIndexSemantics::Pdf17) {
+            throw new \InvalidArgumentException('PDF 1.7 selection indices require a MultiSelect field.');
         }
         $previous = -1;
         foreach ($indices instanceof ArrayType ? $indices->items : [] as $index) {
@@ -79,22 +85,46 @@ final class ChoiceField extends TerminalField
             }
             $previous = $index->value;
         }
-        $ambiguous = false;
-        $exportNames = [];
-        foreach ($this->options->items as $option) {
-            $export = $option->value()->value;
-            if (isset($exportNames[$export]) && $exportNames[$export] !== $option->display->value) {
-                $ambiguous = true;
-            }
-            $exportNames[$export] = $option->display->value;
-        }
-        if ($multiple && ($this->effective('V') instanceof ArrayType || $ambiguous) && !$indices instanceof ArrayType) {
+        $ambiguous = $this->hasAmbiguousExports();
+        if ($multiple && (($this->indexSemantics === ChoiceIndexSemantics::Pdf17 && $this->effective('V') instanceof ArrayType) || $ambiguous) && !$indices instanceof ArrayType) {
             throw new \InvalidArgumentException('MultiSelect array values or duplicate export values require explicit I indices.');
+        }
+        if ($this->indexSemantics === ChoiceIndexSemantics::Pdf20Ec3 && $ambiguous && !$indices instanceof ArrayType) {
+            throw new \InvalidArgumentException('PDF 2.0 choice options with different display names and equal export values require explicit I indices.');
         }
         $top = $this->get('TI');
         if ($top !== null && (!$top instanceof IntegerType || $top->value < 0 || ($this->options->items !== [] && $top->value >= count($this->options->items)))) {
             throw new \InvalidArgumentException('The first visible choice option index must be within Opt.');
         }
         // ISO table 231 explicitly makes V authoritative when it differs from I.
+    }
+
+    /** EC3 issue468, physical page558: indices are not restricted to MultiSelect. */
+    public function validateVersion(EffectivePdfVersion $version): void
+    {
+        if ($this->indexSemantics === ChoiceIndexSemantics::Pdf20Ec3) {
+            $version->require(PdfVersion::PDF20, 'PDF 2.0 EC3 choice-index semantics');
+        }
+        $indices = $this->get('I');
+        $multiple = ($this->flags() & ChoiceFieldFlag::MultiSelect->value) !== 0;
+        if ($indices instanceof ArrayType && !$multiple) {
+            $version->require(PdfVersion::PDF20, 'Single-selection choice indices');
+        }
+        if ($version->value === PdfVersion::PDF20 && $this->hasAmbiguousExports() && !$indices instanceof ArrayType) {
+            throw new \InvalidArgumentException('PDF 2.0 choice options with different display names and equal export values require explicit I indices.');
+        }
+    }
+
+    private function hasAmbiguousExports(): bool
+    {
+        $exportNames = [];
+        foreach ($this->options->items as $option) {
+            $export = $option->value()->value;
+            if (isset($exportNames[$export]) && $exportNames[$export] !== $option->display->value) {
+                return true;
+            }
+            $exportNames[$export] = $option->display->value;
+        }
+        return false;
     }
 }

@@ -24,9 +24,8 @@ final readonly class AnnotationPath implements DictionaryConstraint
             (new NumberArray('Vertices', minimumLength: 4, multipleOf: 2))->validate($dictionary);
             return;
         }
-        if ($values->value($dictionary, 'Vertices') !== null) {
-            throw new \InvalidArgumentException('/Path forbids /Vertices.');
-        }
+        // EC3 issue444, physical pages506–507: an accompanying Vertices entry
+        // is ignored; the original grid's prohibition was explicitly replaced.
         if (!$path instanceof ArrayType || count($path) < 1) {
             throw new \InvalidArgumentException('/Path requires a nonempty sequence of path operand arrays.');
         }

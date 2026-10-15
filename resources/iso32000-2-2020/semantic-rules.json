@@ -1160,7 +1160,9 @@
       "id": "pdf20-table234-choiceoptions-relations",
       "physical_pdf_page": 557,
       "constraint": "ChoiceOptions",
-      "arguments": {}
+      "arguments": {
+        "pdf20Ec3": true
+      }
     }
   ]
 }
