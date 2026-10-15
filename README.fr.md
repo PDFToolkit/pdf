@@ -99,6 +99,11 @@ comportement du scanner appartiennent à l’encodeur externe choisi.
 
 Les contrôles WTPDF suivent seulement les programmes de glyphes Type3 natifs
 réellement sélectionnés, avec leurs ressources locales et des budgets cumulés.
+`Type3Glyph(resources: ...)` déclare les ressources du glyphe ; EC3 #128 choisit
+le glyphe, la police, puis la page héritée, sans fusion de dictionnaires. La
+validation des graphes figés conserve cette priorité. L’oracle de cinq fichiers
+vérifie qpdf/pypdf et deux moteurs ; il consigne le repli différent de Poppler
+dans un Form, tandis que Ghostscript confirme la règle des ressources de page.
 Les glyphes inutilisés ne créent pas de fausse erreur d’incorporation. ISO
 32000-2 exclut le mode de rendu 7 du rendu des glyphes Type3 ; les versions
 retenues de Poppler/PDFium se comportent différemment. L’oracle indépendant

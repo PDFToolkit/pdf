@@ -123,7 +123,12 @@ capability. The barcode symbology, capacity and scanner behavior belong to the
 selected external encoder.
 
 WTPDF font-usage checks follow only the selected managed Type3 glyph programs,
-with local resources and cumulative budgets. Unused glyph programs do not create
+with local resources and cumulative budgets. `Type3Glyph(resources: ...)` declares
+glyph-local resources; EC3 #128 resolves glyph, font, then inherited page resources
+without merging dictionaries. Frozen graph validation uses the same priority.
+The five-file resource oracle checks qpdf/pypdf and two renderers; it records
+Poppler's differing fallback inside a Form while Ghostscript confirms the page
+resource rule. Unused glyph programs do not create
 false embedding failures. ISO 32000-2 excludes Type3 text rendering mode 7 from
 rendering; retained Poppler/PDFium versions behave differently, so the independent
 oracle records this limit rather than claiming visual confirmation for that mode.

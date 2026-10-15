@@ -77,6 +77,35 @@ final class WtPdfType3UsageTest extends TestCase
         self::assertContains('8.4.5.5.1', $this->failures($checks->inspect($this->catalog($inherited, 'A', extraResources: $pageResources))));
     }
 
+    public function testGlyphResourcesOverrideFontAndPageWithoutMerging(): void
+    {
+        $glyph = new Type3Glyph($this->glyph(...$this->text('Aux', 'x')->operators)->content, $this->resources('Aux', $this->auxiliary(true)));
+        $font = $this->font($glyph, $this->glyph(), $this->resources('Aux', $this->auxiliary(false)));
+        $checks = new WtPdfFontUsageChecks();
+        self::assertSame([], $this->failures($checks->inspect($this->catalog($font, 'A', extraResources: $this->resources('Aux', $this->auxiliary(false))))));
+        $empty = new Type3Glyph($glyph->content, new DictionaryType());
+        $missing = $checks->inspect($this->catalog($this->font($empty, $this->glyph(), $this->resources('Aux', $this->auxiliary(true))), 'A'));
+        self::assertNotSame([], $this->failures($missing));
+    }
+
+    public function testUnembeddedGlyphLocalAuxiliaryCannotBorrowEmbeddedParentResource(): void
+    {
+        $glyph = new Type3Glyph($this->glyph(...$this->text('Aux', 'x')->operators)->content, $this->resources('Aux', $this->auxiliary(false)));
+        $font = $this->font($glyph, $this->glyph(), $this->resources('Aux', $this->auxiliary(true)));
+        self::assertContains('8.4.5.5.1', $this->failures((new WtPdfFontUsageChecks())->inspect($this->catalog($font, 'A'))));
+    }
+
+    public function testGlyphInFormFallsBackToTheInheritedPageNotTheFormResources(): void
+    {
+        $font = $this->font($this->glyph(...$this->text('Aux', 'x')->operators), $this->glyph());
+        $formFonts = $this->resources('Aux', $this->auxiliary(false))->get('Font')->with(new Entry(new NameType('Outer'), new IndirectReference($font)));
+        $form = new StreamObject($this->text('Outer', 'A'), new DictionaryType(new Entry(new NameType('Subtype'), new NameType('Form')), new Entry(new NameType('Resources'), new DictionaryType(new Entry(new NameType('Font'), $formFonts)))));
+        $resources = $this->resources('Aux', $this->auxiliary(true))->with(new Entry(new NameType('XObject'), new DictionaryType(new Entry(new NameType('Fm'), new IndirectReference($form)))));
+        $pages = new PageTreeNode(new Entry(new NameType('Resources'), new ResourceDictionary(...iterator_to_array($resources->entries(), false))));
+        $pages->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), null, new StreamObject(new ContentStreams(new Op\InvokeXObject(new NameType('Fm'))))));
+        self::assertSame([], $this->failures((new WtPdfFontUsageChecks())->inspect(new DocumentCatalog($pages))));
+    }
+
     /** @return iterable<string,array{int,bool}> */
     public static function renderingModes(): iterable
     {

@@ -5,38 +5,69 @@
       "document": "Well-Tagged-PDF-WTPDF-1.0.pdf",
       "path": "resources/reference-documents/Well-Tagged-PDF-WTPDF-1.0.pdf",
       "sha256": "ef321647824abd1dd336bf7ab8953ce5b8654590e48b7421990cf7d9ad713385",
-      "clauses": ["8.4.5.5.1", "8.4.5.9"],
-      "physicalPdfPages": [33, 35]
+      "clauses": [
+        "8.4.5.5.1",
+        "8.4.5.9"
+      ],
+      "physicalPdfPages": [
+        33,
+        35
+      ]
     },
     {
       "document": "ISO_32000-2_sponsored_EC3.pdf",
       "path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
       "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
-      "clauses": ["9.3.6", "9.6.4", "9.6.5.3"],
-      "physicalPdfPages": [320, 332, 340]
+      "clauses": [
+        "9.3.6",
+        "9.6.4",
+        "9.6.5.3",
+        "7.8.3 / EC3 #128"
+      ],
+      "physicalPdfPages": [
+        127,
+        128,
+        320,
+        332,
+        333,
+        334,
+        340
+      ]
     }
   ],
   "implementation": [
     "src/Document/Fonts/Type3GlyphSelection.php",
-    "src/Document/Structure/WtPdfFontUsageChecks.php"
+    "src/Document/Structure/WtPdfFontUsageChecks.php",
+    "src/Document/Fonts/Type3Glyph.php",
+    "src/Document/Fonts/Type3ResourceBudget.php",
+    "src/Document/DocumentGraphValidation.php"
   ],
   "evidence": [
     "tests/WtPdfType3UsageTest.php",
     "tools/fixtures/wtpdf-type3-usage.php",
-    "tools/validate_wtpdf_type3_usage.py"
+    "tools/validate_wtpdf_type3_usage.py",
+    "tests/Type3ResourceScopesTest.php",
+    "tools/fixtures/type3-resources.php",
+    "tools/validate_type3_resources.py"
   ],
   "implemented": [
     "Actual byte codes select distinct managed CharProcs in first-use order; no implicit Unicode conversion or default Type3 glyph is invented.",
     "Rendered selected glyphs recursively inspect their own auxiliary fonts and nested Form resources, preserving local/inherited resource precedence and implicit graphics-state isolation.",
     "Source text, nested text, operations and recursion share the existing cumulative budgets and active-stream cycle detection.",
     "Unused glyph programs do not create a rendered-font embedding obligation. Undefined or explicit .notdef shown codes are detected independently of rendering mode.",
-    "Type3 descriptions in modes3/7 are not treated as rendered under ISO2 9.3.6; an invisible auxiliary font retains its own embedding exception."
+    "Type3 descriptions in modes3/7 are not treated as rendered under ISO2 9.3.6; an invisible auxiliary font retains its own embedding exception.",
+    "Glyph-local Resources shadow font Resources; both fall back only when omitted, to the actual inherited page scope, including Type3 use inside Form XObjects. Empty dictionaries are never merged. Effective frozen graph validation applies the same resource ownership to metadata and associated-file content facts."
   ],
   "oracleBoundary": {
     "pdfsPerRuntime": 5,
     "checks": "Actual PDF2 bytes, selected glyph content, font-program presence and supported Poppler pixels are checked with qpdf/pypdf/Poppler.",
     "mode7": "Poppler may execute a Type3 glyph despite Tr7. This observation is recorded, not counted as confirmation of ISO2 mode7 suppression; the emitted Tr7 and native source-based rule remain unchanged.",
-    "noConformanceDeclaration": true
+    "noConformanceDeclaration": true,
+    "resourcePriority": {
+      "pdfsPerRuntime": 5,
+      "renderedPages": 10,
+      "checks": "qpdf and pypdf inspect all five graphs; Ghostscript confirms glyph/font/page/inherited-page/nested-Form pixels. Poppler confirms the first four but may use enclosing Form resources in the last case; that observation is disclosed, not counted as normative confirmation."
+    }
   },
   "remaining": [
     "Generic Type3 dictionaries and opaque content/Encoding programs require explicit parsing before equivalent inspection.",

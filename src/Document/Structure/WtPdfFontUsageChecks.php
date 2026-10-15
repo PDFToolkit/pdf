@@ -83,7 +83,7 @@ final readonly class WtPdfFontUsageChecks
                 $semantics = [false, false];
                 $markedStack = [];
                 foreach ($this->streams($node->get('Contents')) as $stream) {
-                    $this->stream($stream, $resources, $state, $stack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics, $markedStack);
+                    $this->stream($stream, $resources, $resources, $state, $stack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics, $markedStack);
                 }
                 if ($stack !== [] || $markedStack !== []) {
                     throw new \InvalidArgumentException('A page graphics/marked-content save requires its matching close.');
@@ -112,7 +112,7 @@ final readonly class WtPdfFontUsageChecks
                             $appearanceStack = [];
                             $appearanceMarked = [];
                             $appearanceSemantics = $annotation === null ? [false, false] : ($objectAlternatives[spl_object_id($annotation)] ?? [false, false]);
-                            $this->stream($stream, $this->dictionary($stream->dictionary()->get('Resources')) ?? new DictionaryType(), $appearanceState, $appearanceStack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $appearanceSemantics, $appearanceMarked);
+                            $this->stream($stream, $this->dictionary($stream->dictionary()->get('Resources')) ?? new DictionaryType(), $resources, $appearanceState, $appearanceStack, 0, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $appearanceSemantics, $appearanceMarked);
                             if ($appearanceStack !== [] || $appearanceMarked !== []) {
                                 throw new \InvalidArgumentException('Annotation appearances require balanced graphics/marked-content scopes.');
                             }
@@ -144,7 +144,7 @@ final readonly class WtPdfFontUsageChecks
      * @param array{bool, bool} $semantics
      * @param list<array{bool, bool}> $markedStack
      */
-    private function stream(StreamObject $stream, DictionaryType $resources, array &$state, array &$stack, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array &$semantics, array &$markedStack): void
+    private function stream(StreamObject $stream, DictionaryType $resources, DictionaryType $pageResources, array &$state, array &$stack, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array &$semantics, array &$markedStack): void
     {
         $identity = spl_object_id($stream);
         if (isset($activeStreams[$identity])) {
@@ -225,7 +225,7 @@ final readonly class WtPdfFontUsageChecks
                         $formStack = [];
                         $formSemantics = $semantics;
                         $formMarkedStack = [];
-                        $this->stream($form, $this->dictionary($form->dictionary()->get('Resources')) ?? $resources, $formState, $formStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $formSemantics, $formMarkedStack);
+                        $this->stream($form, $this->dictionary($form->dictionary()->get('Resources')) ?? $resources, $pageResources, $formState, $formStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $formSemantics, $formMarkedStack);
                         if ($formStack !== [] || $formMarkedStack !== []) {
                             throw new \InvalidArgumentException('A Form graphics/marked-content save requires its matching close.');
                         }
@@ -252,7 +252,7 @@ final readonly class WtPdfFontUsageChecks
                             $textBytes += $length;
                             $this->text($state['font'], $string, $state['mode'] !== 3, $findings, $level, $semantics);
                             if ($state['font'] instanceof Type3Font) {
-                                $this->type3($state['font'], $string, $resources, $state, $depth, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics);
+                                $this->type3($state['font'], $string, $pageResources, $state, $depth, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics);
                             }
                         }
                     }
@@ -364,7 +364,7 @@ final readonly class WtPdfFontUsageChecks
      * @param array<int, array<int, array{bool, bool}>> $alternatives
      * @param array{bool, bool} $semantics
      */
-    private function type3(Type3Font $font, StringType $text, DictionaryType $resources, array $state, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array $semantics): void
+    private function type3(Type3Font $font, StringType $text, DictionaryType $pageResources, array $state, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array $semantics): void
     {
         $selection = new Type3GlyphSelection($font, $text, $this->maximumTextBytes);
         if ($selection->undefinedCodes !== []) {
@@ -375,13 +375,15 @@ final readonly class WtPdfFontUsageChecks
         if (in_array($state['mode'], [3, 7], true)) {
             return;
         }
-        $glyphResources = $this->dictionary($font->get('Resources')) ?? $resources;
+        $fontResources = $this->dictionary($font->get('Resources')) ?? $pageResources;
         foreach ($selection->glyphs as $glyph) {
+            // EC3 #128, physical p.127: glyph > font > parent page, even inside a Form.
+            $glyphResources = $glyph->resources ?? $fontResources;
             $glyphState = $state;
             $glyphStack = [];
             $glyphSemantics = $semantics;
             $glyphMarkedStack = [];
-            $this->stream($glyph, $glyphResources, $glyphState, $glyphStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $glyphSemantics, $glyphMarkedStack);
+            $this->stream($glyph, $glyphResources, $pageResources, $glyphState, $glyphStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $glyphSemantics, $glyphMarkedStack);
             if ($glyphStack !== [] || $glyphMarkedStack !== []) {
                 throw new \InvalidArgumentException('Type 3 glyphs require balanced graphics/marked-content scopes.');
             }

@@ -282,7 +282,7 @@ final class DocumentGraphValidation
     }
 
     /** Resource scope belongs to the stream's PDF container, including retained revision evidence. */
-    private function validateMetadataContentScopes(BasicType $value, DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    private function validateMetadataContentScopes(BasicType $value, DictionaryType $dictionary, DocumentGraphContext $graph, EffectivePdfVersion $version, ?DictionaryType $pageResources = null, ?\PDF\Document\Fonts\Type3ResourceBudget $budget = null): void
     {
         $type = $dictionary->get('Type');
         $subtype = $dictionary->get('Subtype');
@@ -293,14 +293,9 @@ final class DocumentGraphValidation
         if (!$isForm && !$isTilingPattern && !$isType3) {
             return;
         }
-        $resources = $graph->entry($dictionary, 'Resources');
-        $projection = $resources instanceof IndirectReference || $resources === null ? $graph : $graph->forDirectValue($resources);
-        $resources = $resources === null ? null : $projection->dictionary($resources);
-        if ($resources === null) {
-            return;
-        }
+        $resources = $this->contentResources($dictionary, $graph);
         if (!$isType3) {
-            if ($value instanceof StreamObject) {
+            if ($resources !== null && $value instanceof StreamObject) {
                 $this->validateMarkedContentStreams($value, $resources, $graph, $version);
             }
             return;
@@ -308,8 +303,129 @@ final class DocumentGraphValidation
         $procedures = $graph->entry($dictionary, 'CharProcs');
         $procedureGraph = $procedures instanceof IndirectReference || $procedures === null ? $graph : $graph->forDirectValue($procedures);
         $procedures = $procedures === null ? null : $procedureGraph->dictionary($procedures);
+        $budget ??= new \PDF\Document\Fonts\Type3ResourceBudget();
         foreach ($procedures?->entries() ?? [] as $entry) {
-            $this->validateMarkedContentStreams($entry->value, $resources, $graph, $version);
+            $budget->visit();
+            $glyphGraph = $entry->value instanceof IndirectReference ? $graph : $graph->forDirectValue($entry->value);
+            $glyph = $glyphGraph->dictionary($entry->value);
+            // EC3 #128, physical p.127: an empty Resources dictionary shadows its parents.
+            $selected = ($glyph === null ? null : $this->contentResources($glyph, $glyphGraph)) ?? $resources ?? $pageResources;
+            if ($selected !== null) {
+                $this->validateMarkedContentStreams($entry->value, $selected, $graph, $version);
+            }
+        }
+    }
+
+    private function contentResources(DictionaryType $owner, DocumentGraphContext $graph): ?DictionaryType
+    {
+        $value = $graph->entry($owner, 'Resources');
+        if ($value === null) {
+            return null;
+        }
+        $scope = $value instanceof IndirectReference ? $graph : $graph->forDirectValue($value);
+        $resources = $scope->dictionary($value);
+        if ($resources === null || $scope->resolve($value) instanceof StreamObject) {
+            throw new \InvalidArgumentException('A content Resources entry must resolve to a dictionary.');
+        }
+        return $resources;
+    }
+
+    /** Inspect every reachable Type3 resource in each actual inherited page scope, with bounded cycles. */
+    private function validateType3PageResources(DictionaryType $pageResources, DictionaryType $page, DocumentGraphContext $graph, EffectivePdfVersion $version): void
+    {
+        $pending = [[$pageResources, 0]];
+        $seen = new \SplObjectStorage();
+        $budget = new \PDF\Document\Fonts\Type3ResourceBudget();
+        $annots = $graph->entry($page, 'Annots');
+        $annots = $annots === null ? null : $graph->resolve($annots);
+        foreach ($annots instanceof ArrayType ? $annots->items : [] as $annotation) {
+            $budget->visit();
+            $annotation = $graph->dictionary($annotation);
+            $appearances = $annotation === null ? null : $graph->entry($annotation, 'AP');
+            $appearances = $appearances === null ? null : $graph->dictionary($appearances);
+            foreach (['N', 'R', 'D'] as $key) {
+                $appearance = $appearances === null ? null : $graph->entry($appearances, $key);
+                if ($appearance === null) {
+                    continue;
+                }
+                $dictionary = $graph->dictionary($appearance);
+                $streams = $graph->resolve($appearance) instanceof StreamObject ? [$appearance] : [];
+                if ($streams === []) {
+                    foreach ($dictionary?->entries() ?? [] as $state) {
+                        $budget->visit();
+                        $streams[] = $state->value;
+                    }
+                }
+                foreach ($streams as $stream) {
+                    $dictionary = $graph->dictionary($stream);
+                    $resources = $dictionary === null ? null : $this->contentResources($dictionary, $graph);
+                    if ($resources !== null) {
+                        $pending[] = [$resources, 0];
+                    }
+                }
+            }
+        }
+        while ($pending !== []) {
+            [$resources, $depth] = array_pop($pending);
+            if ($seen->offsetExists($resources)) {
+                continue;
+            }
+            $seen->offsetSet($resources);
+            $budget->visit($depth);
+            foreach (['Font', 'XObject', 'Pattern', 'ExtGState'] as $category) {
+                $entries = $graph->entry($resources, $category);
+                if ($entries === null) {
+                    continue;
+                }
+                $scope = $entries instanceof IndirectReference ? $graph : $graph->forDirectValue($entries);
+                $entries = $scope->dictionary($entries);
+                foreach ($entries?->entries() ?? [] as $entry) {
+                    $budget->visit($depth);
+                    $ownerGraph = $entry->value instanceof IndirectReference ? $graph : $graph->forDirectValue($entry->value);
+                    $owner = $ownerGraph->dictionary($entry->value);
+                    if ($owner === null) {
+                        continue;
+                    }
+                    if ($category === 'ExtGState') {
+                        $mask = $ownerGraph->entry($owner, 'SMask');
+                        $mask = $mask === null ? null : $ownerGraph->dictionary($mask);
+                        $group = $mask === null ? null : $ownerGraph->entry($mask, 'G');
+                        $group = $group === null ? null : $ownerGraph->dictionary($group);
+                        $local = $group === null ? null : $this->contentResources($group, $ownerGraph);
+                        if ($local !== null) {
+                            $pending[] = [$local, $depth + 1];
+                        }
+                        continue;
+                    }
+                    $subtype = $owner->get('Subtype');
+                    $pattern = $owner->get('PatternType');
+                    $isType3 = $category === 'Font' && $subtype instanceof NameType && $subtype->value === 'Type3';
+                    if (!$isType3 && !($category === 'XObject' && $subtype instanceof NameType && $subtype->value === 'Form')
+                        && !($category === 'Pattern' && $pattern instanceof IntegerType && $pattern->integer() === 1)) {
+                        continue;
+                    }
+                    $local = $this->contentResources($owner, $ownerGraph);
+                    if ($local !== null) {
+                        $pending[] = [$local, $depth + 1];
+                    }
+                    if (!$isType3) {
+                        continue;
+                    }
+                    $this->validateMetadataContentScopes($entry->value, $owner, $ownerGraph, $version, $pageResources, $budget);
+                    $procedures = $ownerGraph->entry($owner, 'CharProcs');
+                    $procedureGraph = $procedures instanceof IndirectReference || $procedures === null ? $ownerGraph : $ownerGraph->forDirectValue($procedures);
+                    $procedures = $procedures === null ? null : $procedureGraph->dictionary($procedures);
+                    foreach ($procedures?->entries() ?? [] as $procedure) {
+                        $budget->visit($depth);
+                        $glyphGraph = $procedure->value instanceof IndirectReference ? $graph : $graph->forDirectValue($procedure->value);
+                        $glyph = $glyphGraph->dictionary($procedure->value);
+                        $local = $glyph === null ? null : $this->contentResources($glyph, $glyphGraph);
+                        if ($local !== null) {
+                            $pending[] = [$local, $depth + 1];
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -412,6 +528,7 @@ final class DocumentGraphValidation
             if ($contents !== null) {
                 $this->validateMarkedContentStreams($contents, $inherited['Resources'], $graph, $version);
             }
+            $this->validateType3PageResources($inherited['Resources'], $dictionary, $graph, $version);
             $pages[$number] = true;
             return 1;
         }
