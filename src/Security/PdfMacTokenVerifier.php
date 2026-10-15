@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PDF\Security;
 
-use PDF\Document\Signatures\Policies\SignatureDigestMethod;
-
 /** ISO-TS-32004-2024_sponsored.pdf, 6.2-6.6, PDF pp.13-17: verification allocates no random key. */
 final readonly class PdfMacTokenVerifier
 {
@@ -50,15 +48,7 @@ final readonly class PdfMacTokenVerifier
             throw new \UnexpectedValueException('PDF MAC requires 256-bit HMAC-SHA256.');
         }
         $digestAlgorithm = $data[3]->requireTag(161);
-        $selected = null;
-        foreach ([SignatureDigestMethod::SHA256, SignatureDigestMethod::SHA384, SignatureDigestMethod::SHA512, SignatureDigestMethod::SHA3_256, SignatureDigestMethod::SHA3_384, SignatureDigestMethod::SHA3_512] as $candidate) {
-            if ($der->element(48, $digestAlgorithm->value) === $der->algorithm($candidate->oid())) {
-                $selected = $candidate;
-            }
-        }
-        if ($selected === null) {
-            throw new \UnexpectedValueException('Unsupported PDF MAC digest algorithm.');
-        }
+        $selected = (new PdfMacDigestAlgorithm($reader->element($der->element(48, $digestAlgorithm->value))))->method;
         $content = $data[4]->requireTag(48)->children();
         if (count($content) !== 2 || $content[0]->encoding !== $der->oid('1.0.32004.1.0')) {
             throw new \UnexpectedValueException('PDF MAC encapsulates PdfMacIntegrityInfo.');
@@ -83,18 +73,26 @@ final readonly class PdfMacTokenVerifier
         $expected = [
             $der->oid('1.2.840.113549.1.9.3') => $der->set($der->oid('1.0.32004.1.0')),
             $der->oid('1.2.840.113549.1.9.4') => $der->set($der->octets($selected->digest($integrityBytes))),
-            $der->oid('1.2.840.113549.1.9.52') => $der->set($der->sequence($der->algorithm($selected->oid()), $der->element(162, $data[2]->value))),
         ];
         $seen = [];
         foreach ($attrs as $attribute) {
             $fields = $attribute->requireTag(48)->children();
-            if (count($fields) !== 2 || isset($seen[$fields[0]->requireTag(6)->encoding])) {
+            if (count($fields) !== 2 || isset($seen[$fields[0]->requireObjectIdentifier()->encoding])) {
                 throw new \UnexpectedValueException('PDF MAC authenticated attributes must be unambiguous.');
             }
             $oid = $fields[0]->encoding;
             $seen[$oid] = true;
+            $values = $fields[1]->requireTag(49)->children();
             if (isset($expected[$oid]) && $fields[1]->encoding !== $expected[$oid]) {
                 throw new \UnexpectedValueException('PDF MAC authenticated attribute value is inconsistent.');
+            }
+            if ($oid === $der->oid('1.2.840.113549.1.9.52')) {
+                $protection = count($values) === 1 ? $values[0]->requireTag(48)->children() : [];
+                if (count($protection) !== 2 || $protection[1]->tag !== 162
+                    || (new PdfMacDigestAlgorithm($protection[0]))->method !== $selected
+                    || $protection[1]->value !== $data[2]->value) {
+                    throw new \UnexpectedValueException('PDF MAC algorithm protection has exactly its matching digest and MAC algorithms.');
+                }
             }
         }
         if (!isset($seen[$der->oid('1.2.840.113549.1.9.3')], $seen[$der->oid('1.2.840.113549.1.9.4')])
