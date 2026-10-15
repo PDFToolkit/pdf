@@ -19,9 +19,12 @@ final readonly class BarcodeDataPreparation
         if ($DataPrep->value != 0 && $DataPrep->value != 1) {
             throw new \InvalidArgumentException('Barcode /DataPrep must be 0 or 1.');
         }
+        if ($flate->predictor !== null) {
+            throw new \InvalidArgumentException('Barcode V compression does not apply an image-sample predictor.');
+        }
     }
 
-    /** Byte values remain explicit: there is no implicit text encoding or message partitioning. */
+    /** Byte values remain explicit; partitioning follows complete preparation in BarcodeMessagePartition. */
     public function prepare(StringType $value): StringType
     {
         if ($this->DataPrep->value == 0) {

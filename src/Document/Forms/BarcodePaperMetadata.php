@@ -16,6 +16,11 @@ final class BarcodePaperMetadata extends SchemaDictionary
 {
     public function __construct(BarcodeSymbology $symbology, NumericType $widthInches, NumericType $heightInches, IntegerType $moduleWidthPixels, ?IntegerType $moduleHeightPixels = null, ?IntegerType $errorCorrection = null, NumericType $resolution = new IntegerType(300), IntegerType $version = new IntegerType(1), Entry ...$entries)
     {
+        foreach ($entries as $entry) {
+            if (in_array($entry->key->value, ['Type', 'Version', 'Resolution', 'Symbology', 'Width', 'Height', 'XSymWidth', 'XSymHeight', 'ECC'], true)) {
+                throw new \InvalidArgumentException('Barcode paper parameters are controlled by their constructor, including optional parameters.');
+            }
+        }
         if ($widthInches->value <= 0 || $heightInches->value <= 0 || $moduleWidthPixels->integer() <= 0 || $resolution->value <= 0 || $version->integer() < 1) {
             throw new \InvalidArgumentException('Barcode dimensions, module width, resolution and version are positive.');
         }
