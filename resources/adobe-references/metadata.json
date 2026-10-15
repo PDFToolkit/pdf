@@ -2,7 +2,7 @@
   "schema_version": 1,
   "role": "archival-reference",
   "bibliographic_index": "https://pdfa.org/resource/pdf-specification-archive/",
-  "scope": "Historical Adobe PDF 1.7 references retained unchanged for comparison and provenance. Archival intake does not add generated definitions or claim new semantic implementation.",
+  "scope": "Historical Adobe PDF1.7 originals are retained unchanged. A separate65-record review classifies all correction paragraphs/tables of the18-page2007errata and links native mechanisms, definitions, editorial changes, consumer operations and remaining work; archival provenance alone is not an implementation claim.",
   "documents": [
     {
       "document": "pdf_17_errata.pdf",
@@ -102,5 +102,6 @@
       "pdf_pages": 1310,
       "embedded_documents": []
     }
-  ]
+  ],
+  "implementation_review": "errata-review.json"
 }

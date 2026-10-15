@@ -65,12 +65,35 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
+`semantic-rules.json` fournit maintenant **99 règles intrinsèques exécutables
+réparties sur 33 tableaux source**, héritées par leurs définitions dérivées.
+Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
+des fonctions, les paramètres de filtres, les sections de références croisées,
+les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
+renvois, les chemins de polygones et les options de choix.
+`SchemaDictionary::validate()` et la sérialisation exécutent ces règles immuables
+composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
+
+Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
+des annotations et leurs chaînes de réponses d’approbation pour les problèmes
+246, 403, 444 et 468. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
+explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
+`/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
+libellés distincts le rendent obligatoire, et un `/V` tableau ne suffit plus à
+l’exiger. La version effective du document contrôle toujours la construction PDF 2.0.
+La construction historique `Pdf17` reste utilisée par défaut. Si des entrées de
+champ supplémentaires étaient passées par position, fournir d’abord
+`indexSemantics` ou utiliser l’argument nommé `entries`. Ces quatre revues ne
+déclarent pas implémentées les autres annotations EC3.
+
 Pour reconstruire à partir des preuves conservées et comparer les objets PHP,
 sans dépendances d’extraction PDF :
 
 ```console
 python tools/compile_iso32000_2_catalogue.py --check
 python tools/generate_iso32000_2.py --check
+python tools/validate_ec3_semantic_reviews.py
 ```
 
 Pour renouveler volontairement l’extraction, installer les dépendances de

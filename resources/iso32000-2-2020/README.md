@@ -61,12 +61,32 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
+`semantic-rules.json` now supplies **99 executable intrinsic rules across 33
+source tables**, inherited by their derived dictionary definitions. They validate
+numeric domains, array lengths, function dimensions, stream filter parameters,
+cross-reference sections, calibrated colours, image masks and sample depth,
+callout coordinates, polygon paths and choice options. `SchemaDictionary::validate()`
+and serialization execute these immutable composed rules; a catalogue entry alone
+does not establish a semantic implementation.
+
+The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
+and approval reply chains for issues 246, 403, 444 and 468. A polygon `Path` ignores
+accompanying `Vertices`, including the obsolete contradictory grid wording.
+`ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
+PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
+with different display names require it, and an array `/V` alone does not require
+it. The effective document version still gates PDF 2.0 construction. Historical
+`Pdf17` construction remains the default. If additional field entries were passed
+positionally, supply `indexSemantics` first or use the named `entries` argument.
+These four reviews do not mark the remaining EC3 annotations as implemented.
+
 Regenerate from retained evidence and compare PHP objects without PDF extraction
 dependencies:
 
 ```console
 python tools/compile_iso32000_2_catalogue.py --check
 python tools/generate_iso32000_2.py --check
+python tools/validate_ec3_semantic_reviews.py
 ```
 
 To update extraction deliberately, install development-only pypdf and pdfplumber,

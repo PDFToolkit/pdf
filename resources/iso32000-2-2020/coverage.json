@@ -2634,7 +2634,10 @@
     "tools/fixtures/pdf20_foundations.php",
     "tools/fixtures/public_key_encryption.php",
     "tools/validate_pdf20_foundations.py",
-    "tools/validate_public_key_security.py"
+    "tools/validate_public_key_security.py",
+    "tests/SpecificationSemanticsTest.php",
+    "tests/ChoiceFieldEc3Test.php",
+    "tools/validate_ec3_semantic_reviews.py"
   ],
   "source_provenance": "metadata.json",
   "catalogue_descriptions": "New normative English source prose is explicitly labelled normative-source/en; the 53 existing authored summaries retain project-authored/en. Source paragraphs are distinct from reviewed correction overlays.",
@@ -3374,6 +3377,102 @@
       "example_files": [
         "examples/fixtures/pdf20-courier-font.php"
       ]
+    },
+    {
+      "id": "reviewed-dictionary-relations",
+      "title": "Executable source-defined intrinsic relations and selected EC3 corrections",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          47,
+          48,
+          55,
+          56,
+          59,
+          77,
+          81,
+          82,
+          139,
+          140,
+          141,
+          143,
+          144,
+          201,
+          202,
+          204,
+          206,
+          236,
+          237,
+          243,
+          245,
+          248,
+          249,
+          251,
+          254,
+          258,
+          262,
+          273,
+          274,
+          275,
+          276,
+          488,
+          489,
+          494,
+          499,
+          500,
+          501,
+          502,
+          505,
+          506,
+          507,
+          508,
+          556,
+          557,
+          558
+        ],
+        "clauses": [
+          "7.3.8",
+          "7.4.4",
+          "7.5.8",
+          "7.10",
+          "8.6",
+          "8.7",
+          "8.9",
+          "12.5.6",
+          "12.7.4.4"
+        ],
+        "errata": [
+          246,
+          403,
+          444,
+          468
+        ]
+      },
+      "implemented_scope": "99 explicitly authored immutable intrinsic rules across33 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations.",
+      "implementation_files": [
+        "src/Specification/DictionaryConstraint.php",
+        "src/Specification/SemanticRule.php",
+        "src/Specification/TableDefinition.php",
+        "src/Specification/SchemaDictionary.php",
+        "src/Specification/Constraint/FunctionDimensions.php",
+        "src/Specification/Constraint/CrossReferenceDirectObjects.php",
+        "src/Specification/Constraint/ImageSamples.php",
+        "src/Specification/Constraint/AnnotationPath.php",
+        "src/Specification/Constraint/ChoiceOptions.php",
+        "src/Document/Forms/ChoiceField.php",
+        "src/Document/Forms/ChoiceIndexSemantics.php"
+      ],
+      "validation_files": [
+        "tests/SpecificationSemanticsTest.php",
+        "tests/ChoiceFieldEc3Test.php",
+        "tools/validate_ec3_semantic_reviews.py"
+      ],
+      "limits": [
+        "These99rules do not close every conditional requirement in1709entries, every payload algorithm, resource-dependent constraint or document-profile check.",
+        "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
+        "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated."
+      ]
     }
   ],
   "validation_commands": [
@@ -3397,5 +3496,13 @@
     "variable_entries": 7,
     "generated_php_files": 2322,
     "ec3_semantic_review": "partial-explicit-overrides-only"
+  },
+  "native_semantic_rules": {
+    "resource": "semantic-rules.json",
+    "rule_count": 99,
+    "source_tables": 33,
+    "runtime": "Immutable semantic rule composition executed during SchemaDictionary validation and serialization",
+    "ec3_reviews": "ec3-semantic-reviews.json",
+    "remaining_ec3_review": "unlisted annotations remain unresolved"
   }
 }

@@ -1,0 +1,996 @@
+{
+  "schema_version": 1,
+  "source_document": "pdf_17_errata.pdf",
+  "source_path": "resources/reference-documents/pdf_17_errata.pdf",
+  "source_sha256": "a4bc550b9aa2690bedd264cea5149e4f84b541734580206568bf06c9c46717b9",
+  "physical_pdf_pages": 18,
+  "reviewed_content_pages": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "applies_to": "Adobe PDF Reference sixth edition, version1.7, November2006; later ISO and Adobe extensions remain distinct authorities.",
+  "review_scope": "Every correction paragraph/table from physical pages3–18 is classified below. Source retention, definition availability, executable native mechanisms, consumer operations and remaining semantic work are distinct; review completeness is not implementation completeness.",
+  "corrections": [
+    {
+      "id": "adobe-2007-errata-01",
+      "physical_pdf_page": 3,
+      "adobe_reference_printed_pages": [
+        48
+      ],
+      "topic": "ASCII and non-encrypted byte representation",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/LexicalConvention/CharacterSet/Character.php"
+      ],
+      "validation": [
+        "tests/LexicalConventionTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-02",
+      "physical_pdf_page": 3,
+      "adobe_reference_printed_pages": [
+        59
+      ],
+      "topic": "Unique dictionary keys",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/Object/DictionaryType.php"
+      ],
+      "validation": [
+        "tests/PrimitiveTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-03",
+      "physical_pdf_page": 3,
+      "adobe_reference_printed_pages": [
+        90
+      ],
+      "topic": "Crypt is the first decoding filter",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/StreamCryptFilter.php",
+        "src/Syntax/Filters/ExternalStreamFilters.php"
+      ],
+      "validation": [
+        "tests/HistoricalSecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-04",
+      "physical_pdf_page": 3,
+      "adobe_reference_printed_pages": [
+        90
+      ],
+      "topic": "Explicit Crypt uses the file/filter key without object-key derivation",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/StreamCryptFilter.php",
+        "src/Security/HistoricalStandardEncryption.php"
+      ],
+      "validation": [
+        "tests/HistoricalSecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-05",
+      "physical_pdf_page": 4,
+      "adobe_reference_printed_pages": [
+        98
+      ],
+      "topic": "Encrypted trailer ID direct two-byte-string array",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Serialization/FileWriter.php"
+      ],
+      "validation": [
+        "tests/SecuritySerializationTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-06",
+      "physical_pdf_page": 4,
+      "adobe_reference_printed_pages": [
+        115
+      ],
+      "topic": "Strings and stream encryption exceptions",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Serialization/SerializationContext.php"
+      ],
+      "validation": [
+        "tests/SecuritySerializationTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-07",
+      "physical_pdf_page": 4,
+      "adobe_reference_printed_pages": [
+        120,
+        121
+      ],
+      "topic": "Default password authentication before credentials and user permissions",
+      "disposition": "consumer-operation",
+      "implementation": [
+        "src/Security/HistoricalStandardEncryption.php"
+      ],
+      "validation": [
+        "tests/HistoricalSecurityHandlerTest.php"
+      ],
+      "remaining": "Core supplies authentication and permissions; a consumer chooses prompting, display and operation authorization."
+    },
+    {
+      "id": "adobe-2007-errata-08",
+      "physical_pdf_page": 5,
+      "adobe_reference_printed_pages": [
+        122
+      ],
+      "topic": "Public-key crypt-filter names",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/PublicKeyFilterConfiguration.php"
+      ],
+      "validation": [
+        "tests/PublicKeySecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-09",
+      "physical_pdf_page": 5,
+      "adobe_reference_printed_pages": [
+        123
+      ],
+      "topic": "Revision-specific standard security permission bits",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/HistoricalPermissions.php"
+      ],
+      "validation": [
+        "tests/HistoricalSecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-10",
+      "physical_pdf_page": 5,
+      "adobe_reference_printed_pages": [
+        129
+      ],
+      "topic": "Unsigned public-key P and bit2 unlimited permissions",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/PublicKeyPermissions.php"
+      ],
+      "validation": [
+        "tests/PublicKeySecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-11",
+      "physical_pdf_page": 6,
+      "adobe_reference_printed_pages": [
+        132
+      ],
+      "topic": "RF and EF use the same crypt filter",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Files/EmbeddedFilesGraphValidation.php"
+      ],
+      "validation": [
+        "tests/NativeFilesTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-12",
+      "physical_pdf_page": 6,
+      "adobe_reference_printed_pages": [
+        134
+      ],
+      "topic": "Public-key versus standard crypt-filter key length units",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Security/PublicKeyKeyLength.php",
+        "src/Security/StandardCryptFilters.php"
+      ],
+      "validation": [
+        "tests/PublicKeySecurityHandlerTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-13",
+      "physical_pdf_page": 6,
+      "adobe_reference_printed_pages": [
+        146
+      ],
+      "topic": "Writer forbids empty Contents arrays",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/DocumentStructure/PageTree/PageObject.php"
+      ],
+      "validation": [
+        "tests/PageContentExtentTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-14",
+      "physical_pdf_page": 7,
+      "adobe_reference_printed_pages": [
+        160
+      ],
+      "topic": "Date prefix, successive components and offset apostrophes",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/DataStructure/PdfDateValidation.php"
+      ],
+      "validation": [
+        "tests/PdfDateValidationTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-15",
+      "physical_pdf_page": 7,
+      "adobe_reference_printed_pages": [
+        186
+      ],
+      "topic": "Embedded-file Size counts uncompressed bytes",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Files/EmbeddedFileParameters.php",
+        "src/Document/Files/EmbeddedFilesGraphValidation.php"
+      ],
+      "validation": [
+        "tests/NativeFilesTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-16",
+      "physical_pdf_page": 7,
+      "adobe_reference_printed_pages": [
+        189
+      ],
+      "topic": "Collection item values match schema field data type",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Collections/CollectionGraphValidation.php"
+      ],
+      "validation": [
+        "tests/NativeFilesTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-17",
+      "physical_pdf_page": 7,
+      "adobe_reference_printed_pages": [
+        189
+      ],
+      "topic": "Collection subitem D matches its schema type",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Collections/CollectionGraphValidation.php"
+      ],
+      "validation": [
+        "tests/NativeFilesTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-18",
+      "physical_pdf_page": 7,
+      "adobe_reference_printed_pages": [
+        232
+      ],
+      "topic": "Zero-extent fill scan-conversion cross-reference",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": "Scan conversion is a rendering operation; this correction adds a reference, not a new PDF object."
+    },
+    {
+      "id": "adobe-2007-errata-19",
+      "physical_pdf_page": 8,
+      "adobe_reference_printed_pages": [
+        406
+      ],
+      "topic": "T* is equivalent to zero and negative leading Td",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/ContentStreamsResources/Operators/MoveToNextTextLine.php"
+      ],
+      "validation": [
+        "tests/ContentStreamsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-20",
+      "physical_pdf_page": 9,
+      "adobe_reference_printed_pages": [
+        466
+      ],
+      "topic": "OpenType font program organizations and required tables",
+      "disposition": "external-font-format",
+      "implementation": [
+        "src/Document/Fonts/FontFile3.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php"
+      ],
+      "remaining": "The core expresses supplied OpenType program type and organization. External OpenType parsing/shaping belongs to optional packages; no universal CFF/font-table validator is implied."
+    },
+    {
+      "id": "adobe-2007-errata-21",
+      "physical_pdf_page": 9,
+      "adobe_reference_printed_pages": [
+        468,
+        469
+      ],
+      "topic": "Remove duplicated OpenType paragraphs",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-22",
+      "physical_pdf_page": 10,
+      "adobe_reference_printed_pages": [
+        585
+      ],
+      "topic": "Outline total visible descendant count",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/OutlineDictionary.php"
+      ],
+      "validation": [
+        "tests/DocumentStructureTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-23",
+      "physical_pdf_page": 10,
+      "adobe_reference_printed_pages": [
+        585
+      ],
+      "topic": "Signed outline-item visible descendant count",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/OutlineItem.php"
+      ],
+      "validation": [
+        "tests/DocumentStructureTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-24",
+      "physical_pdf_page": 10,
+      "adobe_reference_printed_pages": [
+        607
+      ],
+      "topic": "BS overrides Border",
+      "disposition": "consumer-operation",
+      "implementation": [
+        "src/Specification/Definition/AnnotationDictionaryTable164Definition.php"
+      ],
+      "validation": [],
+      "remaining": "Border selection and painting require an annotation appearance processor; constructing both dictionaries does not render the precedence."
+    },
+    {
+      "id": "adobe-2007-errata-25",
+      "physical_pdf_page": 10,
+      "adobe_reference_printed_pages": [
+        612
+      ],
+      "topic": "Correct appearance transform order Matrix times A",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Forms/AnnotationAppearanceTransform.php"
+      ],
+      "validation": [
+        "tests/AnnotationAppearanceTransformTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-26",
+      "physical_pdf_page": 11,
+      "adobe_reference_printed_pages": [
+        622
+      ],
+      "topic": "Link BS and AP precedence",
+      "disposition": "consumer-operation",
+      "implementation": [
+        "src/Specification/Definition/LinkAnnotationTable173Definition.php"
+      ],
+      "validation": [],
+      "remaining": "The definitions are available; a viewer/appearance processor selects and paints the effective border."
+    },
+    {
+      "id": "adobe-2007-errata-27",
+      "physical_pdf_page": 11,
+      "adobe_reference_printed_pages": [
+        624,
+        625
+      ],
+      "topic": "Free-text callout coordinate array has four or six numbers",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Specification/Definition/FreeTextAnnotationTable174Definition.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-28",
+      "physical_pdf_page": 11,
+      "adobe_reference_printed_pages": [
+        624,
+        625
+      ],
+      "topic": "Free-text intents and default",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Specification/Definition/FreeTextAnnotationTable174Definition.php",
+        "src/Specification/Constraint/NameEntry.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ],
+      "remaining": "Intent names are checked; native free-text appearance synthesis is separate."
+    },
+    {
+      "id": "adobe-2007-errata-29",
+      "physical_pdf_page": 12,
+      "adobe_reference_printed_pages": [
+        624,
+        625
+      ],
+      "topic": "Free-text LE is one name when CL exists",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Specification/Definition/FreeTextAnnotationTable174Definition.php",
+        "src/Specification/Constraint/NameEntry.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ],
+      "remaining": "The corrected name type and named styles are checked; callout rendering remains separate."
+    },
+    {
+      "id": "adobe-2007-errata-30",
+      "physical_pdf_page": 12,
+      "adobe_reference_printed_pages": [
+        641
+      ],
+      "topic": "Widget owns at most one parent field",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Forms/WidgetAnnotation.php",
+        "src/Document/Forms/TerminalField.php"
+      ],
+      "validation": [
+        "tests/AcroFormObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-31",
+      "physical_pdf_page": 12,
+      "adobe_reference_printed_pages": [
+        677
+      ],
+      "topic": "Partial field names cannot contain periods",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Forms/PartialFieldName.php"
+      ],
+      "validation": [
+        "tests/AcroFormObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-32",
+      "physical_pdf_page": 12,
+      "adobe_reference_printed_pages": [
+        696
+      ],
+      "topic": "Invisible signatures and Hidden or NoView flags",
+      "disposition": "consumer-operation",
+      "implementation": [
+        "src/Document/Forms/WidgetAnnotation.php"
+      ],
+      "validation": [],
+      "remaining": "Native widgets can express these flags/rectangles; actual viewer visibility is not certified by core writing."
+    },
+    {
+      "id": "adobe-2007-errata-33",
+      "physical_pdf_page": 13,
+      "adobe_reference_printed_pages": [
+        698
+      ],
+      "topic": "Reasons required, omitted and period sentinel constraints",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Signatures/Policies/SignatureSeedValue.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-34",
+      "physical_pdf_page": 13,
+      "adobe_reference_printed_pages": [
+        698
+      ],
+      "topic": "MDP seed P is zero through three",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Signatures/Policies/SignatureSeedMdp.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-35",
+      "physical_pdf_page": 13,
+      "adobe_reference_printed_pages": [
+        699
+      ],
+      "topic": "Remove DigestMethod seed required flag in base PDF1.7",
+      "disposition": "edition-specific-supersession",
+      "implementation": [
+        "src/Document/Signatures/Policies/SignatureSeedFlag.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": "The later retained Adobe extension-level3 supplement adds DigestMethod seed flags; that separate authority is not erased by the 2007 base-reference correction."
+    },
+    {
+      "id": "adobe-2007-errata-36",
+      "physical_pdf_page": 13,
+      "adobe_reference_printed_pages": [
+        725
+      ],
+      "topic": "Prefer UR3 and deprecate object-digest UR",
+      "disposition": "deprecated-feature-construction",
+      "implementation": [
+        "src/Document/Signatures/Policies/UsageRightsTransform.php",
+        "src/Document/Signatures/Policies/UsageRightsMode.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": "UR3 construction/history exists; full authenticated usage-rights authority and change analysis remain incomplete."
+    },
+    {
+      "id": "adobe-2007-errata-37",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        725
+      ],
+      "topic": "Object digests deprecated and mentions disregarded",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": "No obsolete object-digest implementation is introduced by this correction."
+    },
+    {
+      "id": "adobe-2007-errata-38",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        725
+      ],
+      "topic": "Reference TransformMethod and TransformParams define modification detection",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Signatures/Policies/SignatureReference.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-39",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        726
+      ],
+      "topic": "Approval signature terminology",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-40",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        726
+      ],
+      "topic": "At most one certification, first signed field and optional FieldMDP",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Signatures/SignatureDocumentSigningRules.php"
+      ],
+      "validation": [
+        "tests/SignaturePermissionHistoryTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-41",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        730
+      ],
+      "topic": "DigestValue DigestLocation DigestMethod object digest deprecation",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": "Deprecated dictionary entries remain representable; their old object-digest algorithm is deliberately not revived."
+    },
+    {
+      "id": "adobe-2007-errata-42",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        730
+      ],
+      "topic": "Identity transform deprecation",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": "The native signature pipeline supports DocMDP, FieldMDP and UR3 rather than the deprecated Identity transform."
+    },
+    {
+      "id": "adobe-2007-errata-43",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        731
+      ],
+      "topic": "DocMDP purpose is detection of disallowed changes",
+      "disposition": "partial-native-signature-policy",
+      "implementation": [
+        "src/Document/Signatures/SignaturePermissionHistory.php"
+      ],
+      "validation": [
+        "tests/SignaturePermissionHistoryTest.php"
+      ],
+      "remaining": "Signing-operation guards exist; complete authenticated classification of arbitrary later revisions is not implemented."
+    },
+    {
+      "id": "adobe-2007-errata-44",
+      "physical_pdf_page": 14,
+      "adobe_reference_printed_pages": [
+        732
+      ],
+      "topic": "Recommended legal attestation and author intent",
+      "disposition": "consumer-operation",
+      "implementation": [
+        "src/Document/Signatures/Policies/SignatureSigningEvidence.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": "An application supplies legal content attestation; the library cannot establish author intent."
+    },
+    {
+      "id": "adobe-2007-errata-45",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        732
+      ],
+      "topic": "Rename MDP validation heading",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-46",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        732
+      ],
+      "topic": "Verify byte-range digest before classifying allowed modifications",
+      "disposition": "partial-native-signature-policy",
+      "implementation": [
+        "src/Security/OpenSslSignatureOutputVerifier.php",
+        "src/Document/Signatures/VerifiedSignatureFacts.php"
+      ],
+      "validation": [
+        "tests/SignatureOutputVerificationTest.php"
+      ],
+      "remaining": "Cryptographic output authentication is implemented; complete later-revision DocMDP/FieldMDP/UR classification remains incomplete."
+    },
+    {
+      "id": "adobe-2007-errata-47",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        732
+      ],
+      "topic": "Deprecate earlier object-digest validation method",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-48",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        733
+      ],
+      "topic": "UR entry deprecation note",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-49",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        735
+      ],
+      "topic": "UR form Add and Delete rights",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Document/Signatures/Policies/UsageRight.php"
+      ],
+      "validation": [
+        "tests/SignaturePolicyObjectsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-50",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        735
+      ],
+      "topic": "FormEx deprecation",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-51",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        737
+      ],
+      "topic": "Form filling may preserve approval or certification under policy",
+      "disposition": "partial-native-signature-policy",
+      "implementation": [
+        "src/Document/Signatures/Policies/FieldMdpTransform.php"
+      ],
+      "validation": [
+        "tests/SignaturePermissionHistoryTest.php"
+      ],
+      "remaining": "The transform model and signing guards exist; general authenticated form-fill delta classification is incomplete."
+    },
+    {
+      "id": "adobe-2007-errata-52",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        737
+      ],
+      "topic": "Identity transform repeated deprecation",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-53",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        741
+      ],
+      "topic": "Permissions UR entry deprecation",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-54",
+      "physical_pdf_page": 15,
+      "adobe_reference_printed_pages": [
+        742
+      ],
+      "topic": "Author signature renamed certification signature",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-55",
+      "physical_pdf_page": 16,
+      "adobe_reference_printed_pages": [
+        907
+      ],
+      "topic": "One link OBJR with wrapped QuadPoints",
+      "disposition": "partial-native-structure",
+      "implementation": [
+        "src/Document/Structure/StructureTreeRoot.php",
+        "src/Specification/Definition/LinkAnnotationTable173Definition.php"
+      ],
+      "validation": [
+        "tests/TaggedStructureTest.php"
+      ],
+      "remaining": "OBJR and link QuadPoints construction exist; exhaustive link-layout truth is a content/appearance review, not inferred from class presence."
+    },
+    {
+      "id": "adobe-2007-errata-56",
+      "physical_pdf_page": 16,
+      "adobe_reference_printed_pages": [
+        970,
+        971
+      ],
+      "topic": "Output-intent standards and extension subtype names",
+      "disposition": "typed-definition-only",
+      "implementation": [
+        "src/Specification/Definition/OutputIntentDictionaryTable365Definition.php"
+      ],
+      "validation": [],
+      "remaining": "Source names are represented; PDF/A, PDF/X and PDF/E profile conformance is separate."
+    },
+    {
+      "id": "adobe-2007-errata-57",
+      "physical_pdf_page": 17,
+      "adobe_reference_printed_pages": [
+        971
+      ],
+      "topic": "Output-intent named subtypes",
+      "disposition": "typed-definition-only",
+      "implementation": [
+        "src/Specification/Definition/OutputIntentDictionaryTable365Definition.php"
+      ],
+      "validation": [],
+      "remaining": "Custom registered extension subtypes remain possible; no closed singleton is invented."
+    },
+    {
+      "id": "adobe-2007-errata-58",
+      "physical_pdf_page": 17,
+      "adobe_reference_printed_pages": [
+        991
+      ],
+      "topic": "Classic-xref architectural object-count limit does not apply to streams",
+      "disposition": "implemented-native",
+      "implementation": [
+        "src/Syntax/FileStructure/CrossReferenceStream.php"
+      ],
+      "validation": [
+        "tests/ObjectStreamsTest.php"
+      ],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-59",
+      "physical_pdf_page": 17,
+      "adobe_reference_printed_pages": [
+        1114
+      ],
+      "topic": "Acrobat7 callout redraw without CL may fail",
+      "disposition": "legacy-viewer-note",
+      "implementation": [],
+      "validation": [],
+      "remaining": "Historical product behavior is documented, not emulated or claimed as a universal validity requirement."
+    },
+    {
+      "id": "adobe-2007-errata-60",
+      "physical_pdf_page": 17,
+      "adobe_reference_printed_pages": [
+        1121
+      ],
+      "topic": "Acrobat7 and8 dummy DigestValue and DigestLocation",
+      "disposition": "legacy-viewer-note",
+      "implementation": [],
+      "validation": [],
+      "remaining": "The native pipeline does not fabricate deprecated digest values for obsolete viewer versions."
+    },
+    {
+      "id": "adobe-2007-errata-61",
+      "physical_pdf_page": 17,
+      "adobe_reference_printed_pages": [
+        1131
+      ],
+      "topic": "Object-digest algorithm contains significant errors",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-62",
+      "physical_pdf_page": 18,
+      "adobe_reference_printed_pages": [
+        1152
+      ],
+      "topic": "OpenType bibliography title and version1.4",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-63",
+      "physical_pdf_page": 18,
+      "adobe_reference_printed_pages": [
+        1154
+      ],
+      "topic": "ECMA363 first edition bibliography",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-64",
+      "physical_pdf_page": 18,
+      "adobe_reference_printed_pages": [
+        1154
+      ],
+      "topic": "ANSI X3.4-1986 bibliography",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    },
+    {
+      "id": "adobe-2007-errata-65",
+      "physical_pdf_page": 18,
+      "adobe_reference_printed_pages": [
+        1156
+      ],
+      "topic": "PDF/A and PDF/E bibliography",
+      "disposition": "editorial-reference",
+      "implementation": [],
+      "validation": [],
+      "remaining": null
+    }
+  ]
+}

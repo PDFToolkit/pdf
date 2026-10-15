@@ -21728,5 +21728,92 @@
         ]
       }
     ]
+  },
+  "auditedSourceDevelopment": {
+    "date": "2026-10-15",
+    "targetRelease": "0.8.0",
+    "historicalBaselinePreserved": true,
+    "sourceRules": {
+      "resource": "semantic-rules.json",
+      "ruleCount": 98,
+      "sourceTables": 33,
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    "adobeErrata": {
+      "resource": "../adobe-references/errata-review.json",
+      "reviewedPhysicalPages": 18,
+      "correctionRecords": 65,
+      "reviewCompleteness": "all correction paragraphs/tables classified",
+      "implementationCompleteness": false
+    },
+    "newNativeMechanisms": [
+      {
+        "id": "intrinsic-dictionary-relations",
+        "scope": "98 executable source rules; numeric/shape/parameter/function/image/annotation/choice relations, distinct from the99rules of PDF2.",
+        "implementation": [
+          "src/Specification/SemanticRule.php",
+          "src/Specification/SchemaDictionary.php"
+        ],
+        "validation": [
+          "tests/SpecificationSemanticsTest.php"
+        ]
+      },
+      {
+        "id": "empty-page-content-array",
+        "scope": "A writer rejects empty Contents arrays; omitted Contents and a real empty stream remain valid.",
+        "implementation": [
+          "src/Syntax/DocumentStructure/PageTree/PageObject.php"
+        ],
+        "validation": [
+          "tests/PageContentExtentTest.php"
+        ]
+      },
+      {
+        "id": "annotation-appearance-transform",
+        "scope": "Corrected Matrix times A, normalized transformed bounds, shear/rotation/reversed rectangles and finite collapsed destination transforms.",
+        "implementation": [
+          "src/Document/Forms/AnnotationAppearanceTransform.php"
+        ],
+        "validation": [
+          "tests/AnnotationAppearanceTransformTest.php"
+        ]
+      },
+      {
+        "id": "secure-redaction",
+        "scope": "A native conservative destructive processor operates on its explicitly normalized strict object/content model. Arbitrary-PDF normalization and unsupported content are rejected, not silently redacted.",
+        "resource": "../redaction/coverage.json"
+      }
+    ],
+    "remainingFamilyReview": [
+      {
+        "family": "authenticated-signature-revision-policies",
+        "closed": "Actual byte-range output verification, immutable generated snapshots, signing-operation history guards, first certification and complete document-timestamp/DSS maintenance exception are implemented.",
+        "remaining": "General authenticated DocMDP/FieldMDP/UR difference classification, field rename/reparent/removal/inheritance, shared content/resources/AP, page-template instantiation and UR authority remain incomplete."
+      },
+      {
+        "family": "annotation-geometry-and-relationships",
+        "closed": "Intrinsic line/leader/polygon/quad/callout shapes and appearance placement are executable. The destructively applied redaction model is independently source tracked.",
+        "remaining": "General AP/border selection, IRT/Popup reciprocity, annotation ownership and complete rendering/layout behavior are not closed by these local constraints."
+      },
+      {
+        "family": "navigation-actions-media-measurement",
+        "closed": "Earlier local page/destination/article/presentation mechanisms and later PDF2 geospatial object graphs have actual native implementations and independent validators; the0.5baseline is not the current total.",
+        "remaining": "Remote/embedded action families, remaining2Dmeasurement and RichMedia relationships, action execution and external media behavior still require domain-specific evidence."
+      },
+      {
+        "family": "intrinsic-functions-and-resource-prerequisites",
+        "closed": "Function Domain/Range, sampled Size/Encode/Decode and stitching Bounds/Encode cardinalities now have executable schema relations. Existing native evaluators remain separate.",
+        "remaining": "Every context-dependent conditional rule, opaque payload semantics, resource/operator prerequisite and full renderer behavior is not established by the197combinededitionrules."
+      },
+      {
+        "family": "external-and-human-semantics",
+        "closed": "Optional reader/image/font/OpenType/HTML modules and WTPDF mechanical checks have their own current coverage.",
+        "remaining": "PKI trust, arbitrary external histories/content, semantic accessibility/layout truth and external renderer/codec/font behavior cannot be certified by native core dictionary construction alone."
+      }
+    ],
+    "allSourceMechanismsImplemented": false,
+    "allSemanticConstraintsValidated": false
   }
 }
