@@ -57,6 +57,7 @@ final class DocumentGraphValidation
         (new \PDF\Document\Annotations\AnnotationGraphValidation())->validate($graph, $version);
         (new \PDF\Document\RichMedia\RichMediaGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\Files\EmbeddedFilePlacementValidation())->validate($graph, $version);
         (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Navigation\NavigationGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Parts\DocumentPartsGraphValidation())->validate($graph, $version);
