@@ -3019,6 +3019,35 @@
       "validation": [
         "tests/Ec3OutputProfileReferencesTest.php"
       ]
+    },
+    {
+      "issue": 296,
+      "physical_pdf_page": 730,
+      "annotation_name": "9652d706-b857-420d-8671-7627f95fc069",
+      "approval_chain": [
+        "430febf3-e4cf-49d8-8d66-02a1866e2525",
+        "922c61ab-3fdf-48a9-9cdc-bc7caf82581b",
+        "483c2503-d0bd-43e3-a4caf3059b5786d5"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Effective native PDF2 metadata requires decoded UTF-8 source bytes and a compatible XML encoding declaration. Normal encoding filters are supported, opaque pre-encoded streams are refused. Immutable source-encoding evidence is bound to the emitted encoded plaintext and checked across retained revisions and PDF1.7 catalog upgrades without re-evaluating historical builders. This is not XML schema validation or external stream import.",
+      "implementation": [
+        "src/Document/Metadata/MetadataGraphValidation.php",
+        "src/Document/Metadata/XmpEncodingEvidence.php",
+        "src/Document/Metadata/XmpUtf8Encoding.php",
+        "src/Serialization/SerializationContext.php",
+        "src/Syntax/FileStructure/RevisionStreamSnapshot.php"
+      ],
+      "validation": [
+        "tests/XmpUtf8GraphTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/xmp-utf8-revisions.php"
+      ]
     }
   ]
 }

@@ -7,13 +7,14 @@ namespace PDF\Syntax\FileStructure;
 use PDF\Serialization\SerializationContext;
 use PDF\Document\Files\AssociatedFilesMarkedContentFacts;
 use PDF\Document\Metadata\MetadataMarkedContentFacts;
+use PDF\Document\Metadata\XmpEncodingEvidence;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\StreamObject;
 
 /** Actual encoded plaintext emitted once, with the exact final dictionary frozen before serialization. */
 final class RevisionStreamSnapshot extends StreamObject
 {
-    public function __construct(private readonly DictionaryType $emittedDictionary, public readonly string $encodedBytes, public readonly ?AssociatedFilesMarkedContentFacts $markedContentFacts = null, public readonly ?MetadataMarkedContentFacts $metadataMarkedContentFacts = null)
+    public function __construct(private readonly DictionaryType $emittedDictionary, public readonly string $encodedBytes, public readonly ?AssociatedFilesMarkedContentFacts $markedContentFacts = null, public readonly ?MetadataMarkedContentFacts $metadataMarkedContentFacts = null, public readonly ?XmpEncodingEvidence $xmpEncodingEvidence = null)
     {
         parent::__construct($encodedBytes);
     }

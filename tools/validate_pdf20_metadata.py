@@ -171,6 +171,32 @@ def main() -> None:
             empty_paths.append(path)
         assert rendered[0] == rendered[1], "Empty-path operators must not alter pixels or repaint a completed path"
 
+    utf8_paths = []
+    expected_xml = '<?xml version="1.0" encoding="UTF-8"?><x:xmpmeta xmlns:x="adobe:ns:meta/" xmlns:e="urn:example:utf8"><e:label>Révisé — 日本語</e:label></x:xmpmeta>'.encode('utf-8')
+    for format_name in ("table", "stream", "hybrid"):
+        run(arguments.php, str(source / "tools/fixtures/xmp-utf8-revisions.php"), str(output), format_name)
+        prefix = b""
+        reference = None
+        for kind in ("source", "upgraded", "retained"):
+            path = output / f"xmp-utf8-{format_name}-{kind}.pdf"
+            run(arguments.qpdf, "--check", str(path))
+            bytes_ = path.read_bytes()
+            assert bytes_.startswith(prefix), "An XMP catalog upgrade must preserve its complete historical prefix"
+            prefix = bytes_
+            pdf = PdfReader(path, strict=True)
+            assert pdf.pdf_header == "%PDF-1.7"
+            root = pdf.trailer["/Root"]
+            assert root.get("/Version") == (None if kind == "source" else "/2.0")
+            metadata = root["/Metadata"]
+            current_reference = (metadata.indirect_reference.idnum, metadata.indirect_reference.generation)
+            assert reference is None or current_reference == reference
+            reference = current_reference
+            assert metadata["/Filter"] == ["/ASCII85Decode", "/FlateDecode"]
+            xml = metadata.get_data()
+            assert xml == expected_xml and xml.decode("utf-8").encode("utf-8") == xml
+            assert ET.fromstring(xml).find("{urn:example:utf8}label").text == "Révisé — 日本語"
+            utf8_paths.append(path)
+
     wrapper = PdfReader(wrapper_path)
     assert not wrapper.is_encrypted and len(wrapper.pages) == 1
     wrapper_root = wrapper.trailer["/Root"]
@@ -192,6 +218,8 @@ def main() -> None:
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
     proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations, script identity and MIME Subtype of named and unnamed embedded assets in all three xref formats", "independent AES-256 R6 decryption", "EC3 empty-path painting leaves Poppler pixels unchanged in all three xref formats"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths, *empty_paths)}}
+    proof["checks"].append("EC3 #296 exact UTF-8 XMP under two decoding filters, immutable PDF1.7-to-PDF2 upgrades and retained revisions in all three xref formats")
+    proof["examples"].update({path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in utf8_paths})
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

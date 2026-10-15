@@ -7,6 +7,8 @@ namespace PDF\Document\Metadata;
 use PDF\Document\DocumentGraphContext;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\FileStructure\PdfVersion;
+use PDF\Syntax\FileStructure\RevisionStreamSnapshot;
+use PDF\Syntax\Filters\EncodedData;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
@@ -29,6 +31,20 @@ final readonly class MetadataGraphValidation
                 $value = $value === null ? null : $graph->resolve($value);
                 if (!$value instanceof NameType || $value->value !== $expected) {
                     throw new \InvalidArgumentException('Metadata requires a stream with Type Metadata and Subtype XML.');
+                }
+            }
+            if ($version->value === PdfVersion::PDF20) {
+                $stream = $graph->resolve($metadata);
+                if ($stream instanceof RevisionStreamSnapshot) {
+                    if ($stream->xmpEncodingEvidence === null) {
+                        throw new \InvalidArgumentException('Retained PDF2 XMP metadata requires decoded-source UTF-8 emission evidence.');
+                    }
+                    $stream->xmpEncodingEvidence->validate($stream->encodedBytes);
+                } elseif ($stream instanceof StreamObject) {
+                    if (!is_string($stream->data) || array_filter($stream->filters, static fn ($filter): bool => $filter instanceof EncodedData) !== []) {
+                        throw new \InvalidArgumentException('PDF2 XMP metadata requires decoded UTF-8 source bytes, not opaque pre-encoded content.');
+                    }
+                    (new XmpUtf8Encoding())->validate($stream->data);
                 }
             }
         }

@@ -447,7 +447,10 @@ final class SerializationContext
         $native = $this->nativeContentEmissions[(string) $identifier] ?? null;
         $facts = $native !== null && $stream->data === $native[0] ? $native[1] : null;
         $metadataFacts = $facts === null ? null : $native[2];
-        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded, $facts, $metadataFacts);
+        $xmpEvidence = is_string($stream->data) && array_filter($stream->filters, static fn ($filter): bool => $filter instanceof \PDF\Syntax\Filters\EncodedData) === []
+            ? new \PDF\Document\Metadata\XmpEncodingEvidence($stream->data, $encoded)
+            : null;
+        $this->streamEmissions[(string) $identifier] = new RevisionStreamSnapshot($frozen, $encoded, $facts, $metadataFacts, $xmpEvidence);
         unset($this->nativeContentEmissions[(string) $identifier]);
     }
 

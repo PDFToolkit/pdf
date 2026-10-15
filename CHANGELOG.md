@@ -4,7 +4,8 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
-## [0.11.0] - 2026-10-15
+## [0.11.0] - Enforce UTF-8 XMP in effective PDF2 graphs and catalog upgrades, preserving immutable same-emission encoding evidence across compressed retained revisions. Require decoded source bytes; opaque pre-encoded metadata cannot invent that evidence. Add nine independent UTF-8/revision PDFs across all three xref formats.
+- 2026-10-15
 
 - Apply Type3 glyph → font → inherited page resource priority, including nested Forms and frozen graph validation; bound resource traversal explicitly. Accept empty path-painting operations outside text objects and require a MIME Subtype for embedded RichMedia assets. Compare Type3 pixels with Poppler and Ghostscript, recording the isolated nested-Form renderer divergence.
 - Extend CID glyph-class metric overrides with FontBBox/FontFamily/FontStretch/FontWeight and emit consistent ToUnicode dictionary/program metadata from one explicit UnicodeCMap object.

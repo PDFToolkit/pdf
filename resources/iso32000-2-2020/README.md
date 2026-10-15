@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 135 distinct annotations across 70 issues. A polygon `Path` ignores
+and approval reply chains for 136 distinct annotations across 71 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -188,3 +188,5 @@ EC3 #156 (physical page 153) requires a valid MIME `Subtype` for embedded RichMe
 EC3 #672 marks the historical IDS/URLS trees deprecated; #150 removes the obsolete NA/NR condition. #482 checks output-profile reference arrays, retaining embedded alternatives and requiring FS=URL with RFC3986-compatible F bytes for external locations. URI resolution, network access and ICC-profile interpretation remain outside this local rule.
 
 The media content-type description now uses the normative “shall” (#257). MCR/OBJR page metadata records the conditional requirement and local-page precedence (#431/#339); a standalone dictionary cannot resolve its containing structure element.
+
+EC3 #296 requires decoded UTF-8 XMP bytes in effective PDF 2.0 metadata graphs. Normal stream encoders remain available; opaque pre-encoded streams are refused. Immutable evidence is recorded from the emitted stream and checked against its encoded plaintext in later revisions, including catalog upgrades from PDF 1.7. Historical builders are never re-evaluated. The independent oracle verifies exact XML bytes, two decoding filters and preserved prefixes in nine additional PDFs; XML schema validity and imported external streams remain separate.

@@ -4,6 +4,7 @@ English | [Français](fr/migration-0.11.md)
 
 The full guide is maintained in the [central documentation](https://pdftoolkit.github.io/guides/migration-0-11.html).
 
+- PDF2 XMP metadata requires explicit decoded UTF-8 source bytes. Normal compression filters remain available; opaque `EncodedData` metadata is refused. Frozen source-encoding evidence is bound to the actual emitted bytes, including PDF1.7-to-PDF2 catalog upgrades. Replace historical non-UTF8 or opaque metadata explicitly when upgrading; the writer never re-encodes its historical builder. This is an encoding check, not an XMP-schema validator.
 - Replace `DocumentPart::addGroup()` with `addChildren()` and explicit parent objects for hierarchy. Move DPart XMP to `DocumentPartRoot`; rename named `nodeNames:` arguments to `entries:`. See the [document-part contracts](../resources/document-parts/README.md).
 - A Type3 `FontDescriptor` may omit `FontName`. Its `fontName` property is nullable; call `requiredName()` in code that requires a named descriptor. Other font domains still require a name.
 - `Type3Glyph` accepts optional `resources:`. An explicitly empty glyph or font Resources dictionary blocks fallback; omitted dictionaries use glyph → font → inherited page priority, including glyphs called inside a Form. Existing one-argument construction remains valid. Secure redaction still requires an explicit font sanitizer and does not execute arbitrary CharProcs.

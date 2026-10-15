@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 135 annotations distinctes couvrant 70 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 136 annotations distinctes couvrant 71 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -206,3 +206,5 @@ EC3 #156 (page physique 153) exige un `Subtype` MIME valide pour les actifs Rich
 EC3 #672 marque les arbres historiques IDS/URLS comme dépréciés ; #150 retire la condition obsolète NA/NR. #482 contrôle les références de profils de sortie, conserve les alternatives incorporées et exige FS=URL avec des octets F compatibles RFC3986 pour les emplacements externes. La résolution des URI, l’accès réseau et l’interprétation des profils ICC restent hors de cette règle locale.
 
 La description du type de contenu multimédia emploie désormais l’obligation normative « shall » (#257). Les métadonnées Pg de MCR/OBJR indiquent l’exigence conditionnelle et la priorité de la page locale (#431/#339) ; un dictionnaire isolé ne peut résoudre son élément de structure contenant.
+
+EC3 #296 exige des octets XMP décodés UTF-8 dans les graphes de métadonnées PDF 2.0 effectifs. Les encodeurs de flux normaux restent disponibles ; les flux préencodés opaques sont refusés. Une preuve immuable est enregistrée à l’émission et vérifiée contre les octets encodés non chiffrés des révisions suivantes, y compris lors d’une mise à niveau PDF 1.7 par catalogue. Les builders historiques ne sont jamais réévalués. L’oracle indépendant vérifie les octets XML exacts, deux filtres de décodage et les préfixes conservés dans neuf PDF supplémentaires ; la validité du schéma XML et les flux externes importés restent distincts.
