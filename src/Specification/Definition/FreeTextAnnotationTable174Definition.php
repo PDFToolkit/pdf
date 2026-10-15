@@ -34,6 +34,12 @@ final readonly class FreeTextAnnotationTable174Definition extends TableDefinitio
                 new EntryDefinition('LE', new ObjectTypeConstraint('name', false, false, false, null), new Requirement('Optional; meaningful only if CL is present; PDF 1.6', false, true, false, '1.6'), new SourceReference('174', '12.5.6.6', 405), '(Optional; meaningful only if CL is present; PDF 1.6) A name specifying the line ending style that shall be used in drawing the callout line specified in CL. The name shall specify the line ending style for the endpoint defined by the pairs of coordinates (x , y ). Table 176 shows the possible 1 1 line ending styles. Default value: None.', false),
             ],
             [new AnnotationDictionaryTable164Definition(), new MarkupAnnotationsTable170Definition()],
+            [
+                new \PDF\Specification\SemanticRule('pdf17-table174-numberarray-CL', new SourceReference('174', '12.5.6.6', 404), new \PDF\Specification\Constraint\NumberArray(key: 'CL', lengths: [4, 6])),
+                new \PDF\Specification\SemanticRule('pdf17-table174-numberarray-RD', new SourceReference('174', '12.5.6.6', 405), new \PDF\Specification\Constraint\NumberArray(key: 'RD', lengths: [4], minimum: 0)),
+                new \PDF\Specification\SemanticRule('pdf17-table174-nameentry-IT', new SourceReference('174', '12.5.6.6', 404), new \PDF\Specification\Constraint\NameEntry(key: 'IT', allowed: ['FreeText', 'FreeTextCallout', 'FreeTextTypeWriter'])),
+                new \PDF\Specification\SemanticRule('pdf17-table174-nameentry-LE', new SourceReference('174', '12.5.6.6', 405), new \PDF\Specification\Constraint\NameEntry(key: 'LE', allowed: ['Square', 'Circle', 'Diamond', 'OpenArrow', 'ClosedArrow', 'None', 'Butt', 'ROpenArrow', 'RClosedArrow', 'Slash'])),
+            ],
         );
     }
 }

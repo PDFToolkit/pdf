@@ -978,6 +978,67 @@
       }
     },
     {
+      "table": "174",
+      "id": "pdf17-table174-numberarray-CL",
+      "physical_pdf_page": 404,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "CL",
+        "lengths": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "table": "174",
+      "id": "pdf17-table174-numberarray-RD",
+      "physical_pdf_page": 405,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "RD",
+        "lengths": [
+          4
+        ],
+        "minimum": 0
+      }
+    },
+    {
+      "table": "174",
+      "id": "pdf17-table174-nameentry-IT",
+      "physical_pdf_page": 404,
+      "constraint": "NameEntry",
+      "arguments": {
+        "key": "IT",
+        "allowed": [
+          "FreeText",
+          "FreeTextCallout",
+          "FreeTextTypeWriter"
+        ]
+      }
+    },
+    {
+      "table": "174",
+      "id": "pdf17-table174-nameentry-LE",
+      "physical_pdf_page": 405,
+      "constraint": "NameEntry",
+      "arguments": {
+        "key": "LE",
+        "allowed": [
+          "Square",
+          "Circle",
+          "Diamond",
+          "OpenArrow",
+          "ClosedArrow",
+          "None",
+          "Butt",
+          "ROpenArrow",
+          "RClosedArrow",
+          "Slash"
+        ]
+      }
+    },
+    {
       "table": "170",
       "id": "pdf17-table170-numberentry-CA",
       "physical_pdf_page": 400,

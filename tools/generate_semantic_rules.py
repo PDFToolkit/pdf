@@ -37,7 +37,7 @@ def php_value(value: object) -> str:
 
 
 def render_rules(rules: list[dict], source: Callable[[int], str]) -> str:
-    kinds = {'NumberEntry', 'NumberArray', 'ConditionalEntries', 'FilterParameters',
+    kinds = {'NumberEntry', 'NumberArray', 'NameEntry', 'ConditionalEntries', 'FilterParameters',
              'CrossReferenceIndex', 'CrossReferenceDirectObjects', 'CalibratedColour',
              'FunctionDimensions', 'ImageSamples', 'PredictorParameters', 'IccComponents',
              'AnnotationPath', 'ChoiceOptions'}

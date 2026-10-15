@@ -53,7 +53,7 @@ final class SpecificationSemanticsTest extends TestCase
                 }
                 self::assertTrue($found, $rule['id']);
             }
-            self::assertCount($directory === 'iso32000-1' ? 94 : 95, $identifiers);
+            self::assertCount($directory === 'iso32000-1' ? 98 : 99, $identifiers);
         }
     }
 
@@ -104,6 +104,8 @@ final class SpecificationSemanticsTest extends TestCase
         yield 'image components' => ['87', ['ColorSpace' => '/DeviceRGB', 'BitsPerComponent' => 8, 'Decode' => [0, 1]], '/Decode length'];
         yield 'image pattern prohibition' => ['87', ['ColorSpace' => '/Pattern', 'BitsPerComponent' => 8], 'Pattern'];
         yield 'leader extension needs leader' => ['178', ['LLE' => 1], '/LL'];
+        yield 'callout operands' => ['177', ['CL' => [0, 0, 1, 1, 2]], '/CL'];
+        yield 'callout intent name' => ['177', ['IT' => '/Typo'], 'name'];
         yield 'annotation colour components' => ['178', ['IC' => [0, 1]], '/IC'];
         yield 'polygon missing geometry' => ['181', [], '/Vertices or /Path'];
         yield 'polygon first operator cubic' => ['181', ['Path' => [[0, 0, 1, 1, 2, 2]]], 'array length'];
