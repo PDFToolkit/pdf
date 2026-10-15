@@ -373,6 +373,9 @@ final class RedactionContentProcessor
 
     private function dependency(BasicType $parent, BasicType $child): void
     {
+        if (++$this->operations > $this->limits->operations) {
+            throw new \OverflowException('Redaction resource dependencies exceed their explicit instruction budget.');
+        }
         $parents = $this->parents->offsetExists($child) ? $this->parents[$child] : [];
         if (!in_array($parent, $parents, true)) {
             $parents[] = $parent;

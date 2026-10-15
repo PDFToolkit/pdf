@@ -350,6 +350,17 @@ final class SecureRedactionTest extends TestCase
         (new SecureRedaction(new RedactionLimits(operations: 3)))->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $this->annotation())));
     }
 
+    public function testDependencyBudgetCountsRepeatedEdgesAndNotOnlyDistinctObjects(): void
+    {
+        $repeated = new ArrayType(...array_fill(0, 100, new NumericType(1)));
+        $resources = new ResourceDictionary(new Entry(new NameType('Unused'), $repeated));
+        $page = new PageObject($this->box(0, 0, 200, 120), $resources, new StreamObject(new ContentStreams()));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $this->expectException(\OverflowException::class);
+        $this->expectExceptionMessage('instruction budget');
+        (new SecureRedaction(new RedactionLimits(operations: 10)))->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $this->annotation())));
+    }
+
     public function testRetainedEncodedImageMetadataIsRejectedWithoutExplicitSanitizer(): void
     {
         $image = new StreamObject('SECRET-JPEG-APP-METADATA', $this->image('PUBLICIMG')->dictionary(), new \PDF\Syntax\Filters\EncodedData(\PDF\Syntax\Filters\FilterName::DCTDecode));
