@@ -13,7 +13,7 @@ use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StringType;
 
-/** A wrapper is one unencrypted PDF with one named payload, hidden collection and catalog association. */
+/** An unencrypted wrapper selects its named payload through a hidden collection and catalog association. */
 final readonly class EncryptedPayloadGraphValidation
 {
     public function validate(DocumentGraphContext $graph, EffectivePdfVersion $version, bool $encrypted = false): void
@@ -49,8 +49,16 @@ final readonly class EncryptedPayloadGraphValidation
             $names = $names === null ? null : $graph->dictionary($names);
             $embedded = $names === null ? null : $graph->entry($names, 'EmbeddedFiles');
             $files = $embedded === null ? [] : $graph->nameTree($embedded);
-            if (count($files) !== 1 || !$graph->sameObject(array_values($files)[0], $fileValue)) {
-                throw new \InvalidArgumentException('An encrypted-payload wrapper must name exactly its one payload in EmbeddedFiles.');
+            // EC3 #529, physical page 110, removes the exactly-one-entry restriction.
+            $payloadNamed = false;
+            foreach ($files as $namedFile) {
+                if ($graph->sameObject($namedFile, $fileValue)) {
+                    $payloadNamed = true;
+                    break;
+                }
+            }
+            if (!$payloadNamed) {
+                throw new \InvalidArgumentException('An encrypted-payload wrapper must name its associated payload in EmbeddedFiles.');
             }
             $collection = $graph->entry($graph->catalog, 'Collection');
             $collection = $collection === null ? null : $graph->dictionary($collection);
@@ -58,7 +66,7 @@ final readonly class EncryptedPayloadGraphValidation
             $view = $view === null ? null : $graph->resolve($view);
             $initial = $collection === null ? null : $graph->entry($collection, 'D');
             $initial = $initial === null ? null : $graph->resolve($initial);
-            if (!$view instanceof NameType || $view->value !== 'H' || !$initial instanceof StringType || !isset($files[bin2hex($initial->value)])) {
+            if (!$view instanceof NameType || $view->value !== 'H' || !$initial instanceof StringType || !isset($files[bin2hex($initial->value)]) || !$graph->sameObject($files[bin2hex($initial->value)], $fileValue)) {
                 throw new \InvalidArgumentException('An encrypted-payload wrapper requires hidden Collection.View H and its payload name as Collection.D.');
             }
         }

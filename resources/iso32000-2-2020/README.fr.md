@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 46 annotations distinctes couvrant 26 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 47 annotations distinctes couvrant 27 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -157,3 +157,10 @@ pour un propriétaire et un attribut donnés ; les attributs directs de `A`
 restent prioritaires. Une classe absente ne fournit aucun attribut, préserve
 l’héritage et les valeurs par défaut, sans être ajoutée à `ClassMap`. Un objet
 `AttributeClass` explicitement vide est permis.
+
+EC3 #529 (page physique 110) autorise des pièces jointes `EmbeddedFiles`
+supplémentaires dans une enveloppe de charge chiffrée. L’identité AF du catalogue
+et la collection masquée sélectionnent toujours la charge chiffrée réelle ;
+sélectionner une autre pièce jointe existante est refusé, y compris lors d’une
+révision incrémentale. L’exemple contient `payload.pdf` et `instructions.txt`,
+et l’oracle indépendant déchiffre la charge sélectionnée avec qpdf.

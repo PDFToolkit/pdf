@@ -55,11 +55,12 @@ $inner = new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatal
 $encryptedBytes = (new FileWriter(encryption: $security))->serialize($inner);
 $payload = new Files\EmbeddedFileStream($encryptedBytes, new NameType('application/pdf'), modificationDate: new Date(new DateTimeImmutable('2026-10-14T00:00:00Z')), filters: new FlateDecode());
 $specification = new Files\FileSpecification(new LiteralString('payload.pdf'), new Files\FileSpecificationOptions(embedded: new Files\EmbeddedFileBindings(new Files\EmbeddedFileBinding(Files\EmbeddedFileKey::File, $payload))), new Files\AssociatedFileRelationship(Files\AFRelationship::EncryptedPayload), encryptedPayload: new Files\EncryptedPayload(new NameType('Standard')));
-$attachments = new Files\EmbeddedFiles(new Files\EmbeddedFileAttachment(new LiteralString('payload.pdf'), $specification));
+$instructions = new Files\FileSpecification(new LiteralString('instructions.txt'), new Files\FileSpecificationOptions(embedded: new Files\EmbeddedFileBindings(new Files\EmbeddedFileBinding(Files\EmbeddedFileKey::File, new Files\EmbeddedFileStream('Open payload.pdf with the demonstration password demo-reader.', new NameType('text/plain'))))));
+$attachments = new Files\EmbeddedFiles(new Files\EmbeddedFileAttachment(new LiteralString('payload.pdf'), $specification), new Files\EmbeddedFileAttachment(new LiteralString('instructions.txt'), $instructions));
 $collection = new Collection(view: CollectionView::Hidden, initialDocument: new LiteralString('payload.pdf'));
-// ISO 32000-2 7.6.7 requires exactly one EmbeddedFiles entry, a catalog AF
-// association and a hidden collection selecting that same name. The wrapper
-// stays unencrypted so a processor can display these instructions.
+// ISO 32000-2 7.6.7 requires a catalog AF association and a hidden collection
+// selecting that payload. EC3 #529 permits other named attachments, such as
+// these instructions. The wrapper itself stays unencrypted.
 $catalog = new DocumentCatalog($createPage('Encrypted PDF payload', 'This unencrypted wrapper contains one encrypted PDF.', 'Extract payload.pdf from the attachments, then open it.', 'Demonstration reader password: demo-reader', 'The payload uses the Standard security handler with AES-256.', 'Some viewers open the selected payload automatically.'), new Entry(new NameType('Names'), new DictionaryType($attachments->nameDictionaryEntry())), new Files\AssociatedFilesEntry(new Files\AssociatedFiles(new IndirectReference($specification))), $collection->catalogEntry());
 $output = $argv[1] ?? __DIR__ . '/pdf20-encrypted-payload.pdf';
 (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->writeTo($output);

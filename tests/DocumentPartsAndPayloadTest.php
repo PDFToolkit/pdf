@@ -271,13 +271,30 @@ final class DocumentPartsAndPayloadTest extends TestCase
         (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toPdf();
     }
 
-    public function testPayloadNameTreeMustContainExactlyOneMatchingPayload(): void
+    public function testPayloadNameTreeMustContainItsAssociatedPayload(): void
     {
         [$catalog] = $this->wrapper();
         $catalog = $catalog->without('Names');
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('exactly its one payload');
+        $this->expectExceptionMessage('must name its associated payload');
         (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toPdf();
+    }
+
+    public function testEncryptedWrapperMayCarryAdditionalAttachments(): void
+    {
+        [$catalog, $file] = $this->wrapper();
+        $support = new F\FileSpecification(new LiteralString('notes.txt'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('Payload instructions', new NameType('text/plain'))))));
+        $files = new F\EmbeddedFiles(new F\EmbeddedFileAttachment(new LiteralString('payload.pdf'), $file), new F\EmbeddedFileAttachment(new LiteralString('notes.txt'), $support));
+        $catalog = $catalog->with($this->entry('Names', new DictionaryType($files->nameDictionaryEntry())));
+        $previous = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
+        self::assertStringContainsString('(notes.txt)', $previous->bytes);
+        // Existing extra names cannot redirect Collection.D away from the actual AF payload.
+        $replacement = new DictionaryType($this->entry('View', new NameType('H')), $this->entry('D', new LiteralString('notes.txt')));
+        $nextCatalog = (new DictionaryType(...iterator_to_array($catalog->entries(), false)))->with($this->entry('Collection', $replacement));
+        $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($nextCatalog, $previous->binding($catalog)->identifier)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('its payload name as Collection.D');
+        $update->toRevision();
     }
 
     public function testEncryptedPayloadVersionIsANameOfDottedIntegers(): void

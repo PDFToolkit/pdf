@@ -3102,7 +3102,7 @@
         ],
         "errata": []
       },
-      "implemented_scope": "Explicit EP descriptors and indirect file specifications, associated payload ownership, exactly one named embedded payload, hidden collection and version constraints validated on the effective graph; wrapper encryption is rejected.",
+      "implemented_scope": "Explicit EP descriptors and indirect file specifications, associated payload ownership, named embedded payload identity with additional attachments permitted by EC3 #529, hidden collection and version constraints validated on the effective graph; wrapper encryption is rejected.",
       "implementation_files": [
         "src/Document/Files/EncryptedPayload.php",
         "src/Document/Files/EncryptedPayloadGraphValidation.php"

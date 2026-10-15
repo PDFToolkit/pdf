@@ -129,9 +129,12 @@ def main() -> None:
     assert not wrapper.is_encrypted and len(wrapper.pages) == 1
     wrapper_root = wrapper.trailer["/Root"]
     entries = wrapper_root["/Names"]["/EmbeddedFiles"]["/Names"]
-    assert len(entries) == 2 and entries[0] == wrapper_root["/Collection"]["/D"] == "payload.pdf"
-    assert wrapper_root["/Collection"]["/View"] == "/H" and entries[1] == wrapper_root["/AF"][0]
-    payload = entries[1].get_object()
+    files = dict(zip(entries[::2], entries[1::2], strict=True))
+    assert set(files) == {"payload.pdf", "instructions.txt"}
+    assert wrapper_root["/Collection"]["/D"] == "payload.pdf"
+    assert wrapper_root["/Collection"]["/View"] == "/H" and files["payload.pdf"] == wrapper_root["/AF"][0]
+    assert b"demo-reader" in files["instructions.txt"].get_object()["/EF"]["/F"].get_data()
+    payload = files["payload.pdf"].get_object()
     assert payload["/AFRelationship"] == "/EncryptedPayload" and payload["/EP"]["/Subtype"] == "/Standard"
     encrypted_path = output / "extracted-encrypted-payload.pdf"
     encrypted_path.write_bytes(payload["/EF"]["/F"].get_data())
@@ -142,7 +145,7 @@ def main() -> None:
     run(arguments.qpdf, "--check", str(decrypted_path))
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
-    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted one-payload wrapper", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths)}}
+    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths)}}
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

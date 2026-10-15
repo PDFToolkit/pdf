@@ -958,15 +958,18 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "DocMDP P is typed integer in the PDF 2.0 schema. Native DocMdpTransform already creates IntegerType permission levels from its closed enum.",
+      "implemented_scope": "DocMDP P is typed integer in the PDF 2.0 schema. Native DocMdpTransform creates IntegerType permission levels. Frozen raw transform dictionaries require IntegerType under effective PDF 2.0, including catalog version upgrades; historical PDF 1.x permits integral numeric objects. Missing P defaults to 2, and the domain remains 1 through 3.",
       "implementation": [
         "src/Specification/Iso32000_2/Definition/DocMDPTransformParametersDictionaryTable257Definition.php",
-        "src/Document/Signatures/Policies/DocMdpTransform.php"
+        "src/Document/Signatures/Policies/DocMdpTransform.php",
+        "src/Document/Signatures/SignaturePermissionHistory.php",
+        "src/Document/Signatures/SignatureDocumentSigningRules.php"
       ],
       "validation": [
         "tests/Ec3NativeDomainsTest.php",
         "tests/Ec3SemanticCorrectionsTest.php",
-        "tools/validate_pdf20_metadata.py"
+        "tools/validate_pdf20_metadata.py",
+        "tests/DocMdpPermissionTypesTest.php"
       ]
     },
     {
@@ -1036,6 +1039,27 @@
       ],
       "validation": [
         "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 529,
+      "physical_pdf_page": 110,
+      "annotation_name": "82d315e7-5fb3-408c-b2df5152236ef46d",
+      "approval_chain": [
+        "e2dd66d7-ecb0-4087-b0d7e35ae8eb0907"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The EmbeddedFiles name tree may contain additional attachments. The catalog AF payload must still occur in that tree, and the hidden Collection.D must select that same object, including in projected incremental graphs. The wrapper itself must remain unencrypted.",
+      "implementation": [
+        "src/Document/Files/EncryptedPayloadGraphValidation.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "examples/pdf20-encrypted-payload.php",
+        "tools/validate_pdf20_metadata.py"
       ]
     }
   ]
