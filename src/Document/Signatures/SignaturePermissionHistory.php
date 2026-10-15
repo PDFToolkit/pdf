@@ -16,7 +16,6 @@ use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
-use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StringType;
 
 /**
@@ -72,7 +71,7 @@ final readonly class SignaturePermissionHistory
                 $signed = $source->revision->binding($record->identifier)->dictionary ?? throw new \InvalidArgumentException('The actual signed snapshot retains its signature dictionary.');
                 $methods = $rules->methods($source, $signed);
                 if (isset($methods['DocMDP'])) {
-                    $permissions = min($permissions, $this->permission($methods['DocMDP']->get('P') ?? new IntegerType(2)));
+                    $permissions = min($permissions, $rules->docMdpPermissions($source, $methods['DocMDP'])->integer());
                 }
                 if (isset($methods['FieldMDP'])) {
                     $restrictions[] = [$source, $this->fieldTransform($methods['FieldMDP'])];
@@ -166,14 +165,6 @@ final readonly class SignaturePermissionHistory
     public function after(?SignatureFieldLock $lock, ?IntegerType $certification = null): IntegerType
     {
         return new IntegerType(min($this->permissions->integer(), $lock?->permissions?->integer() ?? 3, $certification?->integer() ?? 3));
-    }
-
-    private function permission(?\PDF\Syntax\FileStructure\BasicType $value): int
-    {
-        if (!$value instanceof NumericType || !in_array($value->value, [1, 2, 3, 1.0, 2.0, 3.0], true)) {
-            throw new \InvalidArgumentException('Actual historical MDP permissions are1,2 or3.');
-        }
-        return (int) $value->value;
     }
 
     private function fieldTransform(DictionaryType $parameters): FieldMdpTransform

@@ -213,3 +213,8 @@ unmodified pyHanko policy reports `OTHER` for instantiated outputs; it does not
 independently approve their DocMDP classification. Native tests cover hybrid
 xrefs, false template names/content, orphan objects, reordering, inheritance,
 P1 and UR operation scope.
+
+PDF 2.0 DocMDP `P` must be an integer object with value 1, 2 or 3 (EC3 #152);
+an absent value defaults to 2. The signed source’s effective version includes
+its catalog override. PDF 1.7 retains its numeric type while rejecting fractional
+values. `DocMdpPermissionTypesTest` exercises the actual frozen transform path.

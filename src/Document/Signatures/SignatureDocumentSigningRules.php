@@ -9,6 +9,9 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Object\StringType;
 use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
 
@@ -178,11 +181,28 @@ final readonly class SignatureDocumentSigningRules
                 }
             }
             $methods[$method->value] = $parameters ?? new DictionaryType();
+            if ($method->value === 'DocMDP') {
+                $this->docMdpPermissions($graph, $methods[$method->value]);
+            }
         }
         if (isset($methods['UR']) && count($methods) !== 1) {
             throw new \InvalidArgumentException('A usage-rights signature is separate from approval/certification.');
         }
         return $methods;
+    }
+
+    /** EC3 #152, physical p589: PDF2 Table257 narrows P from number to integer. */
+    public function docMdpPermissions(FrozenSignatureGraph $source, DictionaryType $parameters): IntegerType
+    {
+        $value = $parameters->get('P') ?? new IntegerType(2);
+        if (!$value instanceof NumericType || !in_array($value->value, [1, 2, 3, 1.0, 2.0, 3.0], true)) {
+            throw new \InvalidArgumentException('Actual DocMDP permissions are 1, 2 or 3.');
+        }
+        if ((new EffectivePdfVersion($source->revision->header, $source->catalog))->value === PdfVersion::PDF20
+            && !$value instanceof IntegerType) {
+            throw new \InvalidArgumentException('PDF 2.0 DocMDP P requires an integer object (EC3 #152).');
+        }
+        return new IntegerType((int) $value->value);
     }
 
     private function assertCompleted(DictionaryType $signature, int $size): void

@@ -224,3 +224,9 @@ La politique pyHanko non modifiée classe les sorties instanciées `OTHER` ; ell
 n’approuve pas indépendamment leur classification DocMDP. Les tests natifs
 couvrent xref hybride, faux noms/contenus de modèle, objets orphelins, ordre,
 héritage, P1 et sélection d’opération UR.
+
+En PDF 2.0, le `P` DocMDP doit être un objet entier valant 1, 2 ou 3
+(EC3 #152) ; une valeur absente vaut 2. La version effective de la source signée
+inclut la version du catalogue. PDF 1.7 conserve son type numérique mais refuse
+les valeurs fractionnaires. `DocMdpPermissionTypesTest` vérifie le chemin réel
+du transform figé.
