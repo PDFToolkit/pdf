@@ -1061,6 +1061,289 @@
         "examples/pdf20-encrypted-payload.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 36,
+      "physical_pdf_page": 478,
+      "annotation_name": "1a249333-c189-4cce-85d2-9d2550c48410",
+      "approval_chain": [
+        "459c9ba9-80a9-4ed3-b506-82f4bae53f94"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Transition Di has PDF 2.0 integer-or-name type. The native TransitionDirection enum already emits explicit IntegerType angles and Transition validates their style-dependent combinations.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/TransitionDictionaryTable164Definition.php",
+        "src/Document/Navigation/TransitionDirection.php",
+        "src/Document/Navigation/Transition.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 36,
+      "physical_pdf_page": 478,
+      "annotation_name": "78792959-4550-4da1-8468-697761ab812b",
+      "approval_chain": [
+        "7c47a635-55a0-4208-9459-181b5bc33edf"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Transition Di has PDF 2.0 integer-or-name type. The native TransitionDirection enum already emits explicit IntegerType angles and Transition validates their style-dependent combinations.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/TransitionDictionaryTable164Definition.php",
+        "src/Document/Navigation/TransitionDirection.php",
+        "src/Document/Navigation/Transition.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 38,
+      "physical_pdf_page": 678,
+      "annotation_name": "ced43ac2-a4a9-4ee5-8ff1-464705afde71",
+      "approval_chain": [
+        "308e3307-3aeb-49d1-9dd7-0f04225b738b"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D background schema permits only the DeviceRGB name for CS and requires C to contain exactly three numbers in the inclusive range 0 to 1. This is an executable dictionary constraint, not a 3D rendering implementation.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/ThreeDBackgroundDictionaryTable317Definition.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 38,
+      "physical_pdf_page": 678,
+      "annotation_name": "aacb96d6-7ba1-46ce-8b95-5bd940354862",
+      "approval_chain": [
+        "588de4db-7461-46bc-8a9e-ff3749ae263a"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D background schema permits only the DeviceRGB name for CS and requires C to contain exactly three numbers in the inclusive range 0 to 1. This is an executable dictionary constraint, not a 3D rendering implementation.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/ThreeDBackgroundDictionaryTable317Definition.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 38,
+      "physical_pdf_page": 678,
+      "annotation_name": "de5f9d2c-ac56-4676-95d9-d84d5bc67fd8",
+      "approval_chain": [
+        "771bd31a-9f80-4879-9e37-ba5e718bc0d7"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D background schema permits only the DeviceRGB name for CS and requires C to contain exactly three numbers in the inclusive range 0 to 1. This is an executable dictionary constraint, not a 3D rendering implementation.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/ThreeDBackgroundDictionaryTable317Definition.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 38,
+      "physical_pdf_page": 678,
+      "annotation_name": "d0dbef73-24fe-4ae4-ae28-5622a674883c",
+      "approval_chain": [
+        "f61a6005-021e-463c-a595-bc65c1c42f7c"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D background schema permits only the DeviceRGB name for CS and requires C to contain exactly three numbers in the inclusive range 0 to 1. This is an executable dictionary constraint, not a 3D rendering implementation.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/ThreeDBackgroundDictionaryTable317Definition.php",
+        "src/Specification/Constraint/NumberArray.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 50,
+      "physical_pdf_page": 684,
+      "annotation_name": "958daa41-b674-4b82-b71b-58bcae99c73c",
+      "approval_chain": [
+        "d0001111-3ae3-49ad-a37d-b68838e48cec"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The 3D cross-section IV catalogue definition records the corrected default true. No 3D renderer is claimed; an explicit false value remains valid.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/ThreeDCrossSectionDictionaryTable322Definition.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 346,
+      "physical_pdf_page": 805,
+      "annotation_name": "c71f0fc7-14b4-452b-b041-321f60501c30",
+      "approval_chain": [
+        "7b503d31-8d9e-4639-937d-aeb249b40bfa",
+        "72bab48a-b927-4392-b8c6-a3c9c7955c70",
+        "0c23052e-d6c1-4bb6-89926d2a48dc8fd4"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The PDF 2.0 catalogue explicitly marks ContinuedList, ContinuedFrom and Artifact Type/BBox/Subtype as non-inheritable, with Artifact attributes introduced in 2.0. The native resolver already avoids inheritance for these entries, verified against explicit parent attributes.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardListAttributesTable382Definition.php",
+        "src/Specification/Iso32000_2/Definition/StandardArtifactAttributesTable385Definition.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 346,
+      "physical_pdf_page": 805,
+      "annotation_name": "a112f63c-d42c-44d3-be94-a8895a338a0a",
+      "approval_chain": [
+        "fcab9782-a427-468a-a9a5-5508d775abd6",
+        "80a3dcee-a487-4a7d-8e63-0e36ea7a1da3",
+        "99599b48-a732-42ff-ba533e59fbbaf880"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The PDF 2.0 catalogue explicitly marks ContinuedList, ContinuedFrom and Artifact Type/BBox/Subtype as non-inheritable, with Artifact attributes introduced in 2.0. The native resolver already avoids inheritance for these entries, verified against explicit parent attributes.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardListAttributesTable382Definition.php",
+        "src/Specification/Iso32000_2/Definition/StandardArtifactAttributesTable385Definition.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 346,
+      "physical_pdf_page": 808,
+      "annotation_name": "2ce0df7a-934b-4108-9b5c-11b7813f5f2c",
+      "approval_chain": [
+        "279af5d1-2a40-45cd-ab31-a29463208ca5",
+        "85531380-59f7-455b-b61f-ff3da9a66eca",
+        "5028c7d5-780d-498a-bc0e220fed3c8d88"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The PDF 2.0 catalogue explicitly marks ContinuedList, ContinuedFrom and Artifact Type/BBox/Subtype as non-inheritable, with Artifact attributes introduced in 2.0. The native resolver already avoids inheritance for these entries, verified against explicit parent attributes.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardListAttributesTable382Definition.php",
+        "src/Specification/Iso32000_2/Definition/StandardArtifactAttributesTable385Definition.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 346,
+      "physical_pdf_page": 808,
+      "annotation_name": "2fbf0f2e-fba9-4b40-8815-b05c39840c0f",
+      "approval_chain": [
+        "55ce48a1-c397-436f-ba60-627d6f623723",
+        "a10281c1-2ccc-4229-b817-397d2b693d3c",
+        "2965f1d9-22ab-4a33-a204e7c10117ab37"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The PDF 2.0 catalogue explicitly marks ContinuedList, ContinuedFrom and Artifact Type/BBox/Subtype as non-inheritable, with Artifact attributes introduced in 2.0. The native resolver already avoids inheritance for these entries, verified against explicit parent attributes.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardListAttributesTable382Definition.php",
+        "src/Specification/Iso32000_2/Definition/StandardArtifactAttributesTable385Definition.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 346,
+      "physical_pdf_page": 809,
+      "annotation_name": "bb26b4c6-5b2c-4ce1-a7fe-e01a1506b558",
+      "approval_chain": [
+        "e12f2d9c-8e8d-4389-86e2-17617ca2a0ea",
+        "1adfd3c0-84b0-4a5c-806c-29c9f0aa0dd3",
+        "f1c6f898-233f-4f5a-9a80fc2ae5a2b5d4"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The PDF 2.0 catalogue explicitly marks ContinuedList, ContinuedFrom and Artifact Type/BBox/Subtype as non-inheritable, with Artifact attributes introduced in 2.0. The native resolver already avoids inheritance for these entries, verified against explicit parent attributes.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardListAttributesTable382Definition.php",
+        "src/Specification/Iso32000_2/Definition/StandardArtifactAttributesTable385Definition.php",
+        "src/Document/Structure/AttributeResolver.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/TaggedStructureTest.php"
+      ]
     }
   ]
 }

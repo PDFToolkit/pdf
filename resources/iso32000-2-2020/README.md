@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 66 authored summary/overlay entries across 15 tables and selected EC3
+- `reviewed-overrides.json`: 75 authored summary/overlay entries across 19 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **117 executable intrinsic rules across 50
+`semantic-rules.json` now supplies **118 executable intrinsic rules across 51
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 47 distinct annotations across 27 issues. A polygon `Path` ignores
+and approval reply chains for 59 distinct annotations across 31 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -150,3 +150,9 @@ still select the actual encrypted payload; selecting a different existing
 attachment is rejected, including in incremental revisions. The executable
 wrapper example includes both `payload.pdf` and `instructions.txt`, and the
 independent oracle decrypts the selected payload with qpdf.
+
+Additional EC3 dictionary checks cover integer transition directions (#36) and
+DeviceRGB 3D backgrounds with three components in [0, 1] (#38). The 3D
+cross-section IV default is recorded as true (#50). Continued-list and Artifact
+attributes explicitly remain non-inheritable (#346), and Artifact attribute
+version qualifiers are PDF 2.0. These definitions do not implement a 3D renderer.

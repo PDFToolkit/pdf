@@ -13011,8 +13011,8 @@
       },
       {
         "name": "Di",
-        "type": "number or name",
-        "description": "(Optional; Wipe, Glitter, Fly, Cover, Uncover and Push transition styles only) The direction in which the specified transition effect shall moves, expressed in degrees counterclockwise starting from a left-to-right direction. (This differs from the page object’s Rotate entry, which is measured clockwise from the top.) If the value is a number, it shall be one of: 0 Left to right 90 Bottom to top (Wipe only) 180 Right to left (Wipe only) 270 Top to bottom 315 Top-left to bottom-right (Glitter only) If the value is a name, it shall be None, which is relevant only for the Fly transition when the value of SS is not 1.0. Default value: 0.",
+        "type": "integer or name",
+        "description": "(Optional; Wipe, Glitter, Fly, Cover, Uncover and Push transition styles only) The direction in which the specified transition effect shall moves, expressed in degrees counterclockwise starting from a left-to-right direction. (This differs from the page object’s Rotate entry, which is measured clockwise from the top.) If the value is an integer, it shall be one of: 0 Left to right 90 Bottom to top (Wipe only) 180 Right to left (Wipe only) 270 Top to bottom 315 Top-left to bottom-right (Glitter only) If the value is a name, it shall be None, which is relevant only for the Fly transition when the value of SS is not 1.0. Default value: 0.",
         "qualifier": "Optional; Wipe, Glitter, Fly, Cover, Uncover and Push transition styles only",
         "required": false,
         "conditional": true,
@@ -13024,8 +13024,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 478,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-36-di",
+          "pdf_page": 478,
+          "review_status": "Completed",
+          "issue_number": 36,
+          "annotation_name": "1a249333-c189-4cce-85d2-9d2550c48410"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -28031,8 +28037,8 @@
       },
       {
         "name": "CS",
-        "type": "name or array",
-        "description": "(Optional) The colour space of the background. The only valid value shall be the name DeviceRGB. Default value: DeviceRGB. PDF consumers shall be prepared to encounter other values that may be supported in future versions of PDF.",
+        "type": "name",
+        "description": "Optional background colour-space name, restricted to DeviceRGB. Default value: DeviceRGB.",
         "qualifier": "Optional",
         "required": false,
         "conditional": false,
@@ -28042,16 +28048,22 @@
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
-        "fixed_name": null,
+        "fixed_name": "DeviceRGB",
         "pdf_page": 678,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-38-cs",
+          "pdf_page": 678,
+          "review_status": "Completed",
+          "issue_number": 38,
+          "annotation_name": "ced43ac2-a4a9-4ee5-8ff1-464705afde71"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
         "name": "C",
-        "type": "(various)",
-        "description": "(Optional) The colour of the background, in the colour space defined by CS. Default value: an array [1 1 1] representing the colour white when the value of CS is DeviceRGB.",
+        "type": "array",
+        "description": "Optional array of exactly three numbers in the inclusive range 0.0 to 1.0, giving the background colour in DeviceRGB. Default value: [1 1 1] (white).",
         "qualifier": "Optional",
         "required": false,
         "conditional": false,
@@ -28063,8 +28075,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 678,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-38-c",
+          "pdf_page": 678,
+          "review_status": "Completed",
+          "issue_number": 38,
+          "annotation_name": "d0dbef73-24fe-4ae4-ae28-5622a674883c"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -28377,7 +28395,7 @@
       {
         "name": "IV",
         "type": "boolean",
-        "description": "(Optional) A flag indicating the visibility of the intersection of the cutting plane with any 3D geometry. If true, then the intersection shall be visible. If false, then the intersection shall not be visible. Default value: false",
+        "description": "Optional flag controlling visibility of the intersection between the cutting plane and 3D geometry. True makes it visible; false hides it. Default value: true.",
         "qualifier": "Optional",
         "required": false,
         "conditional": false,
@@ -28389,8 +28407,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 684,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-50-iv",
+          "pdf_page": 684,
+          "review_status": "Completed",
+          "issue_number": 50,
+          "annotation_name": "958daa41-b674-4b82-b71b-58bcae99c73c"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -34011,8 +34035,8 @@
       {
         "name": "ContinuedList",
         "type": "boolean",
-        "description": "(Optional; PDF 2.0) A flag specifying whether the list is a continuation of a previous list in the structure tree (true), or not (false). Default value: false. If the ContinuedFrom attribute is not present, the continuation is from the preceding list at the same level in the structure hierarchy.",
-        "qualifier": "Optional; PDF 2.0",
+        "description": "(Optional; not inheritable; PDF 2.0) A flag specifying whether the list is a continuation of a previous list in the structure tree (true), or not (false). Default value: false. If the ContinuedFrom attribute is not present, the continuation is from the preceding list at the same level in the structure hierarchy.",
+        "qualifier": "Optional; not inheritable; PDF 2.0",
         "required": false,
         "conditional": false,
         "inheritable": false,
@@ -34023,15 +34047,21 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 805,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-346-continuedlist",
+          "pdf_page": 805,
+          "review_status": "Completed",
+          "issue_number": 346,
+          "annotation_name": "c71f0fc7-14b4-452b-b041-321f60501c30"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
         "name": "ContinuedFrom",
         "type": "byte string",
-        "description": "(Optional; PDF 2.0) The ID (see “Table 355 — Entries in a structure element dictionary\") of the list for which this list is a continuation.",
-        "qualifier": "Optional; PDF 2.0",
+        "description": "(Optional; not inheritable; PDF 2.0) The ID (see “Table 355 — Entries in a structure element dictionary\") of the list for which this list is a continuation.",
+        "qualifier": "Optional; not inheritable; PDF 2.0",
         "required": false,
         "conditional": false,
         "inheritable": false,
@@ -34042,8 +34072,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 805,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-346-continuedfrom",
+          "pdf_page": 805,
+          "review_status": "Completed",
+          "issue_number": 346,
+          "annotation_name": "a112f63c-d42c-44d3-be94-a8895a338a0a"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       }
     ],
@@ -34286,58 +34322,76 @@
       {
         "name": "Type",
         "type": "name",
-        "description": "(Optional) The type of artifact that this attribute describes; if present, shall be one of the names Pagination, Layout, Page or Inline (PDF 2.0). • Pagination artifacts are ancillary page features such as running heads or folios (page numbers) • Layout artifacts are purely cosmetic typographical or design elements such as footnote rules or decorative ornaments • Page artifacts are production aids extraneous to the document itself, such as cut marks and print control patches • Inline artifacts enclose artifact content that has context in the document’s logical structure, typically, artifacts of subtype LineNum or Redaction NOTE Inline artifacts can be used to provide context in the logical structure to any artifact. This is similar to an inline structure element.",
-        "qualifier": "Optional",
+        "description": "(Optional; not inheritable; PDF 2.0) The type of artifact that this attribute describes; if present, shall be one of the names Pagination, Layout, Page or Inline (PDF 2.0). • Pagination artifacts are ancillary page features such as running heads or folios (page numbers) • Layout artifacts are purely cosmetic typographical or design elements such as footnote rules or decorative ornaments • Page artifacts are production aids extraneous to the document itself, such as cut marks and print control patches • Inline artifacts enclose artifact content that has context in the document’s logical structure, typically, artifacts of subtype LineNum or Redaction NOTE Inline artifacts can be used to provide context in the logical structure to any artifact. This is similar to an inline structure element.",
+        "qualifier": "Optional; not inheritable; PDF 2.0",
         "required": false,
         "conditional": false,
         "inheritable": false,
-        "introduced_in": null,
+        "introduced_in": "2.0",
         "deprecated_in": null,
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 808,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-346-type",
+          "pdf_page": 808,
+          "review_status": "Completed",
+          "issue_number": 346,
+          "annotation_name": "2ce0df7a-934b-4108-9b5c-11b7813f5f2c"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
         "name": "BBox",
         "type": "rectangle",
-        "description": "(Optional) An array of four numbers in default user space units giving the coordinates of the left, bottom, right, and top edges, respectively, of the artifact’s bounding box (the rectangle that completely encloses its visible extent).",
-        "qualifier": "Optional",
+        "description": "(Optional; not inheritable; PDF 2.0) An array of four numbers in default user space units giving the coordinates of the left, bottom, right, and top edges, respectively, of the artifact’s bounding box (the rectangle that completely encloses its visible extent).",
+        "qualifier": "Optional; not inheritable; PDF 2.0",
         "required": false,
         "conditional": false,
         "inheritable": false,
-        "introduced_in": null,
+        "introduced_in": "2.0",
         "deprecated_in": null,
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 808,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-346-bbox",
+          "pdf_page": 808,
+          "review_status": "Completed",
+          "issue_number": 346,
+          "annotation_name": "2fbf0f2e-fba9-4b40-8815-b05c39840c0f"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
         "name": "Subtype",
         "type": "name",
-        "description": "(Optional; PDF 1.7) The subtype of the artifact. This entry should appear only when the Type entry has a value of Pagination or Inline. Valid values are Header, Footer, Watermark, PageNum (PDF 2.0), Bates (PDF 2.0), LineNum (PDF 2.0) and Redaction (PDF 2.0). Additional values may be specified for this entry, provided they comply with the naming conventions described in Annex E, \"Extending PDF\".",
-        "qualifier": "Optional; PDF 1.7",
+        "description": "(Optional; not inheritable; PDF 2.0) The subtype of the artifact. This entry should appear only when the Type entry has a value of Pagination or Inline. Valid values are Header, Footer, Watermark, PageNum (PDF 2.0), Bates (PDF 2.0), LineNum (PDF 2.0) and Redaction (PDF 2.0). Additional values may be specified for this entry, provided they comply with the naming conventions described in Annex E, \"Extending PDF\".",
+        "qualifier": "Optional; not inheritable; PDF 2.0",
         "required": false,
         "conditional": false,
         "inheritable": false,
-        "introduced_in": "1.7",
+        "introduced_in": "2.0",
         "deprecated_in": null,
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 809,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-346-subtype",
+          "pdf_page": 809,
+          "review_status": "Completed",
+          "issue_number": 346,
+          "annotation_name": "bb26b4c6-5b2c-4ce1-a7fe-e01a1506b558"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       }
     ],

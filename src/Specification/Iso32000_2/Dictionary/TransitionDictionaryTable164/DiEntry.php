@@ -8,8 +8,8 @@ namespace PDF\Specification\Iso32000_2\Dictionary\TransitionDictionaryTable164;
 
 use PDF\Specification\Iso32000_2\Definition\TransitionDictionaryTable164Definition;
 use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
-use PDF\Syntax\Object\NumericType;
 
 /** ISO 32000-2:2020 EC3, table 164, /Di. */
 final class DiEntry extends \PDF\Specification\SchemaEntry
@@ -17,7 +17,7 @@ final class DiEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '164';
     public const string KEY = 'Di';
 
-    public function __construct(NumericType|NameType|IndirectReference $value)
+    public function __construct(IntegerType|NameType|IndirectReference $value)
     {
         parent::__construct((new TransitionDictionaryTable164Definition())->entry('Di'), $value);
     }

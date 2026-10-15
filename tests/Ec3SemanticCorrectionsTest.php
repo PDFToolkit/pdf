@@ -77,6 +77,9 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         }
         yield 'radio inner collection empty' => ['99', ['RBGroups' => [[]]], 'nonempty inner arrays'];
         yield 'radio group must be indirect' => ['99', ['RBGroups' => [[new DictionaryType()]]], 'indirect dictionary references'];
+        yield '3D background needs three components' => ['317', ['C' => [0, 1]], 'invalid array length'];
+        yield '3D background negative component' => ['317', ['C' => [-0.01, 0, 1]], 'numeric domain'];
+        yield '3D background component above one' => ['317', ['C' => [0, 1, 1.01]], 'numeric domain'];
         yield 'font weight must be integer' => ['120', ['FontWeight' => 450.5], 'requires an integer'];
         yield 'font weight too low' => ['120', ['FontWeight' => 0], 'numeric domain'];
         yield 'font weight too high' => ['120', ['FontWeight' => 1001], 'numeric domain'];
@@ -125,6 +128,27 @@ final class Ec3SemanticCorrectionsTest extends TestCase
             $this->validate('120', $this->dictionary(['FontWeight' => $weight]));
         }
         self::assertTrue(true);
+    }
+
+    public function testTransitionAndBackgroundTypesFollowEc3(): void
+    {
+        $catalogue = new Catalogue();
+        $direction = $catalogue->dictionary('164')->entry('Di')->type;
+        $direction->validate(new IntegerType(90));
+        $direction->validate(new NameType('None'));
+        $this->validate('317', $this->dictionary(['C' => [0, 0.5, 1]]));
+        $this->validate('317', $this->dictionary(['C' => [1, 1, 1]]));
+        $space = $catalogue->dictionary('317')->entry('CS')->type;
+        $space->validate(new NameType('DeviceRGB'));
+        foreach ([new ArrayType(new NameType('DeviceRGB')), new NameType('DeviceCMYK')] as $invalid) {
+            try {
+                $space->validate($invalid);
+                self::fail('Invalid 3D background colour space accepted.');
+            } catch (\InvalidArgumentException) {
+            }
+        }
+        $this->expectException(\InvalidArgumentException::class);
+        $direction->validate(new NumericType(90.0));
     }
 
     public function testGeneratedSchemaExecutesExponentConstraintsWhenSerialized(): void

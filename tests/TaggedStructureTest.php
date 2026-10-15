@@ -315,6 +315,22 @@ final class TaggedStructureTest extends TestCase
         self::assertSame('TbRl', $resolver->resolve($override, new NameType('Layout'), new NameType('WritingMode'))->value);
     }
 
+    public function testContinuedListAndArtifactAttributesNeverInherit(): void
+    {
+        $catalogue = new \PDF\Specification\Iso32000_2\Catalogue();
+        foreach ([['382', 'List', 'ContinuedList', new BooleanType(true)], ['382', 'List', 'ContinuedFrom', new LiteralString('previous')], ['385', 'Artifact', 'Type', new NameType('Pagination')], ['385', 'Artifact', 'BBox', $this->box()], ['385', 'Artifact', 'Subtype', new NameType('Header')]] as [$table, $owner, $key, $value]) {
+            $definition = $catalogue->dictionary($table)->entry($key);
+            self::assertFalse($definition->requirement->inheritable);
+            self::assertSame('2.0', $definition->requirement->introducedIn);
+            $parent = new StructureElement(StandardStructureType::Div, attributes: new StructureAttributes(new AttributeAssociation($this->attribute($owner, $key, $value))));
+            $child = new StructureElement(StandardStructureType::Span);
+            $parent->addKid($child);
+            $resolver = new AttributeResolver(new ClassMap());
+            self::assertSame($value, $resolver->resolve($parent, new NameType($owner), new NameType($key)));
+            self::assertNull($resolver->resolve($child, new NameType($owner), new NameType($key)));
+        }
+    }
+
     public function testAllStandardOwnersHaveSourceDefinitionsAndDefaults(): void
     {
         $standard = new StandardStructureAttributes();

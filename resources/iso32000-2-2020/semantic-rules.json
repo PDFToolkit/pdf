@@ -1399,6 +1399,20 @@
         "minimum": 1,
         "integer": true
       }
+    },
+    {
+      "id": "three-d-background-colour",
+      "table": "317",
+      "physical_pdf_page": 678,
+      "constraint": "NumberArray",
+      "arguments": {
+        "key": "C",
+        "lengths": [
+          3
+        ],
+        "minimum": 0,
+        "maximum": 1
+      }
     }
   ]
 }

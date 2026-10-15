@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace PDF\Specification\Iso32000_2\Dictionary\ThreeDBackgroundDictionaryTable317;
 
 use PDF\Specification\Iso32000_2\Definition\ThreeDBackgroundDictionaryTable317Definition;
-use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 
@@ -17,7 +16,7 @@ final class CSEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '317';
     public const string KEY = 'CS';
 
-    public function __construct(NameType|ArrayType|IndirectReference $value)
+    public function __construct(NameType|IndirectReference $value)
     {
         parent::__construct((new ThreeDBackgroundDictionaryTable317Definition())->entry('CS'), $value);
     }
