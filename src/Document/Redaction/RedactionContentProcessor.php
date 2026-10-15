@@ -177,6 +177,12 @@ final class RedactionContentProcessor
                 if ($operator->dictionary->has('Filter') || $operator->dictionary->has('F')) {
                     throw new \InvalidArgumentException('Retained inline images must first be decoded to exact raw pixel rows.');
                 }
+                $inlineSpace = $operator->dictionary->get('ColorSpace') ?? $operator->dictionary->get('CS');
+                $inlineMask = $operator->dictionary->get('ImageMask') ?? $operator->dictionary->get('IM');
+                if (!($inlineMask instanceof \PDF\Syntax\Object\BooleanType && $inlineMask->value)
+                    && (!$inlineSpace instanceof NameType || !in_array($inlineSpace->value, ['DeviceGray', 'DeviceRGB', 'DeviceCMYK', 'G', 'RGB', 'CMYK'], true))) {
+                    throw new \InvalidArgumentException('Retained inline images require normalized device-color pixel rows; opaque color-space data must be normalized first.');
+                }
                 $inlineDictionary = $this->resources->copy($operator->dictionary);
                 if (!$inlineDictionary instanceof DictionaryType) {
                     throw new \LogicException('A normalized inline image requires a dictionary.');

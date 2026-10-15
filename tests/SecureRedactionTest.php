@@ -47,6 +47,55 @@ use PHPUnit\Framework\TestCase;
 
 final class SecureRedactionTest extends TestCase
 {
+    public function testRetainedPublicTextDoesNotPreserveAncillaryFontMetadata(): void
+    {
+        $descriptor = $this->dictionary(['FontName' => new NameType('Helvetica'), 'CharSet' => new LiteralString('/SOURCE-SECRET-CHARSET'), 'FontFamily' => new LiteralString('SOURCE-SECRET-FAMILY'), 'Style' => $this->dictionary(['Panose' => new LiteralString('SOURCE-SECRET-STYLE')])]);
+        $font = $this->dictionary(['Type' => new NameType('Font'), 'Subtype' => new NameType('Type1'), 'BaseFont' => new NameType('Helvetica'), 'FontDescriptor' => new IndirectReference($descriptor)]);
+        $resources = new ResourceDictionary(new Entry(new NameType('Font'), $this->dictionary(['F1' => new IndirectReference($font)])));
+        $page = new PageObject($this->box(0, 0, 200, 120), $resources, new StreamObject(new ContentStreams(...[...$this->text('SOURCE-SECRET-TEXT', 20, 70), ...$this->text('PUBLIC-TEXT', 20, 20)])));
+        $geometry = new class () implements RedactionFontGeometry {
+            public function glyph(DictionaryType $font, int $code): ?RedactionGlyphGeometry
+            {
+                return new RedactionGlyphGeometry(new RedactionBounds(0, -200, 1000, 800), 600);
+            }
+        };
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $result = (new SecureRedaction(fontGeometry: $geometry))->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $this->annotation())));
+        self::assertStringContainsString('PUBLIC-TEXT', $result->toPdf());
+        self::assertStringNotContainsString('SOURCE-SECRET', $result->toPdf());
+        self::assertStringNotContainsString('/CharSet', $result->toPdf());
+        self::assertStringNotContainsString('/FontFamily', $result->toPdf());
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('malformedRenderingResources')]
+    public function testRenderingKeyNamesCannotSmuggleMalformedMetadata(DictionaryType $resource): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new \PDF\Document\Redaction\RedactionResourceCopy(new RedactionLimits()))->copy($resource);
+    }
+
+    public static function malformedRenderingResources(): iterable
+    {
+        $dictionary = static fn (string $name, \PDF\Syntax\FileStructure\BasicType $value): DictionaryType => new DictionaryType(new Entry(new NameType($name), $value));
+        yield 'numeric descriptor' => [$dictionary('Ascent', new LiteralString('SOURCE-SECRET'))];
+        yield 'integer dimension' => [$dictionary('Width', new LiteralString('SOURCE-SECRET'))];
+        yield 'numeric array' => [$dictionary('Widths', new ArrayType(new LiteralString('SOURCE-SECRET')))];
+        yield 'nested CID widths' => [$dictionary('W', new ArrayType(new IntegerType(0), new ArrayType(new LiteralString('SOURCE-SECRET'))))];
+        yield 'descriptor context' => [$dictionary('FontDescriptor', $dictionary('Registry', new LiteralString('SOURCE-SECRET')))];
+        yield 'encoding context' => [$dictionary('Encoding', $dictionary('Ordering', new LiteralString('SOURCE-SECRET')))];
+        yield 'opaque malformed mask' => [$dictionary('SMask', new StreamObject('SOURCE-SECRET'))];
+    }
+
+    public function testInlineColorSpaceCannotRetainUnnormalizedPayload(): void
+    {
+        $image = new \PDF\Syntax\ContentStreamsResources\Operators\InlineImage($this->dictionary(['W' => new IntegerType(1), 'H' => new IntegerType(1), 'BPC' => new IntegerType(8), 'CS' => new ArrayType(new NameType('Indexed'), new NameType('DeviceRGB'), new IntegerType(0), new LiteralString('rgb'))]), 'SOURCE-SECRET-TRAILER');
+        $page = new PageObject($this->box(0, 0, 200, 120), new ResourceDictionary(), new StreamObject(new ContentStreams($image)));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('normalized device-color pixel rows');
+        (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $this->annotation())));
+    }
+
     #[\PHPUnit\Framework\Attributes\DataProvider('transformedRectangles')]
     public function testEveryConstructedRectangleCornerParticipatesInTransformedRedaction(array $matrix, array $rectangle, array $region): void
     {

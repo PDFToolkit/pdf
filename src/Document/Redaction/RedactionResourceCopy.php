@@ -13,6 +13,8 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\BooleanType;
 use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\StringType;
+use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Filters\EncodedData;
 
 /** Copies only render-resource syntax, excluding ancillary metadata and unknown extension channels. */
@@ -75,6 +77,7 @@ final class RedactionResourceCopy
                 }
             }
         }
+        $this->dictionaryKeys($font, ['Type', 'Subtype', 'BaseFont', 'FirstChar', 'LastChar', 'Widths', 'FontDescriptor', 'Encoding', 'ToUnicode', 'DescendantFonts', 'CIDSystemInfo', 'DW', 'W', 'DW2', 'W2', 'CIDToGIDMap', 'FontMatrix', 'FontBBox', 'CharProcs', 'Resources']);
         // A render-only rebuilt document deliberately discards glyph-to-Unicode
         // alternative strings, including multi-codepoint replacements for deleted glyphs.
         $copy = $this->copy($font);
@@ -99,6 +102,9 @@ final class RedactionResourceCopy
                 $copy = new IndirectReference($this->copy($object->target(), $depth + 1));
             } elseif ($object instanceof StreamObject) {
                 $subtype = $object->dictionary()->get('Subtype');
+                if (!($subtype instanceof NameType && $subtype->value === 'Image') && !$this->sanitizedPrograms->offsetExists($object)) {
+                    throw new \InvalidArgumentException('An opaque retained resource stream was not normalized as image pixels or rebuilt by the explicit font-program sanitizer.');
+                }
                 if ($subtype instanceof NameType && $subtype->value === 'Image') {
                     try {
                         $this->pixels($object);
@@ -124,7 +130,7 @@ final class RedactionResourceCopy
             } elseif ($object instanceof DictionaryType) {
                 $entries = [];
                 foreach ($object->entries() as $entry) {
-                    if (in_array($entry->key->value, ['Metadata', 'PieceInfo', 'LastModified', 'StructParent', 'StructParents', 'AF', 'OPI', 'Alternates', 'Name', 'Intent', 'ToUnicode'], true)) {
+                    if (in_array($entry->key->value, ['Metadata', 'PieceInfo', 'LastModified', 'StructParent', 'StructParents', 'AF', 'OPI', 'Alternates', 'Name', 'Intent', 'ToUnicode', 'CharSet', 'CIDSet', 'FontFamily', 'FontStretch', 'FontWeight', 'Style', 'Panose', 'FD'], true)) {
                         continue;
                     }
                     if (in_array($entry->key->value, ['FontFile', 'FontFile2', 'FontFile3'], true)) {
@@ -140,16 +146,123 @@ final class RedactionResourceCopy
                     ], true)) {
                         throw new \InvalidArgumentException('Unsupported retained rendering-resource entry /' . $entry->key->value . '; no output was produced.');
                     }
+                    $this->renderValue($entry->key->value, $entry->value);
                     $entries[] = new Entry(new NameType($entry->key->value), $this->copy($entry->value, $depth + 1));
                 }
                 $copy = new DictionaryType(...$entries);
             } else {
+                if (!$object instanceof NameType && !$object instanceof NumericType && !$object instanceof StringType && !$object instanceof BooleanType && !$object instanceof NullType) {
+                    throw new \InvalidArgumentException('A retained resource contains an unsupported normalized PDF value.');
+                }
                 $copy = $object; // Atomic PDF values carry no reachable old document graph.
             }
             $this->copies[$source] = $copy;
             return $copy;
         } finally {
             $this->active->detach($source);
+        }
+    }
+
+    /** Entry names alone are not proof: malformed values must not become metadata channels. */
+    private function renderValue(string $name, BasicType $source): void
+    {
+        $value = $source instanceof IndirectReference ? $source->target() : $source;
+        if ($value instanceof NullType) {
+            return;
+        }
+        $valid = match ($name) {
+            'Type', 'Subtype', 'BaseFont', 'FontName', 'BaseEncoding', 'CMapName', 'S' => $value instanceof NameType,
+            'Registry', 'Ordering' => $value instanceof StringType,
+            'FirstChar', 'LastChar', 'Flags', 'Supplement', 'Width', 'Height', 'BitsPerComponent', 'N', 'Length1', 'Length2', 'Length3', 'WMode', 'H', 'BPC', 'SMaskInData' => $value instanceof NumericType && is_int($value->value),
+            'DW', 'ItalicAngle', 'Ascent', 'Descent', 'Leading', 'CapHeight', 'XHeight', 'StemV', 'StemH', 'AvgWidth', 'MaxWidth', 'MissingWidth' => $value instanceof NumericType && is_finite((float) $value->value),
+            'ImageMask', 'Interpolate', 'IM', 'I' => $value instanceof BooleanType,
+            'K' => $value instanceof BooleanType || ($value instanceof NumericType && is_int($value->value)),
+            'FontDescriptor', 'CIDSystemInfo' => $value instanceof DictionaryType,
+            'FontFile', 'FontFile2', 'FontFile3' => $value instanceof StreamObject,
+            'Encoding' => $value instanceof NameType || $value instanceof DictionaryType || $value instanceof StreamObject,
+            'CIDToGIDMap', 'UseCMap' => $value instanceof NameType || $value instanceof StreamObject,
+            'ColorSpace', 'CS' => $value instanceof NameType || $value instanceof ArrayType,
+            'Mask' => $value instanceof StreamObject || $value instanceof ArrayType,
+            'SMask' => $value instanceof StreamObject,
+            'Filter', 'F' => $value instanceof NameType || $value instanceof ArrayType,
+            'DecodeParms', 'DP' => $value instanceof DictionaryType || $value instanceof ArrayType,
+            'Gamma' => $value instanceof NumericType || $value instanceof ArrayType,
+            'Widths', 'W2', 'DW2', 'FontBBox', 'Decode', 'Matte', 'Range', 'WhitePoint', 'BlackPoint', 'Matrix', 'D', 'Differences', 'DescendantFonts' => $value instanceof ArrayType,
+            'W' => $value instanceof ArrayType || ($value instanceof NumericType && is_int($value->value)),
+            'Alternate' => $value instanceof NameType || $value instanceof ArrayType,
+            default => false,
+        };
+        if (!$valid) {
+            throw new \InvalidArgumentException('A retained rendering-resource /' . $name . ' value has an unsafe or malformed type.');
+        }
+        if (!$value instanceof ArrayType) {
+            if ($value instanceof DictionaryType) {
+                $keys = match ($name) {
+                    'FontDescriptor' => ['Type', 'FontName', 'Flags', 'FontBBox', 'ItalicAngle', 'Ascent', 'Descent', 'Leading', 'CapHeight', 'XHeight', 'StemV', 'StemH', 'AvgWidth', 'MaxWidth', 'MissingWidth', 'FontFile', 'FontFile2', 'FontFile3', 'CharSet', 'CIDSet', 'FontFamily', 'FontStretch', 'FontWeight', 'Style', 'Panose', 'FD'],
+                    'CIDSystemInfo' => ['Registry', 'Ordering', 'Supplement'],
+                    'Encoding' => ['Type', 'BaseEncoding', 'Differences'],
+                    default => null,
+                };
+                if ($keys !== null) {
+                    $this->dictionaryKeys($value, $keys);
+                }
+            }
+            return;
+        }
+        if (in_array($name, ['Widths', 'W', 'W2', 'DW2', 'FontBBox', 'Decode', 'Matte', 'Range', 'WhitePoint', 'BlackPoint', 'Matrix', 'D', 'Gamma', 'Mask'], true)) {
+            $expected = match ($name) {
+                'FontBBox' => 4, 'Matrix' => 6, 'WhitePoint', 'BlackPoint' => 3, 'DW2' => 2, default => null
+            };
+            if ($expected !== null && count($value) !== $expected) {
+                throw new \InvalidArgumentException('A retained rendering-resource numeric array has invalid dimensions.');
+            }
+            $this->numericValues($value, in_array($name, ['W', 'W2'], true));
+        } elseif ($name === 'Differences') {
+            $code = null;
+            foreach ($value->items as $item) {
+                $item = $item instanceof IndirectReference ? $item->target() : $item;
+                if ($item instanceof NumericType && is_int($item->value) && $item->value >= 0 && $item->value <= 255) {
+                    $code = $item->value;
+                } elseif ($item instanceof NameType && $code !== null && $code <= 255) {
+                    ++$code;
+                } else {
+                    throw new \InvalidArgumentException('Retained encoding Differences require byte codes and glyph names.');
+                }
+            }
+        } elseif (in_array($name, ['Filter', 'F', 'DescendantFonts', 'DecodeParms', 'DP'], true)) {
+            foreach ($value->items as $item) {
+                $item = $item instanceof IndirectReference ? $item->target() : $item;
+                $valid = match ($name) {
+                    'Filter', 'F' => $item instanceof NameType,
+                    'DescendantFonts' => $item instanceof DictionaryType,
+                    default => $item instanceof DictionaryType || $item instanceof NullType,
+                };
+                if (!$valid) {
+                    throw new \InvalidArgumentException('A retained rendering-resource array contains an unsafe or malformed value.');
+                }
+            }
+        }
+    }
+
+    /** @param list<string> $keys */
+    private function dictionaryKeys(DictionaryType $dictionary, array $keys): void
+    {
+        foreach ($dictionary->entries() as $entry) {
+            if (!in_array($entry->key->value, $keys, true) && !in_array($entry->key->value, ['Metadata', 'PieceInfo', 'LastModified', 'StructParent', 'StructParents', 'AF', 'OPI', 'Alternates', 'Name', 'Intent'], true)) {
+                throw new \InvalidArgumentException('A retained rendering-resource dictionary contains an entry outside its normalized context.');
+            }
+        }
+    }
+
+    private function numericValues(ArrayType $array, bool $nested): void
+    {
+        foreach ($array->items as $item) {
+            $item = $item instanceof IndirectReference ? $item->target() : $item;
+            if ($nested && $item instanceof ArrayType) {
+                $this->numericValues($item, false);
+            } elseif (!$item instanceof NumericType || !is_finite((float) $item->value)) {
+                throw new \InvalidArgumentException('A retained rendering-resource numeric array contains graph-bearing or nonnumeric data.');
+            }
         }
     }
 
