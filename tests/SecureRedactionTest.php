@@ -137,6 +137,23 @@ final class SecureRedactionTest extends TestCase
         (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $annotation)));
     }
 
+    public function testUnpaintedSourcePathsInsideTheRegionAreRemovedAsRecoverableGeometry(): void
+    {
+        $content = new ContentStreams(
+            new AppendRectangle(new NumericType(22), new NumericType(68), new NumericType(3), new NumericType(5)),
+            new \PDF\Syntax\ContentStreamsResources\Operators\EndPath(),
+            new AppendRectangle(new NumericType(5), new NumericType(5), new NumericType(3), new NumericType(3)),
+            new \PDF\Syntax\ContentStreamsResources\Operators\EndPath(),
+        );
+        $page = new PageObject($this->box(0, 0, 200, 120), new ResourceDictionary(), new StreamObject($content));
+        $annotation = new RedactionAnnotation($this->dictionary(['Subtype' => new NameType('Redact'), 'Rect' => $this->box(19, 68, 45, 82)]));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $result = (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $annotation)));
+        self::assertStringNotContainsString('22 68 3 5 re', $result->toPdf());
+        self::assertStringContainsString('5 5 3 3 re', $result->toPdf());
+        self::assertSame(1, $result->removedPaintObjects);
+    }
+
     public function testRemovesSourceTextAndItsSemanticMetadataInsteadOfCoveringIt(): void
     {
         $content = new ContentStreams(...[

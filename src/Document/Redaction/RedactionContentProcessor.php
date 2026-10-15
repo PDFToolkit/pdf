@@ -132,7 +132,9 @@ final class RedactionContentProcessor
                 if ($clip && $hit) {
                     throw new \InvalidArgumentException('A clipping path crossing a redaction requires explicit normalization; retaining its original geometry would preserve redacted data.');
                 }
-                if ($symbol === 'n' || !$hit) {
+                // An unpainted source path still contains recoverable geometry;
+                // changing its terminator must not reveal the redacted construction.
+                if (!$hit) {
                     array_push($output, ...[...$path, $operator]);
                 } else {
                     ++$this->removed;
