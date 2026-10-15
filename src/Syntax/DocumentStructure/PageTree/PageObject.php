@@ -37,6 +37,9 @@ final class PageObject extends DictionaryType implements PageTree
             throw new \InvalidArgumentException('Contents must reference a stream.');
         }
         if ($contents instanceof ArrayType) {
+            if (count($contents) === 0) {
+                throw new \InvalidArgumentException('A PDF writer shall not create an empty Contents array; omit Contents for an empty page.');
+            }
             foreach ($contents->items as $item) {
                 if (!$item instanceof IndirectReference || !$item->target() instanceof StreamObject) {
                     throw new \InvalidArgumentException('A Contents array must contain indirect stream references.');
