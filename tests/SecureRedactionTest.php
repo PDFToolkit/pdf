@@ -84,6 +84,34 @@ final class SecureRedactionTest extends TestCase
         yield 'descriptor context' => [$dictionary('FontDescriptor', $dictionary('Registry', new LiteralString('SOURCE-SECRET')))];
         yield 'encoding context' => [$dictionary('Encoding', $dictionary('Ordering', new LiteralString('SOURCE-SECRET')))];
         yield 'opaque malformed mask' => [$dictionary('SMask', new StreamObject('SOURCE-SECRET'))];
+        yield 'opaque group color-space payload' => [$dictionary('CS', new ArrayType(new NameType('Indexed'), new NameType('DeviceRGB'), new IntegerType(0), new LiteralString('SOURCE-SECRET')))];
+    }
+
+    public function testImageContextRejectsMetadataDisguisedAsAnotherValidResourceKey(): void
+    {
+        $image = new StreamObject('PUBLICIMG', $this->image('PUBLICIMG')->dictionary()->with(new Entry(new NameType('Registry'), new LiteralString('SOURCE-SECRET'))));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('normalized context');
+        (new \PDF\Document\Redaction\RedactionResourceCopy(new RedactionLimits()))->copy($image);
+    }
+
+    public function testGroupContextRejectsMetadataDisguisedAsAnotherValidResourceKey(): void
+    {
+        $group = $this->dictionary(['S' => new NameType('Transparency'), 'Registry' => new LiteralString('SOURCE-SECRET')]);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('normalized context');
+        (new \PDF\Document\Redaction\RedactionResourceCopy(new RedactionLimits()))->group($group);
+    }
+
+    public function testInlineImageContextRejectsMetadataDisguisedAsAnotherValidResourceKey(): void
+    {
+        $dictionary = $this->dictionary(['W' => new IntegerType(1), 'H' => new IntegerType(1), 'BPC' => new IntegerType(8), 'CS' => new NameType('RGB'), 'Registry' => new LiteralString('SOURCE-SECRET')]);
+        $image = new \PDF\Syntax\ContentStreamsResources\Operators\InlineImage($dictionary, 'rgb');
+        $page = new PageObject($this->box(0, 0, 200, 120), new ResourceDictionary(), new StreamObject(new ContentStreams($image)));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('normalized context');
+        (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $this->annotation())));
     }
 
     public function testInlineColorSpaceCannotRetainUnnormalizedPayload(): void

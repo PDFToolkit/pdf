@@ -203,10 +203,7 @@ final class RedactionContentProcessor
                     throw new \InvalidArgumentException('Retained inline images require normalized device-color pixel rows; opaque color-space data must be normalized first.');
                 }
                 if ($this->final) {
-                    $inlineDictionary = $this->resources->copy($operator->dictionary);
-                    if (!$inlineDictionary instanceof DictionaryType) {
-                        throw new \LogicException('A normalized inline image requires a dictionary.');
-                    }
+                    $inlineDictionary = $this->resources->inlineImage($operator->dictionary);
                     $operator = new InlineImage($inlineDictionary, $operator->data);
                 }
             }
@@ -255,7 +252,7 @@ final class RedactionContentProcessor
                     foreach (['Matrix', 'Group'] as $key) {
                         $value = $dictionary->get($key);
                         if ($value !== null) {
-                            $entries[] = new Entry(new NameType($key), $this->final ? $this->resources->copy($value) : $value);
+                            $entries[] = new Entry(new NameType($key), $this->final ? ($key === 'Group' ? $this->resources->group($value) : $this->resources->copy($value)) : $value);
                         }
                     }
                     $usedXObjects[$name->value] = new StreamObject($nested->content, new DictionaryType(...$entries));

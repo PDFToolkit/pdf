@@ -85,6 +85,33 @@ final class RedactionResourceCopy
         return $object instanceof IndirectReference ? new IndirectReference($copy) : $copy;
     }
 
+    public function group(BasicType $object): BasicType
+    {
+        $group = $object instanceof IndirectReference ? $object->target() : $object;
+        if (!$group instanceof DictionaryType) {
+            throw new \InvalidArgumentException('A retained Form group requires a normalized transparency dictionary.');
+        }
+        $this->dictionaryKeys($group, ['Type', 'S', 'CS', 'I', 'K']);
+        $kind = $group->get('S');
+        if (!$kind instanceof NameType || $kind->value !== 'Transparency') {
+            throw new \InvalidArgumentException('A retained Form group must explicitly select Transparency.');
+        }
+        foreach (['I', 'K'] as $key) {
+            $value = $group->get($key);
+            if ($value !== null && !$value instanceof BooleanType) {
+                throw new \InvalidArgumentException('Retained transparency group flags must be direct booleans.');
+            }
+        }
+        return $this->copy($object);
+    }
+
+    public function inlineImage(DictionaryType $dictionary): DictionaryType
+    {
+        $this->dictionaryKeys($dictionary, ['Width', 'Height', 'ColorSpace', 'BitsPerComponent', 'ImageMask', 'Decode', 'Interpolate', 'W', 'H', 'CS', 'BPC', 'IM', 'D', 'I']);
+        $copy = $this->copy($dictionary);
+        return $copy instanceof DictionaryType ? $copy : throw new \LogicException('A copied inline image dictionary remains a dictionary.');
+    }
+
     public function copy(BasicType $object, int $depth = 0): BasicType
     {
         if ($this->excluded?->offsetExists($object)) {
@@ -185,7 +212,7 @@ final class RedactionResourceCopy
             'FontFile', 'FontFile2', 'FontFile3' => $value instanceof StreamObject,
             'Encoding' => $value instanceof NameType || $value instanceof DictionaryType || $value instanceof StreamObject,
             'CIDToGIDMap', 'UseCMap' => $value instanceof NameType || $value instanceof StreamObject,
-            'ColorSpace', 'CS' => $value instanceof NameType || $value instanceof ArrayType,
+            'ColorSpace', 'CS' => $value instanceof NameType && in_array($value->value, ['DeviceGray', 'DeviceRGB', 'DeviceCMYK', 'G', 'RGB', 'CMYK'], true),
             'Mask' => $value instanceof StreamObject || $value instanceof ArrayType,
             'SMask' => $value instanceof StreamObject,
             'Filter', 'F' => $value instanceof NameType || $value instanceof ArrayType,
@@ -273,6 +300,7 @@ final class RedactionResourceCopy
     private function pixels(StreamObject $image): void
     {
         $dictionary = $image->dictionary();
+        $this->dictionaryKeys($dictionary, ['Type', 'Subtype', 'Width', 'Height', 'ColorSpace', 'BitsPerComponent', 'ImageMask', 'Decode', 'Interpolate', 'Mask', 'SMask', 'SMaskInData', 'Matte', 'Filter', 'DecodeParms']);
         $width = $dictionary->get('Width');
         $height = $dictionary->get('Height');
         $bits = $dictionary->get('BitsPerComponent');
