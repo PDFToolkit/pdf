@@ -78,11 +78,59 @@ final class RedactionResourceCopy
                 }
             }
         }
-        $this->dictionaryKeys($font, ['Type', 'Subtype', 'BaseFont', 'FirstChar', 'LastChar', 'Widths', 'FontDescriptor', 'Encoding', 'ToUnicode', 'DescendantFonts', 'CIDSystemInfo', 'DW', 'W', 'DW2', 'W2', 'CIDToGIDMap', 'FontMatrix', 'FontBBox', 'CharProcs', 'Resources']);
+        $this->fontDomain($font);
         // A render-only rebuilt document deliberately discards glyph-to-Unicode
         // alternative strings, including multi-codepoint replacements for deleted glyphs.
         $copy = $this->copy($font);
         return $object instanceof IndirectReference ? new IndirectReference($copy) : $copy;
+    }
+
+    /**
+     * ISO 32000-1 tables 111/112/117/121, physical PDF pages 262–263,
+     * 266–267, 277–278 and 287–288: font domains are not interchangeable.
+     */
+    private function fontDomain(DictionaryType $font, bool $descendant = false): void
+    {
+        $subtype = $font->get('Subtype');
+        $subtype = $subtype instanceof IndirectReference ? $subtype->target() : $subtype;
+        if (!$subtype instanceof NameType) {
+            throw new \InvalidArgumentException('A retained font requires an explicit normalized font subtype.');
+        }
+        $cid = in_array($subtype->value, ['CIDFontType0', 'CIDFontType2'], true);
+        if ($cid !== $descendant) {
+            throw new \InvalidArgumentException('A retained font subtype occurs outside its simple/composite/CID domain.');
+        }
+        $keys = match ($subtype->value) {
+            'Type1', 'MMType1', 'TrueType' => ['Type', 'Subtype', 'BaseFont', 'FirstChar', 'LastChar', 'Widths', 'FontDescriptor', 'Encoding', 'ToUnicode'],
+            'Type0' => ['Type', 'Subtype', 'BaseFont', 'Encoding', 'DescendantFonts', 'ToUnicode'],
+            'Type3' => ['Type', 'Subtype', 'FontBBox', 'FontMatrix', 'CharProcs', 'Encoding', 'FirstChar', 'LastChar', 'Widths', 'FontDescriptor', 'Resources', 'ToUnicode'],
+            'CIDFontType0' => ['Type', 'Subtype', 'BaseFont', 'CIDSystemInfo', 'FontDescriptor', 'DW', 'W', 'DW2', 'W2'],
+            'CIDFontType2' => ['Type', 'Subtype', 'BaseFont', 'CIDSystemInfo', 'FontDescriptor', 'DW', 'W', 'DW2', 'W2', 'CIDToGIDMap'],
+            default => throw new \InvalidArgumentException('A retained font has an unsupported normalized font subtype.'),
+        };
+        $this->dictionaryKeys($font, $keys);
+        $encoding = $font->get('Encoding');
+        $encoding = $encoding instanceof IndirectReference ? $encoding->target() : $encoding;
+        if ($encoding !== null && !$encoding instanceof NullType && !$encoding instanceof NameType
+            && !($subtype->value === 'Type0' ? $encoding instanceof StreamObject : $encoding instanceof DictionaryType)) {
+            throw new \InvalidArgumentException('A retained font Encoding has a type outside its font subtype domain.');
+        }
+        if ($subtype->value === 'Type0') {
+            if (!$encoding instanceof NameType && !$encoding instanceof StreamObject) {
+                throw new \InvalidArgumentException('A retained Type0 font requires an explicit normalized CMap encoding.');
+            }
+            $children = $font->get('DescendantFonts');
+            $children = $children instanceof IndirectReference ? $children->target() : $children;
+            if (!$children instanceof ArrayType || count($children) !== 1) {
+                throw new \InvalidArgumentException('A retained Type0 font requires exactly one normalized CID descendant.');
+            }
+            $child = $children->items[0];
+            $child = $child instanceof IndirectReference ? $child->target() : $child;
+            if (!$child instanceof DictionaryType) {
+                throw new \InvalidArgumentException('A retained Type0 descendant must resolve to a CID font dictionary.');
+            }
+            $this->fontDomain($child, true);
+        }
     }
 
     public function group(BasicType $object): BasicType
