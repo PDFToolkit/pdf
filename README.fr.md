@@ -80,12 +80,42 @@ les indices corrigés PDF 2.0. Les appels avec des `Entry` positionnelles doiven
 passer explicitement cet argument avant celles-ci. `AnnotationAppearanceTransform`
 exécute l’algorithme corrigé de placement des apparences `Matrix × A`.
 
+## Révisions incrémentales protégées
+
+La version 0.8.1 impose les restrictions DocMDP et FieldMDP historiques à chaque
+point d’écriture incrémentale. Elle vérifie toutes les différences entre les
+révisions figées : catalogue, pages, contenu, champs, trailer et nouveaux objets.
+Les changements protégés pris en charge se limitent à la signature terminale et
+à la maintenance DSS/horodatage documentaire PDF 2.0 ; les verrous historiques
+restent applicables. Le remplissage général des formulaires, la modification
+des annotations et les mises à jour de droits d’usage sont refusés lorsque
+leurs permissions complètes ne peuvent pas être établies. Les entrées `/Lock`
+et `/Reference` existantes peuvent rester inchangées
+dans une opération par ailleurs autorisée.
+
+Conserver la `FileRevision` originale renvoyée par l’écriture ou la signature
+native dans l’exécution courante. Une révision reconstruite manuellement ou
+clonée n’a pas cette provenance, et les preuves natives ne peuvent pas être
+restaurées par sérialisation PHP. `PreparedSignature::finalize()` peut incorporer
+des octets externes, mais ces octets opaques ne constituent pas une autorité
+vérifiée pour une révision protégée ultérieure. Poursuivre cet historique exige
+une vérification réelle de la signature liée aux octets finaux, au dictionnaire,
+aux plages signées et au certificat du signataire. Elle prouve l’intégrité
+mathématique, pas la confiance envers le certificat ni une classification
+générale des modifications de PDF externes.
+
+Le caviardage vérifie aussi les entrées de police conservées selon leur domaine
+réel : police simple, composite ou CID. Des entrées CID superflues sur une police
+simple sont refusées au lieu d’être recopiées dans la sortie neuve. Les programmes
+incorporés opaques nécessitent toujours un assainisseur explicite ; voir les
+[limites du caviardage](resources/redaction/README.fr.md).
+
 ## Installation
 
 Le core **0.8** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.8.0'
+composer require 'roukmoute/pdf:^0.8.1'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le

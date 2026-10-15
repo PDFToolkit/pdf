@@ -4,6 +4,36 @@
 
 ## [Non publié]
 
+## [0.8.1] - 2026-10-15
+
+- Imposer les restrictions historiques DocMDP, FieldMDP et des verrous de champs
+  à la frontière commune du writer incrémental, y compris sans préparation de
+  signature. Comparer toutes les différences des révisions figées : une signature
+  ou un horodatage provisoire ne peut accompagner des changements étrangers au
+  catalogue, aux pages, au contenu, aux champs, au trailer ou aux autres objets.
+- Lier la provenance native à l’objet réellement émis dans l’exécution courante.
+  Refuser les snapshots fournis ou clonés et la sérialisation des preuves natives
+  d’émission/signature comme autorité de l’historique incrémental.
+- Vérifier les signatures terminées contre les octets finaux émis, leur intervalle
+  Contents exact, ByteRange, dictionnaire et certificat avant d’utiliser un
+  historique protégé. La finalisation opaque seule ne crée pas d’autorité vérifiée.
+  La vérification mathématique n’établit pas la confiance PKI ou du certificat.
+- Limiter les changements protégés à la signature terminale prouvée et à la
+  maintenance DSS/horodatage documentaire PDF 2.0. Conserver les restrictions de
+  champs historiques ; refuser les droits d’usage et les changements généraux
+  de formulaire/annotation non classifiés, même avec P2/P3. Les entrées Lock et
+  Reference existantes peuvent rester figées.
+- Vérifier les entrées de police du caviardage selon les domaines simple,
+  composite et CID. Refuser CIDSystemInfo/DescendantFonts superflus sur une police
+  simple, les descendants CID invalides et les encodages/maps incompatibles avec
+  le sous-type avant tout résultat. Conserver les identifiants CID légitimes dans
+  leur contexte ; les programmes opaques exigent toujours un assainisseur explicite.
+- Migration : conserver la FileRevision native originale renvoyée par l’écriture
+  ou la signature ; reconstruire un snapshot, le cloner ou le persister comme
+  données PHP ne conserve pas son autorité. Une suite protégée exige une signature
+  vérifiée, pas seulement une SignedRevision contenant des octets externes opaques.
+  PHP 8.3–8.5 et les contraintes stables des modules optionnels sont inchangés.
+
 ## [0.8.0] - 2026-10-15
 
 - Ajouter 197 règles intrinsèques exécutables sur 66 tableaux et les corrections EC3 #246/#403/#444/#468 vérifiées contre leurs annotations approuvées.

@@ -106,6 +106,31 @@ indices. Calls passing positional `Entry` values must supply that argument
 before them. `AnnotationAppearanceTransform` executes the corrected
 `Matrix × A` appearance-placement algorithm.
 
+## Protected incremental revisions
+
+Version 0.8.1 enforces historical DocMDP and FieldMDP restrictions at every
+incremental writing entry point. It checks the complete frozen revision delta,
+including catalog, pages, content, fields, trailer and new objects. Supported
+protected changes are limited to terminal signing and PDF 2.0 DSS/document
+timestamp maintenance; historical field locks still apply. General form filling,
+annotation editing and usage-rights updates are rejected when their complete
+permission semantics cannot be established. Existing `/Lock` and `/Reference`
+entries may remain unchanged in an otherwise permitted operation.
+
+Keep the original `FileRevision` returned by native writing or signing in the
+current runtime. A manually reconstructed or cloned revision has no native
+provenance, and native evidence cannot be restored through PHP serialization.
+`PreparedSignature::finalize()` can embed externally supplied bytes, but opaque
+bytes provide no verified authority for a later protected revision. Continuing
+such a history requires actual output verification bound to the final bytes,
+signature dictionary, byte range and signing credential. This proves mathematical
+integrity, not certificate trust or a general classifier for changes to external PDFs.
+
+Applied redaction also validates retained font entries within their actual
+simple, composite or CID font domain. Superfluous CID entries on a simple font
+are rejected rather than copied into the fresh output. Opaque embedded programs
+still require an explicit sanitizer; see the [redaction boundaries](resources/redaction/README.md).
+
 ## Installation
 
 Core **0.8** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
@@ -115,7 +140,7 @@ Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.8.0'
+composer require 'roukmoute/pdf:^0.8.1'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and

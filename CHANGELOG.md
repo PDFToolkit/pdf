@@ -4,6 +4,34 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-10-15
+
+- Enforce historical DocMDP, FieldMDP and field locks at the common incremental
+  writer boundary, including ordinary writes that do not prepare a signature.
+  Compare the complete frozen delta; a provisional signature or timestamp cannot
+  carry unrelated catalog, page, content, field, trailer or object changes.
+- Bind native revision provenance to the actual emitted object in the current
+  runtime. Reject supplied or cloned revision snapshots and serialization of
+  native emission/signature evidence as authority for incremental history.
+- Verify completed signatures against their final emitted bytes, exact Contents
+  gap, ByteRange, dictionary and signing credential before using protected
+  history. Opaque finalization alone does not create verified authority.
+  Mathematical verification does not establish PKI or certificate trust.
+- Keep protected changes limited to proven terminal signing and PDF 2.0
+  DSS/document timestamp maintenance. Preserve historical field restrictions;
+  reject usage-rights updates and unclassified general form/annotation changes,
+  including with P2/P3. Existing Lock/Reference entries can remain frozen.
+- Validate redaction font entries within the simple, composite and CID domains.
+  Reject superfluous CIDSystemInfo/DescendantFonts on simple fonts, invalid CID
+  descendants and subtype-incompatible encodings/maps before producing a result.
+  Retain legitimate CID identifiers in their proper context; opaque font programs
+  still require an explicit sanitizer.
+- Migration: keep the original native FileRevision returned by writing/signing;
+  reconstructing a snapshot, cloning it or persisting it as PHP data does not
+  preserve authority. A protected continuation requires a verified signing path,
+  not only a SignedRevision wrapping opaque externally supplied signature bytes.
+  PHP 8.3–8.5 and stable optional module constraints are unchanged.
+
 ## [0.8.0] - 2026-10-15
 
 - Add 197 executable intrinsic rules across 66 tables and exact EC3 #246/#403/#444/#468 corrections checked against their approved annotations.
