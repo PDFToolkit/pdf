@@ -21607,7 +21607,7 @@
           "independentResult": "Eight PDFs / nine mathematical RSA/DSA signatures under each PHP 8.3/8.4/8.5, using unmodified qpdf/pypdf, asn1crypto and cryptography. Cases include certification with/without optional Perms, DSA/SHA256 Reasons-only seed, required/advisory choices, two incremental signatures, copied FieldMDP/Data, Adobe P1 and a supplied named normal appearance."
         },
         "remainingWorkOrBoundary": [
-          "Full authenticated immutable revision-difference classification for DocMDP/FieldMDP/UR remains open: page/shared-content/resource/annotation/AP changes, field removal/rename/reparenting/inheritance and controlled template instantiation are not authorized merely by these signing guards.",
+          "Core0.8.1 adds a conservative authenticated native writer guard (resources/signature-revisions/coverage.json): complete deltas for restricted approvals and PDF2 maintenance, with unsupported mutations refused. General DocMDP/FieldMDP/UR revision-difference classification remains open: page/shared-content/resource/annotation/AP editing, field removal/rename/reparenting/inheritance and controlled template instantiation are not authorized by the narrow guard.",
           "UR granting authority, security/handler rights intersection and viewer feature authorization remain unimplemented beyond signature target/history/count checks.",
           "PKI trust/path/validity and OID normalization, RFC3161 issuance/validation, OCSP/CRL acquisition/verification/embed and external history import remain explicit external or incomplete components.",
           "Native PHP CMS has no selectable digest; unsupported mandatory digest/evidence requirements fail rather than claim compliance. External backends/verifiers may supply legitimate capabilities.",
@@ -21790,7 +21790,7 @@
       {
         "family": "authenticated-signature-revision-policies",
         "closed": "Actual byte-range output verification, immutable generated snapshots, signing-operation history guards, first certification and complete document-timestamp/DSS maintenance exception are implemented.",
-        "remaining": "General authenticated DocMDP/FieldMDP/UR difference classification, field rename/reparent/removal/inheritance, shared content/resources/AP, page-template instantiation and UR authority remain incomplete."
+        "remaining": "A conservative authenticated native writer guard now proves restricted signing and PDF2 maintenance deltas and refuses unsupported mutations; see resources/signature-revisions/coverage.json. General DocMDP/FieldMDP/UR editing classification, field rename/reparent/removal/inheritance, shared content/resources/AP, page-template instantiation and UR authority remain incomplete."
       },
       {
         "family": "annotation-geometry-and-relationships",

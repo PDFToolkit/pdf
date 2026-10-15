@@ -1,0 +1,85 @@
+{
+  "release": "0.8.1",
+  "status": "native-conservative-authenticated-revision-guard",
+  "completeGeneralMdpClassification": false,
+  "sources": [
+    {
+      "document": "PDF32000_2008.pdf",
+      "repositoryPath": "resources/reference-documents/PDF32000_2008.pdf",
+      "clauses": [
+        "12.8.2.2",
+        "12.8.2.3",
+        "12.8.2.4"
+      ],
+      "physicalPages": [
+        478,
+        479,
+        480,
+        481,
+        482
+      ],
+      "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3"
+    },
+    {
+      "document": "ISO_32000-2_sponsored_EC3.pdf",
+      "repositoryPath": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
+      "clauses": [
+        "12.8.2",
+        "12.8.5.3",
+        "12.8.6"
+      ],
+      "physicalPages": [
+        588,
+        589,
+        590,
+        591,
+        592,
+        606,
+        607,
+        608
+      ],
+      "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230"
+    },
+    {
+      "document": "adobe_supplement_iso32000.pdf",
+      "repositoryPath": "resources/reference-documents/adobe_supplement_iso32000.pdf",
+      "tables": [
+        "8.82"
+      ],
+      "physicalPages": [
+        43
+      ],
+      "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48"
+    }
+  ],
+  "implementation": [
+    "src/Document/Signatures/IncrementalSignaturePermissions.php",
+    "src/Document/Signatures/SignatureRevisionDelta.php",
+    "src/Document/Signatures/VerifiedRevisionSignature.php",
+    "src/Document/Signatures/PreparedSignature.php",
+    "src/Serialization/NativeRevisionEmission.php",
+    "src/Serialization/IncrementalWriter.php",
+    "src/Syntax/FileStructure/FileRevision.php"
+  ],
+  "implemented": [
+    "One shared guard on every native incremental emission, including empty bodies, direct writers, root/trailer changes and lifecycle operations.",
+    "Exact native emission provenance and final-byte mathematical verification, independently of SignedRevision naming and PKI trust.",
+    "Complete frozen delta proof for restricted native P2/P3 approvals and PDF2 DSS/document timestamp maintenance, preserving historical FieldMDP and Adobe field locks.",
+    "Historical declarations cannot be erased by detaching or replacing their current catalogue/form links.",
+    "Unsupported protected changes and usage-rights histories fail closed."
+  ],
+  "evidence": [
+    "tests/IncrementalSignaturePermissionsTest.php",
+    "tests/DocumentTimestampRevisionPolicyTest.php",
+    "tests/SignaturePermissionHistoryTest.php",
+    "tools/fixtures/incremental-permissions.php",
+    "tools/validate_incremental_permissions.py"
+  ],
+  "remaining": [
+    "General authenticated P2 form-fill and template-instantiation classification.",
+    "General P3 annotation and appearance-edit classification.",
+    "External PDF revision-history parsing, normalization and authentication adapters.",
+    "Usage-rights granting authority and complete handler/security-rights/change intersection.",
+    "PKI path, revocation and human appearance/intent review remain explicit separate responsibilities."
+  ]
+}

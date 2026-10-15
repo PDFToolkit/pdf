@@ -87,6 +87,8 @@ jobs:
         run: python tools/validate_iso32000_crypto.py --php php --qpdf qpdf --openssl /usr/bin/openssl --work-dir /tmp/pdf20-crypto
       - name: Verify RFC3161 timestamps and DSS across signed revision histories
         run: python tools/validate_pdf20_timestamps.py --php php --qpdf qpdf --openssl /usr/bin/openssl --work-dir /tmp/pdf20-timestamps
+      - name: Verify protected native revisions against independent signature and difference analysis
+        run: python tools/validate_incremental_permissions.py --php php --qpdf qpdf --work-dir /tmp/pdf-protected-revisions
       - name: Verify geospatial object relationships and historical revisions
         run: python tools/validate_pdf20_geospatial.py --php php --qpdf qpdf --work-dir /tmp/pdf20-geospatial
       - name: Verify semantic destinations and their fallback pages
