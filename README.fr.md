@@ -135,13 +135,13 @@ conservent les octets hors d’une région `/Tx` isolée ; les boutons gardent l
 programmes d’apparence existants. Signature terminale et maintenance DSS/horodatage
 documentaire PDF 2.0 conservent leurs preuves restreintes séparées.
 
-Les historiques UR3 natifs non chiffrés exigent une `UsageRightsAuthorization`
+Les historiques UR3 natifs exigent une `UsageRightsAuthorization`
 explicite par mise à jour : l’autorité applicative doit reconnaître l’identité
 signataire vérifiée, et chaque opération doit respecter droits signés, sélection,
 conditions de sauvegarde et toutes les autres restrictions historiques. La
 validité mathématique seule n’accorde ni droits d’usage ni confiance PKI. UR non
 restrictif PDF 2.0 conserve autorité et sélection explicites ; UR restrictif suit
-ses règles FullSave distinctes. UR ancien et UR chiffré restent hors périmètre. FileSelect et les
+ses règles FullSave distinctes. Les sources chiffrées exigent aussi une authentification explicite par mot de passe/certificat et l’intersection des permissions réelles du gestionnaire de sécurité. UR ancien reste hors périmètre. FileSelect et les
 valeurs enrichies V/RV avec interpréteur XML explicite sont pris en charge, avec
 renouvellement complet de l’apparence enrichie. Les modèles invisibles sans
 annotations/champs peuvent aussi être instanciés avec leurs contenus/ressources

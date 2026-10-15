@@ -155,13 +155,13 @@ Variable-text appearances preserve bytes outside an isolated `/Tx` region;
 buttons keep their existing appearance programs. Terminal signing and PDF 2.0
 DSS/document-timestamp maintenance retain their separate restricted proofs.
 
-Clear native UR3 histories require explicit per-update `UsageRightsAuthorization`:
+Native UR3 histories require explicit per-update `UsageRightsAuthorization`:
 an application authority must recognize the verified signing identity, and each
 operation must satisfy signed rights, selected scope, saving conditions and all
 other historical restrictions. Mathematical validity alone grants no usage
 rights or PKI trust. PDF 2.0 nonrestrictive UR keeps explicit authority and
 operation scope; restrictive UR follows its distinct FullSave rules.
-Legacy/encrypted UR remains unsupported. FileSelect filling and rich-text V/RV updates with an explicit
+Encrypted sources also require explicit password/certificate authentication and the intersection of actual security-handler permissions. Legacy UR remains unsupported. FileSelect filling and rich-text V/RV updates with an explicit
 XML interpreter are supported, with complete rich-text appearance renewal.
 Invisible template pages without annotations/fields can also be instantiated
 with their historical contents/resources. New resources, external revision-chain

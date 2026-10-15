@@ -126,7 +126,7 @@ d’annotations mélangés à une signature, un DSS ou un horodatage sont refus�
 
 ## Autorité explicite des droits d’usage
 
-Les historiques UR3 natifs non chiffrés, avec transformation version `2.2`
+Les historiques UR3 natifs, avec transformation version `2.2`
 (y compris sa valeur par défaut lorsqu’elle est absente),
 exigent une `UsageRightsAuthorization` à chaque mise à jour.
 `UsageRightsAuthority::permits()` reçoit la véritable `VerifiedRevisionSignature` ;
@@ -154,8 +154,7 @@ vérifiée, sélection applicative explicite et chaque règle historique DocMDP/
 exige `FullSave` signé ; modifications d’annotations et signature gardent leurs
 conditions implicites de sauvegarde. La version provient de la source signée,
 jamais d’une élévation ultérieure du catalogue. Une version de transformation
-inconnue reste refusée. Les historiques `UR` anciens, UR
-chiffrés, signatures opaques/non vérifiées, refus d’autorité, maintenance non
+inconnue reste refusée. Les historiques `UR` anciens, signatures opaques/non vérifiées, refus d’autorité, maintenance non
 classifiée et sauvegarde générale sont refusés. UR est déprécié en PDF 2.0.
 
 ## Limites restantes et preuves
@@ -230,3 +229,58 @@ En PDF 2.0, le `P` DocMDP doit être un objet entier valant 1, 2 ou 3
 inclut la version du catalogue. PDF 1.7 conserve son type numérique mais refuse
 les valeurs fractionnaires. `DocMdpPermissionTypesTest` vérifie le chemin réel
 du transform figé.
+
+## UR3 chiffré et permissions de sécurité authentifiées
+
+Ajouter `PasswordUsageRightsAuthentication($password, $handler)` ou
+`CertificateUsageRightsAuthentication($decrypter, ...$namedCredentials)` aux
+arguments finaux de `UsageRightsAuthorization`, avec les droits sélectionnés.
+L’encodage du mot de passe et le gestionnaire concret sont explicites
+(Standard R2–R7). L’authentification doit retrouver la clé exacte de la source
+signée ; son résultat réel propriétaire/utilisateur détermine l’application du
+mot de permissions de sécurité. Un `AuthenticatedFileKey` construit par
+l’appelant ne constitue pas une autorité acceptée.
+
+L’authentification par certificat déchiffre les enveloppes ordonnées réelles et
+vérifie leur seed, leur clé et leurs permissions. Le `P` historique du dictionnaire
+de chiffrement ne remplace jamais les droits CMS du destinataire. Le choix
+s3/s4/s5 et l’ordre des octets de la source sont conservés ; les bits réservés s3
+ne peuvent pas accorder des droits R3. Le bit public-key 2 d’accès complet reste
+distinct de l’accès propriétaire par mot de passe. Chaque clé de filtre déclarée
+est authentifiée dans ce périmètre de mise à jour native. Fournir
+`CryptFilterUsageRightsCredential(new NameType('AttachmentKey'), $otherDecrypter)`
+pour une autre identité. Les payloads de flux individuels de 20 octets n’ont pas
+de permissions documentaires ; tous les mots de portée documentaire sont
+intersectés. Cette politique d’écriture est volontairement plus stricte que
+l’accès différé aux pièces jointes du Reader : elle exige les credentials de
+toutes les clés déclarées avant l’écriture.
+
+Un mot de passe correct ou un certificat correspondant ne suffit pas si les
+permissions réelles interdisent l’opération classifiée. Remplissage/signature de
+champs existants, création de champs, annotations et instanciation de templates
+suivent leurs bits et distinctions de révision (ISO1 Tables 22/24, pages physiques
+69/73–74 ; intersection des gestionnaires page physique 485).
+L’accès propriétaire/complet n’annule ni UR, ni DocMDP, ni FieldMDP, ni la sélection
+explicite de l’application. Chaque mise à jour fournit de nouveau son
+authentification ; un remplissage antérieur ou une erreur de callback n’accorde
+aucune autorité. Les backends cryptographiques et leurs credentials sont des ports
+choisis par l’appelant ; aucun réseau, découverte d’identité, validation PKI ou
+magasin de confiance n’est implicite.
+
+Créer un nouveau champ terminal de signature exige en plus `Form.Add`, signé et
+sélectionné par l’application, indépendamment de `Signature.Modify`. Le
+gestionnaire de sécurité doit aussi autoriser la création de champs ; le droit
+de remplir des champs existants ne suffit pas. Les champs de signature existants
+et non signés conservent leur chemin distinct.
+
+`EncryptedUsageRightsTest` emploie de vraies sources signées chiffrées : mauvais
+credentials, droits utilisateur refusés, accès propriétaire/complet réel, bits
+réservés s3, intersections de filtres, faits CMS altérés et création de champs.
+`tools/validate_encrypted_usage_rights.py` contrôle 78 sources et 78 sorties
+incrémentales Table/Stream/Hybrid, Standard R2–R7 et PubSec s3/s4/s5 : 156 contrôles
+CMS indépendants, 78 altérations d’octets signés et 156 refus natifs de credentials.
+qpdf vérifie 72 PDF par mot de passe pris en charge. pyHanko déchiffre les autres
+gestionnaires couverts ; pypdf et qpdf vérifient R5 historique, que pyHanko ne parvient pas à authentifier dans cette matrice. `Contents` est lu physiquement avant
+le cache d’objets déchiffrés car les signatures UR sont hors de l’arbre des champs.
+Ces preuves portent sur les octets, la cryptographie et les mots de permissions,
+pas sur une approbation indépendante de la politique UR.

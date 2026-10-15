@@ -20,6 +20,8 @@ final class AuthenticatedUsageRights
 {
     /** @var list<AuthenticatedUsageRightsPolicy> */
     private array $policies = [];
+    /** @var list<UsageRightsSecurityPermissions> */
+    private array $security = [];
 
     public function __construct(private readonly ?UsageRightsAuthorization $authorization)
     {
@@ -28,9 +30,6 @@ final class AuthenticatedUsageRights
     public function add(FrozenSignatureGraph $source, VerifiedRevisionSignature $signature, DictionaryType $parameters): void
     {
         $signature->validateBinding($source->revision);
-        if ($source->revision->encryption !== null) {
-            throw new \LogicException('Encrypted usage-rights updates require authenticated security-handler permission facts; this native scope supports clear documents only.');
-        }
         $perms = $source->resolve($source->catalog->get('Perms'));
         $target = $perms instanceof DictionaryType ? $perms->get('UR3') : null;
         if (!$target instanceof IndirectReference || (string) $source->record($target)->identifier !== (string) $signature->identifier
@@ -47,6 +46,11 @@ final class AuthenticatedUsageRights
         }
         if (!$permitted) {
             throw new \LogicException('The verified signature identity is not an authorized usage-rights granting identity.');
+        }
+        if ($source->revision->encryption !== null) {
+            $authentication = $this->authorization->security ?? throw new \LogicException('Encrypted usage rights require explicit per-update security-handler authentication.');
+            $permissions = $authentication->authenticate($source->revision->encryption);
+            array_push($this->security, ...($permissions instanceof UsageRightsSecurityPermissions ? [$permissions] : $permissions));
         }
         $version = $parameters->get('V');
         if ($version !== null && (!$version instanceof NameType || $version->value !== '2.2')) {
@@ -86,7 +90,7 @@ final class AuthenticatedUsageRights
     }
 
     /** @param list<string> $annotations */
-    public function assertChanges(int $fields, array $annotations, bool $signing = false, int $templates = 0): void
+    public function assertChanges(int $fields, array $annotations, bool $signing = false, int $templates = 0, bool $newSignatureField = false): void
     {
         if ($this->policies === []) {
             return;
@@ -105,9 +109,19 @@ final class AuthenticatedUsageRights
         }
         if ($signing) {
             $required[] = UsageRight::ModifySignature;
+            if ($newSignatureField) {
+                $required[] = UsageRight::AddField;
+            }
         }
         if ($required === []) {
             throw new \LogicException('Usage rights do not authorize unclassified maintenance or a general save.');
+        }
+        foreach ($this->security as $permissions) {
+            foreach ($required as $right) {
+                if (!$permissions->allows($right)) {
+                    throw new \LogicException('The authenticated security-handler permissions do not allow every actual usage-rights operation.');
+                }
+            }
         }
         foreach ($this->policies as $policy) {
             foreach ($required as $right) {

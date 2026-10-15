@@ -119,7 +119,7 @@ or document-timestamp maintenance are refused.
 
 ## Explicit usage-rights authority
 
-Clear native UR3 histories with transform version `2.2` (including its default when absent) require a per-update
+Native UR3 histories with transform version `2.2` (including its default when absent) require a per-update
 `UsageRightsAuthorization`. `UsageRightsAuthority::permits()` receives the actual
 `VerifiedRevisionSignature`; its `facts` expose verified algorithms and the bound
 signing certificate. The application decides whether this identity may grant
@@ -144,7 +144,7 @@ DocMDP/FieldMDP rule. Restrictive PDF 2.0 `P=true` follows Table 258: unlike
 ISO 1.7, its form fills require signed `FullSave`; modifying annotations and
 signing keep their stated implicit saving conditions. The version is read from
 the signed source, never a later catalog upgrade. Unknown transform versions
-remain refused. Legacy `UR`, encrypted UR histories, opaque/unverified signatures,
+remain refused. Legacy `UR`, opaque/unverified signatures,
 failed authority choices, unclassified maintenance and general-save requests
 are refused. UR is
 deprecated in PDF 2.0.
@@ -218,3 +218,53 @@ PDF 2.0 DocMDP `P` must be an integer object with value 1, 2 or 3 (EC3 #152);
 an absent value defaults to 2. The signed source’s effective version includes
 its catalog override. PDF 1.7 retains its numeric type while rejecting fractional
 values. `DocMdpPermissionTypesTest` exercises the actual frozen transform path.
+
+## Encrypted UR3 and authenticated security permissions
+
+Add `PasswordUsageRightsAuthentication($password, $handler)` or
+`CertificateUsageRightsAuthentication($decrypter, ...$namedCredentials)` to the
+trailing arguments of `UsageRightsAuthorization`, alongside its selected rights.
+The password encoding and concrete handler are explicit (Standard R2–R7).
+Authentication must recover the exact signed source’s file key; the actual
+owner/user result determines whether the signed security permission word applies.
+Caller-created `AuthenticatedFileKey` records are not accepted as authority.
+
+Certificate authentication decrypts the actual ordered recipient envelopes and
+checks their seed, key and permission word. The historical encryption dictionary
+`P` is never a substitute for the CMS recipient permissions. The signed source’s
+s3/s4/s5 and byte-order choice are preserved; reserved s3 bits cannot grant R3
+rights. Public-key all-access bit 2 is distinct from password owner access.
+Every declared named crypt-filter key is authenticated for this native update
+scope. Supply `CryptFilterUsageRightsCredential(new NameType('AttachmentKey'),
+$otherDecrypter)` for a different identity. Individual-stream 20-byte payloads
+supply no document permission word; all document-scope words are intersected.
+This update policy is intentionally stricter than the Reader’s lazy attachment
+access: it requires credentials for every declared key before writing.
+
+A correct password or matching certificate is insufficient if the actual
+security permissions deny the classified operation. Filling/signing existing
+fields, creating fields, annotations and template instantiation use their
+specified bits and revision distinctions (ISO1 Tables 22/24, physical pages
+69/73–74; the permission-handler intersection is at physical page 485).
+Owner/all-access authentication does not override UR, DocMDP, FieldMDP or the
+explicit application operation scope. Each update must supply authentication
+again; neither a prior successful fill nor a callback error grants authority.
+Cryptographic backends and their credentials are caller-selected ports; there is
+no implicit network, credential discovery, PKI validation or trust store.
+
+Creating a new terminal signature field additionally requires signed and
+application `Form.Add`, independently of `Signature.Modify`. The security handler
+must also allow field creation; permission to fill existing fields alone does
+not suffice. Existing unsigned signature fields retain their separate workflow.
+
+`EncryptedUsageRightsTest` uses actual encrypted signed sources and tests wrong
+credentials, denied user permissions, actual owner/all-access, s3 reserved bits,
+named filter intersections, altered CMS payload facts and new-field authority.
+`tools/validate_encrypted_usage_rights.py` checks 78 sources and 78 incremental
+outputs across Table/Stream/Hybrid, Standard R2–R7 and PubSec s3/s4/s5. It performs
+156 independent CMS checks, 78 signed-byte tamper checks and 156 native credential
+refusals. qpdf checks 72 supported password PDFs. pyHanko decrypts the other
+supported handlers; pypdf and qpdf cover historical R5, which pyHanko does not
+authenticate in this matrix. Physical `Contents` is read before decrypted-object
+caching because UR signatures sit outside the form tree. These are byte,
+cryptographic and permission-word checks, not independent UR policy approval.

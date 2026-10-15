@@ -165,7 +165,11 @@ final readonly class IncrementalSignaturePermissions
             $usage->assertChanges(0, []);
         } else {
             $history->assertSigning($bindings[0]);
-            $usage->assertChanges(0, [], true);
+            $existing = false;
+            foreach ($prior->fields() as $field) {
+                $existing = $existing || (string) $field->identifier === (string) $bindings[0]->identifier;
+            }
+            $usage->assertChanges(0, [], true, newSignatureField: !$existing);
         }
         // The entire delta is proved even for P2/P3 and FieldMDP-only histories.
         (new SignatureRevisionDelta())->validate($graph, $bindings[0], $signature, $allowDss);
