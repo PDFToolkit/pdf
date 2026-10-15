@@ -1330,6 +1330,13 @@
           "AF"
         ]
       }
+    },
+    {
+      "id": "document-part-ec3-shape",
+      "table": "409",
+      "physical_pdf_page": 851,
+      "constraint": "DocumentPartEntries",
+      "arguments": {}
     }
   ]
 }

@@ -460,6 +460,127 @@
       "validation": [
         "tests/Ec3SemanticCorrectionsTest.php"
       ]
+    },
+    {
+      "issue": 612,
+      "physical_pdf_page": 851,
+      "annotation_name": "17427869-cad8-4215-a15489100c29b9f7",
+      "approval_chain": [
+        "325a828c-b473-45de-a27e2ff2a89f499e"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "DocumentPart.addChildren emits a nonempty flat list of indirect child dictionaries. The schema and effective native graph reject obsolete nested arrays, empty lists, direct children and mixed branch/page-range nodes.",
+      "implementation": [
+        "src/Document/Parts/DocumentPart.php",
+        "src/Document/Parts/DocumentPartsGraphValidation.php",
+        "src/Specification/Constraint/DocumentPartEntries.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ]
+    },
+    {
+      "issue": 290,
+      "physical_pdf_page": 852,
+      "annotation_name": "e6697fc3-7405-48a2-8007-dd42e0dfd1a3",
+      "approval_chain": [
+        "1fb7e950-fcd6-4bcb-85ff-bb766e074839",
+        "bf0981fa-038b-4564-8a0c-e9b3d7e3d019",
+        "bde70a95-f997-4443-9906c6f0f7a8aed9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DPart Metadata is prohibited in native construction, generated schema validation and effective incremental replacements. Historical table entry provenance is retained without authorizing emission.",
+      "implementation": [
+        "src/Document/Parts/DocumentPart.php",
+        "src/Document/Parts/DocumentPartsGraphValidation.php",
+        "src/Specification/Constraint/DocumentPartEntries.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ]
+    },
+    {
+      "issue": 609,
+      "physical_pdf_page": 850,
+      "annotation_name": "6427b0b2-bb4c-4f07-a584a3bbd488558a",
+      "approval_chain": [
+        "a7571ac4-5081-4f96-99b16798acc8bfa6"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "Hierarchy XMP is attached explicitly to DPartRoot through one MetadataEntry. The native metadata example and independent ownership oracle use DPartRoot, while DPM remains on DPart.",
+      "implementation": [
+        "src/Document/Parts/DocumentPartRoot.php",
+        "examples/pdf20-metadata-declarations.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ]
+    },
+    {
+      "issue": 86,
+      "physical_pdf_page": 853,
+      "annotation_name": "88f96b6e-403e-4f5a-b4f0-4553ee9782be",
+      "approval_chain": [
+        "22c9eba1-07b5-4f25-8fa1-4d2236ec0318"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DPM permits NameType values recursively, including indirect values, while preserving its existing string, date, array, dictionary, boolean and numeric value families.",
+      "implementation": [
+        "src/Document/Parts/DocumentPartMetadata.php",
+        "src/Document/Parts/DocumentPartsGraphValidation.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ]
+    },
+    {
+      "issue": 86,
+      "physical_pdf_page": 853,
+      "annotation_name": "f9756b86-b8fa-4d36-9f5c-2ffc17135c3d",
+      "approval_chain": [
+        "da407be8-84b8-407e-8e24-014ac9900a2e"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DPM name values require valid decoded UTF-8 bytes in native construction and effective frozen/incremental graph validation. Name serialization preserves proper PDF #HH escaping.",
+      "implementation": [
+        "src/Document/Parts/DocumentPartMetadata.php",
+        "src/Document/Parts/DocumentPartsGraphValidation.php"
+      ],
+      "validation": [
+        "tests/DocumentPartsAndPayloadTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ]
     }
   ]
 }

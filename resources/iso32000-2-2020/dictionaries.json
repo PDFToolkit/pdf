@@ -36577,7 +36577,7 @@
       {
         "name": "DParts",
         "type": "array",
-        "description": "(Shall not be present if a Start key is present; PDF 2.0) An array of arrays. Each element in the array is an array of indirect references to immediate descendant DPart dictionaries. The array shall not be empty.",
+        "description": "(Shall not be present if Start is present; PDF 2.0) EC3 issue 612: a nonempty flat array of indirect references to immediate descendant DPart dictionaries. Nested arrays are not permitted.",
         "qualifier": "Shall not be present if a Start key is present; PDF 2.0",
         "required": false,
         "conditional": true,
@@ -36589,8 +36589,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 851,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "document-part-flat-children",
+          "pdf_page": 851,
+          "review_status": "Accepted",
+          "annotation_name": "17427869-cad8-4215-a15489100c29b9f7",
+          "issue_number": 612
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -36672,7 +36678,7 @@
       {
         "name": "Metadata",
         "type": "stream",
-        "description": "(Optional; PDF 2.0; shall be an indirect reference) A metadata stream that shall contain metadata for this document part (see 14.3.2, \"Metadata streams\").",
+        "description": "EC3 issue 290 prohibits Metadata in DPart dictionaries. This original table entry is retained for source traceability; the executable DPart constraint rejects a non-null value. Hierarchy XMP belongs on DPartRoot.",
         "qualifier": "Optional; PDF 2.0; shall be an indirect reference",
         "required": false,
         "conditional": false,
@@ -36684,8 +36690,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 852,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "document-part-no-xmp",
+          "pdf_page": 852,
+          "review_status": "Completed",
+          "annotation_name": "e6697fc3-7405-48a2-8007-dd42e0dfd1a3",
+          "issue_number": 290
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       }
     ],

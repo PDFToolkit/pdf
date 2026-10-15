@@ -55,8 +55,12 @@ final class DocumentPartMetadata extends DictionaryType
                 foreach ($value as $item) {
                     $pending[] = [$item, false];
                 }
+            } elseif ($value instanceof NameType) {
+                if (preg_match('//u', $value->value) !== 1) {
+                    throw new \InvalidArgumentException('EC3 #86 DPM name values require valid UTF-8 bytes.');
+                }
             } elseif (!$value instanceof StringType && !$value instanceof BooleanType && !$value instanceof NumericType) {
-                throw new \InvalidArgumentException('DPM permits only text/date strings, arrays, dictionaries, booleans and numbers.');
+                throw new \InvalidArgumentException('DPM permits only text/date strings, UTF-8 names, arrays, dictionaries, booleans and numbers.');
             }
         }
     }

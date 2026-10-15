@@ -183,7 +183,7 @@
         "tools/check_wtpdf_requirements.py"
       ],
       "limits": [
-      "Detected failures, SHOULD recommendations, human review and additional validation are separate report states.",
+        "Detected failures, SHOULD recommendations, human review and additional validation are separate report states.",
         "Role appropriateness, reading order, alternative descriptions, form context and faithful meaning need human evidence.",
         "Exhaustive font-program checks, licence rights, some metrics and external grammars require additional validation.",
         "No WTPDF or PDF/UA-2 certification is asserted by assertNoDetectedFailures()."
@@ -243,7 +243,8 @@
       ],
       "limits": [
         "Native XMP generation escapes valid UTF-8. Opaque caller-supplied XML is not parsed or certified.",
-        "Named properties resolve through their actual page, form, tiling-pattern or Type 3 resource owner; opaque content bytes need separate analysis."
+        "Named properties resolve through their actual page, form, tiling-pattern or Type 3 resource owner; opaque content bytes need separate analysis.",
+        "EC3 #290/#609 correct the older application-note wording: DPart forbids Metadata; hierarchy XMP belongs on DPartRoot. Native examples and independent validation apply these exact source corrections."
       ]
     }
   ]

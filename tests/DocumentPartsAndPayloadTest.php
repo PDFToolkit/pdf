@@ -31,6 +31,7 @@ use PDF\Syntax\Object\IndirectObject;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\StringObject\LiteralString;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +51,7 @@ final class DocumentPartsAndPayloadTest extends TestCase
     {
         $first = new P\DocumentPart(new P\DocumentPartMetadata($this->entry('Customer', new TextString('Alice')), $this->entry('Job', new DictionaryType($this->entry('Copies', new IntegerType(2))))));
         $second = new P\DocumentPart(new P\DocumentPartMetadata($this->entry('Customer', new TextString('Bob'))));
-        $node = (new P\DocumentPart())->addGroup($first, $second);
+        $node = (new P\DocumentPart())->addChildren($first, $second);
         $root = new P\DocumentPartRoot($node, new IntegerType(1), new NameType('Job'), new NameType('Customer'));
         $a = $this->page($first);
         $b = $this->page($first);
@@ -74,7 +75,13 @@ final class DocumentPartsAndPayloadTest extends TestCase
         [$catalog, $root, $parts, $pages] = $this->parts();
         $revision = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog), crossReferenceFormat: $format))->toRevision();
         self::assertSame('2.0', $revision->header->version->value);
-        self::assertInstanceOf(ArrayType::class, $root->root->get('DParts'));
+        $children = $root->root->get('DParts');
+        self::assertInstanceOf(ArrayType::class, $children);
+        self::assertCount(2, $children);
+        foreach ($children->items as $index => $child) {
+            self::assertInstanceOf(IndirectReference::class, $child);
+            self::assertSame($parts[$index], $child->target());
+        }
         $start = $parts[0]->get('Start');
         $end = $parts[0]->get('End');
         self::assertInstanceOf(IndirectReference::class, $start);
@@ -95,10 +102,10 @@ final class DocumentPartsAndPayloadTest extends TestCase
         (new FileStructure(new FileHeader('1.7'), new FileBody($catalog)))->toPdf();
     }
 
-    public function testDpmRejectsPdfNamesEvenInsideNestedArrays(): void
+    public function testDpmRejectsInvalidUtf8NamesEvenInsideNestedArrays(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        new P\DocumentPartMetadata($this->entry('Values', new ArrayType(new ArrayType(new NameType('not-application-text')))));
+        new P\DocumentPartMetadata($this->entry('Values', new ArrayType(new ArrayType(new NameType("\xff")))));
     }
 
     public function testDpmRejectsInvalidNestedXmlNames(): void
@@ -109,7 +116,7 @@ final class DocumentPartsAndPayloadTest extends TestCase
 
     public function testDpmAllowsIndirectValuesWithPermittedResolvedTypes(): void
     {
-        $array = new ArrayType(new IndirectReference(new TextString('A permitted text value')));
+        $array = new ArrayType(new IndirectReference(new TextString('A permitted text value')), new IndirectReference(new NameType('Révisé')));
         $metadata = new P\DocumentPartMetadata($this->entry('Values', new IndirectReference($array)));
         $part = new P\DocumentPart($metadata);
         $root = new P\DocumentPartRoot($part);
@@ -117,7 +124,54 @@ final class DocumentPartsAndPayloadTest extends TestCase
         $pages = (new PageTreeNode())->addKid($page);
         $part->setPageRange($page);
         $catalog = new DocumentCatalog($pages, $root->catalogEntry());
-        self::assertStringContainsString('(A permitted text value)', (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toPdf());
+        $bytes = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toPdf();
+        self::assertStringContainsString('(A permitted text value)', $bytes);
+        self::assertStringContainsString('/R#C3#A9vis#C3#A9', $bytes);
+    }
+
+    public function testDPartConstructorRejectsObsoleteXmpMetadata(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new P\DocumentPart(null, $this->entry('Metadata', new IndirectReference(new StreamObject('xmp'))));
+    }
+
+    public function testIncrementalDPartRejectsObsoleteNestedChildArrays(): void
+    {
+        [$catalog, $root] = $this->parts();
+        $previous = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
+        $replacement = new DictionaryType(...iterator_to_array($root->root->entries(), false));
+        $children = $replacement->get('DParts');
+        self::assertInstanceOf(ArrayType::class, $children);
+        $replacement = $replacement->with($this->entry('DParts', new ArrayType($children)));
+        $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($replacement, $previous->binding($root->root)->identifier)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('EC3 #612');
+        $update->toRevision();
+    }
+
+    public function testIncrementalDPartRejectsObsoleteXmpMetadata(): void
+    {
+        [$catalog, , $parts] = $this->parts();
+        $previous = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
+        $metadata = new StreamObject('<x:xmpmeta xmlns:x="adobe:ns:meta/"/>', new DictionaryType($this->entry('Type', new NameType('Metadata')), $this->entry('Subtype', new NameType('XML'))));
+        $replacement = new DictionaryType(...iterator_to_array($parts[0]->entries(), false));
+        $replacement = $replacement->with($this->entry('Metadata', new IndirectReference($metadata)));
+        $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($replacement, $previous->binding($parts[0])->identifier), $metadata));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('EC3 #290');
+        $update->toRevision();
+    }
+
+    public function testIncrementalDpmRejectsNonUtf8Names(): void
+    {
+        [$catalog, , $parts] = $this->parts();
+        $previous = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
+        $replacement = new DictionaryType(...iterator_to_array($parts[0]->entries(), false));
+        $replacement = $replacement->with($this->entry('DPM', new DictionaryType($this->entry('State', new NameType("\xff")))));
+        $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($replacement, $previous->binding($parts[0])->identifier)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('EC3 #86');
+        $update->toRevision();
     }
 
     public function testDocumentPartsCannotRepeatChildrenOrBecomeTheirOwnAncestors(): void
@@ -125,14 +179,14 @@ final class DocumentPartsAndPayloadTest extends TestCase
         $parent = new P\DocumentPart();
         $child = new P\DocumentPart();
         try {
-            $parent->addGroup($child, $child);
+            $parent->addChildren($child, $child);
             self::fail('Repeated children accepted.');
         } catch (\InvalidArgumentException) {
         }
         // A rejected batch did not attach any child.
-        $parent->addGroup($child);
+        $parent->addChildren($child);
         $this->expectException(\InvalidArgumentException::class);
-        $child->addGroup($parent);
+        $child->addChildren($parent);
     }
 
     public function testIncrementalDPartCannotMoveStartAcrossPreviousPartRange(): void

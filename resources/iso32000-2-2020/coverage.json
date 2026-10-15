@@ -3058,20 +3058,31 @@
         "clauses": [
           "14.12"
         ],
-        "errata": []
+        "errata": [
+          86,
+          290,
+          609,
+          612
+        ]
       },
-      "implemented_scope": "Explicit DPartRoot, DPart, metadata and catalog/page entries; finite acyclic hierarchy, unique parents, reciprocal page range references, DFS ordering, record level and effective incremental graph checks.",
+      "implemented_scope": "Explicit DPartRoot, DPart, metadata and catalog/page entries; finite acyclic hierarchy, unique parents, reciprocal page range references, DFS ordering, record level and effective incremental graph checks. EC3 flat child references replace obsolete nested groups; XMP is prohibited on DPart and explicitly supported on DPartRoot; DPM permits valid UTF-8 name values. Raw incremental replacements execute the same conditions.",
       "implementation_files": [
         "src/Document/Parts/DocumentPartRoot.php",
         "src/Document/Parts/DocumentPart.php",
-        "src/Document/Parts/DocumentPartsGraphValidation.php"
+        "src/Document/Parts/DocumentPartsGraphValidation.php",
+        "src/Document/Parts/DocumentPartMetadata.php",
+        "src/Specification/Constraint/DocumentPartEntries.php"
       ],
       "unit_test_files": [
         "tests/DocumentPartsAndPayloadTest.php"
       ],
-      "independent_validation_files": [],
+      "independent_validation_files": [
+        "tools/validate_pdf20_metadata.py",
+        "tools/fixtures/document-parts-ec3.php"
+      ],
       "limits": [
-        "Document-part metadata does not infer business record semantics."
+        "Document-part metadata does not infer business record semantics.",
+        "The addGroup method is replaced by addChildren; DPartRoot named variadic argument nodeNames becomes entries. See resources/document-parts/README.md."
       ]
     },
     {
@@ -3466,7 +3477,7 @@
           468
         ]
       },
-      "implemented_scope": "110 explicitly authored immutable intrinsic rules across 44 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries.",
+      "implemented_scope": "111 explicitly authored immutable intrinsic rules across 45 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries.",
       "implementation_files": [
         "src/Specification/DictionaryConstraint.php",
         "src/Specification/SemanticRule.php",
@@ -3492,7 +3503,7 @@
         "tests/Ec3SemanticCorrectionsTest.php"
       ],
       "limits": [
-        "These 110 rules do not close every conditional requirement in 1709 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
+        "These 111 rules do not close every conditional requirement in 1709 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
         "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
         "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated."
       ]
@@ -3563,8 +3574,8 @@
   },
   "native_semantic_rules": {
     "resource": "semantic-rules.json",
-    "rule_count": 110,
-    "source_tables": 44,
+    "rule_count": 111,
+    "source_tables": 45,
     "runtime": "Immutable semantic rule composition executed during SchemaDictionary validation and serialization",
     "ec3_reviews": "ec3-semantic-reviews.json",
     "remaining_ec3_review": "unlisted annotations remain unresolved",

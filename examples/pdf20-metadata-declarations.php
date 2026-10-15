@@ -51,10 +51,10 @@ $reportFile = new Files\FileSpecification(new LiteralString('review.txt'), new F
 $attachments = new Files\EmbeddedFiles(new Files\EmbeddedFileAttachment(new LiteralString('review.txt'), $reportFile));
 $associated = new Files\AssociatedFiles(new IndirectReference($reportFile));
 
-// DPM is a typed PDF dictionary describing a workflow. Metadata is a different,
-// XMP stream entry. Both may coexist on the same document-part node.
-$part = new Parts\DocumentPart(new Parts\DocumentPartMetadata(new Entry(new NameType('Job'), new TextString('Proof 42'))), new Metadata\MetadataEntry(new Metadata\MetadataStream(new Metadata\XmpPacket(new Metadata\XmpTextProperty(new Metadata\XmpName('job', new Metadata\MetadataUri('urn:example:job'), 'description'), new Metadata\XmlText('One-page proof'))))), new Files\AssociatedFilesEntry($associated));
-$partRoot = new Parts\DocumentPartRoot($part, new IntegerType(0), new NameType('Proof'));
+// EC3 #290 keeps workflow DPM on DPart and XMP on DPartRoot, never on DPart.
+// EC3 #86 additionally permits UTF-8 PDF names as DPM values.
+$part = new Parts\DocumentPart(new Parts\DocumentPartMetadata(new Entry(new NameType('Job'), new TextString('Proof 42')), new Entry(new NameType('State'), new NameType('Révisé'))), new Files\AssociatedFilesEntry($associated));
+$partRoot = new Parts\DocumentPartRoot($part, new IntegerType(0), new NameType('Proof'), new Metadata\MetadataEntry(new Metadata\MetadataStream(new Metadata\XmpPacket(new Metadata\XmpTextProperty(new Metadata\XmpName('job', new Metadata\MetadataUri('urn:example:job'), 'description'), new Metadata\XmlText('One-page proof'))))));
 $sequenceMetadata = new Metadata\MetadataStream(new Metadata\XmpPacket(new Metadata\XmpTextProperty(new Metadata\XmpName('sample', new Metadata\MetadataUri('urn:example:sample'), 'purpose'), new Metadata\XmlText('Calibrated colour demonstration'))));
 $state = new GraphicsStateParameters(new UseBlackPointCompensation(BlackPointCompensation::On));
 // PDF 2.0 requires explicit metrics and a descriptor even for standard fonts.

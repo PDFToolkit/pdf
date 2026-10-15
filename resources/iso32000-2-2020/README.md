@@ -35,13 +35,13 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: the 53 existing authored summaries and selected EC3
+- `reviewed-overrides.json`: the 54 authored summary/overlay tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
 
 New normative descriptions identify `description_origin: normative-source` and
-`description_language: en`. The 53 project summaries remain `project-authored`.
+`description_language: en`. The authored summary/overlay tables remain `project-authored`.
 English source prose is identified separately from translated documentation.
 Whitespace and obvious extraction punctuation are normalized; the retained PDF
 remains the reference. Source prose is kept intact when an explicit errata overlay
@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **110 executable intrinsic rules across 44
+`semantic-rules.json` now supplies **111 executable intrinsic rules across 45
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 21 distinct annotations across 11 issues (22, 30, 124, 155, 246, 307, 308, 403, 444, 463 and 468). A polygon `Path` ignores
+and approval reply chains for 26 distinct annotations across 15 issues (22, 30, 86, 124, 155, 246, 290, 307, 308, 403, 444, 463, 468, 609 and 612). A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -118,3 +118,5 @@ metadata, password encryption, signatures, DSS and timestamps have separate test
 and external-validator evidence in `coverage.json` and bundle coverage.
 A schema object does not certify rendering, accessibility, PKI trust, content
 semantics or complete PDF 2.0 conformance.
+
+[Document-part EC3 migration](../document-parts/README.md) covers flat children, DPartRoot XMP and UTF-8 DPM names.

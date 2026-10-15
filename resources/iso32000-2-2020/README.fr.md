@@ -37,13 +37,13 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 53 résumés existants du projet et leurs
+- `reviewed-overrides.json` : les 54 tableaux de résumés/corrections du projet et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
 
 Les nouvelles descriptions normatives portent `description_origin:
-normative-source` et `description_language: en`. Les 53 résumés restent
+normative-source` et `description_language: en`. Les résumés du projet restent
 `project-authored`. Le texte anglais de référence est identifié séparément de la
 documentation traduite. Les espaces et les défauts évidents de ponctuation issus
 de l’extraction sont normalisés ; le PDF conservé fait référence. Le texte source
@@ -65,8 +65,8 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
-`semantic-rules.json` fournit maintenant **110 règles intrinsèques exécutables
-réparties sur 44 tableaux source**, héritées par leurs définitions dérivées.
+`semantic-rules.json` fournit maintenant **111 règles intrinsèques exécutables
+réparties sur 45 tableaux source**, héritées par leurs définitions dérivées.
 Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
 des fonctions, les paramètres de filtres, les sections de références croisées,
 les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
@@ -75,8 +75,8 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 21 annotations distinctes couvrant 11 problèmes
-(22, 30, 124, 155, 246, 307, 308, 403, 444, 463 et 468). Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 26 annotations distinctes couvrant 15 problèmes
+(22, 30, 86, 124, 155, 246, 290, 307, 308, 403, 444, 463, 468, 609 et 612). Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -131,3 +131,5 @@ chiffrement par mot de passe, les signatures, le DSS et les horodatages possède
 leurs preuves de tests et leurs validateurs externes distincts dans `coverage.json`
 et dans la couverture du lot. Un objet de schéma ne certifie pas le rendu,
 l’accessibilité, la confiance PKI, la sémantique ou la conformité PDF 2.0 complète.
+
+[La migration EC3 des parties documentaires](../document-parts/README.fr.md) couvre les enfants plats, le XMP de DPartRoot et les noms DPM UTF-8.

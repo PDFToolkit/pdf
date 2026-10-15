@@ -6,6 +6,7 @@ namespace PDF\Document\Parts;
 
 use PDF\Document\DocumentGraphComponent;
 use PDF\Document\DocumentGraphContext;
+use PDF\Document\Metadata\MetadataEntry;
 use PDF\Document\VersionedComponent;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\DataStructure\XmlName;
@@ -20,13 +21,23 @@ use PDF\Syntax\Object\NameType;
 /** Table408/physical p.851: explicit root, per-level XML names and optional record level. */
 final class DocumentPartRoot extends DictionaryType implements DocumentGraphComponent, VersionedComponent
 {
-    public function __construct(public readonly DocumentPart $root, ?IntegerType $recordLevel = null, NameType ...$nodeNames)
+    public function __construct(public readonly DocumentPart $root, ?IntegerType $recordLevel = null, NameType|MetadataEntry ...$entries)
     {
         if ($recordLevel !== null && $recordLevel->integer() < 0) {
             throw new \InvalidArgumentException('A document-part record level must be nonnegative.');
         }
-        foreach ($nodeNames as $name) {
-            new XmlName($name->value);
+        $nodeNames = [];
+        $metadata = null;
+        foreach ($entries as $entry) {
+            if ($entry instanceof MetadataEntry) {
+                if ($metadata !== null) {
+                    throw new \InvalidArgumentException('A document-part root has at most one explicit Metadata stream.');
+                }
+                $metadata = $entry;
+            } else {
+                new XmlName($entry->value);
+                $nodeNames[] = $entry;
+            }
         }
         $entries = [new Entry(new NameType('Type'), new NameType('DPartRoot')), new Entry(new NameType('DPartRootNode'), new IndirectReference($root))];
         if ($recordLevel !== null) {
@@ -34,6 +45,9 @@ final class DocumentPartRoot extends DictionaryType implements DocumentGraphComp
         }
         if ($nodeNames !== []) {
             $entries[] = new Entry(new NameType('NodeNameList'), new ArrayType(...$nodeNames));
+        }
+        if ($metadata !== null) {
+            $entries[] = $metadata;
         }
         $root->attachTo($this);
         parent::__construct(...$entries);

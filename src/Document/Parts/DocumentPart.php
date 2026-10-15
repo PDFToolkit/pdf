@@ -18,31 +18,31 @@ use PDF\Syntax\Object\NameType;
 final class DocumentPart extends DictionaryType implements VersionedComponent
 {
     private DocumentPart|DocumentPartRoot|null $parentPart = null;
-    /** @var list<non-empty-list<DocumentPart>> */
-    private array $groups = [];
+    /** @var list<DocumentPart> */
+    private array $children = [];
     /** @var non-empty-list<PageObject>|null */
     private ?array $pages = null;
 
     public function __construct(?DocumentPartMetadata $metadata = null, Entry ...$entries)
     {
         foreach ($entries as $entry) {
-            if (in_array($entry->key->value, ['Type', 'Parent', 'DParts', 'Start', 'End', 'DPM'], true)) {
+            if (in_array($entry->key->value, ['Type', 'Parent', 'DParts', 'Start', 'End', 'DPM', 'Metadata'], true)) {
                 throw new \InvalidArgumentException('Document-part structural entries are managed by its explicit hierarchy.');
             }
         }
         parent::__construct(...($metadata === null ? [] : [new Entry(new NameType('DPM'), $metadata)]), ...$entries);
     }
 
-    public function addGroup(self $first, self ...$others): self
+    public function addChildren(self $first, self ...$others): self
     {
         if ($this->pages !== null) {
-            throw new \LogicException('A document-part page leaf cannot acquire child groups.');
+            throw new \LogicException('A document-part page leaf cannot acquire children.');
         }
-        $group = [$first, ...array_values($others)];
+        $children = [$first, ...array_values($others)];
         $seen = new \SplObjectStorage();
-        foreach ($group as $child) {
+        foreach ($children as $child) {
             if ($child->parentPart !== null || $seen->offsetExists($child)) {
-                throw new \InvalidArgumentException('A document-part group requires distinct unattached children.');
+                throw new \InvalidArgumentException('Document-part children require distinct unattached children.');
             }
             $seen->offsetSet($child);
             for ($node = $this; $node instanceof self; $node = $node->parentPart) {
@@ -51,17 +51,17 @@ final class DocumentPart extends DictionaryType implements VersionedComponent
                 }
             }
         }
-        foreach ($group as $child) {
+        foreach ($children as $child) {
             $child->attachTo($this);
         }
-        $this->groups[] = $group;
+        array_push($this->children, ...$children);
         return $this;
     }
 
     public function setPageRange(PageObject $first, PageObject ...$others): self
     {
-        if ($this->groups !== [] || $this->pages !== null) {
-            throw new \LogicException('A document part has either child groups or one explicitly assigned page range.');
+        if ($this->children !== [] || $this->pages !== null) {
+            throw new \LogicException('A document part has either children or one explicitly assigned page range.');
         }
         foreach ([$first, ...$others] as $page) {
             $part = $page->get('DPart');
@@ -73,7 +73,7 @@ final class DocumentPart extends DictionaryType implements VersionedComponent
         return $this;
     }
 
-    /** @internal Called only by the owning parent constructor or addGroup(). */
+    /** @internal Called only by the owning parent constructor or addChildren(). */
     public function attachTo(self|DocumentPartRoot $parent): void
     {
         if ($this->parentPart !== null) {
@@ -94,8 +94,8 @@ final class DocumentPart extends DictionaryType implements VersionedComponent
         }
         yield new Entry(new NameType('Type'), new NameType('DPart'));
         yield new Entry(new NameType('Parent'), new IndirectReference($this->parentPart));
-        if ($this->groups !== []) {
-            yield new Entry(new NameType('DParts'), new ArrayType(...array_map(static fn (array $group): ArrayType => new ArrayType(...array_map(static fn (self $child): IndirectReference => new IndirectReference($child), $group)), $this->groups)));
+        if ($this->children !== []) {
+            yield new Entry(new NameType('DParts'), new ArrayType(...array_map(static fn (self $child): IndirectReference => new IndirectReference($child), $this->children)));
         }
         if ($this->pages !== null) {
             yield new Entry(new NameType('Start'), new IndirectReference($this->pages[0]));

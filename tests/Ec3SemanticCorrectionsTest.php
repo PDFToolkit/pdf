@@ -75,6 +75,11 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         foreach (['Metadata', 'AF'] as $key) {
             yield 'signature digest prohibits ' . $key => ['255', ['ByteRange' => [0, 1, 2, 3], $key => new DictionaryType()], 'is prohibited by /ByteRange'];
         }
+        yield 'DPart metadata is obsolete' => ['409', ['Metadata' => new IndirectReference(new StreamObject('xmp'))], 'EC3 #290'];
+        yield 'DPart child array cannot be empty' => ['409', ['DParts' => []], 'EC3 #612'];
+        yield 'DPart child cannot be direct' => ['409', ['DParts' => [new DictionaryType()]], 'EC3 #612'];
+        yield 'DPart child arrays cannot be nested' => ['409', ['DParts' => [[new IndirectReference(new DictionaryType())]]], 'EC3 #612'];
+        yield 'DPart branch cannot claim pages' => ['409', ['DParts' => [new IndirectReference(new DictionaryType())], 'Start' => new IndirectReference(new DictionaryType())], '/Start or /End'];
     }
 
     public function testAllowedBoundaryCasesAndStructureParentTreeNullHolesArePreserved(): void
@@ -99,6 +104,8 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         $this->validate('354', $this->dictionary(['ParentTree' => new DictionaryType(new Entry(new NameType('Nums'), new ArrayType(new IntegerType(0), new ArrayType(new NullType()))))]));
         $this->validate('355', $this->dictionary(['K' => 0, 'Ref' => [], 'A' => [new DictionaryType(), 0], 'C' => [new NameType('Class'), 0]]));
         $this->validate('255', $this->dictionary(['Metadata' => new DictionaryType(), 'Reference' => [new DictionaryType(new Entry(new NameType('Data'), new IndirectReference(new DictionaryType())))]]));
+        $this->validate('409', $this->dictionary(['DParts' => [new IndirectReference(new DictionaryType())]]));
+        $this->validate('409', $this->dictionary(['Metadata' => new NullType()]));
         self::assertTrue(true);
     }
 

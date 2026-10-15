@@ -87,6 +87,9 @@ final readonly class DocumentPartsGraphValidation
             if (!$actualParent instanceof IndirectReference || !$graph->sameObject($actualParent, $parent)) {
                 throw new \InvalidArgumentException('Every DPart requires its exact reciprocal Parent reference.');
             }
+            if ($graph->entry($part, 'Metadata') !== null) {
+                throw new \InvalidArgumentException('EC3 #290 forbids XMP Metadata on DPart nodes; use the DPartRoot for hierarchy metadata.');
+            }
             $dpm = $graph->entry($part, 'DPM');
             if ($dpm !== null) {
                 $this->metadata($dpm, $graph);
@@ -97,17 +100,14 @@ final readonly class DocumentPartsGraphValidation
             if ($children !== null) {
                 $children = $graph->resolve($children);
                 if ($start !== null || $end !== null || !$children instanceof ArrayType || count($children) === 0) {
-                    throw new \InvalidArgumentException('A DPart branch requires nonempty groups and must omit Start and End.');
+                    throw new \InvalidArgumentException('A DPart branch requires nonempty children and must omit Start and End.');
                 }
                 $descendants = [];
-                foreach ($children as $group) {
-                    $group = $graph->resolve($group);
-                    if (!$group instanceof ArrayType || count($group) === 0) {
-                        throw new \InvalidArgumentException('DParts is an array of nonempty arrays of indirect child nodes.');
+                foreach ($children as $child) {
+                    if (!$child instanceof IndirectReference) {
+                        throw new \InvalidArgumentException('EC3 #612 DParts is a flat array of indirect child node references.');
                     }
-                    foreach ($group as $child) {
-                        $descendants[] = [$child, $partValue, $depth + 1];
-                    }
+                    $descendants[] = [$child, $partValue, $depth + 1];
                 }
                 array_push($pending, ...array_reverse($descendants));
                 continue;
@@ -209,8 +209,12 @@ final readonly class DocumentPartsGraphValidation
                 foreach ($value as $item) {
                     $pending[] = [$item, false, ''];
                 }
+            } elseif ($value instanceof NameType) {
+                if (preg_match('//u', $value->value) !== 1) {
+                    throw new \InvalidArgumentException('EC3 #86 DPM name values require valid UTF-8 bytes.');
+                }
             } elseif (!$value instanceof StringType && !$value instanceof BooleanType && !$value instanceof NumericType) {
-                throw new \InvalidArgumentException('DPM values must be text/date strings, arrays, dictionaries, booleans or numbers.');
+                throw new \InvalidArgumentException('DPM values must be text/date strings, UTF-8 names, arrays, dictionaries, booleans or numbers.');
             }
         }
     }
