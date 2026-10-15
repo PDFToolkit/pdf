@@ -1,5 +1,5 @@
 {
-  "release": "unreleased",
+  "release": "0.11.0",
   "status": "native-bounded-authenticated-classification",
   "completeGeneralMdpClassification": false,
   "sources": [
@@ -97,7 +97,10 @@
     "src/Document/Signatures/AuthenticatedUsageRightsPolicy.php",
     "src/Document/Signatures/FrozenPageTemplates.php",
     "src/Document/Signatures/ProtectedPageTemplateChanges.php",
-    "src/Document/Signatures/PageTemplateInstantiation.php"
+    "src/Document/Signatures/PageTemplateInstantiation.php",
+    "src/Document/Signatures/PasswordUsageRightsAuthentication.php",
+    "src/Document/Signatures/CertificateUsageRightsAuthentication.php",
+    "src/Document/Signatures/UsageRightsSecurityPermissions.php"
   ],
   "implemented": [
     "One common guard on every native incremental emission with exact native provenance, final-byte mathematical verification and complete frozen delta accounting.",
@@ -110,7 +113,9 @@
     "Application FillField scope authorizes a persisted classified fill when the signed rights permit saving; signed FullSave as a saving condition does not also require application FullSave scope.",
     "FileSelect filling as inert text; rich-text paired V/RV text values with an explicit bounded XML interpreter and fresh complete normal widget appearances.",
     "Indirect text strings and bounded plain/Flate text streams with exact exclusive V/RV ownership, target-delta detection and effective-version Unicode MaxLen.",
-    "Exact invisible named-template instances without annotations/fields, inserted under the unchanged root with historical contents/resources, fixed prior page order and inheritance, complete object accounting and UR SpawnTemplate intersection."
+    "Exact invisible named-template instances without annotations/fields, inserted under the unchanged root with historical contents/resources, fixed prior page order and inheritance, complete object accounting and UR SpawnTemplate intersection.",
+    "Encrypted UR3 with actual per-update password/certificate authentication, matching file/filter keys and security permission intersections; owner/all-access never bypasses signed policy, locks or authority.",
+    "PDF2 optional radio Off appearances and source-version signature seed semantics with actual EdDSA output verification."
   ],
   "evidence": [
     "tests/IncrementalSignaturePermissionsTest.php",
@@ -124,15 +129,19 @@
     "tests/AuthenticatedUsageRightsTest.php",
     "tests/Support/ProtectedRevisionFixture.php",
     "examples/protected-form-fill.php",
-    "tests/ProtectedPageTemplatesTest.php"
+    "tests/ProtectedPageTemplatesTest.php",
+    "tests/EncryptedUsageRightsTest.php",
+    "tests/ButtonAndTextFieldEc3Test.php",
+    "tests/SignatureSeedEc3Test.php",
+    "tools/validate_encrypted_usage_rights.py"
   ],
   "remaining": [
     "Visible named pages, template annotation/field cloning and general field creation/deletion/renaming or reparenting.",
     "Arbitrary appearance regeneration or new resource objects.",
     "Complete graphics operand validation, rendered-value equivalence and human appearance/intent assessment.",
     "Annotation subtypes, relationships and dependencies outside the listed bounded markup scope.",
-    "External PDF revision-history parsing, normalization and authentication adapters.",
-    "Legacy UR digest adapters, encrypted UR/security-handler permission intersections.",
+    "External PDF revision normalization and authenticated import into the native writer; Reader physical history inspection is a separate package contract.",
+    "Legacy UR digest adapters.",
     "PKI path and revocation validation remain explicit application responsibilities."
   ],
   "limits": {
@@ -147,9 +156,9 @@
     "appearanceProof": "Region/state invariance, not complete graphics operand conformity, rendered-value equivalence or human intent.",
     "usageRightsRejected": [
       "Legacy UR",
-      "encrypted UR histories",
       "opaque or unverified signatures",
-      "unclassified maintenance/general saves"
+      "unclassified maintenance/general saves",
+      "encrypted UR without explicit valid credential and required operation permissions"
     ]
   },
   "independentValidation": {
@@ -164,7 +173,7 @@
     "poppler": "22.12.0",
     "perRuntime": {
       "nativeRefusals": 113,
-      "independentlyCheckedPdfs": 272,
+      "independentlyCheckedPdfs": 284,
       "nativeFormCombinations": 32,
       "independentFormFills": 32,
       "p3AnnotationChains": 4,
@@ -173,7 +182,8 @@
         "buttons": 144,
         "annotations": 48,
         "sharedAppearanceAttack": 6,
-        "templates": 96
+        "templates": 96,
+        "radioOptionalOff": 24
       },
       "ur3": {
         "signedSources": 10,
@@ -183,7 +193,15 @@
       },
       "extendedTextCombinations": 32,
       "independentExtendedTextFills": 32,
-      "templateCombinations": 8
+      "templateCombinations": 8,
+      "radioOptionalOffCombinations": 4,
+      "encryptedUr3": {
+        "signedSources": 78,
+        "permittedUpdates": 78,
+        "nativeCredentialRefusals": 156,
+        "tamperedCmsDetected": 78,
+        "qpdfChecks": 72
+      }
     },
     "policy": "Unmodified pyHanko default; CMS mathematics, structure/rendering, modification policy and PKI trust remain separate.",
     "boundaries": [
@@ -194,7 +212,8 @@
       "UR3 independent evidence validates actual CMS bytes and declarations, not a third-party granting-authority or PKI decision.",
       "The executable protected-form-fill example changes AP on a widget child without T; pyHanko reports OTHER. Its qpdf/rendering and CMS/ByteRange checks do not imply pyHanko DocMDP approval.",
       "Eight FileSelect and eight plain text-stream combinations agree with pyHanko; 16 rich-text string/stream combinations report OTHER in both native and independent updates. Physical V/RV and CMS are verified, not rendered rich-text equivalence.",
-      "Instantiated template outputs have valid CMS and independently checked pages/pixels, but pyHanko reports OTHER rather than approving their modification policy."
+      "Instantiated template outputs have valid CMS and independently checked pages/pixels, but pyHanko reports OTHER rather than approving their modification policy.",
+      "Encrypted R5 sources are checked with pypdf/qpdf; pyHanko cannot authenticate this fixture family. UR3 Contents is read physically before decrypted-object caches."
     ],
     "implicitPkiTrust": false,
     "fetching": false

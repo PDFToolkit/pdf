@@ -16,6 +16,8 @@ La série `0.x` est destinée aux développeurs qui souhaitent construire et exp
 
 Les dix-huit PDF de référence originaux sont regroupés dans [`resources/reference-documents/`](resources/reference-documents/README.fr.md), avec leurs noms et octets d’origine. Les définitions se fondent sur les documents Adobe/ISO [PDF32000_2008.pdf](resources/reference-documents/PDF32000_2008.pdf) et [adobe_supplement_iso32000.pdf](resources/reference-documents/adobe_supplement_iso32000.pdf). Le [guide du supplément](https://pdftoolkit.github.io/fr/guides/supplement-adobe.html) explique les extensions Adobe du PDF 1.7, niveau 3, leur provenance et leurs mécanismes. Le [guide des références Adobe](https://pdftoolkit.github.io/fr/guides/references-adobe.html) présente aussi la référence de 2006, ses errata, l'addendum de caviardisation et leur portfolio. Tous les PDF Adobe fournis au projet sont conservés avec leur nom et leurs octets d'origine ; les PDF de référence sont exclus des archives Composer. Le [PDF ISO 32000-2:2020 EC3 fourni](resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf), obtenu via l’[accès sponsorisé de la PDF Association](https://www.pdfa.org/sponsored-standards/), est conservé sans modification dans ce dépôt et exclu des archives Composer. Son édition, ses pages physiques et son empreinte sont enregistrées dans un catalogue séparé. Les profils PDF/A, PDF/X et PDF/UA demandent leurs propres mécanismes de conformité.
 
+La version 0.11 étend les mises à jour signées et l’authentification UR3 par certificat ou mot de passe, avec les corrections EC3 revues. Voir les [migrations et limites](docs/fr/migration-0.11.md).
+
 ## Spécifications complémentaires PDF 2.0
 
 Le core 0.7 ajoute AES-CBC R=6 et AES-GCM R=7, les signatures SHA-3/SHAKE256 et
@@ -121,8 +123,8 @@ les rectangles réduits à un point (deux dimensions nulles), Popup, Projection 
 Link sont exemptés d’AP ; PDF 1.7 conserve son caractère facultatif. AP.N, les
 streams Form et les noms AS requis sont vérifiés, en préservant le repli prévu
 par la norme lorsqu’un état est inconnu. Le [guide des apparences](resources/annotation-appearances/README.fr.md)
-consigne EC3 #22/#124 : six chaînes exactes sont désormais vérifiées, distinctes
-des 197 règles intrinsèques. Aucune apparence n’est générée implicitement.
+consigne EC3 #22/#124 : les chaînes d’approbation exactes sont conservées dans le registre des revues,
+séparément des règles intrinsèques. Aucune apparence n’est générée implicitement.
 
 ## Révisions incrémentales protégées
 
@@ -168,10 +170,10 @@ incorporés opaques nécessitent toujours un assainisseur explicite ; voir les
 
 ## Installation
 
-Le core **0.10** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
+Le core **0.11** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.10'
+composer require 'roukmoute/pdf:^0.11'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
@@ -188,10 +190,10 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Les convertisseurs images et polices sont disponibles en **0.1.11**, le lecteur en **0.5.1** ; ces versions acceptent le core 0.9/0.10 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Les convertisseurs images et polices sont disponibles en **0.1.12**, le lecteur en **0.6.0** ; ces versions acceptent le core 0.11 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.11'
+composer require 'pdftoolkit/pdf-images:^0.1.12'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/fr/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.
@@ -210,8 +212,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.fr.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.10.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.10 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.11.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.11 attendue par les modules. Les
 dépendances de développement utilisent les modules stables publiés, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.

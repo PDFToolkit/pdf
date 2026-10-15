@@ -30,9 +30,9 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.11",
-        "pdftoolkit/pdf-images": "^0.1.11",
-        "pdftoolkit/pdf-reader": "^0.5.1",
+        "pdftoolkit/pdf-fonts": "^0.1.12",
+        "pdftoolkit/pdf-images": "^0.1.12",
+        "pdftoolkit/pdf-reader": "^0.6",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
@@ -81,7 +81,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.10.x-dev"
+            "dev-master": "0.11.x-dev"
         }
     }
 }

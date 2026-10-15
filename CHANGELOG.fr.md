@@ -4,6 +4,17 @@
 
 ## [Non publié]
 
+## [0.11.0] - 2026-10-15
+
+- Étendre les métriques par classe CID avec FontBBox/FontFamily/FontStretch/FontWeight et produire des métadonnées ToUnicode cohérentes entre dictionnaire et programme depuis un même objet UnicodeCMap explicite.
+- Authentifier les mises à jour UR3 chiffrées avec un mot de passe ou certificat explicite, le vrai gestionnaire de sécurité et les clés de fichier/filtres correspondantes. Croiser permissions CMS ou mot de passe, droits signés, autorisation applicative par mise à jour et restrictions historiques DocMDP/FieldMDP. Appliquer PDF2 P=false/absent et exiger Form.Add pour un nouveau champ de signature.
+- Étendre les modifications protégées figées au texte enrichi avec analyseur XML borné explicite, au texte FileSelect, aux valeurs de champs indirectes/en flux à propriétaire exclusif et à l’instanciation de modèles de pages invisibles historiques. Conserver propriétaires d’apparences/ressources et préfixes signés immuables.
+- Appliquer les corrections EC3 sourcées aux domaines pages/polices/structure/métadonnées/pièces jointes/RichMedia/fonctions et aux types/conditions des dictionnaires générés. Conserver l’original annoté et les chaînes d’approbation exactes ; distinguer règles implémentées, corrections éditoriales et responsabilités des consommateurs externes.
+- Ajouter les sémantiques PDF2 explicites des boutons et contraintes de signature : apparence radio Off facultative, valeurs des boutons poussoirs conservées, champs null, DocMDP P et seed V entiers, condensats EdDSA intrinsèques et capacité3 native PDF2.
+- Migration : les parties documentaires utilisent `DocumentPart::addChildren()` et une liste plate d’enfants indirects avec entrées explicites de racine ; les métadonnées DPart appartiennent à la racine. `FontDescriptor.fontName` peut être null pour Type3 ; utiliser `requiredName()` si un nom est requis. Voir les [notes de migration](docs/fr/migration-0.11.md).
+- Les contrôles indépendants comprennent 284 PDF de révisions protégées et 113 refus natifs ; 156 PDF UR3 chiffrés, 156 refus d’identifiants et 78 altérations CMS détectées ; six PDF complets de signatures Ed25519/Ed448 avec contraintes. Exécuter toute la matrice requise PHP8.3/8.4/8.5 avant publication. La validité CMS n’établit pas la confiance PKI ; les limites de classement des outils indépendants restent consignées.
+- Conserver comme frontières explicites la provenance native, UR ancien, l’import/classement de révisions externes, la création générale de champs et les changements libres de ressources/apparences. Le core n’a toujours aucune dépendance d’exécution envers les modules optionnels ; les verrous de développement sélectionnent Reader0.6.0 et images/polices0.1.12 publiés.
+
 ## [0.10.0] - 2026-10-15
 
 - Étendre le garde des révisions natives protégées au remplissage P2/P3 borné des

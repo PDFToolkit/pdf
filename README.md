@@ -46,6 +46,8 @@ is retained unchanged in this repository and excluded from Composer archives.
 Its edition, physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
 PDF/X and PDF/UA profiles require their own conformance mechanisms.
 
+Version 0.11 extends signed updates and certificate/password UR3 authentication with reviewed EC3 corrections. See the [migration notes and boundaries](docs/migration-0.11.md).
+
 ## PDF 2.0 companion specifications
 
 Core 0.7 adds R=6 AES-CBC and R=7 AES-GCM, SHA-3/SHAKE256 and named-curve
@@ -142,8 +144,8 @@ page graph, including frozen catalog upgrades. Only point rectangles (both
 dimensions zero), Popup, Projection and Link are exempt from AP; PDF1.7 remains
 optional. AP.N, Form streams and required AS names are checked while preserving
 the source-defined fallback for an unmatched state. The [appearance guide](resources/annotation-appearances/README.md)
-records EC3 #22/#124: six exact semantic review chains are now verified, separate
-from the 197 intrinsic rules. No appearance is generated implicitly.
+records EC3 #22/#124: their exact approval chains are recorded in the semantic review register,
+separate from the intrinsic rules. No appearance is generated implicitly.
 
 ## Protected incremental revisions
 
@@ -184,14 +186,14 @@ still require an explicit sanitizer; see the [redaction boundaries](resources/re
 
 ## Installation
 
-Core **0.10** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.11** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.10'
+composer require 'roukmoute/pdf:^0.11'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -209,12 +211,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Image and font converters are available as **0.1.11**, and the reader as
-**0.5.1**; these releases accept core 0.9/0.10 and PHP 8.3 or newer. Composer automatically installs
+Image and font converters are available as **0.1.12**, and the reader as
+**0.6.0**; these releases accept core 0.11 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.11'
+composer require 'pdftoolkit/pdf-images:^0.1.12'
 ```
 
 The module installs the core using its stable constraint. The
@@ -241,8 +243,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.10.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.10 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.11.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.11 series expected by modules.
 Development dependencies use stable published modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.

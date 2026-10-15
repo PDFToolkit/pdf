@@ -4,6 +4,17 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-15
+
+- Extend CID glyph-class metric overrides with FontBBox/FontFamily/FontStretch/FontWeight and emit consistent ToUnicode dictionary/program metadata from one explicit UnicodeCMap object.
+- Authenticate encrypted UR3 updates with an explicit password or certificate credential, the actual security handler and matching file/filter keys. Intersect CMS recipient or password permissions, signed rights, per-update application authorization and historical DocMDP/FieldMDP restrictions. Support PDF2 P=false/absent semantics and require Form.Add for a new signature field.
+- Extend frozen protected updates to rich text with an explicit bounded XML parser, FileSelect text, exclusively owned indirect/stream field values and historical invisible page-template instantiation. Keep appearance/resource ownership and immutable signed prefixes.
+- Apply source-linked EC3 corrections to page/font/structure/metadata/attachment/RichMedia/function domains and generated dictionary types/requirements. Preserve the original annotated standard and exact approval chains; distinguish implemented rules from editorial corrections and external-consumer responsibilities.
+- Add explicit PDF2 button and signature-seed semantics: optional radio Off appearances, retained pushbutton values, null field values, integer DocMDP P and seed V, intrinsic EdDSA digest handling and native PDF2 seed capability3.
+- Migration: document parts now use flat `DocumentPart::addChildren()` with indirect children and explicit root entries; DPart metadata belongs to the root. Type3 `FontDescriptor.fontName` may be null; use `requiredName()` where a name is required. See [migration notes](docs/migration-0.11.md).
+- Independent checks include 284 protected-revision PDFs and 113 native refusals; 156 encrypted-UR3 PDFs, 156 credential refusals and 78 detected CMS alterations; six complete Ed25519/Ed448 seed-signature PDFs. Run the complete required matrix on PHP8.3/8.4/8.5 before publication. CMS validity does not establish PKI trust, and independent difference-policy limitations remain recorded.
+- Keep native provenance, legacy UR, external revision import/classification, general field creation and unrestricted resource/appearance changes as explicit boundaries. The core still has no runtime dependency on optional modules; development locks select published Reader0.6.0 and images/fonts0.1.12.
+
 ## [0.10.0] - 2026-10-15
 
 - Extend the native protected-revision guard to bounded P2/P3 filling of existing
