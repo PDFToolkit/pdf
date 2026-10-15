@@ -19,7 +19,7 @@ final readonly class BarcodeDataPreparation
         if ($DataPrep->value != 0 && $DataPrep->value != 1) {
             throw new \InvalidArgumentException('Barcode /DataPrep must be 0 or 1.');
         }
-        if ($flate->predictor !== null) {
+        if ($DataPrep->value == 1 && $flate->predictor !== null) {
             throw new \InvalidArgumentException('Barcode V compression does not apply an image-sample predictor.');
         }
     }

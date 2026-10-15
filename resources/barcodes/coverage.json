@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "document": "adobe_supplement_iso32000.pdf",
+    "path": "resources/reference-documents/adobe_supplement_iso32000.pdf",
+    "sha256": "50d0bbc96028dca1a54cf3c671054536d26e9494dc52877061763b4aed08ac48",
+    "section": "8.6.3 Barcode Fields",
+    "physicalPdfPages": [45, 46, 47],
+    "implementationNotePages": [130, 131]
+  },
+  "executed": [
+    "Read the actual explicitly encoded V string of a fresh native BarcodeField without text transcoding or BOM removal.",
+    "DataPrep 0 preserves bytes; DataPrep 1 compresses the complete byte string once with zlib-framed Flate, without image predictors.",
+    "Partition prepared bytes into one ordered message per supplied widget; sizes differ by at most one and earlier widgets receive the remainder.",
+    "Associate each indexed message and byte offset with the actual immutable widget rectangle and serialized PMD parameters.",
+    "Invoke the explicit BarcodeImageEncoder capability; propagate failures without fabricating a symbol or mutating the field.",
+    "Create native FormAppearanceStream and AP.N with a local normalized BBox and q/cm/Do/Q image placement over the full widget rectangle.",
+    "Keep widget attachment and single-widget separate/merged representation explicit; allow reversed finite Rect corners.",
+    "Bound input/prepared bytes, widget count and cumulative generated image pixels/sample bytes; reject exhausted budgets before the next encoder call."
+  ],
+  "evidence": {
+    "unitTests": ["tests/BarcodeMessagePreparationTest.php", "tests/BarcodeFieldPreparationTest.php"],
+    "fixture": "tools/fixtures/barcode-appearances.php",
+    "oracle": "tools/validate_barcode_appearances.py",
+    "checks": ["qpdf syntax", "pypdf actual V/PMD/Kids/AP/image inspection", "Python zlib complete-stream verification", "Poppler full-rectangle pixel checks"],
+    "pdfsPerRuntime": 5,
+    "widgetsPerRuntime": 10,
+    "pixelChecksPerRuntime": 45,
+    "symbologyEncodingProved": false
+  },
+  "boundaries": [
+    "No PDF417, QR Code or Data Matrix algorithm is built into the core. The external encoder owns symbology, ECC, module and quiet-zone correctness, capacity and its own allocation/work limits.",
+    "The native appearance adapter accepts normalized opaque device-colour ImageXObject samples without masks, alternate images, optional content or ancillary image resource graphs.",
+    "A non-positive or non-finite normalized Rect extent is refused by this appearance-producing operation, not declared invalid PDF rectangle syntax.",
+    "Absent V is not silently treated as empty; an explicitly empty V produces one message for every widget, and the encoder decides whether its symbology accepts it.",
+    "Page 46 permits a single merged widget while page 47 describes it as merged in the procedure. Both legal native representations are kept; no universal merge requirement is inferred.",
+    "Acrobat 9 implementation note E-7 specifies a 255-widget limit and particular flags/background. The default processing budget is 255; no universal PDF widget-count limit, flags or background is imposed.",
+    "No JavaScript calculation, automatic user-input observation, file-URL Caption discovery, encryption convention, scanner reassembly protocol or external-document rewriting is performed. A changed V requires a new explicit preparation."
+  ]
+}
