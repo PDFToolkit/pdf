@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 120 distinct annotations across 62 issues. A polygon `Path` ignores
+and approval reply chains for 121 distinct annotations across 63 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -180,3 +180,5 @@ retain their explicit edition metadata. These are schema and native-object check
 not certificate trust decisions or viewer rendering claims. The independently
 reviewed native radio, pushbutton and null text-value corrections are linked to
 their executable tests in the exact-anchor register.
+
+EC3 #549 permits path-painting operators without a current path as no-ops. Text-object and malformed construction/clipping boundaries remain checked. Six additional PDFs compare baseline and empty-path variants with qpdf, pypdf and identical Poppler pixels in all three cross-reference formats.

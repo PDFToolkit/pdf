@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 120 annotations distinctes couvrant 62 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 121 annotations distinctes couvrant 63 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -198,3 +198,5 @@ natifs ne prouvent ni la confiance des certificats ni le rendu d’une visionneu
 Les corrections natives examinées séparément pour les boutons radio, boutons
 poussoirs et valeurs textuelles nulles sont reliées à leurs tests exécutables dans
 le registre des ancres exactes.
+
+EC3 #549 accepte les opérateurs de peinture sans chemin courant comme des opérations sans effet. Les frontières des objets texte et les constructions/découpages mal formés restent contrôlés. Six PDF supplémentaires comparent les variantes de référence et sans chemin avec qpdf, pypdf et des pixels Poppler identiques dans les trois formats de références croisées.

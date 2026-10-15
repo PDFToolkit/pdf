@@ -132,6 +132,28 @@ final class ContentStreamsTest extends TestCase
         self::assertSame("BX\nEX\n", (string) $finished);
     }
 
+    #[DataProvider('pathPaintingOperators')]
+    public function testPaintingWithoutACurrentPathIsANoop(Operator $operator): void
+    {
+        self::assertSame($operator->symbol() . "\n", (string) new ContentStreams($operator));
+        $content = new ContentStreams(new Op\MoveTo(new NumericType(0), new NumericType(0)), new Op\LineTo(new NumericType(10), new NumericType(10)), new Op\StrokePath(), $operator);
+        self::assertStringEndsWith("S\n" . $operator->symbol() . "\n", (string) $content);
+    }
+
+    #[DataProvider('pathPaintingOperators')]
+    public function testEmptyPathPaintingRemainsProhibitedInsideText(Operator $operator): void
+    {
+        $this->expectException(\LogicException::class);
+        (new ContentStreams(new Op\BeginTextObject(), $operator, new Op\EndTextObject()))->validate();
+    }
+
+    public static function pathPaintingOperators(): iterable
+    {
+        foreach ([Op\StrokePath::class, Op\CloseAndStrokePath::class, Op\FillPathNonzero::class, Op\FillPathNonzeroObsolete::class, Op\FillPathEvenOdd::class, Op\FillAndStrokePathNonzero::class, Op\FillAndStrokePathEvenOdd::class, Op\CloseFillAndStrokePathNonzero::class, Op\CloseFillAndStrokePathEvenOdd::class, Op\EndPath::class] as $class) {
+            yield [new $class()];
+        }
+    }
+
     /** @return iterable<string, array{ContentStreams}> */
     public static function invalidSequences(): iterable
     {

@@ -32,6 +32,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--php", required=True)
     parser.add_argument("--qpdf", required=True)
+    parser.add_argument("--pdftoppm", default="pdftoppm")
     parser.add_argument("--work-dir", type=Path, required=True)
     arguments = parser.parse_args()
     source = Path(__file__).resolve().parents[1]
@@ -146,6 +147,23 @@ def main() -> None:
             assert assets[1].get_object()["/EF"]["/F"].get_data() == b"// Deliberately empty script."
         media_paths.append(path)
 
+    empty_paths = []
+    for format_name in ("table", "stream", "hybrid"):
+        rendered = []
+        for kind in ("baseline", "empty"):
+            path = output / f"path-painting-{format_name}-{kind}.pdf"
+            run(arguments.php, str(source / "tools/fixtures/empty-path-painting.php"), str(path), format_name, kind)
+            run(arguments.qpdf, "--check", str(path))
+            pdf = PdfReader(path, strict=True)
+            operators = [operator for _, operator in ContentStream(pdf.pages[0].get_contents(), pdf).operations]
+            if kind == "empty":
+                assert operators[:10] == [b"S", b"s", b"f", b"F", b"f*", b"B", b"B*", b"b", b"b*", b"n"]
+            prefix = path.with_suffix("")
+            run(arguments.pdftoppm, "-r", "72", "-singlefile", str(path), str(prefix))
+            rendered.append(prefix.with_suffix(".ppm").read_bytes())
+            empty_paths.append(path)
+        assert rendered[0] == rendered[1], "Empty-path operators must not alter pixels or repaint a completed path"
+
     wrapper = PdfReader(wrapper_path)
     assert not wrapper.is_encrypted and len(wrapper.pages) == 1
     wrapper_root = wrapper.trailer["/Root"]
@@ -166,7 +184,7 @@ def main() -> None:
     run(arguments.qpdf, "--check", str(decrypted_path))
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
-    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations and script asset identity in all three xref formats", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths)}}
+    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations and script asset identity in all three xref formats", "independent AES-256 R6 decryption", "EC3 empty-path painting leaves Poppler pixels unchanged in all three xref formats"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths, *empty_paths)}}
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

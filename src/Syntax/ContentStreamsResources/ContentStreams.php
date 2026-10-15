@@ -112,9 +112,10 @@ readonly class ContentStreams implements \Stringable, \Countable, \IteratorAggre
                 continue;
             }
             if (in_array($symbol, $painting, true)) {
-                if (!$path || $text) {
-                    throw new \LogicException('Path painting requires a path outside a text object.');
+                if ($text) {
+                    throw new \LogicException('Path painting is prohibited inside a text object.');
                 }
+                // ISO 32000-2 EC3 #549, physical p.187: no current path means no painting.
                 $path = false;
                 $clip = false;
                 continue;

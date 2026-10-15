@@ -2703,6 +2703,27 @@
         "tests/SignatureSeedEc3Test.php",
         "tools/validate_iso32000_crypto.py"
       ]
+    },
+    {
+      "issue": 549,
+      "physical_pdf_page": 187,
+      "annotation_name": "8cda45bb-42ed-4fed-8217fc8518d75b48",
+      "approval_chain": [
+        "8e5b083d-d120-4ee4-b0c992d7a04ea988"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "Path-painting operators with no current path are preserved as no-ops rather than rejected. Painting inside a text object and construction/clipping without a valid current path remain invalid. Independent Poppler renders verify unchanged pixels before and after a painted path, under all three cross-reference formats.",
+      "implementation": [
+        "src/Syntax/ContentStreamsResources/ContentStreams.php"
+      ],
+      "validation": [
+        "tests/ContentStreamsTest.php",
+        "tools/fixtures/empty-path-painting.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
     }
   ]
 }
