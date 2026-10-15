@@ -46,6 +46,9 @@ final readonly class Type1FormDictionaryTable93Definition extends TableDefinitio
                 new EntryDefinition('PtData', new ObjectTypeConstraint('dictionary', indirect: false, direct: false, fixedName: null), new Requirement('Optional; PDF 2.0', false, false, false, '2.0'), new SourceReference('93', '8.10.2', 289, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; PDF 2.0) A point data dictionary (see "Table 272 — Entries in a point data dictionary") that specifies the extended geospatial data that shall apply to the form.'),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('form-structure-parent-exclusion', new SourceReference('93', '8.10.2', 288, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\ConditionalEntries(conditionKey: 'StructParent', prohibited: ['StructParents'])),
+            ],
         );
     }
 }

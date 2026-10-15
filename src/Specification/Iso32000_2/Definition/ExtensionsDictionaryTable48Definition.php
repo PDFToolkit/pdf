@@ -29,6 +29,9 @@ final readonly class ExtensionsDictionaryTable48Definition extends TableDefiniti
                 new EntryDefinition('Prefix name', new ObjectTypeConstraint('array or dictionary', indirect: false, direct: true, fixedName: null), new Requirement('Required; PDF 1.7; shall be a direct object', true, false, false, '1.7'), new SourceReference('48', '7.12.2', 157, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required; PDF 1.7; shall be a direct object) A developer extensions dictionary, or an array of developer extension dictionaries (PDF 2.0), denoting extensions used (See "Table 49 — Entries in a developer extensions dictionary"). The key shall be a registered prefix name as described in Annex E, “Extending PDF". This entry is repeated for each different developer’s extensions used. Multiple distinct registered prefix names for different developers may be used for each different developer’s extensions used. See Example 3 below. NOTE Arrays of developer extension dictionaries were introduced in this document (2020).', variable: true),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('extensions-direct-objects', new SourceReference('48', '7.12.2', 157, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\DirectDictionaryObjects()),
+            ],
         );
     }
 }

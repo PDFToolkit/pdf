@@ -30,6 +30,9 @@ final readonly class EmbeddedFileStreamDictionaryTable44Definition extends Table
                 new EntryDefinition('Params', new ObjectTypeConstraint('dictionary', indirect: false, direct: false, fixedName: null), new Requirement('Optional, required in the case of an embedded file stream used as an associated file', false, true, false, null), new SourceReference('44', '7.11.4.1', 153, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional, required in the case of an embedded file stream used as an associated file) An embedded file parameter dictionary that shall contain additional file- specific information (see "Table 45 — Entries in an embedded file parameter dictionary").'),
             ],
             [new StreamDictionaryTable5Definition()],
+            [
+                new \PDF\Specification\SemanticRule('embedded-file-media-type', new SourceReference('44', '7.11.4.1', 153, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\EmbeddedFileSubtype()),
+            ],
         );
     }
 }

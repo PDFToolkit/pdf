@@ -1,53 +1,95 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_document": "ISO_32000-2_sponsored_EC3.pdf",
   "source_path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
   "source_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
-  "scope": "Explicitly reviewed native semantic corrections in addition to the entry-level reviewed overrides. Unlisted annotations retain their unresolved review status.",
+  "scope": "Reviewed native semantic corrections identified per source annotation, not merely per issue. Several annotations may implement separate parts of one issue. The exhaustive annotation inventory tracks unlisted anchors separately; neither inventory nor an entry-level overlay proves semantic implementation.",
   "reviews": [
     {
       "issue": 246,
       "physical_pdf_page": 81,
       "annotation_name": "f51092e5-d40c-4f05-a048-e382c8de7ec8",
-      "approval_chain": ["89e3a689-f725-4523-9c42-f09b30fdbc5b", "a4875418-f093-4905-b8eb-613b2dc89305", "d76dfdb4-5da7-4ce6-8163f5555355da91"],
-      "approval_states": ["Completed", "Accepted", "Completed"],
+      "approval_chain": [
+        "89e3a689-f725-4523-9c42-f09b30fdbc5b",
+        "a4875418-f093-4905-b8eb-613b2dc89305",
+        "d76dfdb4-5da7-4ce6-8163f5555355da91"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
       "effective_approval": "Completed",
       "implemented_scope": "All common stream entry values and recursively contained array/dictionary values in cross-reference streams are direct; F is prohibited. Trailer Root and Encrypt references remain permitted.",
-      "implementation": ["src/Specification/Constraint/CrossReferenceDirectObjects.php"],
-      "validation": ["tests/SpecificationSemanticsTest.php"]
+      "implementation": [
+        "src/Specification/Constraint/CrossReferenceDirectObjects.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ]
     },
     {
       "issue": 403,
       "physical_pdf_page": 81,
       "annotation_name": "f860cfd8-e218-48fe-8fb579822cdbe4de",
-      "approval_chain": ["731ff327-61f2-4377-9987d1bc6522062e", "0bfead54-bc3d-432b-ba5a7e0edb1e2a5c"],
-      "approval_states": ["Accepted", "Completed"],
+      "approval_chain": [
+        "731ff327-61f2-4377-9987d1bc6522062e",
+        "0bfead54-bc3d-432b-ba5a7e0edb1e2a5c"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
       "effective_approval": "Completed",
       "implemented_scope": "Cross-reference streams cannot carry Metadata or associated files, including unknown-key extension entries in generated schemas.",
-      "implementation": ["src/Specification/Constraint/CrossReferenceDirectObjects.php"],
-      "validation": ["tests/SpecificationSemanticsTest.php"]
+      "implementation": [
+        "src/Specification/Constraint/CrossReferenceDirectObjects.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ]
     },
     {
       "issue": 444,
       "physical_pdf_page": 507,
       "annotation_name": "3545c186-27a7-45f8-b660f6293c3f9046",
-      "approval_chain": ["8b3584a4-49cb-4bbf-a6be81d670199f83", "8e499a20-10a5-4e51-8ebc4c806401e728"],
-      "approval_states": ["Accepted", "Completed"],
+      "approval_chain": [
+        "8b3584a4-49cb-4bbf-a6be81d670199f83",
+        "8e499a20-10a5-4e51-8ebc4c806401e728"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
       "effective_approval": "Completed",
       "implemented_scope": "A polygon/polyline Path takes precedence over Vertices. The original grid's prohibition is not enforced: accompanying Vertices are ignored, even if they are not numeric coordinates. Path validates the initial moveto and subsequent line/curve operand lengths.",
-      "implementation": ["src/Specification/Constraint/AnnotationPath.php"],
-      "validation": ["tests/SpecificationSemanticsTest.php"]
+      "implementation": [
+        "src/Specification/Constraint/AnnotationPath.php"
+      ],
+      "validation": [
+        "tests/SpecificationSemanticsTest.php"
+      ]
     },
     {
       "issue": 468,
       "physical_pdf_page": 558,
       "annotation_name": "3ac564e9-d046-4884-8dcf3951e32b1dae",
-      "approval_chain": ["ef4ce228-0ecd-470b-b0bdb2f80d98439c"],
-      "approval_states": ["Accepted"],
+      "approval_chain": [
+        "ef4ce228-0ecd-470b-b0bdb2f80d98439c"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
       "effective_approval": "Accepted",
       "implemented_scope": "PDF 2.0 choice indices are allowed without MultiSelect. Distinct display names sharing an export value require explicit indices. Effective header/catalog version validation preserves the PDF 1.7 restriction. V remains authoritative if V and I disagree.",
-      "implementation": ["src/Document/Forms/ChoiceField.php", "src/Specification/Constraint/ChoiceOptions.php"],
-      "validation": ["tests/ChoiceFieldEc3Test.php", "tests/SpecificationSemanticsTest.php"]
+      "implementation": [
+        "src/Document/Forms/ChoiceField.php",
+        "src/Specification/Constraint/ChoiceOptions.php"
+      ],
+      "validation": [
+        "tests/ChoiceFieldEc3Test.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
     },
     {
       "issue": 22,
@@ -87,6 +129,336 @@
       "validation": [
         "tests/AnnotationAppearanceGraphTest.php",
         "tools/validate_annotation_appearances.py"
+      ]
+    },
+    {
+      "issue": 30,
+      "physical_pdf_page": 143,
+      "annotation_name": "fe98314f-20e1-418c-9695-29c546a260b9",
+      "approval_chain": [
+        "bbaf66f2-e11d-44ca-836d-a90dfa88eb98"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Exponential function dictionaries enforce the domain restrictions already enforced by the native builder: fractional N excludes negative x; negative N excludes zero.",
+      "implementation": [
+        "src/Specification/Constraint/FunctionDimensions.php",
+        "src/Functions/ExponentialInterpolationFunction.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 155,
+      "physical_pdf_page": 153,
+      "annotation_name": "d4a030fc-c111-411a-ab7a133a5ad0b309",
+      "approval_chain": [
+        "daadf496-0534-4a82-813d313710a7143f"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "PDF2 embedded-file Subtype names contain a MIME type/subtype without parameters, semicolon, equals or number sign. The associated-file graph, native PDF2 version gate and ISO2 schemas share the immutable media type object. PDF1.7 native first-class names remain possible.",
+      "implementation": [
+        "src/Document/Files/EmbeddedFileMediaType.php",
+        "src/Document/Files/EmbeddedFileStream.php",
+        "src/Document/Files/AssociatedFilesGraphValidation.php",
+        "src/Specification/Constraint/EmbeddedFileSubtype.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 403,
+      "physical_pdf_page": 157,
+      "annotation_name": "e11ef1c3-c73d-4da3-bdef71450c3b989f",
+      "approval_chain": [
+        "1a8c6a1c-7b63-4731-bc3c8fcee01c8431",
+        "5681bce1-d277-4977-bc9b13602c37e7b3"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Extensions and developer extensions schemas enforce recursively direct objects including custom entries, bounded traversal and prohibit Metadata/AF.",
+      "implementation": [
+        "src/Specification/Constraint/DirectDictionaryObjects.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 403,
+      "physical_pdf_page": 899,
+      "annotation_name": "a760e2a2-5fdc-4541-9196159f202f2b01",
+      "approval_chain": [
+        "e73893c6-3a77-474f-b6db3fecc59ce2cc",
+        "36f8a803-8460-41f6-b7a9a8842473196d"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The linearization parameter schema enforces recursively direct objects including custom entries and prohibits Metadata/AF. The native writer constructs only managed direct parameters.",
+      "implementation": [
+        "src/Specification/Constraint/DirectDictionaryObjects.php",
+        "src/Syntax/Linearization/LinearizationParameters.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 403,
+      "physical_pdf_page": 583,
+      "annotation_name": "9321e4f7-5b42-4778-a467caf63bd85d35",
+      "approval_chain": [
+        "462b93d3-0e88-4eef-9476c5bf19d06535",
+        "b959ee0d-18c6-42e5-97c3c3cf5280705b"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The signature schema prohibits Metadata/AF when ByteRange is present. Native pending signatures reject those entries; legitimate nested Signature Reference Data references are not recursively prohibited.",
+      "implementation": [
+        "src/Specification/Constraint/ConditionalEntries.php",
+        "src/Document/Signatures/PendingSignatureDictionary.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 307,
+      "physical_pdf_page": 135,
+      "annotation_name": "e044e27e-0179-437c-ac95-7cd77602587d",
+      "approval_chain": [
+        "88f008dc-e2d7-4cbc-8ab6-abad43de6b7f",
+        "b1ca62e5-fad9-4e7c-94c8-e0977edbb5cc",
+        "64843499-41b3-4949-8a63ebb2423f01d5"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Name tree node schemas require complete, strictly byte-lexically ordered string-key/value pairs, reject direct or indirect null keys, and preserve null values. Whole-tree uniqueness and limits are separate native graph mechanisms.",
+      "implementation": [
+        "src/Specification/Constraint/TreeKeyPairs.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 307,
+      "physical_pdf_page": 137,
+      "annotation_name": "e9c5515e-72fb-4a76-a5a4-5c0599b9bfb4",
+      "approval_chain": [
+        "2d6f8203-298c-48bc-9331-e291c3377496",
+        "fad1ce61-c046-4e9d-aa59-bdb79f41c741",
+        "7a06dcd9-03d9-4c40-82c1a419d8dcaeaf"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Number tree node schemas require complete, strictly numerically ordered integer-key/value pairs, reject direct or indirect null keys, and preserve null values.",
+      "implementation": [
+        "src/Specification/Constraint/TreeKeyPairs.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 738,
+      "annotation_name": "be1f5b91-5b27-4c24-994b-558694351a7d",
+      "approval_chain": [
+        "e3fe77e9-f6d7-4b7b-b26e-fa1960950b63",
+        "4be00a1c-f4ff-4fee-ab68-1dee77f8c31a",
+        "9231b85f-9004-49d3-8151c2a18474a658"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure tree root K rejects an explicit null value or null array members, including indirect null targets.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 740,
+      "annotation_name": "824a2977-2bdf-4758-ba69-31e0ba122997",
+      "approval_chain": [
+        "1ee82575-d92f-4f78-8212-010975092afb",
+        "07b95bda-6db0-45f4-9120-fa674733a229",
+        "c23f8ed4-8c2f-4ead-9b431c70879667f6"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure element Ref rejects null members, including indirect null targets; an empty Ref array remains allowed.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 740,
+      "annotation_name": "5afb8cfe-cc22-4a6a-a0b1-34edcb13b869",
+      "approval_chain": [
+        "2654d331-b0b1-4fb2-b2d4-1766cce06c3e",
+        "88cdcd9e-09ba-4f1b-b31d-8d9952557bec",
+        "bfc90b6f-9fcb-4271-a1643e22db5b368e"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure element K rejects explicit null and null members; integer zero remains a valid MCID.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 741,
+      "annotation_name": "2cebad87-ff56-4bc9-a1bb-f5180abf1ce8",
+      "approval_chain": [
+        "3bf3ba25-8a82-4ca6-9572-1184c951b702",
+        "b133c68f-c49f-4308-8673-adf1d1382629",
+        "26ea650b-6b4c-4ebd-bc72d8e5566d09f7"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure element A rejects null attribute objects and revisions; revision zero remains allowed.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 741,
+      "annotation_name": "83d11e96-7058-4259-b001-371b82f72cd1",
+      "approval_chain": [
+        "cb32631f-83bd-4b2e-8c0d-e13abc626499",
+        "26e440c3-6c00-4568-a970-7b6ed0e4a5dd",
+        "77f853c9-367c-4ef6-bd5f8c8f87dd1299"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure element C rejects null class names and revisions; revision zero remains allowed.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 308,
+      "physical_pdf_page": 739,
+      "annotation_name": "89cec74e-f828-47cd-a622-fac6cb1ef42f",
+      "approval_chain": [
+        "be4e7028-a035-456a-81e4-f564133f7d3f",
+        "aec52a4b-5a83-424f-9974-62d6e4abc2ba",
+        "5222abe9-28c1-4666-807f7fc8e7ef4592"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Null holes in ParentTree value arrays remain allowed: non-null structure-member checks do not recurse into ParentTree values.",
+      "implementation": [
+        "src/Specification/Constraint/NonNullStructureEntries.php",
+        "src/Specification/Constraint/TreeKeyPairs.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 463,
+      "physical_pdf_page": 288,
+      "annotation_name": "849acf94-740c-4e3e-9ad9fa7019cf4ab5",
+      "approval_chain": [
+        "226127c4-ad19-4d28-93cf0618e04e4d93"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Form XObject schemas prohibit simultaneous effective StructParent and StructParents, preserving dictionary-null-as-absence and zero keys.",
+      "implementation": [
+        "src/Specification/Constraint/ConditionalEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
+      ]
+    },
+    {
+      "issue": 463,
+      "physical_pdf_page": 750,
+      "annotation_name": "162a2c10-b035-438c-bf12e3ea79fdee28",
+      "approval_chain": [
+        "93883abb-3acb-4814-8363ed0bb2e680ec"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Structure element access schemas prohibit simultaneous effective StructParent and StructParents.",
+      "implementation": [
+        "src/Specification/Constraint/ConditionalEntries.php"
+      ],
+      "validation": [
+        "tests/Ec3SemanticCorrectionsTest.php"
       ]
     }
   ]

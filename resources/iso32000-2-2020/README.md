@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **99 executable intrinsic rules across 33
+`semantic-rules.json` now supplies **110 executable intrinsic rules across 44
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for issues 22, 124, 246, 403, 444 and 468. A polygon `Path` ignores
+and approval reply chains for 21 distinct annotations across 11 issues (22, 30, 124, 155, 246, 307, 308, 403, 444, 463 and 468). A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -78,7 +78,23 @@ with different display names require it, and an array `/V` alone does not requir
 it. The effective document version still gates PDF 2.0 construction. Historical
 `Pdf17` construction remains the default. If additional field entries were passed
 positionally, supply `indexSemantics` first or use the named `entries` argument.
-The PDF2 annotation graph additionally executes the AP requirement and its point/subtype exceptions (#22/#124); see [appearance checks](../annotation-appearances/README.md). These six reviews do not mark the remaining EC3 annotations as implemented.
+The PDF2 annotation graph additionally executes the AP requirement and its point/subtype exceptions (#22/#124); see [appearance checks](../annotation-appearances/README.md). These reviews do not mark other annotations belonging to the same issue as implemented.
+
+The additional corrections validate fractional/negative exponents against their
+complete domains; parameter-free embedded-file MIME names without `#`; recursively
+direct extensions and linearization declarations, including custom keys; signature
+`ByteRange` exclusions for `Metadata`/`AF`; ordered non-null name/number-tree keys;
+non-null structure children/attributes/classes; and exclusive `StructParent` and
+`StructParents`. Null values in tree mappings and null holes in `ParentTree` arrays
+remain allowed. PDF 1.7 embedded-file first-class names retain their earlier rules;
+a catalog upgrade to PDF 2.0 activates the corrected MIME restriction.
+
+[ec3-annotation-inventory.json](ec3-annotation-inventory.json) inventories all 761
+named issue anchors across 356 issues in the retained source. Physical page and
+object identity disambiguate the source's duplicated annotation name on pages 616
+and 621. Approval of a source correction is distinct from implementation evidence.
+Unlisted semantic anchors remain unresolved; this inventory is not a conformance
+claim or an automatic semantic classification.
 
 Regenerate from retained evidence and compare PHP objects without PDF extraction
 dependencies:

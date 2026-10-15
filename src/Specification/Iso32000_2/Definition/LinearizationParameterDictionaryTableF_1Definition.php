@@ -35,6 +35,9 @@ final readonly class LinearizationParameterDictionaryTableF_1Definition extends 
                 new EntryDefinition('P', new ObjectTypeConstraint('integer', indirect: false, direct: false, fixedName: null), new Requirement('Optional', false, false, false, null), new SourceReference('F.1', 'F.3.3', 900, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional) The page number of the first page; see F.3.4, "First-page cross-reference table and trailer (Part 3)". Default value: 0.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('linearization-direct-objects', new SourceReference('F.1', 'F.3.3', 899, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\DirectDictionaryObjects()),
+            ],
         );
     }
 }

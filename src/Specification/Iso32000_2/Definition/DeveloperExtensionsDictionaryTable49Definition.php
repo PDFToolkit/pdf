@@ -32,6 +32,9 @@ final readonly class DeveloperExtensionsDictionaryTable49Definition extends Tabl
                 new EntryDefinition('ExtensionRevision', new ObjectTypeConstraint('text string', indirect: false, direct: true, fixedName: null), new Requirement('Optional; PDF 2.0; shall be a direct object if present', false, true, false, '2.0'), new SourceReference('49', '7.12.3', 157, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; PDF 2.0; shall be a direct object if present) An optional text string that provides additional revision information on the extension level being used. NOTE The ExtensionRevision key was introduced in this document (2020).'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('developer-extensions-direct-objects', new SourceReference('49', '7.12.3', 157, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\DirectDictionaryObjects()),
+            ],
         );
     }
 }

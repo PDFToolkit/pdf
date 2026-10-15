@@ -37,6 +37,9 @@ final readonly class StructureTreeRootTable354Definition extends TableDefinition
                 new EntryDefinition('AF', new ObjectTypeConstraint('array of dictionaries', indirect: false, direct: false, fixedName: null), new Requirement('Optional; PDF 2.0', false, false, false, '2.0'), new SourceReference('354', '14.7.2', 739, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; PDF 2.0) An array of one or more file specification dictionaries (7.11.3, "File specification dictionaries") which denote the associated files for the entire structure tree. See 14.13, "Associated files".'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('structure-root-no-null-kids', new SourceReference('354', '14.7.2', 738, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\NonNullStructureEntries(keys: ['K'])),
+            ],
         );
     }
 }

@@ -30,6 +30,9 @@ final readonly class NameTreeNodeDictionaryTable36Definition extends TableDefini
                 new EntryDefinition('Limits', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Required for intermediate and leaf nodes; not permitted in root nodes', true, true, false, null), new SourceReference('36', '7.9.6', 135, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Required for intermediate and leaf nodes; not permitted in root nodes) Shall be an array of two strings, that shall specify the (lexically) least and greatest keys included in the Names array of a leaf node or in the Names arrays of any leaf nodes that are descendants of an intermediate node.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('name-tree-key-pairs', new SourceReference('36', '7.9.6', 135, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\TreeKeyPairs()),
+            ],
         );
     }
 }

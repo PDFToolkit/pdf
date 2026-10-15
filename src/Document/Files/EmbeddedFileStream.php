@@ -38,5 +38,9 @@ final class EmbeddedFileStream extends StreamObject implements VersionedComponen
     public function validateVersion(EffectivePdfVersion $version): void
     {
         $version->require(PdfVersion::PDF13, 'Embedded files');
+        $subtype = $this->dictionary()->get('Subtype');
+        if ($version->value === PdfVersion::PDF20 && $subtype instanceof NameType) {
+            new EmbeddedFileMediaType($subtype);
+        }
     }
 }

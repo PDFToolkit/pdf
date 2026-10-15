@@ -69,9 +69,10 @@ final readonly class AssociatedFilesGraphValidation
                 $stream = $projection->dictionary($binding->value) ?? throw new \InvalidArgumentException('Associated embedded-file bindings require streams.');
                 $subtype = $projection->entry($stream, 'Subtype');
                 $subtype = $subtype === null ? null : $projection->resolve($subtype);
-                if (!$subtype instanceof NameType || preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+/[!#$%&'*+.^_`|~0-9A-Za-z-]+$@D", $subtype->value) !== 1) {
+                if (!$subtype instanceof NameType) {
                     throw new \InvalidArgumentException('An associated embedded-file stream requires a valid MIME Subtype name; use application/octet-stream if unknown.');
                 }
+                new EmbeddedFileMediaType($subtype);
                 $parameters = $projection->entry($stream, 'Params');
                 if ($parameters !== null) {
                     $parameters = $projection->dictionary($parameters) ?? throw new \InvalidArgumentException('Associated embedded-file Params must be a dictionary.');

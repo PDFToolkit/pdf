@@ -3393,11 +3393,15 @@
           77,
           81,
           82,
+          135,
+          137,
           139,
           140,
           141,
           143,
           144,
+          153,
+          157,
           201,
           202,
           204,
@@ -3416,6 +3420,7 @@
           274,
           275,
           276,
+          288,
           488,
           489,
           494,
@@ -3429,7 +3434,14 @@
           508,
           556,
           557,
-          558
+          558,
+          583,
+          738,
+          739,
+          740,
+          741,
+          750,
+          899
         ],
         "clauses": [
           "7.3.8",
@@ -3443,13 +3455,18 @@
           "12.7.4.4"
         ],
         "errata": [
+          30,
+          155,
           246,
+          307,
+          308,
           403,
           444,
+          463,
           468
         ]
       },
-      "implemented_scope": "99 explicitly authored immutable intrinsic rules across33 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations.",
+      "implemented_scope": "110 explicitly authored immutable intrinsic rules across 44 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries.",
       "implementation_files": [
         "src/Specification/DictionaryConstraint.php",
         "src/Specification/SemanticRule.php",
@@ -3461,15 +3478,21 @@
         "src/Specification/Constraint/AnnotationPath.php",
         "src/Specification/Constraint/ChoiceOptions.php",
         "src/Document/Forms/ChoiceField.php",
-        "src/Document/Forms/ChoiceIndexSemantics.php"
+        "src/Document/Forms/ChoiceIndexSemantics.php",
+        "src/Document/Files/EmbeddedFileMediaType.php",
+        "src/Specification/Constraint/EmbeddedFileSubtype.php",
+        "src/Specification/Constraint/DirectDictionaryObjects.php",
+        "src/Specification/Constraint/TreeKeyPairs.php",
+        "src/Specification/Constraint/NonNullStructureEntries.php"
       ],
       "validation_files": [
         "tests/SpecificationSemanticsTest.php",
         "tests/ChoiceFieldEc3Test.php",
-        "tools/validate_ec3_semantic_reviews.py"
+        "tools/validate_ec3_semantic_reviews.py",
+        "tests/Ec3SemanticCorrectionsTest.php"
       ],
       "limits": [
-        "These99rules do not close every conditional requirement in1709entries, every payload algorithm, resource-dependent constraint or document-profile check.",
+        "These 110 rules do not close every conditional requirement in 1709 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
         "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
         "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated."
       ]
@@ -3540,10 +3563,11 @@
   },
   "native_semantic_rules": {
     "resource": "semantic-rules.json",
-    "rule_count": 99,
-    "source_tables": 33,
+    "rule_count": 110,
+    "source_tables": 44,
     "runtime": "Immutable semantic rule composition executed during SchemaDictionary validation and serialization",
     "ec3_reviews": "ec3-semantic-reviews.json",
-    "remaining_ec3_review": "unlisted annotations remain unresolved"
+    "remaining_ec3_review": "unlisted annotations remain unresolved",
+    "ec3_annotation_inventory": "ec3-annotation-inventory.json"
   }
 }

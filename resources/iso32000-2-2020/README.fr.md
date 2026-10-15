@@ -65,8 +65,8 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
-`semantic-rules.json` fournit maintenant **99 règles intrinsèques exécutables
-réparties sur 33 tableaux source**, héritées par leurs définitions dérivées.
+`semantic-rules.json` fournit maintenant **110 règles intrinsèques exécutables
+réparties sur 44 tableaux source**, héritées par leurs définitions dérivées.
 Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
 des fonctions, les paramètres de filtres, les sections de références croisées,
 les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
@@ -75,8 +75,8 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour les problèmes
-22, 124, 246, 403, 444 et 468. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 21 annotations distinctes couvrant 11 problèmes
+(22, 30, 124, 155, 246, 307, 308, 403, 444, 463 et 468). Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -86,8 +86,26 @@ La construction historique `Pdf17` reste utilisée par défaut. Si des entrées 
 champ supplémentaires étaient passées par position, fournir d’abord
 `indexSemantics` ou utiliser l’argument nommé `entries`. Le graphe des annotations
 PDF2 exécute aussi l’exigence AP et ses exceptions de point/sous-type (#22/#124) ;
-voir les [contrôles d’apparence](../annotation-appearances/README.fr.md). Ces six
-revues ne déclarent pas implémentées les autres annotations EC3.
+voir les [contrôles d’apparence](../annotation-appearances/README.fr.md). Ces revues ne déclarent pas implémentées les autres annotations du même problème.
+
+Les corrections supplémentaires contrôlent les exposants fractionnaires/négatifs
+sur tout leur domaine ; les noms MIME de fichiers embarqués sans paramètres ni
+`#` ; les déclarations d’extensions et de linéarisation entièrement directes, y
+compris leurs clés privées ; les exclusions `Metadata`/`AF` des signatures avec
+`ByteRange` ; les clés non nulles et ordonnées des arbres ; les enfants, attributs
+et classes structurels non nuls ; et l’exclusion mutuelle de `StructParent` et
+`StructParents`. Les valeurs nulles des arbres et les trous nuls de `ParentTree`
+restent autorisés. Les noms de première classe des fichiers embarqués PDF 1.7
+conservent leurs règles ; une promotion du catalogue vers PDF 2.0 active la
+restriction MIME corrigée.
+
+[ec3-annotation-inventory.json](ec3-annotation-inventory.json) inventorie les 761
+ancres de problèmes correspondant à 356 numéros dans la source conservée. La page
+physique et l’identité d’objet distinguent le nom d’annotation dupliqué dans la
+source aux pages 616 et 621. L’approbation d’une correction source est distincte
+de sa preuve d’implémentation. Les ancres absentes du registre sémantique restent
+non résolues ; cet inventaire n’est ni une preuve de conformité ni une
+classification sémantique automatique.
 
 Pour reconstruire à partir des preuves conservées et comparer les objets PHP,
 sans dépendances d’extraction PDF :

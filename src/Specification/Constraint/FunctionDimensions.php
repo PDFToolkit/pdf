@@ -8,6 +8,7 @@ use PDF\Specification\DictionaryConstraint;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IntegerType;
+use PDF\Syntax\Object\NumericType;
 
 /** Relations from 7.10; function evaluation remains in the native function objects. */
 final readonly class FunctionDimensions implements DictionaryConstraint
@@ -41,6 +42,16 @@ final readonly class FunctionDimensions implements DictionaryConstraint
             $c1 = $values->numbers($dictionary, 'C1') ?? [1];
             if (count($c0) !== count($c1) || ($range !== null && count($range) !== count($c0) * 2)) {
                 throw new \InvalidArgumentException('/C0, /C1 and /Range output dimensions disagree.');
+            }
+            $exponent = $values->value($dictionary, 'N');
+            if ($exponent instanceof NumericType) {
+                $n = $exponent->value;
+                if (floor($n) !== (float) $n && $domain[0] < 0) {
+                    throw new \InvalidArgumentException('A fractional /N requires a non-negative /Domain.');
+                }
+                if ($n < 0 && $domain[0] <= 0 && $domain[1] >= 0) {
+                    throw new \InvalidArgumentException('A negative /N requires a /Domain that excludes zero.');
+                }
             }
         }
         if ($kind === 3) {

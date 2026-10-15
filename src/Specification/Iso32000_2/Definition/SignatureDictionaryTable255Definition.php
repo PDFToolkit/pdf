@@ -47,6 +47,9 @@ final readonly class SignatureDictionaryTable255Definition extends TableDefiniti
                 new EntryDefinition('Prop_AuthType', new ObjectTypeConstraint('name', indirect: false, direct: false, fixedName: null, nameAlternatives: new NameAlternatives(new NameType('PIN'), new NameType('Password'), new NameType('Fingerprint'))), new Requirement('Optional; PDF 1.5', false, false, false, '1.5'), new SourceReference('255', '12.8.1', 586, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Optional; PDF 1.5) The method that shall be used to authenticate the signer, used in claims of signature repudiation. Valid values shall be PIN, Password, and Fingerprint. If SubFilter is ETSI.RFC3161, this entry shall not be used.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('signature-byte-range-no-metadata-af', new SourceReference('255', '12.8.1', 583, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\ConditionalEntries(conditionKey: 'ByteRange', prohibited: ['Metadata', 'AF'])),
+            ],
         );
     }
 }

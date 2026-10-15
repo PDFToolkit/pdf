@@ -40,7 +40,8 @@ def render_rules(rules: list[dict], source: Callable[[int], str]) -> str:
     kinds = {'NumberEntry', 'NumberArray', 'NameEntry', 'ConditionalEntries', 'FilterParameters',
              'CrossReferenceIndex', 'CrossReferenceDirectObjects', 'CalibratedColour',
              'FunctionDimensions', 'ImageSamples', 'PredictorParameters', 'IccComponents',
-             'AnnotationPath', 'ChoiceOptions'}
+             'AnnotationPath', 'ChoiceOptions', 'DirectDictionaryObjects', 'EmbeddedFileSubtype',
+             'TreeKeyPairs', 'NonNullStructureEntries'}
     expressions = []
     for rule in rules:
         kind = rule['constraint']

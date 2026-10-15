@@ -53,7 +53,7 @@ final class SpecificationSemanticsTest extends TestCase
                 }
                 self::assertTrue($found, $rule['id']);
             }
-            self::assertCount($directory === 'iso32000-1' ? 98 : 99, $identifiers);
+            self::assertCount($directory === 'iso32000-1' ? 98 : 110, $identifiers);
         }
     }
 

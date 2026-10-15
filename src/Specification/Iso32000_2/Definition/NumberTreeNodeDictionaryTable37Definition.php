@@ -30,6 +30,9 @@ final readonly class NumberTreeNodeDictionaryTable37Definition extends TableDefi
                 new EntryDefinition('Limits', new ObjectTypeConstraint('array', indirect: false, direct: false, fixedName: null), new Requirement('Shall be present in Intermediate and leaf nodes only', false, true, false, null), new SourceReference('37', '7.9.7', 138, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), '(Shall be present in Intermediate and leaf nodes only) Shall be an array of two integers, that shall specify the (numerically) least and greatest keys included in the Nums array of a leaf node or in the Nums arrays of any leaf nodes that are descendants of an intermediate node.'),
             ],
             [],
+            [
+                new \PDF\Specification\SemanticRule('number-tree-key-pairs', new SourceReference('37', '7.9.7', 137, 'ISO 32000-2:2020', '90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230', 'ISO_32000-2_sponsored_EC3.pdf', new SourceEdition('iso32000-2:2020', 'ISO 32000-2:2020', '2.0', 'iso32000-2', new ErrataCollection(3, '2026-06-01'))), new \PDF\Specification\Constraint\TreeKeyPairs(numberKeys: true)),
+            ],
         );
     }
 }

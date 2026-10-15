@@ -1224,6 +1224,112 @@
       "arguments": {
         "pdf20Ec3": true
       }
+    },
+    {
+      "id": "embedded-file-media-type",
+      "table": "44",
+      "physical_pdf_page": 153,
+      "constraint": "EmbeddedFileSubtype",
+      "arguments": {}
+    },
+    {
+      "id": "extensions-direct-objects",
+      "table": "48",
+      "physical_pdf_page": 157,
+      "constraint": "DirectDictionaryObjects",
+      "arguments": {}
+    },
+    {
+      "id": "developer-extensions-direct-objects",
+      "table": "49",
+      "physical_pdf_page": 157,
+      "constraint": "DirectDictionaryObjects",
+      "arguments": {}
+    },
+    {
+      "id": "linearization-direct-objects",
+      "table": "F.1",
+      "physical_pdf_page": 899,
+      "constraint": "DirectDictionaryObjects",
+      "arguments": {}
+    },
+    {
+      "id": "name-tree-key-pairs",
+      "table": "36",
+      "physical_pdf_page": 135,
+      "constraint": "TreeKeyPairs",
+      "arguments": {}
+    },
+    {
+      "id": "number-tree-key-pairs",
+      "table": "37",
+      "physical_pdf_page": 137,
+      "constraint": "TreeKeyPairs",
+      "arguments": {
+        "numberKeys": true
+      }
+    },
+    {
+      "id": "structure-root-no-null-kids",
+      "table": "354",
+      "physical_pdf_page": 738,
+      "constraint": "NonNullStructureEntries",
+      "arguments": {
+        "keys": [
+          "K"
+        ]
+      }
+    },
+    {
+      "id": "structure-element-no-null-members",
+      "table": "355",
+      "physical_pdf_page": 740,
+      "constraint": "NonNullStructureEntries",
+      "arguments": {
+        "keys": [
+          "Ref",
+          "K",
+          "A",
+          "C"
+        ]
+      }
+    },
+    {
+      "id": "form-structure-parent-exclusion",
+      "table": "93",
+      "physical_pdf_page": 288,
+      "constraint": "ConditionalEntries",
+      "arguments": {
+        "conditionKey": "StructParent",
+        "prohibited": [
+          "StructParents"
+        ]
+      }
+    },
+    {
+      "id": "structure-parent-exclusion",
+      "table": "359",
+      "physical_pdf_page": 750,
+      "constraint": "ConditionalEntries",
+      "arguments": {
+        "conditionKey": "StructParent",
+        "prohibited": [
+          "StructParents"
+        ]
+      }
+    },
+    {
+      "id": "signature-byte-range-no-metadata-af",
+      "table": "255",
+      "physical_pdf_page": 583,
+      "constraint": "ConditionalEntries",
+      "arguments": {
+        "conditionKey": "ByteRange",
+        "prohibited": [
+          "Metadata",
+          "AF"
+        ]
+      }
     }
   ]
 }
