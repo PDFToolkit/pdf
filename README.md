@@ -106,6 +106,37 @@ indices. Calls passing positional `Entry` values must supply that argument
 before them. `AnnotationAppearanceTransform` executes the corrected
 `Matrix × A` appearance-placement algorithm.
 
+## Contextual validation, barcode appearances and font usage
+
+Version 0.9 validates annotation ownership and markup relationships, remote and
+embedded action targets, and rectilinear measurement/number-format arrays in
+their actual graph context. See the source-linked
+[graph checks](resources/graph-semantics/coverage.json) and their counterexamples.
+These checks do not execute actions or open external files.
+
+[Barcode preparation](resources/barcodes/README.md) preserves the actual field
+bytes, optionally compresses the whole value before dividing it among widgets,
+and constructs full-widget normal appearances through an explicit image-encoding
+capability. The barcode symbology, capacity and scanner behavior belong to the
+selected external encoder.
+
+WTPDF font-usage checks follow only the selected managed Type3 glyph programs,
+with local resources and cumulative budgets. Unused glyph programs do not create
+false embedding failures. ISO 32000-2 excludes Type3 text rendering mode 7 from
+rendering; retained Poppler/PDFium versions behave differently, so the independent
+oracle records this limit rather than claiming visual confirmation for that mode.
+Deprecated PDF 2.0 features are inspected in their normalized graph domains.
+`WtPdfFindingStatus::Recommendation` and `recommendations()` distinguish WTPDF
+SHOULD recommendations from failures and pending human/external validation.
+Provide `WtPdfDeprecatedFileContext` explicitly for trailer/encryption context;
+it is caller-supplied evidence, not authenticated source provenance.
+
+`PdfMacTokenVerifier` verifies tokens using an explicit file key and KDF salt,
+without a random-source dependency. SHA-2 identifiers accept equivalent absent
+or NULL parameters; SHA-3 parameters remain absent. Historical
+`Revision5Permissions` can explicitly represent required MAC policy. Source-file
+authentication is implemented by the optional reader, not by the core parser.
+
 ## Protected incremental revisions
 
 Version 0.8.1 enforces historical DocMDP and FieldMDP restrictions at every
@@ -133,14 +164,14 @@ still require an explicit sanitizer; see the [redaction boundaries](resources/re
 
 ## Installation
 
-Core **0.8** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.9** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.8.1'
+composer require 'roukmoute/pdf:^0.9.0'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -158,12 +189,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Image and font converters are available as **0.1.9**, and the reader as
-**0.3.1**; these releases accept core 0.8 and PHP 8.3 or newer. Composer automatically installs
+Image and font converters are available as **0.1.10**, and the reader as
+**0.3.2**; these releases accept core 0.9 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.9'
+composer require 'pdftoolkit/pdf-images:^0.1.10'
 ```
 
 The module installs the core using its stable constraint. The
@@ -190,8 +221,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.8.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.8 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.9.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.9 series expected by modules.
 Development dependencies use stable 0.1 modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.

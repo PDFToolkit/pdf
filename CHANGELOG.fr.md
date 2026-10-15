@@ -4,6 +4,16 @@
 
 ## [Non publié]
 
+## [0.9.0] - 2026-10-15
+
+- Vérifier les pages propriétaires des annotations, leurs noms par page, réponses/groupes et popups ; vérifier les chemins des actions distantes/embarquées et les tableaux de mesures rectilignes dans leur contexte réel.
+- Préparer les octets exacts du champ code-barres, compresser globalement avant la répartition ordonnée entre widgets et construire AP.N sur leur rectangle complet par un encodeur d’image externe explicite. Garder les algorithmes de symbologie et les scanners hors du core.
+- Inspecter seulement les programmes des glyphes Type3 natifs sélectionnés pour l’usage des polices WTPDF, avec ressources héritées/locales et budgets de récursion cumulés. Respecter les modes non rendus Tr3/Tr7 ; consigner explicitement l’écart du moteur de rendu indépendant en mode 7.
+- Auditer les fonctions PDF 2.0 dépréciées par des contextes de graphe normalisés et bornés, avec contexte fichier explicite optionnel. Séparer les recommandations SHOULD des erreurs et validations en attente ; conserver les programmes opaques, faits de fichier indisponibles et jugements humains comme limites explicites.
+- Ajouter PdfMacTokenVerifier sans composition aléatoire, l’équivalence des paramètres SHA-2 NULL/absents et la protection sémantique des algorithmes CMS. Conserver les contraintes SHA-3, d’enveloppement de clé et de MAC ; représenter l’exigence de MAC dans les permissions historiques de révision 5.
+- Omettre l’entrée dépréciée R des éléments de structure à sa valeur par défaut zéro ; conserver les révisions historiques non nulles explicites et la péremption des attributs.
+- Migration : les match exhaustifs sur WtPdfFindingStatus doivent gérer Recommendation ; lire recommendations() séparément de failures() et pending(). Les appels WtPdfAudit existants restent valides. Verrouiller les dépendances de développement sur les versions publiées images/polices 0.1.10 et lecteur 0.3.2 ; PHP 8.3–8.5 est inchangé.
+
 ## [0.8.1] - 2026-10-15
 
 - Imposer les restrictions historiques DocMDP, FieldMDP et des verrous de champs

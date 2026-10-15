@@ -4,6 +4,16 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-15
+
+- Validate native annotation page ownership, per-page names, replies/grouping and popup relationships; validate remote/embedded action target paths and rectilinear measurement arrays in their real graph context.
+- Prepare exact barcode field bytes, globally compress before ordered widget partitioning and construct full-widget native AP.N using an explicit external image encoder. Keep codec/scanner correctness outside the core.
+- Inspect only selected managed Type3 glyph programs for WTPDF font usage, with inherited/local resources, recursion and cumulative budgets. Preserve the specified non-rendering Tr3/Tr7 behavior; record the independent renderer's mode-7 discrepancy explicitly.
+- Audit deprecated PDF 2.0 features through bounded normalized graph contexts and optional explicit file context. Separate SHOULD recommendations from failures and pending validation; opaque programs, unavailable file facts and human judgment remain explicit.
+- Add PdfMacTokenVerifier without random-source composition, equivalent SHA-2 NULL/absent parameters and semantic CMS algorithm protection. Preserve strict SHA-3 and key-wrapping/MAC parameters; represent required PDF MAC policy in historical revision-5 permissions.
+- Omit the deprecated structure-element R entry when its value is the standard default zero; preserve explicit nonzero historical revisions and attribute staleness semantics.
+- Migration: exhaustive matches over WtPdfFindingStatus must handle Recommendation; inspect recommendations() separately from failures() and pending(). Existing WtPdfAudit calls remain valid. Keep optional development dependencies on published images/fonts 0.1.10 and reader 0.3.2; PHP 8.3–8.5 is unchanged.
+
 ## [0.8.1] - 2026-10-15
 
 - Enforce historical DocMDP, FieldMDP and field locks at the common incremental

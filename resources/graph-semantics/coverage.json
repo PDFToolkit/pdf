@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "document": "PDF32000_2008.pdf",
+      "path": "resources/reference-documents/PDF32000_2008.pdf",
+      "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+      "clauses": [
+        "12.5.2",
+        "12.5.6.2",
+        "12.5.6.14",
+        "12.6.4.3",
+        "12.6.4.4",
+        "12.9"
+      ],
+      "physicalPdfPages": [
+        390,
+        391,
+        399,
+        400,
+        401,
+        413,
+        414,
+        427,
+        428,
+        429,
+        489,
+        490,
+        491
+      ]
+    },
+    {
+      "document": "ISO_32000-2_sponsored_EC3.pdf",
+      "path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
+      "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+      "clauses": [
+        "12.5.2",
+        "12.5.6.2",
+        "12.5.6.14",
+        "12.6.4.3",
+        "12.6.4.4",
+        "12.9.1"
+      ],
+      "physicalPdfPages": [
+        482,
+        483,
+        494,
+        495,
+        510,
+        511,
+        527,
+        528,
+        529,
+        530,
+        612,
+        613,
+        614,
+        615
+      ]
+    }
+  ],
+  "executed": {
+    "annotations": {
+      "classes": [
+        "AnnotationGraphValidation",
+        "AnnotationPageIndex",
+        "PageAnnotation"
+      ],
+      "test": "tests/AnnotationRelationshipsTest.php",
+      "scope": "Actual page Annots ownership, unique NM per page, same-page IRT and RT grouping relationships, parent/popup reciprocal ownership; shared resource object identity does not confer annotation ownership."
+    },
+    "remoteActions": {
+      "classes": [
+        "RemoteActionGraphValidation"
+      ],
+      "test": "tests/RemoteActionRelationshipsTest.php",
+      "scope": "GoToR and GoToE D versus SD destination branches, remote page integers, file requirements and recursively bounded target paths. No I/O or target-file existence inference."
+    },
+    "rectilinearMeasures": {
+      "classes": [
+        "RectilinearMeasureGraphValidation",
+        "NumberFormatGraphValidation"
+      ],
+      "test": "tests/RectilinearMeasureValidationTest.php",
+      "scope": "Normalized RL measure arrays, required units/format members, fractional denominator and origin/CYX relationships. Foreign Measure subtypes remain opaque; no universal positive-C or power-of-ten constraint is invented."
+    }
+  },
+  "validation": {
+    "newTests": 84,
+    "assertions": 132,
+    "runtimes": [
+      "PHP 8.3",
+      "PHP 8.4",
+      "PHP 8.5"
+    ]
+  },
+  "boundaries": [
+    "These graph checks are separate from the 197 intrinsic dictionary rules and the four approved EC3 semantic corrections.",
+    "They do not implement every conditional annotation/action/measurement requirement, execute actions, open external resources, render appearances or establish complete ISO conformance."
+  ]
+}

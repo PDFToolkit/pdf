@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: 0.8.x-dev
+  COMPOSER_ROOT_VERSION: 0.9.x-dev
   COMPOSER_MAX_PARALLEL_HTTP: 4
   PDFTOOLKIT_OPENSSL: /usr/bin/openssl
 
