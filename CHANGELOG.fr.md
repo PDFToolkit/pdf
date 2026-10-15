@@ -4,10 +4,10 @@
 
 ## [Non publié]
 
-## [0.11.0] - Ajouter une sémantique explicite des attributs de structure PDF2 pour Placement contextuel : Figure dans P ou Sect, limites d’héritage de LineHeight et Width/Height requis. Conserver les défauts PDF1.7 historiques et exiger une valeur explicite pour les contextes ambigus ; les contrôles indépendants couvrent les trois formats xref.
-- Imposer le XMP UTF-8 dans les graphes PDF2 effectifs et les mises à niveau par catalogue, avec une preuve d’encodage immuable issue de l’émission conservée entre révisions compressées. Exiger des octets sources décodés ; des métadonnées préencodées opaques ne peuvent inventer cette preuve. Ajouter neuf PDF indépendants UTF-8/révisions couvrant les trois formats xref.
-- 2026-10-15
+## [0.11.0] - 2026-10-15
 
+- Ajouter une sémantique explicite des attributs de structure PDF2 pour Placement contextuel : Figure dans P ou Sect, limites d’héritage de LineHeight et Width/Height requis. Conserver les défauts PDF1.7 historiques et exiger une valeur explicite pour les contextes ambigus ; les contrôles indépendants couvrent les trois formats xref.
+- Imposer le XMP UTF-8 dans les graphes PDF2 effectifs et les mises à niveau par catalogue, avec une preuve d’encodage immuable issue de l’émission conservée entre révisions compressées. Exiger des octets sources décodés ; des métadonnées préencodées opaques ne peuvent inventer cette preuve. Ajouter neuf PDF indépendants UTF-8/révisions couvrant les trois formats xref.
 - Appliquer la priorité des ressources Type3 glyphe → police → page héritée, y compris dans les Form et la validation du graphe figé, avec parcours explicitement borné. Accepter les opérations de peinture sans chemin hors objets texte et exiger un Subtype MIME des pièces jointes RichMedia. Comparer les pixels Type3 avec Poppler et Ghostscript en consignant la divergence isolée du Form imbriqué.
 - Étendre les métriques par classe CID avec FontBBox/FontFamily/FontStretch/FontWeight et produire des métadonnées ToUnicode cohérentes entre dictionnaire et programme depuis un même objet UnicodeCMap explicite.
 - Authentifier les mises à jour UR3 chiffrées avec un mot de passe ou certificat explicite, le vrai gestionnaire de sécurité et les clés de fichier/filtres correspondantes. Croiser permissions CMS ou mot de passe, droits signés, autorisation applicative par mise à jour et restrictions historiques DocMDP/FieldMDP. Appliquer PDF2 P=false/absent et exiger Form.Add pour un nouveau champ de signature.

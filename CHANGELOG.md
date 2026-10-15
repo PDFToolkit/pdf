@@ -4,10 +4,10 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
-## [0.11.0] - Add explicit PDF2 structure-attribute semantics for contextual Placement defaults, including Figure in P versus Sect, inherited line-height boundaries and required Width/Height. Keep historical PDF1.7 defaults and require explicit values for ambiguous contexts; independent output checks cover all three xref formats.
-- Enforce UTF-8 XMP in effective PDF2 graphs and catalog upgrades, preserving immutable same-emission encoding evidence across compressed retained revisions. Require decoded source bytes; opaque pre-encoded metadata cannot invent that evidence. Add nine independent UTF-8/revision PDFs across all three xref formats.
-- 2026-10-15
+## [0.11.0] - 2026-10-15
 
+- Add explicit PDF2 structure-attribute semantics for contextual Placement defaults, including Figure in P versus Sect, inherited line-height boundaries and required Width/Height. Keep historical PDF1.7 defaults and require explicit values for ambiguous contexts; independent output checks cover all three xref formats.
+- Enforce UTF-8 XMP in effective PDF2 graphs and catalog upgrades, preserving immutable same-emission encoding evidence across compressed retained revisions. Require decoded source bytes; opaque pre-encoded metadata cannot invent that evidence. Add nine independent UTF-8/revision PDFs across all three xref formats.
 - Apply Type3 glyph → font → inherited page resource priority, including nested Forms and frozen graph validation; bound resource traversal explicitly. Accept empty path-painting operations outside text objects and require a MIME Subtype for embedded RichMedia assets. Compare Type3 pixels with Poppler and Ghostscript, recording the isolated nested-Form renderer divergence.
 - Extend CID glyph-class metric overrides with FontBBox/FontFamily/FontStretch/FontWeight and emit consistent ToUnicode dictionary/program metadata from one explicit UnicodeCMap object.
 - Authenticate encrypted UR3 updates with an explicit password or certificate credential, the actual security handler and matching file/filter keys. Intersect CMS recipient or password permissions, signed rights, per-update application authorization and historical DocMDP/FieldMDP restrictions. Support PDF2 P=false/absent semantics and require Form.Add for a new signature field.
