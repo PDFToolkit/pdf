@@ -26,10 +26,15 @@ abstract class PendingSignatureDictionary extends SchemaDictionary implements Ve
         $this->contents = new SignatureContentsReservation($capacity);
         $this->byteRange = new ByteRangeReservation();
         foreach ($entries as $entry) {
+            // ISO 32000-2 EC3 issue403, physical PDF page583: these associations
+            // cannot occur in a byte-range signature, even when supplied directly.
+            if (in_array($entry->key->value, ['Metadata', 'AF'], true)) {
+                throw new \InvalidArgumentException('Byte-range signatures cannot contain Metadata or AF associations.');
+            }
             if (in_array($entry->key->value, ['Contents', 'ByteRange', 'Type', 'Filter', 'SubFilter'], true)) {
                 throw new \InvalidArgumentException('Signature reservation entries are constructor-owned.');
             }
-            if ($entry->value instanceof IndirectReference) {
+            if ($entry->value instanceof IndirectReference || $entry->value instanceof \PDF\Syntax\Object\StreamObject) {
                 throw new \InvalidArgumentException('All byte-range signature dictionary values must be direct objects.');
             }
         }
