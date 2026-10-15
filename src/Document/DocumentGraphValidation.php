@@ -55,6 +55,7 @@ final class DocumentGraphValidation
         $this->visitPages($pageReferences, null, $pages, $visitedPages, $graph, $version);
         $this->validatePageAssociations($pages, $graph, $version);
         (new \PDF\Document\Annotations\AnnotationGraphValidation())->validate($graph, $version);
+        (new \PDF\Document\RichMedia\RichMediaGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Files\EmbeddedFilesGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Collections\CollectionGraphValidation())->validate($graph, $version);
         (new \PDF\Document\Navigation\NavigationGraphValidation())->validate($graph, $version);

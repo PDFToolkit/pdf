@@ -1192,6 +1192,31 @@
             "issue_number": 59,
             "annotation_name": "fd064f1b-d3fa-424c-9060-6259e0ae94c7"
           }
+        },
+        {
+          "name": "Configuration",
+          "type": "dictionary",
+          "description": "Optional indirect reference to a RichMediaConfiguration dictionary present in the Configurations array of the RichMediaContent dictionary specified by this annotation. Defaults to the first configuration in that array.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 718,
+          "errata": {
+            "id": "ec3-145-configuration",
+            "pdf_page": 718,
+            "review_status": "Completed",
+            "issue_number": 145,
+            "annotation_name": "3c231cdb-913a-41ca-be97-598964b701e6"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
         }
       ]
     },
@@ -1571,6 +1596,105 @@
             "review_status": "Completed",
             "issue_number": 346,
             "annotation_name": "bb26b4c6-5b2c-4ce1-a7fe-e01a1506b558"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "333",
+      "name": "RichMediaAnnotationTable333",
+      "title": "Additional entries specific to a RichMedia annotation",
+      "section": "13.7.2.1",
+      "pdf_pages": [
+        715,
+        716,
+        1023
+      ],
+      "entries": [
+        {
+          "name": "RichMediaContent",
+          "type": "dictionary",
+          "description": "Required PDF 2.0 content dictionary storing the artwork and its configurations and views. It is unique to each annotation.",
+          "qualifier": "Required; PDF 2.0",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 715,
+          "errata": {
+            "id": "ec3-163-richmediacontent",
+            "pdf_page": 716,
+            "review_status": "Completed",
+            "issue_number": 163,
+            "annotation_name": "a5df4b72-5b6b-4e5c-a1f3-9045b44bdbc0"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "RichMediaSettings",
+          "type": "dictionary",
+          "description": "Optional PDF 2.0 settings dictionary describing activation, deactivation and initial artwork state. It is unique to each annotation. If absent, the first configuration is loaded.",
+          "qualifier": "Optional; PDF 2.0",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 716,
+          "errata": {
+            "id": "ec3-163-richmediasettings",
+            "pdf_page": 716,
+            "review_status": "Completed",
+            "issue_number": 163,
+            "annotation_name": "edd4ba69-c94a-4466-93ca-1464f3228ff6"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "343",
+      "name": "RichMediaInstanceDictionaryTable343",
+      "title": "Entries in a RichMediaInstance dictionary",
+      "section": "13.7.2.3.4",
+      "pdf_pages": [
+        726
+      ],
+      "entries": [
+        {
+          "name": "Asset",
+          "type": "dictionary",
+          "description": "Required indirect reference to the instance asset file specification. The asset may also occur in the RichMediaContent Assets name tree; the primary instance asset is not required to have a name-tree entry. Other assets referenced by name must be available in that name tree.",
+          "qualifier": "Required; PDF 2.0",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 726,
+          "errata": {
+            "id": "ec3-58-asset",
+            "pdf_page": 726,
+            "review_status": "Completed",
+            "issue_number": 58,
+            "annotation_name": "d395e337-af8c-4f72-afd6-f1918326c583"
           },
           "description_origin": "normative-source",
           "description_language": "en"

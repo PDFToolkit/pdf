@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 76 entrées de résumés/corrections du projet, réparties dans 19 tableaux et leurs
+- `reviewed-overrides.json` : les 80 entrées de résumés/corrections du projet, réparties dans 21 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 61 annotations distinctes couvrant 32 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 66 annotations distinctes couvrant 35 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -178,3 +178,10 @@ non-Type3. La syntaxe des descripteurs nommés reste identique. Si `Name` de
 Type3 et `FontName` du descripteur existent, ils doivent correspondre, y compris
 dans les graphes incrémentaux effectifs. Un descripteur natif sans nom exige
 la version effective PDF 2.0.
+
+Les contrôles de graphe RichMedia EC3 (#58/#59/#145/#163/#166) relient Scripts
+aux Assets de l’annotation par identité objet, imposent Content/Settings propres
+à chaque annotation, exigent des Configurations non vides et vérifient les
+sélections d’activation. L’Asset principal d’une instance peut rester sans nom.
+Les révisions incrémentales revérifient ces liens. Aucun script, codec multimédia
+ou affichage interactif n’est exécuté.

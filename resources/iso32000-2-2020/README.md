@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 76 authored summary/overlay entries across 19 tables and selected EC3
+- `reviewed-overrides.json`: 80 authored summary/overlay entries across 21 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 61 distinct annotations across 32 issues. A polygon `Path` ignores
+and approval reply chains for 66 distinct annotations across 35 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -163,3 +163,9 @@ the explicit name or rejects its absence for non-Type3 use. Existing named
 descriptors keep their construction syntax. When both Type3 `Name` and
 descriptor `FontName` exist they must match, including effective incremental
 graphs. An unnamed native descriptor requires effective PDF 2.0.
+
+EC3 RichMedia graph checks (#58/#59/#145/#163/#166) bind Scripts to the
+annotation’s Assets by object identity, keep Content/Settings unique per
+annotation, require nonempty Configurations and validate activation selections.
+A primary instance Asset may remain unnamed. Incremental revisions recheck
+these links. No scripts, media codecs or interactive presentation are executed.

@@ -127,6 +127,25 @@ def main() -> None:
         assert "/Metadata" not in extension and "/AF" not in extension
         domain_paths.append(path)
 
+    media_paths = []
+    for format in ("table", "stream", "hybrid"):
+        path = output / f"rich-media-{format}.pdf"
+        run(arguments.php, str(source / "tools/fixtures/rich-media-ec3.php"), str(path), format)
+        run(arguments.qpdf, "--check", str(path))
+        media = PdfReader(path)
+        annotations = [entry.get_object() for entry in media.pages[0]["/Annots"]]
+        assert len(annotations) == 2
+        assert annotations[0].raw_get("/RichMediaContent") != annotations[1].raw_get("/RichMediaContent")
+        assert annotations[0].raw_get("/RichMediaSettings") != annotations[1].raw_get("/RichMediaSettings")
+        for annotation in annotations:
+            content = annotation["/RichMediaContent"]
+            activation = annotation["/RichMediaSettings"]["/Activation"]
+            assets = content["/Assets"]["/Names"]
+            assert activation["/Scripts"][0] == assets[1]
+            assert activation.raw_get("/Configuration") == content["/Configurations"][0]
+            assert assets[1].get_object()["/EF"]["/F"].get_data() == b"// Deliberately empty script."
+        media_paths.append(path)
+
     wrapper = PdfReader(wrapper_path)
     assert not wrapper.is_encrypted and len(wrapper.pages) == 1
     wrapper_root = wrapper.trailer["/Root"]
@@ -147,7 +166,7 @@ def main() -> None:
     run(arguments.qpdf, "--check", str(decrypted_path))
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
-    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths)}}
+    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations and script asset identity in all three xref formats", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths)}}
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

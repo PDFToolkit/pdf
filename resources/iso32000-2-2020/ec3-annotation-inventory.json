@@ -7,7 +7,7 @@
   "source_annotation_count": 11462,
   "named_issue_anchor_count": 761,
   "unique_issue_count": 356,
-  "reviewed_anchor_count": 61,
+  "reviewed_anchor_count": 66,
   "scope": "Exhaustive inventory of top-level annotations named Issue #N in this exact retained PDF. A null semantic_review means no evidence in the native semantic review register; it does not mean no source overlay or existing implementation. This machine inventory is not a semantic classification or a conformance claim.",
   "annotations": [
     {
@@ -958,7 +958,7 @@
       "generation": 0,
       "annotation_subtype": "/Text",
       "contents_sha256": "0eaabaf5872e48f088ea17aae6ea9eaa10cc40558d745ffae2515ec54b6e8011",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#0d62bc40-cce6-4e40-acb5-a957e110fe36"
     },
     {
       "issue": 58,
@@ -968,7 +968,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "89a1b7d22dc0ca188d898f336848d9f2630985f71143be613d86fd39e163e181",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#d395e337-af8c-4f72-afd6-f1918326c583"
     },
     {
       "issue": 59,
@@ -2138,7 +2138,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "e69f2a327fe69e9cd3b0bdfb2e32f719196315d69897e503cdafa2864b6d7b04",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#3c231cdb-913a-41ca-be97-598964b701e6"
     },
     {
       "issue": 146,
@@ -2478,7 +2478,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "47ee45d3469d2654f4934f448088bb9d30242b373636829ef054daf68a58bbf4",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#a5df4b72-5b6b-4e5c-a1f3-9045b44bdbc0"
     },
     {
       "issue": 163,
@@ -2488,7 +2488,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "b1e5dd512d49a888015c0d326b056690f95df36eee31b58ded279972f578c2d6",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#edd4ba69-c94a-4466-93ca-1464f3228ff6"
     },
     {
       "issue": 164,

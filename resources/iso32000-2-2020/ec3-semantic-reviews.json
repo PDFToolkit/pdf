@@ -870,14 +870,17 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Table 335 gains the missing optional Scripts array of indirect file-specification dictionary references. Empty arrays serialize as no scripts. Asset-tree membership and JavaScript execution are explicitly outside this local schema check.",
+      "implemented_scope": "Every activation Scripts reference is an indirect file specification with matching object identity in the same annotation RichMediaContent Assets name tree. Empty or absent Scripts executes nothing; no script execution is implemented. Frozen incremental graphs recheck membership.",
       "implementation": [
         "src/Specification/Iso32000_2/Dictionary/RichMediaActivationDictionaryTable335/ScriptsEntry.php",
-        "src/Specification/Constraint/DictionaryReferenceArray.php"
+        "src/Specification/Constraint/DictionaryReferenceArray.php",
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
       ],
       "validation": [
         "tests/Ec3NativeDomainsTest.php",
         "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tests/RichMediaEc3GraphTest.php",
         "tools/validate_pdf20_metadata.py"
       ]
     },
@@ -892,14 +895,17 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "RichMediaContent Table 341 Configurations is required and a nonempty array of indirect dictionary references. This is a local shape constraint; media runtime execution and full configuration-to-assets relationships are not established by it.",
+      "implemented_scope": "Every effective RichMedia annotation requires a nonempty Configurations array of indirect dictionary references. This applies to native and frozen incremental graphs, as well as the generated local schema.",
       "implementation": [
         "src/Specification/Iso32000_2/Definition/RichMediaContentDictionaryTable341Definition.php",
-        "src/Specification/Constraint/DictionaryReferenceArray.php"
+        "src/Specification/Constraint/DictionaryReferenceArray.php",
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
       ],
       "validation": [
         "tests/Ec3NativeDomainsTest.php",
         "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tests/RichMediaEc3GraphTest.php",
         "tools/validate_pdf20_metadata.py"
       ]
     },
@@ -914,14 +920,17 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "RichMediaContent Table 341 Configurations is required and a nonempty array of indirect dictionary references. This is a local shape constraint; media runtime execution and full configuration-to-assets relationships are not established by it.",
+      "implemented_scope": "Every effective RichMedia annotation requires a nonempty Configurations array of indirect dictionary references. This applies to native and frozen incremental graphs, as well as the generated local schema.",
       "implementation": [
         "src/Specification/Iso32000_2/Definition/RichMediaContentDictionaryTable341Definition.php",
-        "src/Specification/Constraint/DictionaryReferenceArray.php"
+        "src/Specification/Constraint/DictionaryReferenceArray.php",
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
       ],
       "validation": [
         "tests/Ec3NativeDomainsTest.php",
         "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py",
+        "tests/RichMediaEc3GraphTest.php",
         "tools/validate_pdf20_metadata.py"
       ]
     },
@@ -1392,6 +1401,111 @@
         "tests/NativeFontObjectsTest.php",
         "tests/Pdf20FontGraphValidationTest.php",
         "tools/fixtures/ec3-dictionary-domains.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 163,
+      "physical_pdf_page": 716,
+      "annotation_name": "a5df4b72-5b6b-4e5c-a1f3-9045b44bdbc0",
+      "approval_chain": [
+        "a4d7e930-0f2e-4c41-bad7-fea39d9c16f4"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Indirect RichMediaContent and RichMediaSettings dictionaries cannot be shared by distinct effective page annotations. Repeating one annotation reference does not create another owner. Direct dictionaries serialize as separate value occurrences.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 163,
+      "physical_pdf_page": 716,
+      "annotation_name": "edd4ba69-c94a-4466-93ca-1464f3228ff6",
+      "approval_chain": [
+        "427923f6-99d4-45ce-818f-0d988c41ebfc"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Indirect RichMediaContent and RichMediaSettings dictionaries cannot be shared by distinct effective page annotations. Repeating one annotation reference does not create another owner. Direct dictionaries serialize as separate value occurrences.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 145,
+      "physical_pdf_page": 718,
+      "annotation_name": "3c231cdb-913a-41ca-be97-598964b701e6",
+      "approval_chain": [
+        "9ce93ca7-82ea-4ff9-9dec-d9bdd8dd946a"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Activation Configuration and View select entries in the corresponding arrays of the same annotation RichMediaContent dictionary, using effective object identity.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 58,
+      "physical_pdf_page": 726,
+      "annotation_name": "d395e337-af8c-4f72-afd6-f1918326c583",
+      "approval_chain": [
+        "88e4a57f-e135-4c3b-baac-059e58e2a3a7"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "A RichMediaInstance primary Asset is an indirect file specification but is not required to appear in the Assets name tree. Other named resources can remain discoverable there. Payload media-format decoding is outside this graph check.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 58,
+      "physical_pdf_page": 726,
+      "annotation_name": "0d62bc40-cce6-4e40-acb5-a957e110fe36",
+      "approval_chain": [
+        "6eb9e372-7c88-40e9-8595-c2a99e89958a"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "A RichMediaInstance primary Asset is an indirect file specification but is not required to appear in the Assets name tree. Other named resources can remain discoverable there. Payload media-format decoding is outside this graph check.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
         "tools/validate_pdf20_metadata.py"
       ]
     }

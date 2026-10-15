@@ -176,6 +176,10 @@ final class Pdf20GeospatialTest extends TestCase
     {
         $appearance = new DictionaryType($this->entry('N', new IndirectReference(new FormAppearanceStream(new ContentStreams(), $this->rectangle(), new DictionaryType()))));
         $annotation = new DictionaryType($this->entry('Type', new NameType('Annot')), $this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $this->measure(dimension: $dimension)), $this->entry('AP', $appearance));
+        if ($subtype === 'RichMedia') {
+            $content = new DictionaryType($this->entry('Configurations', new ArrayType(new IndirectReference(new DictionaryType()))));
+            $annotation = $annotation->with($this->entry('RichMediaContent', new IndirectReference($content)));
+        }
         $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
         self::assertStringContainsString('/GEO', (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toPdf(new \PDF\Serialization\SerializationContext()));
     }
@@ -229,6 +233,10 @@ final class Pdf20GeospatialTest extends TestCase
         $raw = new DictionaryType(...iterator_to_array($this->measure(dimension: $dimension)->entries(), false));
         $appearance = new DictionaryType($this->entry('N', new IndirectReference(new FormAppearanceStream(new ContentStreams(), $this->rectangle(), new DictionaryType()))));
         $annotation = new DictionaryType($this->entry('Subtype', new NameType($subtype)), $this->entry('Rect', $this->rectangle()), $this->entry('GEO', $raw), $this->entry('AP', $appearance));
+        if ($subtype === 'RichMedia') {
+            $content = new DictionaryType($this->entry('Configurations', new ArrayType(new IndirectReference(new DictionaryType()))));
+            $annotation = $annotation->with($this->entry('RichMediaContent', new IndirectReference($content)));
+        }
         $page = new PageObject($this->rectangle(), new ResourceDictionary(), entries: $this->entry('Annots', new ArrayType(new IndirectReference($annotation))));
         $initial = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog((new PageTreeNode())->addKid($page)))))->toRevision();
         self::assertStringStartsWith($initial->bytes, (new IncrementalUpdate($initial, new FileBody()))->toRevision()->bytes);
