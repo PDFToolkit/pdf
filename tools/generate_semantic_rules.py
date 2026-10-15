@@ -41,7 +41,7 @@ def render_rules(rules: list[dict], source: Callable[[int], str]) -> str:
              'CrossReferenceIndex', 'CrossReferenceDirectObjects', 'CalibratedColour',
              'FunctionDimensions', 'ImageSamples', 'PredictorParameters', 'IccComponents',
              'AnnotationPath', 'ChoiceOptions', 'DirectDictionaryObjects', 'EmbeddedFileSubtype',
-             'TreeKeyPairs', 'NonNullStructureEntries', 'DocumentPartEntries', 'DictionaryReferenceArray'}
+             'OutputProfileReferences', 'TreeKeyPairs', 'NonNullStructureEntries', 'DocumentPartEntries', 'DictionaryReferenceArray'}
     expressions = []
     for rule in rules:
         kind = rule['constraint']

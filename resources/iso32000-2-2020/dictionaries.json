@@ -2911,39 +2911,51 @@
       {
         "name": "IDS",
         "type": "name tree",
-        "description": "(Optional; PDF 1.3) A name tree mapping digital identifiers to Web. Capture content sets (see 14.10.4, \"Content sets\").",
+        "description": "Historical Web Capture identifier name tree; deprecated in PDF 2.0.",
         "qualifier": "Optional; PDF 1.3",
         "required": false,
         "conditional": false,
         "inheritable": false,
         "introduced_in": "1.3",
-        "deprecated_in": null,
+        "deprecated_in": "2.0",
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 124,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-672-IDS",
+          "pdf_page": 124,
+          "review_status": "Accepted",
+          "issue_number": 672,
+          "annotation_name": "194046b4-ea90-4f12-84712fd56bd6fd58"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
         "name": "URLS",
         "type": "name tree",
-        "description": "(Optional; PDF 1.3) A name tree mapping uniform resource locators. (URLs) to Web Capture content sets (see 14.10.4, \"Content sets\").",
+        "description": "Historical Web Capture URL name tree; deprecated in PDF 2.0.",
         "qualifier": "Optional; PDF 1.3",
         "required": false,
         "conditional": false,
         "inheritable": false,
         "introduced_in": "1.3",
-        "deprecated_in": null,
+        "deprecated_in": "2.0",
         "direct": false,
         "indirect": false,
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 124,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-672-URLS",
+          "pdf_page": 124,
+          "review_status": "Accepted",
+          "issue_number": 672,
+          "annotation_name": "04ca25a2-fb3a-4b77-b19cbbd550052369"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -25005,7 +25017,7 @@
       {
         "name": "CT",
         "type": "ascii string",
-        "description": "(Optional; shall not be present for form XObjects) An ASCII string identifying the type of data in D. The string should conform to the content type specification described in Internet RFC 2045.",
+        "description": "An ASCII string identifying the type of data in D; it shall conform to the RFC2045 content-type specification.",
         "qualifier": "Optional; shall not be present for form XObjects",
         "required": false,
         "conditional": true,
@@ -25017,8 +25029,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 636,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-257-285-CT",
+          "pdf_page": 636,
+          "review_status": "Completed",
+          "issue_number": 257,
+          "annotation_name": "42554cd0-7a31-45ca-9ebd-59dcbf1de466"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -27985,10 +28003,10 @@
       {
         "name": "NA",
         "type": "array",
-        "description": "(Optional; PDF 1.7; meaningful only if NR is present) An array that contains 3D node dictionaries (see 13.6.4.7, \"3D node dictionaries\"). Each node dictionary may contain entries that change the node’s state, including its opacity and its position in world space. This entry and the NR entry specify how the state of each node shall be changed. If a node dictionary is present more than once, only the last such dictionary (using a depth-first traversal) shall be used.",
-        "qualifier": "Optional; PDF 1.7; meaningful only if NR is present",
+        "description": "An optional array of 3D node dictionaries; its applicability does not require NR to be present.",
+        "qualifier": "Optional; PDF 1.7",
         "required": false,
-        "conditional": true,
+        "conditional": false,
         "inheritable": false,
         "introduced_in": "1.7",
         "deprecated_in": null,
@@ -27997,8 +28015,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 672,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-150-NA",
+          "pdf_page": 672,
+          "review_status": "Completed",
+          "issue_number": 150,
+          "annotation_name": "7921e8ab-3c49-4c03-b916-dd51345b3677"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -33078,10 +33102,10 @@
       {
         "name": "Pg",
         "type": "dictionary",
-        "description": "(Optional; shall be an indirect reference) The page object representing the page on which the graphics objects in the marked-content sequence shall be rendered. This entry overrides any Pg entry in the structure element containing the marked- content reference; it shall be required if the structure element has no such entry.",
-        "qualifier": "Optional; shall be an indirect reference",
+        "description": "The indirect page reference for the marked-content sequence takes precedence over the containing structure element Pg and is required when that structure element has no Pg.",
+        "qualifier": "Sometimes required; shall be an indirect reference",
         "required": false,
-        "conditional": false,
+        "conditional": true,
         "inheritable": false,
         "introduced_in": null,
         "deprecated_in": null,
@@ -33090,8 +33114,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 746,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-431-357-Pg",
+          "pdf_page": 746,
+          "review_status": "Accepted",
+          "issue_number": 431,
+          "annotation_name": "d51c805d-3565-4795-8ae99175734b9dca"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -33186,10 +33216,10 @@
       {
         "name": "Pg",
         "type": "dictionary",
-        "description": "(Optional; shall be an indirect reference) The page object of the page on which the object shall be rendered. This entry overrides any Pg entry in the structure element containing the object reference; it shall be used if the structure element has no such entry.",
-        "qualifier": "Optional; shall be an indirect reference",
+        "description": "The indirect page reference for the object takes precedence over the containing structure element Pg and is required when that structure element has no Pg.",
+        "qualifier": "Sometimes required; shall be an indirect reference",
         "required": false,
-        "conditional": false,
+        "conditional": true,
         "inheritable": false,
         "introduced_in": null,
         "deprecated_in": null,
@@ -33198,8 +33228,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 749,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-431-358-Pg",
+          "pdf_page": 749,
+          "review_status": "Accepted",
+          "issue_number": 431,
+          "annotation_name": "03c27d8c-d11c-4558-83209022992e0fec"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -36007,7 +36043,7 @@
       {
         "name": "URLs",
         "type": "array",
-        "description": "(Optional, PDF 2.0) An array, containing at least one element, where each element shall be an embedded file specification (7.11.4, \"Embedded file streams\") or a URL file specification (7.11.5, \"URL specifications\"). NOTE: ICC profiles referenced via the URLs array do not have to conform to the ICCBased requirements of \"Table 67 — ICC profile types\" and thus can also support N- component output profiles.",
+        "description": "A nonempty array of embedded file-specification dictionaries or URL file-specification dictionaries with FS equal to URL and F a PDFDocEncoded text string limited to RFC3986 characters.",
         "qualifier": "Optional, PDF 2.0",
         "required": false,
         "conditional": false,
@@ -36019,8 +36055,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 839,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-482-URLs",
+          "pdf_page": 839,
+          "review_status": "Completed",
+          "issue_number": 482,
+          "annotation_name": "7a897a17-7827-4824-adf747d63a2d93ae"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       }
     ],

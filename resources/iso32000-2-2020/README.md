@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 117 authored summary/overlay entries across 44 tables and selected EC3
+- `reviewed-overrides.json`: 124 authored summary/overlay entries across 50 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **120 executable intrinsic rules across 53
+`semantic-rules.json` now supplies **121 executable intrinsic rules across 54
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 122 distinct annotations across 64 issues. A polygon `Path` ignores
+and approval reply chains for 135 distinct annotations across 70 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -184,3 +184,7 @@ their executable tests in the exact-anchor register.
 EC3 #549 permits path-painting operators without a current path as no-ops. Text-object and malformed construction/clipping boundaries remain checked. Six additional PDFs compare baseline and empty-path variants with qpdf, pypdf and identical Poppler pixels in all three cross-reference formats.
 
 EC3 #156 (physical page 153) requires a valid MIME `Subtype` for embedded RichMedia assets, including unnamed primary instance assets. Initial and incremental graphs execute this check. The independent oracle verifies both named scripts and primary assets in all three cross-reference formats.
+
+EC3 #672 marks the historical IDS/URLS trees deprecated; #150 removes the obsolete NA/NR condition. #482 checks output-profile reference arrays, retaining embedded alternatives and requiring FS=URL with RFC3986-compatible F bytes for external locations. URI resolution, network access and ICC-profile interpretation remain outside this local rule.
+
+The media content-type description now uses the normative “shall” (#257). MCR/OBJR page metadata records the conditional requirement and local-page precedence (#431/#339); a standalone dictionary cannot resolve its containing structure element.

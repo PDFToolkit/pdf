@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 117 entrées de résumés/corrections du projet, réparties dans 44 tableaux et leurs
+- `reviewed-overrides.json` : les 124 entrées de résumés/corrections du projet, réparties dans 50 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -65,8 +65,8 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
-`semantic-rules.json` fournit maintenant **120 règles intrinsèques exécutables
-réparties sur 53 tableaux source**, héritées par leurs définitions dérivées.
+`semantic-rules.json` fournit maintenant **121 règles intrinsèques exécutables
+réparties sur 54 tableaux source**, héritées par leurs définitions dérivées.
 Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
 des fonctions, les paramètres de filtres, les sections de références croisées,
 les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 122 annotations distinctes couvrant 64 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 135 annotations distinctes couvrant 70 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -202,3 +202,7 @@ le registre des ancres exactes.
 EC3 #549 accepte les opérateurs de peinture sans chemin courant comme des opérations sans effet. Les frontières des objets texte et les constructions/découpages mal formés restent contrôlés. Six PDF supplémentaires comparent les variantes de référence et sans chemin avec qpdf, pypdf et des pixels Poppler identiques dans les trois formats de références croisées.
 
 EC3 #156 (page physique 153) exige un `Subtype` MIME valide pour les actifs RichMedia incorporés, y compris les actifs principaux sans nom. Le contrôle porte sur le graphe initial et le graphe incrémental effectif. L’oracle indépendant vérifie les scripts nommés et les actifs principaux avec les trois formats de références croisées.
+
+EC3 #672 marque les arbres historiques IDS/URLS comme dépréciés ; #150 retire la condition obsolète NA/NR. #482 contrôle les références de profils de sortie, conserve les alternatives incorporées et exige FS=URL avec des octets F compatibles RFC3986 pour les emplacements externes. La résolution des URI, l’accès réseau et l’interprétation des profils ICC restent hors de cette règle locale.
+
+La description du type de contenu multimédia emploie désormais l’obligation normative « shall » (#257). Les métadonnées Pg de MCR/OBJR indiquent l’exigence conditionnelle et la priorité de la page locale (#431/#339) ; un dictionnaire isolé ne peut résoudre son élément de structure contenant.

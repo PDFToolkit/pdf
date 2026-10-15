@@ -2745,6 +2745,280 @@
         "tools/fixtures/rich-media-ec3.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 672,
+      "physical_pdf_page": 116,
+      "annotation_name": "7b43a77f-514e-4630-ab2100e33809fb47",
+      "approval_chain": [
+        "e16c7e49-b8ee-44bf-bc2033c0716d359d"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "SpiderInfo and the IDS/URLS Web Capture name trees retain their PDF1.3 introduction and are marked deprecated in PDF2.0. Deprecation does not prohibit historical content.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    {
+      "issue": 672,
+      "physical_pdf_page": 124,
+      "annotation_name": "194046b4-ea90-4f12-84712fd56bd6fd58",
+      "approval_chain": [
+        "8031762c-44f9-40b5-a32e7b2209cb42b0"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "SpiderInfo and the IDS/URLS Web Capture name trees retain their PDF1.3 introduction and are marked deprecated in PDF2.0. Deprecation does not prohibit historical content.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    {
+      "issue": 672,
+      "physical_pdf_page": 124,
+      "annotation_name": "04ca25a2-fb3a-4b77-b19cbbd550052369",
+      "approval_chain": [
+        "2a4d8c4e-30ca-45c7-86f04ade1f2363ea"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "SpiderInfo and the IDS/URLS Web Capture name trees retain their PDF1.3 introduction and are marked deprecated in PDF2.0. Deprecation does not prohibit historical content.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    {
+      "issue": 150,
+      "physical_pdf_page": 672,
+      "annotation_name": "7921e8ab-3c49-4c03-b916-dd51345b3677",
+      "approval_chain": [
+        "08f1a9be-0f1b-4279-8bf4-c5ef11ff0eac"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The optional Table315 NA array no longer carries the removed condition that NR must be present. This local schema metadata does not execute 3D node transformations.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    {
+      "issue": 482,
+      "physical_pdf_page": 839,
+      "annotation_name": "7a897a17-7827-4824-adf747d63a2d93ae",
+      "approval_chain": [
+        "ae2834af-7953-45b9-b1bf81cd92638fee"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Output-profile URLs retain embedded-file specifications as an alternative. External entries require file-specification dictionaries, FS URL and an F string using ASCII/PDFDocEncoding RFC3986 characters and well-formed percent escapes. The array is nonempty. This local schema rule does not fetch resources, resolve relative URIs, parse every URI component or validate ICC bytes.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json",
+        "src/Specification/Constraint/OutputProfileReferences.php",
+        "src/Specification/Iso32000_2/Definition/DestOutputProfileRefDictionaryTable402Definition.php"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php",
+        "tests/SpecificationSemanticsTest.php"
+      ]
+    },
+    {
+      "issue": 257,
+      "physical_pdf_page": 636,
+      "annotation_name": "42554cd0-7a31-45ca-9ebd-59dcbf1de466",
+      "approval_chain": [
+        "cdbaf859-f8d8-4439-be61-d01dc768065d",
+        "4311850b-78a4-487b-b56c-ef72ecd359bc",
+        "5641729f-02a9-486d-81c1ce89fb0d7266"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "The media content-type description records the normative shall rather than should for RFC2045. This wording correction does not add a multimedia consumer or general MIME parser.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 746,
+      "annotation_name": "d51c805d-3565-4795-8ae99175734b9dca",
+      "approval_chain": [
+        "a98c80fe-96d0-46b0-8f46901a3cdb10eb",
+        "c589eea2-7f17-4864-83201fbb48c9a87b"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 746,
+      "annotation_name": "f82ede55-87b5-40ce-aefe2dd55892d79b",
+      "approval_chain": [
+        "48aa39ff-eb1b-4671-97bc508a5f2c22c2",
+        "b1d541d7-58c6-4afd-9e2c123919a43e08"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 746,
+      "annotation_name": "05a68935-9948-45b8-862a040686edd539",
+      "approval_chain": [
+        "6e6f1f36-c170-414c-a8af58e2a41146c3",
+        "3eef3b14-ebeb-444b-bd828e252a0076aa"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 339,
+      "physical_pdf_page": 749,
+      "annotation_name": "9ec28083-396d-4f5e-9e65-c2baaf0809d8",
+      "approval_chain": [
+        "3ecf6eea-06e7-414e-a726-d630c4e1c154",
+        "7e313855-1344-47a1-a24d-fcd4b68e3d5d",
+        "4bcc513f-c854-48ed-82e5f2a55bdff120"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 749,
+      "annotation_name": "03c27d8c-d11c-4558-83209022992e0fec",
+      "approval_chain": [
+        "f952fb60-f559-4b0d-a3f215bca1ffa7cd",
+        "4c582513-34b7-4607-aa8ebca7dc8afe9a"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 749,
+      "annotation_name": "efbafd45-672c-48a1-beb1970855f74e22",
+      "approval_chain": [
+        "e69c25bb-5df9-42c5-97a33993d9af15da",
+        "1aa295b6-f6ea-461b-b206a99deac821a7"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
+    },
+    {
+      "issue": 431,
+      "physical_pdf_page": 749,
+      "annotation_name": "3b6d1a1d-be29-423e-9c5d4e22843c63fc",
+      "approval_chain": [
+        "362c3b82-fd17-4c1d-974727f6e1391633",
+        "0efeff5d-a4f4-410e-a7c2adb81b2a6832"
+      ],
+      "approval_states": [
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "MCR and OBJR Pg metadata now records the conditional requirement when the containing structure element lacks Pg and the explicit precedence of the local page reference. Native structured content retains its explicit page objects; this review does not claim context-free schema validation of a containing structure tree.",
+      "implementation": [
+        "resources/iso32000-2-2020/reviewed-overrides.json"
+      ],
+      "validation": [
+        "tests/Ec3OutputProfileReferencesTest.php"
+      ]
     }
   ]
 }
