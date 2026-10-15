@@ -11,14 +11,11 @@ use PDF\Syntax\Object\NameType;
 /** A class shares attribute objects; it has no class inheritance (PDF page 575). */
 final readonly class AttributeClass
 {
-    /** @var non-empty-list<StructureAttributeObject> */
+    /** @var list<StructureAttributeObject> */
     public array $attributes;
 
     public function __construct(public NameType $name, StructureAttributeObject ...$attributes)
     {
-        if ($attributes === []) {
-            throw new \InvalidArgumentException('An attribute class must contain at least one attribute object.');
-        }
         $this->attributes = array_values($attributes);
     }
 

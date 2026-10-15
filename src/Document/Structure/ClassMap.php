@@ -29,7 +29,8 @@ final class ClassMap extends DictionaryType
 
     public function attributeClass(NameType $name): AttributeClass
     {
-        return $this->classes[$name->value] ?? throw new \InvalidArgumentException('Undefined attribute class /' . $name->value . '.');
+        // EC3 #254, physical page 753: an absent class contributes no attributes.
+        return $this->classes[$name->value] ?? new AttributeClass($name);
     }
 
     public function with(Entry $entry): static

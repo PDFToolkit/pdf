@@ -37,12 +37,12 @@ final readonly class AttributeResolver
             array_push($classes, ...$this->classMap->attributeClass($association->name)->attributes);
         }
         if ($exportOwner !== null) {
-            $value = $this->find($classes, $exportOwner, $attribute);
+            $value = $this->find($classes, $exportOwner, $attribute, lastWins: true);
             if ($value !== null) {
                 return $value;
             }
         }
-        $value = $this->find($classes, $owner, $attribute);
+        $value = $this->find($classes, $owner, $attribute, lastWins: true);
         if ($value !== null) {
             return $value;
         }
@@ -77,15 +77,22 @@ final readonly class AttributeResolver
             return true;
         }
         $own = array_map(static fn (AttributeAssociation $association): StructureAttributeObject => $association->attribute, $element->attributes === null ? [] : $element->attributes->associations);
-        foreach ($element->classes === null ? [] : $element->classes->associations as $association) {
-            array_push($own, ...$this->classMap->attributeClass($association->name)->attributes);
-        }
         $placement = $this->find($own, new NameType('Layout'), new NameType('Placement'));
+        if ($placement === null) {
+            $classes = [];
+            foreach ($element->classes === null ? [] : $element->classes->associations as $association) {
+                array_push($classes, ...$this->classMap->attributeClass($association->name)->attributes);
+            }
+            $placement = $this->find($classes, new NameType('Layout'), new NameType('Placement'), lastWins: true);
+        }
         return $placement instanceof NameType && $placement->value !== 'Inline';
     }
 
-    /** @param list<StructureAttributeObject> $objects */
-    private function find(array $objects, NameType $owner, NameType $attribute): ?BasicType
+    /**
+     * EC3 #289, physical page 753: only C uses later-in-array precedence.
+     * @param list<StructureAttributeObject> $objects
+     */
+    private function find(array $objects, NameType $owner, NameType $attribute, bool $lastWins = false): ?BasicType
     {
         $found = null;
         foreach ($objects as $object) {
@@ -94,7 +101,7 @@ final readonly class AttributeResolver
             }
             $value = $object->dictionary()->get($attribute);
             if ($value !== null) {
-                if ($found !== null && $found !== $value) {
+                if (!$lastWins && $found !== null && $found !== $value) {
                     throw new \LogicException('Multiple attribute objects provide conflicting values for /' . $owner->value . '/' . $attribute->value . '.');
                 }
                 $found = $value;

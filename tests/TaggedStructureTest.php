@@ -28,6 +28,7 @@ use PDF\Document\Structure\StructureAttributes;
 use PDF\Document\Structure\StructureColumns;
 use PDF\Document\Structure\StructureElement;
 use PDF\Document\Structure\StructureLimits;
+use PDF\Document\Structure\StructureNamespace;
 use PDF\Document\Structure\StructureTreeRoot;
 use PDF\Document\Structure\TaggedStructureValidator;
 use PDF\Document\Structure\UserProperties;
@@ -345,12 +346,56 @@ final class TaggedStructureTest extends TestCase
         self::assertInstanceOf(DictionaryType::class, (new StructureAttributes(new AttributeAssociation($association->attribute)))->value());
     }
 
-    public function testUndefinedClassIsRejected(): void
+    public function testUndefinedClassContributesNoAttributesAndDoesNotChangeClassMap(): void
     {
-        $root = new StructureTreeRoot(new PageTreeNode());
-        $root->addKid(new StructureElement(StandardStructureType::P, classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('Missing')))));
-        $this->expectException(\InvalidArgumentException::class);
+        $classes = new ClassMap(new AttributeClass(new NameType('Empty')));
+        $root = new StructureTreeRoot(new PageTreeNode(), classMap: $classes);
+        $parent = new StructureElement(StandardStructureType::Div, attributes: new StructureAttributes(new AttributeAssociation($this->attribute('Layout', 'WritingMode', new NameType('RlTb')))));
+        $child = new StructureElement(StandardStructureType::P, classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('Missing'))));
+        $root->addKid($parent->addKid($child));
         $root->index();
+        $resolver = new AttributeResolver($classes);
+        self::assertSame([], $classes->attributeClass(new NameType('Missing'))->attributes);
+        self::assertFalse($classes->has('Missing'));
+        self::assertSame('[]', $classes->get('Empty')->toPdf(new SerializationContext()));
+        self::assertFalse($resolver->hasExplicit($child, new NameType('Layout'), new NameType('WritingMode')));
+        self::assertSame('RlTb', $resolver->resolve($child, new NameType('Layout'), new NameType('WritingMode'))->value);
+        self::assertSame('Start', $resolver->resolve($child, new NameType('Layout'), new NameType('TextAlign'))->value);
+    }
+
+    public function testLaterAttributeObjectsAndClassesOverrideEarlierValues(): void
+    {
+        $namespace = new StructureNamespace('urn:example:attributes');
+        $namespaced = fn (int $value): StructureAttributeObject => new StructureAttributeObject(new DictionaryType($this->entry('NS', new IndirectReference($namespace)), $this->entry('Value', new IntegerType($value))));
+        $classes = new ClassMap(
+            new AttributeClass(new NameType('First'), $this->attribute('Layout', 'TextAlign', new NameType('Start')), $this->attribute('Layout', 'TextAlign', new NameType('Center')), $namespaced(1)),
+            new AttributeClass(new NameType('Last'), $this->attribute('Layout', 'TextAlign', new NameType('End')), $namespaced(2)),
+        );
+        $first = new StructureElement(StandardStructureType::P, classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('First'))));
+        $combined = new StructureElement(StandardStructureType::P, classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('First')), new AttributeClassAssociation(new NameType('Missing')), new AttributeClassAssociation(new NameType('Last'))));
+        $resolver = new AttributeResolver($classes);
+        self::assertSame('Center', $resolver->resolve($first, new NameType('Layout'), new NameType('TextAlign'))->value);
+        self::assertSame('End', $resolver->resolve($combined, new NameType('Layout'), new NameType('TextAlign'))->value);
+        self::assertSame(2, $resolver->resolve($combined, new NameType($namespace->identifier), new NameType('Value'))->value);
+    }
+
+    public function testPlacementUsesDirectAttributesBeforeClassOrderToDetermineInheritance(): void
+    {
+        $classes = new ClassMap(new AttributeClass(new NameType('Position'), $this->attribute('Layout', 'Placement', new NameType('Inline')), $this->attribute('Layout', 'Placement', new NameType('Block'))));
+        $parent = new StructureElement(StandardStructureType::P, attributes: new StructureAttributes(new AttributeAssociation($this->attribute('Layout', 'LineHeight', new IntegerType(30)))));
+        $block = new StructureElement(StandardStructureType::Span, classes: new AttributeClassAssociations(new AttributeClassAssociation(new NameType('Position'))));
+        $inline = new StructureElement(StandardStructureType::Span, attributes: new StructureAttributes(new AttributeAssociation($this->attribute('Layout', 'Placement', new NameType('Inline')))), classes: $block->classes);
+        $parent->addKid($block)->addKid($inline);
+        $resolver = new AttributeResolver($classes);
+        self::assertSame('Normal', $resolver->resolve($block, new NameType('Layout'), new NameType('LineHeight'))->value);
+        self::assertSame(30, $resolver->resolve($inline, new NameType('Layout'), new NameType('LineHeight'))->value);
+    }
+
+    public function testConflictingDirectAttributesStillFail(): void
+    {
+        $element = new StructureElement(StandardStructureType::P, attributes: new StructureAttributes(new AttributeAssociation($this->attribute('Layout', 'TextAlign', new NameType('Start'))), new AttributeAssociation($this->attribute('Layout', 'TextAlign', new NameType('End')))));
+        $this->expectException(\LogicException::class);
+        (new AttributeResolver(new ClassMap()))->resolve($element, new NameType('Layout'), new NameType('TextAlign'));
     }
 
     public function testUserPropertiesRequireAnExplicitMarkInformationFlag(): void

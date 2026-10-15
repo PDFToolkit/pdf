@@ -990,6 +990,53 @@
         "tests/Ec3SemanticCorrectionsTest.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 289,
+      "physical_pdf_page": 753,
+      "annotation_name": "ca8d1b8b-47d0-4209-ae95-c6e54ab46122",
+      "approval_chain": [
+        "9c34abb8-475b-4b67-b0fe-59f2ae549dc8",
+        "cfe9185e-c739-4395-8e56-aee989d91778",
+        "a498c2c2-ac9b-4ce2-8985cc55e74bf9b9"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Attribute objects within each class and across ordered C classes use later-in-array precedence for repeated O or NS owners. Direct A values retain priority, including Placement used to decide LineHeight inheritance. Conflicting direct A values remain rejected.",
+      "implementation": [
+        "src/Document/Structure/AttributeResolver.php"
+      ],
+      "validation": [
+        "tests/TaggedStructureTest.php"
+      ]
+    },
+    {
+      "issue": 254,
+      "physical_pdf_page": 753,
+      "annotation_name": "fe110a93-723d-4c12-b923-15edff452c60",
+      "approval_chain": [
+        "7a5e648f-2c9c-412f-9fab-2b2a4ef070e7",
+        "a3d17978-35ef-497a-8061-67ea6457609d",
+        "4f9d5c48-b542-4da6-9037c5dd5848d0f8"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "A class absent from ClassMap resolves to an explicit empty AttributeClass without changing the serialized ClassMap. Missing or explicitly empty classes contribute no attribute and preserve ordinary inheritance and defaults.",
+      "implementation": [
+        "src/Document/Structure/ClassMap.php",
+        "src/Document/Structure/AttributeClass.php"
+      ],
+      "validation": [
+        "tests/TaggedStructureTest.php"
+      ]
     }
   ]
 }

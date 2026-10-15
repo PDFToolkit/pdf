@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 44 annotations distinctes couvrant 24 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 46 annotations distinctes couvrant 26 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -150,3 +150,10 @@ l’accessibilité, la confiance PKI, la sémantique ou la conformité PDF 2.0 c
 EC3 #152 exige des valeurs `IntegerType` explicites pour FontWeight en PDF 2.0
 (avec #474), P de DocMDP et les valeurs numériques de GlyphOrientationVertical.
 Les poids fractionnaires sont refusés. La construction PDF 1.x reste distincte.
+
+EC3 #289 et #254 (page physique 753) définissent la résolution des classes :
+dans une classe et entre les classes ordonnées de `C`, la dernière valeur gagne
+pour un propriétaire et un attribut donnés ; les attributs directs de `A`
+restent prioritaires. Une classe absente ne fournit aucun attribut, préserve
+l’héritage et les valeurs par défaut, sans être ajoutée à `ClassMap`. Un objet
+`AttributeClass` explicitement vide est permis.

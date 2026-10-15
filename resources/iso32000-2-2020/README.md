@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 44 distinct annotations across 24 issues. A polygon `Path` ignores
+and approval reply chains for 46 distinct annotations across 26 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -137,3 +137,9 @@ semantics or complete PDF 2.0 conformance.
 EC3 #152 requires explicit `IntegerType` values for PDF 2.0 FontWeight (combined
 with #474), DocMDP P and numeric GlyphOrientationVertical values. Fractional font
 weights are rejected. Existing PDF 1.x descriptor construction remains separate.
+
+EC3 #289 and #254 (physical page 753) define executable class resolution:
+within an attribute class and across ordered `C` classes, later values win for
+the same owner and attribute; direct `A` attributes still take priority. An
+absent class contributes no attributes, preserves inheritance/defaults, and is
+not inserted into `ClassMap`. Explicit empty `AttributeClass` objects are legal.
