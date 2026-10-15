@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 121 annotations distinctes couvrant 63 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 122 annotations distinctes couvrant 64 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -200,3 +200,5 @@ poussoirs et valeurs textuelles nulles sont reliées à leurs tests exécutables
 le registre des ancres exactes.
 
 EC3 #549 accepte les opérateurs de peinture sans chemin courant comme des opérations sans effet. Les frontières des objets texte et les constructions/découpages mal formés restent contrôlés. Six PDF supplémentaires comparent les variantes de référence et sans chemin avec qpdf, pypdf et des pixels Poppler identiques dans les trois formats de références croisées.
+
+EC3 #156 (page physique 153) exige un `Subtype` MIME valide pour les actifs RichMedia incorporés, y compris les actifs principaux sans nom. Le contrôle porte sur le graphe initial et le graphe incrémental effectif. L’oracle indépendant vérifie les scripts nommés et les actifs principaux avec les trois formats de références croisées.

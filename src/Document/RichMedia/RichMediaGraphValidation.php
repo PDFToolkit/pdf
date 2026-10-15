@@ -7,6 +7,7 @@ namespace PDF\Document\RichMedia;
 use PDF\Document\Annotations\AnnotationPageIndex;
 use PDF\Document\DocumentGraphContext;
 use PDF\Document\Files\FileSpecificationRules;
+use PDF\Document\Files\EmbeddedFileMediaType;
 use PDF\Document\Navigation\NavigationLimits;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
@@ -17,7 +18,7 @@ use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
 
-/** EC3 #58/#59/#145/#163/#166, physical pages 716–726: effective annotation-owned relationships. */
+/** EC3 #156 (p.153), #58/#59/#145/#163/#166 (pp.716–726): effective annotation-owned relationships. */
 final readonly class RichMediaGraphValidation
 {
     public function __construct(private NavigationLimits $limits = new NavigationLimits())
@@ -134,6 +135,21 @@ final readonly class RichMediaGraphValidation
         }
         $dictionary = $this->dictionary($reference, $graph, 'file specification');
         (new FileSpecificationRules())->validate($dictionary, $graph);
+        $embedded = $graph->entry($dictionary, 'EF');
+        if ($embedded !== null) {
+            $bindings = $this->dictionary($embedded, $graph, 'EF');
+            foreach ($bindings->entries() as $binding) {
+                $stream = $graph->resolve($binding->value);
+                if (!$stream instanceof StreamObject) {
+                    throw new \InvalidArgumentException('RichMedia EF requires embedded streams.');
+                }
+                $subtype = $this->value($stream->dictionary(), 'Subtype', $graph->forDirectValue($stream));
+                if (!$subtype instanceof NameType) {
+                    throw new \InvalidArgumentException('RichMedia embedded assets require a MIME Subtype (EC3 #156).');
+                }
+                new EmbeddedFileMediaType($subtype);
+            }
+        }
         return $dictionary;
     }
 

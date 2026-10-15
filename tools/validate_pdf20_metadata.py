@@ -144,7 +144,14 @@ def main() -> None:
             assets = content["/Assets"]["/Names"]
             assert activation["/Scripts"][0] == assets[1]
             assert activation.raw_get("/Configuration") == content["/Configurations"][0]
-            assert assets[1].get_object()["/EF"]["/F"].get_data() == b"// Deliberately empty script."
+            script = assets[1].get_object()["/EF"]["/F"]
+            assert script.get_data() == b"// Deliberately empty script."
+            assert script["/Subtype"] == "/application/javascript"
+            primary_reference = content["/Configurations"][0].get_object()["/Instances"][0].get_object().raw_get("/Asset")
+            assert primary_reference != assets[1]
+            primary = primary_reference.get_object()["/EF"]["/F"]
+            assert primary["/Subtype"] == "/application/octet-stream"
+            assert primary.get_data() == b"Explicit opaque primary asset."
         media_paths.append(path)
 
     empty_paths = []
@@ -184,7 +191,7 @@ def main() -> None:
     run(arguments.qpdf, "--check", str(decrypted_path))
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
-    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations and script asset identity in all three xref formats", "independent AES-256 R6 decryption", "EC3 empty-path painting leaves Poppler pixels unchanged in all three xref formats"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths, *empty_paths)}}
+    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted payload wrapper with an additional named attachment (EC3 #529)", "annotation-owned RichMedia configurations, script identity and MIME Subtype of named and unnamed embedded assets in all three xref formats", "independent AES-256 R6 decryption", "EC3 empty-path painting leaves Poppler pixels unchanged in all three xref formats"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths, *media_paths, *empty_paths)}}
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

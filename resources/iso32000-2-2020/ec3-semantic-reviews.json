@@ -2724,6 +2724,27 @@
         "tools/fixtures/empty-path-painting.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 156,
+      "physical_pdf_page": 153,
+      "annotation_name": "037daa9c-f361-45d0-b9cd-330e3a1d5758",
+      "approval_chain": [
+        "85581954-8a3a-448d-9d39-525ddac67f9a"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Every embedded RichMedia asset requires a valid MIME Subtype, including primary instance assets outside the Assets name tree and assets replaced in the effective incremental graph. This review is limited to the embedded-file table correction on physical page153, not the unrelated 3D-node clarification on page690.",
+      "implementation": [
+        "src/Document/RichMedia/RichMediaGraphValidation.php"
+      ],
+      "validation": [
+        "tests/RichMediaEc3GraphTest.php",
+        "tools/fixtures/rich-media-ec3.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
     }
   ]
 }

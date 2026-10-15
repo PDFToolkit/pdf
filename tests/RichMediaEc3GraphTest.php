@@ -25,6 +25,7 @@ use PDF\Syntax\Object\IndirectObject;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\StringObject\LiteralString;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -99,6 +100,34 @@ final class RichMediaEc3GraphTest extends TestCase
         $this->document(CrossReferenceFormat::Table, $annotation)->toPdf();
     }
 
+    #[DataProvider('missingMediaTypes')]
+    public function testEmbeddedAssetsRequireMimeSubtypeEvenOutsideTheNameTree(bool $primary): void
+    {
+        [$annotation] = $this->fixture($primary ? null : new NameType('application/octet-stream'), $primary ? new NameType('application/javascript') : null);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('MIME Subtype');
+        $this->document(CrossReferenceFormat::Table, $annotation)->toPdf();
+    }
+
+    public static function missingMediaTypes(): iterable
+    {
+        yield 'unnamed primary instance' => [true];
+        yield 'named script asset' => [false];
+    }
+
+    #[DataProvider('formats')]
+    public function testIncrementalReplacementCannotRemoveAssetSubtype(CrossReferenceFormat $format): void
+    {
+        [$annotation, $content] = $this->fixture();
+        $primary = $content->get('Configurations')->items[0]->target()->get('Instances')->items[0]->target()->get('Asset')->target();
+        $stream = $primary->get('EF')->get('F')->target();
+        $revision = $this->document($format, $annotation)->toRevision();
+        $replacement = new StreamObject($stream->data, new DictionaryType($this->entry('Type', new NameType('EmbeddedFile'))));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('MIME Subtype');
+        (new IncrementalUpdate($revision, new FileBody(new IndirectObject($replacement, $revision->binding($stream)->identifier))))->toRevision();
+    }
+
     public static function formats(): iterable
     {
         foreach (CrossReferenceFormat::cases() as $format) {
@@ -119,10 +148,10 @@ final class RichMediaEc3GraphTest extends TestCase
     }
 
     /** @return array{DictionaryType,DictionaryType,DictionaryType,DictionaryType} */
-    private function fixture(): array
+    private function fixture(?NameType $primarySubtype = new NameType('application/octet-stream'), ?NameType $scriptSubtype = new NameType('application/javascript')): array
     {
-        $script = $this->file('script.js');
-        $primary = $this->file('movie.bin');
+        $script = $this->file('script.js', $scriptSubtype);
+        $primary = $this->file('movie.bin', $primarySubtype);
         $instance = new DictionaryType($this->entry('Subtype', new NameType('Video')), $this->entry('Asset', new IndirectReference($primary)));
         $configuration = new DictionaryType($this->entry('Instances', new ArrayType(new IndirectReference($instance))));
         $view = new DictionaryType();
@@ -133,9 +162,9 @@ final class RichMediaEc3GraphTest extends TestCase
         return [$annotation, $content, $settings, $activation];
     }
 
-    private function file(string $name): F\FileSpecification
+    private function file(string $name, ?NameType $subtype = new NameType('application/octet-stream')): F\FileSpecification
     {
-        return new F\FileSpecification(new LiteralString($name), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('Explicit opaque test asset', new NameType('application/octet-stream'))))));
+        return new F\FileSpecification(new LiteralString($name), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('Explicit opaque test asset', $subtype)))));
     }
 
     private function document(CrossReferenceFormat $format, DictionaryType ...$annotations): FileStructure
