@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\FileStructure;
 use PDF\Security\EncryptionVersionPolicy;
 use PDF\Security\EncryptMetadata;
@@ -54,7 +55,7 @@ final class Pdf20VersionPolicyTest extends TestCase
     #[DataProvider('downgradedVersions')]
     public function testIncrementalVersionUsesTheFrozenPrecedingCatalog(?string $newVersion): void
     {
-        $pages = new PageTreeNode();
+        $pages = $this->nonemptyPages();
         $catalog = new DocumentCatalog($pages, new Version(new NameType('2.0')));
         $base = (new FileWriter())->revision(new FileStructure(new FileHeader(PdfVersion::PDF17), new FileBody($catalog)));
         $replacement = new DocumentCatalog($pages, ...($newVersion === null ? [] : [new Version(new NameType($newVersion))]));
@@ -67,7 +68,7 @@ final class Pdf20VersionPolicyTest extends TestCase
     #[DataProvider('formats')]
     public function testARevisionCanUpgradeAndRetainPdf20InEveryCrossReferenceFormat(CrossReferenceFormat $format): void
     {
-        $pages = new PageTreeNode();
+        $pages = $this->nonemptyPages();
         $catalog = new DocumentCatalog($pages);
         $base = (new FileWriter())->revision(new FileStructure(new FileHeader(), new FileBody($catalog), crossReferenceFormat: $format));
         $replacement = new DocumentCatalog($pages, new Version(new NameType('2.0')));
@@ -97,7 +98,7 @@ final class Pdf20VersionPolicyTest extends TestCase
     {
         $encryption = (new HistoricalRevision5SecurityHandler(new OpenSslAes256Backend(), new SystemRandomSource()))
             ->create(new PreparedPassword('user'), new PreparedPassword('owner'), new Revision5Permissions(-4), new EncryptMetadata(true));
-        $pages = new PageTreeNode();
+        $pages = $this->nonemptyPages();
         $extensions = new Entry(new NameType('Extensions'), new DictionaryType(new Entry(new NameType('ADBE'), new DictionaryType(
             new Entry(new NameType('BaseVersion'), new NameType('1.7')),
             new Entry(new NameType('ExtensionLevel'), new IntegerType(3)),
@@ -149,7 +150,7 @@ final class Pdf20VersionPolicyTest extends TestCase
 
     public function testPdf20RejectsAnEncryptedCatalogInsideAnObjectStream(): void
     {
-        $catalog = new DocumentCatalog(new PageTreeNode());
+        $catalog = new DocumentCatalog($this->nonemptyPages());
         $packed = new \PDF\Syntax\FileStructure\ObjectStream(new \PDF\Syntax\FileStructure\ObjectStreamEntry(new \PDF\Syntax\Object\IndirectObject\ObjectNumber(8), $catalog));
         $id = new HexadecimalString(str_repeat('i', 16));
         $this->expectException(\LogicException::class);
@@ -159,7 +160,7 @@ final class Pdf20VersionPolicyTest extends TestCase
 
     public function testHybridPdf20WritesTheEncryptedCatalogOutsideItsLogicalContainer(): void
     {
-        $pages = new PageTreeNode();
+        $pages = $this->nonemptyPages();
         $catalog = new DocumentCatalog($pages);
         $packed = new \PDF\Syntax\FileStructure\ObjectStream(new \PDF\Syntax\FileStructure\ObjectStreamEntry(new \PDF\Syntax\Object\IndirectObject\ObjectNumber(8), $catalog));
         $id = new HexadecimalString(str_repeat('i', 16));
@@ -184,7 +185,7 @@ final class Pdf20VersionPolicyTest extends TestCase
     {
         $encryption = (new HistoricalRevision5SecurityHandler(new OpenSslAes256Backend(), new SystemRandomSource()))
             ->create(new PreparedPassword('user'), new PreparedPassword('owner'), new Revision5Permissions(-4), new EncryptMetadata(true));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('Extensions'), new DictionaryType(new Entry(new NameType('ADBE'), new DictionaryType(
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new Entry(new NameType('Extensions'), new DictionaryType(new Entry(new NameType('ADBE'), new DictionaryType(
             new Entry(new NameType('BaseVersion'), new NameType('1.7')),
             new Entry(new NameType('ExtensionLevel'), new IntegerType(3)),
         )))));
@@ -193,4 +194,10 @@ final class Pdf20VersionPolicyTest extends TestCase
         $this->expectExceptionMessage('revision 5 is prohibited');
         (new FileWriter(encryption: $encryption))->serialize(new FileStructure(new FileHeader(PdfVersion::PDF20), new FileBody($catalog), trailerEntries: new DictionaryType(new Entry(new NameType('ID'), new ArrayType($id, $id)))));
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }

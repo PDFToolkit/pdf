@@ -167,7 +167,7 @@ final class Pdf20TimestampDssTest extends TestCase
         [$backend, $chain] = $this->backend();
         $pending = new PendingDocumentTimestamp(new SignatureCapacity(8192));
         $field = new SignatureField(new PartialFieldName(new TextString('timestamp')), value: new IndirectReference($pending));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm((new FieldTree())->addRoot($field)))));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary())), new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm((new FieldTree())->addRoot($field)))));
         $signed = (new PreparedSignature((new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision(), $pending))->sign($backend);
         $evidence = new class ($backend, $chain) implements SignatureValidationEvidence {
             public function __construct(private Rfc3161TimestampBackend $backend, private CertificateChain $chain)
@@ -191,7 +191,7 @@ final class Pdf20TimestampDssTest extends TestCase
     {
         $vri = new DictionaryType(new Entry(new NameType(str_repeat('A', 40)), new DictionaryType()));
         $store = new DictionaryType(new Entry(new NameType('VRI'), $vri));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('DSS'), $store));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary())), new Entry(new NameType('DSS'), $store));
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('incremental');
         (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
@@ -200,7 +200,7 @@ final class Pdf20TimestampDssTest extends TestCase
     public function testRawDssEvidenceCannotBeAnInlineOrEmptyArray(): void
     {
         $store = new DictionaryType(new Entry(new NameType('Certs'), new ArrayType()));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('DSS'), $store));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary())), new Entry(new NameType('DSS'), $store));
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('nonempty');
         (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
@@ -209,7 +209,7 @@ final class Pdf20TimestampDssTest extends TestCase
     public function testOrphanCmsDictionaryDoesNotBecomeVriEvidenceForAnActualDocumentSignature(): void
     {
         $pending = new \PDF\Document\Signatures\PendingSignature(new SignatureCapacity(8192), SignatureFormat::Pkcs7Detached);
-        $catalog = new DocumentCatalog(new PageTreeNode());
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary())));
         $file = new FileStructure(new FileHeader('2.0'), new FileBody($catalog, $pending));
         $certificate = file_get_contents(__DIR__ . '/Fixtures/signing/signer.der');
         $key = file_get_contents(__DIR__ . '/Fixtures/signing/signer-private-key.pem');

@@ -289,7 +289,7 @@ final class NativeFontObjectsTest extends TestCase
         $descriptor = $this->descriptor(null, new NameType('Demo'), new Entry(new NameType('FontWeight'), new NumericType(700.0)), new Entry(new NameType('FontStretch'), new NameType('Condensed')));
         self::assertSame(700.0, $descriptor->get('FontWeight')->value);
         $this->expectException(\InvalidArgumentException::class);
-        $this->descriptor(null, new NameType('Demo'), new Entry(new NameType('FontWeight'), new NumericType(650)));
+        $this->descriptor(null, new NameType('Demo'), new Entry(new NameType('FontWeight'), new NumericType(1001)));
     }
 
     public function testFdUsesActualCollectionClassesAndMetricOverrideInheritance(): void

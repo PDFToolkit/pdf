@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\Document\DocumentGraphContext;
 use PDF\Document\Files as F;
 use PDF\Document\ResourceDictionary;
@@ -76,7 +77,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
 
     private function validate(ContentStreams $content, DictionaryType $resources, string $header = '2.0'): void
     {
-        $catalog = new DocumentCatalog(new PageTreeNode());
+        $catalog = new DocumentCatalog($this->nonemptyPages());
         $context = new SerializationContext();
         $context->prepareFile(new FileBody($catalog, $resources), new IndirectReference($catalog));
         $graph = new DocumentGraphContext($context, $catalog);
@@ -294,7 +295,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
     public function testFormWriterChecksItsOwnNamedResources(): void
     {
         $form = new FormXObject($this->content(), $this->rectangle(), $this->resources($this->list()));
-        $file = new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form));
+        $file = new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form));
         self::assertStringContainsString("/AF /MF1 BDC\nEMC", $file->toPdf());
     }
 
@@ -303,7 +304,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
         $form = new FormXObject($this->content(), $this->rectangle(), new ResourceDictionary());
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('missing');
-        (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toPdf();
+        (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toPdf();
     }
 
     public function testOneContentStreamIsValidatedInEveryPageResourceContext(): void
@@ -364,7 +365,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
         $dictionary = new DictionaryType($this->entry('Type', new NameType('XObject')), $this->entry('Subtype', new NameType('Form')), $this->entry('BBox', $this->rectangle()));
         $form = new StreamObject($this->content(), $dictionary);
         $this->expectException(\InvalidArgumentException::class);
-        (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toPdf();
+        (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toPdf();
     }
 
     public function testGenericFormWithoutAnAssociationKeepsHistoricalResourceFallback(): void
@@ -372,7 +373,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
         $dictionary = new DictionaryType($this->entry('Type', new NameType('XObject')), $this->entry('Subtype', new NameType('Form')), $this->entry('BBox', $this->rectangle()));
         $content = new ContentStreams(new O\BeginMarkedContentWithProperties(new NameType('AF'), new NameType('Other')), new O\EndMarkedContent());
         $form = new StreamObject($content, $dictionary);
-        self::assertStringStartsWith('%PDF-1.7', (new FileStructure(new FileHeader(), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toPdf());
+        self::assertStringStartsWith('%PDF-1.7', (new FileStructure(new FileHeader(), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toPdf());
     }
 
     public function testReplacingTheEmbeddedStreamRechecksHistoricalMcafMime(): void
@@ -488,7 +489,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
         $property = $this->mutableOtherProperty();
         $content = new ContentStreams(new O\BeginMarkedContentWithProperties(new NameType('AF'), $property), new O\EndMarkedContent());
         $form = new FormXObject($content, $this->rectangle(), new ResourceDictionary());
-        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toRevision();
+        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toRevision();
         $property->associated = true;
         $next = (new IncrementalUpdate($base, new FileBody(new IntegerType(7))))->toRevision();
         self::assertStringStartsWith($base->bytes, $next->bytes);
@@ -500,7 +501,7 @@ final class AssociatedFilesMarkedContentTest extends TestCase
         $resources = $this->resources($this->list());
         $dictionary = new DictionaryType($this->entry('Type', new NameType('XObject')), $this->entry('Subtype', new NameType('Form')), $this->entry('BBox', $this->rectangle()), $this->entry('Resources', new IndirectReference($resources)));
         $form = new StreamObject($this->content(), $dictionary);
-        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toRevision();
+        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toRevision();
         $replacement = $this->resources(new DictionaryType($this->entry('MCAF', new ArrayType())));
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('MCAF requires a nonempty array');
@@ -510,11 +511,17 @@ final class AssociatedFilesMarkedContentTest extends TestCase
     public function testAnIncrementalFormCannotRemoveItsOwnPdf20Resources(): void
     {
         $form = new FormXObject($this->content(), $this->rectangle(), $this->resources($this->list()));
-        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode()), $form)))->toRevision();
+        $base = (new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages()), $form)))->toRevision();
         $dictionary = $base->binding($form)->dictionary?->without('Length')->without('Resources') ?? throw new \LogicException('Missing form.');
         $replacement = new StreamObject($form->data, $dictionary);
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('own Resources');
         (new IncrementalUpdate($base, new FileBody(new IndirectObject($replacement, $base->binding($form)->identifier))))->toRevision();
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }

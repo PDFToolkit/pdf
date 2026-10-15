@@ -14,6 +14,11 @@ final class RadioButtonGroups extends ArrayType
 
     public function __construct(GroupCollection ...$collections)
     {
+        foreach ($collections as $collection) {
+            if ($collection->groups === []) {
+                throw new \InvalidArgumentException('EC3 #225 forbids empty inner RBGroups collections.');
+            }
+        }
         $this->collections = array_values($collections);
         parent::__construct(...$collections);
     }

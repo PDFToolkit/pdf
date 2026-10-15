@@ -4,8 +4,8 @@ English | [Français](README.fr.md)
 
 This edition-specific catalogue inventories all **440 source tables**, including
 appendices and numbering placeholders. Its **306 dictionary definitions** provide
-**1,702 fixed entry classes and seven explicit variable-key classes**. The generator
-produces **2,322 PHP files**, including an immutable
+**1,704 fixed entry classes and seven explicit variable-key classes**. The generator
+produces **2,324 PHP files**, including an immutable
 `PDF\Specification\Iso32000_2\Catalogue` aggregation. These counts describe the
 dictionary inventory. Conditional, algorithmic and document conformance remain
 separate, explicitly tracked work in [coverage.json](coverage.json).
@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: the 54 authored summary/overlay tables and selected EC3
+- `reviewed-overrides.json`: 64 authored summary/overlay entries across 13 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -61,7 +61,7 @@ include completed ToUnicode table 125a (issue 462) and associated-file property
 list 409a (issue 374). Remaining EC3 annotations have **not** all received semantic
 implementation review.
 
-`semantic-rules.json` now supplies **111 executable intrinsic rules across 45
+`semantic-rules.json` now supplies **117 executable intrinsic rules across 50
 source tables**, inherited by their derived dictionary definitions. They validate
 numeric domains, array lengths, function dimensions, stream filter parameters,
 cross-reference sections, calibrated colours, image masks and sample depth,
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 26 distinct annotations across 15 issues (22, 30, 86, 124, 155, 246, 290, 307, 308, 403, 444, 463, 468, 609 and 612). A polygon `Path` ignores
+and approval reply chains for 41 distinct annotations across 23 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -88,6 +88,19 @@ non-null structure children/attributes/classes; and exclusive `StructParent` and
 `StructParents`. Null values in tree mappings and null holes in `ParentTree` arrays
 remain allowed. PDF 1.7 embedded-file first-class names retain their earlier rules;
 a catalog upgrade to PDF 2.0 activates the corrected MIME restriction.
+
+
+EC3 #271 rejects empty page-tree nodes in effective PDF 2.0 documents, including
+catalog upgrades. A blank document therefore needs one explicit blank page with
+Resources (#81). #225 allows empty outer RBGroups but rejects empty inner
+collections. #474 accepts every numeric FontWeight from 1 through 1000 in PDF 2.0;
+PDF 1.x retains the historical 100-step values. #732 requires a direct developer
+extension URL; URL uniqueness remains a recommendation. Table 341 Configurations
+is required and nonempty (#166); Table 322 PV and Table 335 Scripts are available
+as typed entries (#49/#59). The local schema checks do not execute JavaScript,
+render 3D content or prove Scripts membership in the Assets tree. The independent
+metadata oracle checks page trees, font weight, radio arrays and extension URLs
+with pypdf and qpdf in all three cross-reference formats.
 
 [ec3-annotation-inventory.json](ec3-annotation-inventory.json) inventories all 761
 named issue anchors across 356 issues in the retained source. Physical page and

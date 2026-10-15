@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\Document\DocumentGraphValidation;
 use PDF\FileStructure;
 use PDF\Serialization\SerializationContext;
@@ -38,7 +39,7 @@ final class Pdf20TextStringTest extends TestCase
 {
     private function catalog(Entry ...$entries): DocumentCatalog
     {
-        return new DocumentCatalog(new PageTreeNode(), ...$entries);
+        return new DocumentCatalog($this->nonemptyPages(), ...$entries);
     }
 
     private function entry(string $key, \PDF\Syntax\FileStructure\BasicType $value): Entry
@@ -270,4 +271,10 @@ final class Pdf20TextStringTest extends TestCase
         $this->rejected(fn () => $graph->validate(new FileHeader()), 'requires PDF 2.0');
         self::assertSame($text, $base->binding($text)->snapshot);
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }

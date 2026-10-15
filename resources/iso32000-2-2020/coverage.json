@@ -2670,7 +2670,7 @@
         ],
         "errata": []
       },
-      "implemented_scope": "440 source tables classified; 306 dictionary definitions, 1702 fixed and 7 variable entry classes, 2322 generated PHP files and explicit immutable Catalogue; physical source clauses and grids, repaired continuations, case-sensitive names, finite name alternatives and reviewed EC3 overlays stay separate from native semantics.",
+      "implemented_scope": "440 source tables classified; 306 dictionary definitions, 1704 fixed and 7 variable entry classes, 2324 generated PHP files and explicit immutable Catalogue; physical source clauses and grids, repaired continuations, case-sensitive names, finite name alternatives and reviewed EC3 overlays stay separate from native semantics.",
       "implementation_files": [
         "src/Specification/SourceEdition.php",
         "src/Specification/SourceReference.php",
@@ -3477,7 +3477,7 @@
           468
         ]
       },
-      "implemented_scope": "111 explicitly authored immutable intrinsic rules across 45 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries.",
+      "implemented_scope": "117 explicitly authored immutable intrinsic rules across 50 PDF2 source tables, inherited by generated derived schemas and executed by validate/serialization. Numeric and name domains, array cardinalities, stream filter/parameter positions, XRef subsection ordering/Size/W, function dimensions, calibrated/ICC colours, pattern/mesh values, image-mask/JPX/sample/decode relations, callout/leader/polygon geometry and choice options are executable. EC3#444 Path overrides Vertices; EC3#468 choice indices use explicit edition semantics. Approval reply chains are verified independently against original annotations. EC3 corrections additionally execute exponential domains, PDF2 embedded-file MIME restrictions, recursively direct extension/linearization dictionaries, signature ByteRange Metadata/AF prohibition, local tree key/value ordering, structure non-null members and mutually exclusive structure-parent entries. EC3 local array and numeric domains cover nonempty page trees, radio-button inner collections, FontWeight 1..1000, required developer-extension URLs and nonempty RichMediaContent Configurations; PV and Scripts are typed new dictionary entries.",
       "implementation_files": [
         "src/Specification/DictionaryConstraint.php",
         "src/Specification/SemanticRule.php",
@@ -3500,12 +3500,14 @@
         "tests/SpecificationSemanticsTest.php",
         "tests/ChoiceFieldEc3Test.php",
         "tools/validate_ec3_semantic_reviews.py",
-        "tests/Ec3SemanticCorrectionsTest.php"
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tests/Ec3NativeDomainsTest.php"
       ],
       "limits": [
-        "These 111 rules do not close every conditional requirement in 1709 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
+        "These 117 rules do not close every conditional requirement in 1711 entries, every payload algorithm, resource-dependent constraint or document-profile check.",
         "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
-        "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated."
+        "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated.",
+        "RichMedia Scripts asset-tree membership and 3D/media runtime interpretation are not established by local schema constraints."
       ]
     },
     {
@@ -3567,15 +3569,15 @@
   "dictionary_inventory": {
     "source_tables": 440,
     "dictionary_tables": 306,
-    "fixed_entries": 1702,
+    "fixed_entries": 1704,
     "variable_entries": 7,
-    "generated_php_files": 2322,
+    "generated_php_files": 2324,
     "ec3_semantic_review": "partial-explicit-overrides-only"
   },
   "native_semantic_rules": {
     "resource": "semantic-rules.json",
-    "rule_count": 111,
-    "source_tables": 45,
+    "rule_count": 117,
+    "source_tables": 50,
     "runtime": "Immutable semantic rule composition executed during SchemaDictionary validation and serialization",
     "ec3_reviews": "ec3-semantic-reviews.json",
     "remaining_ec3_review": "unlisted annotations remain unresolved",

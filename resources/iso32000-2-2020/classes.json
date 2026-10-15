@@ -8890,6 +8890,11 @@
         "name": "SC",
         "variable": false,
         "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\ThreeDCrossSectionDictionaryTable322\\SCEntry"
+      },
+      {
+        "name": "PV",
+        "variable": false,
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\ThreeDCrossSectionDictionaryTable322\\PVEntry"
       }
     ]
   },
@@ -9584,6 +9589,11 @@
         "name": "Presentation",
         "variable": false,
         "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\RichMediaActivationDictionaryTable335\\PresentationEntry"
+      },
+      {
+        "name": "Scripts",
+        "variable": false,
+        "class": "PDF\\Specification\\Iso32000_2\\Dictionary\\RichMediaActivationDictionaryTable335\\ScriptsEntry"
       }
     ]
   },

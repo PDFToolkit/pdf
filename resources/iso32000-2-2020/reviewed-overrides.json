@@ -931,6 +931,280 @@
           "description_language": "en"
         }
       ]
+    },
+    {
+      "id": "49",
+      "name": "DeveloperExtensionsDictionaryTable49",
+      "title": "Entries in a developer extensions dictionary",
+      "section": "7.12.3",
+      "pdf_pages": [
+        157
+      ],
+      "entries": [
+        {
+          "name": "URL",
+          "type": "string",
+          "description": "Required direct URL string documenting this developer extension. Each extension should receive a unique URL (recommendation, not a mandatory uniqueness constraint).",
+          "qualifier": "Required; PDF 2.0; shall be a direct object",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": true,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 157,
+          "errata": {
+            "id": "ec3-732-url",
+            "pdf_page": 157,
+            "review_status": "Accepted",
+            "issue_number": 732,
+            "annotation_name": "c518f13b-09cf-4efe-a16b932ac40822e7"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "99",
+      "name": "OptionalContentConfigurationDictionaryTable99",
+      "title": "Entries in an optional content configuration dictionary",
+      "section": "8.11.4.3",
+      "pdf_pages": [
+        299,
+        300,
+        301
+      ],
+      "entries": [
+        {
+          "name": "RBGroups",
+          "type": "array",
+          "description": "Optional array of radio-button collections. The outer array may be empty to explicitly declare no collections. Every inner array is nonempty and contains indirect optional-content-group references; at most one group per collection is ON, and all may be OFF. Absent values inherit the default configuration as specified by Table 99.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 301,
+          "errata": {
+            "id": "ec3-225-rbgroups",
+            "pdf_page": 301,
+            "review_status": "Completed",
+            "issue_number": 225,
+            "annotation_name": "5ad1ff39-6014-479b-aae6-e5feeea93270"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "120",
+      "name": "FontDescriptorsTable120",
+      "title": "Entries common to all font descriptors",
+      "section": "9.8.1",
+      "pdf_pages": [
+        358,
+        359,
+        360
+      ],
+      "entries": [
+        {
+          "name": "FontWeight",
+          "type": "number",
+          "description": "Optional numeric font weight in the inclusive range 1 to 1000. Values 100, 200, 300, 400, 500, 600, 700, 800 and 900 are recommended. Normal weight is 400 and bold is 700; interpretation varies between fonts.",
+          "qualifier": "Optional; PDF 1.5",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "1.5",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 359,
+          "errata": {
+            "id": "ec3-474-fontweight",
+            "pdf_page": 359,
+            "review_status": "Completed",
+            "issue_number": 474,
+            "annotation_name": "68e86e6a-6eb7-43a2-8d4a94648edd0ff5"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "341",
+      "name": "RichMediaContentDictionaryTable341",
+      "title": "Entries in a RichMediaContent dictionary",
+      "section": "13.7.2.3.1",
+      "pdf_pages": [
+        723,
+        724
+      ],
+      "entries": [
+        {
+          "name": "Configurations",
+          "type": "array",
+          "description": "Required nonempty array of indirect references to RichMediaConfiguration dictionaries.",
+          "qualifier": "Required; PDF 2.0",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": "2.0",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 724,
+          "errata": {
+            "id": "ec3-166-configurations",
+            "pdf_page": 724,
+            "review_status": "Completed",
+            "issue_number": 166,
+            "annotation_name": "2e78f785-1a10-44a7-aa72-857065bbd3d5"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "322",
+      "name": "ThreeDCrossSectionDictionaryTable322",
+      "title": "Entries in a 3D cross section dictionary",
+      "section": "13.6.4.5",
+      "pdf_pages": [
+        683,
+        684
+      ],
+      "entries": [
+        {
+          "name": "PV",
+          "type": "boolean",
+          "pdf_page": 683,
+          "required": false,
+          "conditional": false,
+          "introduced_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "fixed_name": null,
+          "deprecated_in": null,
+          "description": "Optional cutting-plane visibility flag. True makes the cutting plane visible; false hides it. Default: true.",
+          "errata": {
+            "id": "ec3-49-pv",
+            "pdf_page": 683,
+            "review_status": "Completed",
+            "issue_number": 49,
+            "annotation_name": "7092e012-d7ab-4648-9695-3c5ba34d1d1b"
+          }
+        }
+      ]
+    },
+    {
+      "id": "335",
+      "name": "RichMediaActivationDictionaryTable335",
+      "title": "Entries in a RichMediaActivation dictionary",
+      "section": "13.7.2.2.2",
+      "pdf_pages": [
+        717,
+        718
+      ],
+      "entries": [
+        {
+          "name": "Scripts",
+          "type": "array",
+          "pdf_page": 717,
+          "required": false,
+          "conditional": false,
+          "introduced_in": "2.0",
+          "direct": false,
+          "indirect": false,
+          "fixed_name": null,
+          "deprecated_in": null,
+          "description": "Optional array of indirect file-specification dictionary references describing JavaScript files present in the RichMediaContent Assets name tree. Empty or absent means no script is executed.",
+          "errata": {
+            "id": "ec3-59-scripts",
+            "pdf_page": 717,
+            "review_status": "Completed",
+            "issue_number": 59,
+            "annotation_name": "fd064f1b-d3fa-424c-9060-6259e0ae94c7"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "name": "PageTreeNodeTable30",
+      "title": "Required entries in a page tree node",
+      "section": "7.7.3.2",
+      "pdf_pages": [
+        118
+      ],
+      "entries": [
+        {
+          "name": "Kids",
+          "type": "array",
+          "description": "Required nonempty array of indirect page or page-tree-node references. Null entries are forbidden.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 118,
+          "errata": {
+            "id": "ec3-271-kids",
+            "pdf_page": 118,
+            "review_status": "Completed",
+            "issue_number": 271,
+            "annotation_name": "0442bfab-1b40-4179-a991-b1ea8fecea50"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        },
+        {
+          "name": "Count",
+          "type": "integer",
+          "description": "Required integer count of descendant page leaves, at least one.",
+          "qualifier": "Required",
+          "required": true,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 118,
+          "errata": {
+            "id": "ec3-271-count",
+            "pdf_page": 118,
+            "review_status": "Completed",
+            "issue_number": 271,
+            "annotation_name": "5f43e269-831c-48df-b3f4-902cba8e952f"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
     }
   ]
 }

@@ -23,7 +23,7 @@
     "status": "complete-base-table-inventory-with-explicit-reviewed-overrides",
     "table_count": 440,
     "dictionary_tables": 306,
-    "entry_count": 1709,
+    "entry_count": 1711,
     "variable_entry_count": 7,
     "ec3_semantic_review": "partial-explicit-overrides-only"
   },

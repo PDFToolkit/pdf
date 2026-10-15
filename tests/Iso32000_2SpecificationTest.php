@@ -80,7 +80,7 @@ final class Iso32000_2SpecificationTest extends TestCase
             }
         }
         self::assertCount(306, $manifest);
-        self::assertSame(1709, $entries);
+        self::assertSame(1711, $entries);
         self::assertSame($entries, $metadata['dictionary_catalogue']['entry_count']);
         self::assertTrue($metadata['source']['public_copy_included']);
         $originalSource = dirname(__DIR__) . '/' . $metadata['source']['path'];
@@ -268,8 +268,8 @@ final class Iso32000_2SpecificationTest extends TestCase
             }
             $variables += count($table['variable_entries']);
         }
-        self::assertSame(54, $authored);
-        self::assertSame(1655, $normative);
+        self::assertSame(64, $authored);
+        self::assertSame(1647, $normative);
         self::assertSame(7, $variables);
     }
 

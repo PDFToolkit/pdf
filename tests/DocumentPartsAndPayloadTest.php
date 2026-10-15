@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\Document\Collections\Collection;
 use PDF\Document\Collections\CollectionView;
 use PDF\Document\DocumentGraphContext;
@@ -229,7 +230,7 @@ final class DocumentPartsAndPayloadTest extends TestCase
         $file = new F\FileSpecification(new LiteralString('payload.pdf'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, $payload))), new F\AssociatedFileRelationship(F\AFRelationship::EncryptedPayload), encryptedPayload: new F\EncryptedPayload(new NameType('AcmeSecurity'), new NameType('1.0')));
         $files = new F\EmbeddedFiles(new F\EmbeddedFileAttachment(new LiteralString('payload.pdf'), $file));
         $collection = new Collection(view: CollectionView::Hidden, initialDocument: new LiteralString('payload.pdf'));
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))), $this->entry('Names', new DictionaryType($files->nameDictionaryEntry())), $collection->catalogEntry());
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))), $this->entry('Names', new DictionaryType($files->nameDictionaryEntry())), $collection->catalogEntry());
         return [$catalog, $file, $collection];
     }
 
@@ -284,4 +285,10 @@ final class DocumentPartsAndPayloadTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         new F\EncryptedPayload(new NameType('Handler'), new NameType('1.2-beta'));
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\Document\DocumentGraphContext;
 use PDF\Document\Metadata as M;
 use PDF\Document\Metadata\Declarations as D;
@@ -47,7 +48,7 @@ final class MetadataBundleTest extends TestCase
     }
     private function file(Entry ...$entries): FileStructure
     {
-        return new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog(new PageTreeNode(), ...$entries)));
+        return new FileStructure(new FileHeader('2.0'), new FileBody(new DocumentCatalog($this->nonemptyPages(), ...$entries)));
     }
 
     public function testDeclarationsAndEveryClaimFieldProduceNamespaceAwareXmp(): void
@@ -156,13 +157,13 @@ final class MetadataBundleTest extends TestCase
     public function testNativeMetadataRequiresPdf14(): void
     {
         $this->expectException(\LogicException::class);
-        (new FileStructure(new FileHeader('1.3'), new FileBody(new DocumentCatalog(new PageTreeNode(), new M\MetadataEntry($this->metadata())))))->toPdf();
+        (new FileStructure(new FileHeader('1.3'), new FileBody(new DocumentCatalog($this->nonemptyPages(), new M\MetadataEntry($this->metadata())))))->toPdf();
     }
 
     public function testRetainedMetadataUsesTheEffectiveStreamAfterIncrementalReplacement(): void
     {
         $stream = $this->metadata();
-        $catalog = new DocumentCatalog(new PageTreeNode(), new M\MetadataEntry($stream));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new M\MetadataEntry($stream));
         $revision = (new FileStructure(new FileHeader('2.0'), new FileBody($catalog)))->toRevision();
         $replacement = new StreamObject('wrong subtype', new DictionaryType($this->entry('Type', new NameType('Metadata')), $this->entry('Subtype', new NameType('NotXML'))));
         $update = new IncrementalUpdate($revision, new FileBody(new IndirectObject($replacement, $revision->binding($stream)->identifier)));
@@ -259,4 +260,10 @@ final class MetadataBundleTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         M\MetadataResourceLocation::Shading->attach(new DictionaryType($this->entry('PatternType', new IntegerType(2))), $this->metadata());
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }

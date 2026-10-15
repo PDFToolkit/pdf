@@ -75,6 +75,15 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         foreach (['Metadata', 'AF'] as $key) {
             yield 'signature digest prohibits ' . $key => ['255', ['ByteRange' => [0, 1, 2, 3], $key => new DictionaryType()], 'is prohibited by /ByteRange'];
         }
+        yield 'radio inner collection empty' => ['99', ['RBGroups' => [[]]], 'nonempty inner arrays'];
+        yield 'radio group must be indirect' => ['99', ['RBGroups' => [[new DictionaryType()]]], 'indirect dictionary references'];
+        yield 'font weight too low' => ['120', ['FontWeight' => 0], 'numeric domain'];
+        yield 'font weight too high' => ['120', ['FontWeight' => 1000.5], 'numeric domain'];
+        yield 'empty rich media configuration list' => ['341', ['Configurations' => []], 'at least 1'];
+        yield 'direct script file specification' => ['335', ['Scripts' => [new DictionaryType()]], 'indirect dictionary references'];
+        yield 'empty page-tree children' => ['30', ['Kids' => []], 'at least 1'];
+        yield 'null page-tree child' => ['30', ['Kids' => [new NullType()]], 'indirect dictionary references'];
+        yield 'zero page-tree count' => ['30', ['Count' => 0], 'numeric domain'];
         yield 'DPart metadata is obsolete' => ['409', ['Metadata' => new IndirectReference(new StreamObject('xmp'))], 'EC3 #290'];
         yield 'DPart child array cannot be empty' => ['409', ['DParts' => []], 'EC3 #612'];
         yield 'DPart child cannot be direct' => ['409', ['DParts' => [new DictionaryType()]], 'EC3 #612'];
@@ -106,6 +115,14 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         $this->validate('255', $this->dictionary(['Metadata' => new DictionaryType(), 'Reference' => [new DictionaryType(new Entry(new NameType('Data'), new IndirectReference(new DictionaryType())))]]));
         $this->validate('409', $this->dictionary(['DParts' => [new IndirectReference(new DictionaryType())]]));
         $this->validate('409', $this->dictionary(['Metadata' => new NullType()]));
+        $this->validate('99', $this->dictionary(['RBGroups' => []]));
+        $this->validate('99', $this->dictionary(['RBGroups' => [[new IndirectReference(new DictionaryType())]]]));
+        $this->validate('341', $this->dictionary(['Configurations' => [new IndirectReference(new DictionaryType())]]));
+        $this->validate('335', $this->dictionary(['Scripts' => []]));
+        $this->validate('30', $this->dictionary(['Kids' => [new IndirectReference(new DictionaryType())], 'Count' => 1]));
+        foreach ([1, 450.5, 1000] as $weight) {
+            $this->validate('120', $this->dictionary(['FontWeight' => $weight]));
+        }
         self::assertTrue(true);
     }
 
@@ -150,6 +167,34 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         foreach ((new Catalogue())->dictionary($table)->semanticRules() as $rule) {
             $rule->validate($dictionary);
         }
+    }
+
+    public function testRichMediaConfigurationsAreRequiredAndReferencesAreChecked(): void
+    {
+        $dictionary = new \PDF\Specification\Iso32000_2\Dictionary\RichMediaContentDictionaryTable341();
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('/Configurations is missing');
+        $dictionary->validate();
+    }
+
+    public function testDeveloperExtensionUrlIsRequiredInPdf20Schema(): void
+    {
+        $dictionary = new \PDF\Specification\Iso32000_2\Dictionary\DeveloperExtensionsDictionaryTable49(
+            new Entry(new NameType('BaseVersion'), new NameType('2.0')),
+            new Entry(new NameType('ExtensionLevel'), new IntegerType(1)),
+        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('/URL is missing');
+        $dictionary->validate();
+    }
+
+    public function testNewVisibilityAndScriptEntriesAreExecutableObjects(): void
+    {
+        $visibility = new \PDF\Specification\Iso32000_2\Dictionary\ThreeDCrossSectionDictionaryTable322\PVEntry(new \PDF\Syntax\Object\BooleanType(false));
+        self::assertStringContainsString('/PV false', (new DictionaryType($visibility))->toPdf(new SerializationContext()));
+        $scripts = new \PDF\Specification\Iso32000_2\Dictionary\RichMediaActivationDictionaryTable335\ScriptsEntry(new ArrayType());
+        $activation = new \PDF\Specification\Iso32000_2\Dictionary\RichMediaActivationDictionaryTable335($scripts);
+        self::assertStringContainsString('/Scripts []', $activation->toPdf(new SerializationContext()));
     }
 
     private function dictionary(array $values): DictionaryType

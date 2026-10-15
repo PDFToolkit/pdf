@@ -7,7 +7,7 @@
   "source_annotation_count": 11462,
   "named_issue_anchor_count": 761,
   "unique_issue_count": 356,
-  "reviewed_anchor_count": 26,
+  "reviewed_anchor_count": 41,
   "scope": "Exhaustive inventory of top-level annotations named Issue #N in this exact retained PDF. A null semantic_review means no evidence in the native semantic review register; it does not mean no source overlay or existing implementation. This machine inventory is not a semantic classification or a conformance claim.",
   "annotations": [
     {
@@ -848,7 +848,7 @@
       "generation": 0,
       "annotation_subtype": "/Text",
       "contents_sha256": "70698ac64ba44530ae5452711d88e3ac7950b87acba1b843d3f8b2e4a6b87212",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#7092e012-d7ab-4648-9695-3c5ba34d1d1b"
     },
     {
       "issue": 50,
@@ -978,7 +978,7 @@
       "generation": 0,
       "annotation_subtype": "/Text",
       "contents_sha256": "d0e019712c9d8aee0c1c5a0b2ddd252ec3c080c68305b9ef9da91a352758d653",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#fd064f1b-d3fa-424c-9060-6259e0ae94c7"
     },
     {
       "issue": 62,
@@ -1238,7 +1238,7 @@
       "generation": 0,
       "annotation_subtype": "/Text",
       "contents_sha256": "e251dd73285a9c39bea22ae91f7df7b8a7cab7df8901b91430a2e15ae30a66c9",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#ee8fca80-7e20-461d-ad93-27f5116d1d45"
     },
     {
       "issue": 83,
@@ -2528,7 +2528,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "4850b174b713d88cfc63de107830d5388929020e78abc91fc19bba7a6821625f",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#2e78f785-1a10-44a7-aa72-857065bbd3d5"
     },
     {
       "issue": 166,
@@ -2538,7 +2538,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "2a6f8f7aa6e5ca1ce062b1f544830ccacbccfeb70bd7858eb990116d85554be3",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#dfc93586-b9bc-4b27-830b-ca4e7eb601a5"
     },
     {
       "issue": 170,
@@ -3538,7 +3538,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "da1872c721d027643162b08154cc5aec81773a41202bef500ab58c8d759353e4",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#1de861b7-0aaf-4444-9b33-442faa8424a4"
     },
     {
       "issue": 225,
@@ -3548,7 +3548,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "bc84f0a99d213ebe6fad8ddcb9940b13de4338165e2b29b96132867daedfd63a",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#21b53589-8799-4c8e-8dc3-37e7f1063e74"
     },
     {
       "issue": 225,
@@ -3558,7 +3558,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "33bf6fbd7cd8379785a21e233d8e09f824e7bab459168a96312c1c882c1d7e1f",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#321a70a1-db4c-415c-a97f-ab28a4136579"
     },
     {
       "issue": 225,
@@ -3568,7 +3568,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "354fc905f00f0a9754ed96ea8ca4cdfe2fec52b693e4b887d68d29a6207c57e2",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#5ad1ff39-6014-479b-aae6-e5feeea93270"
     },
     {
       "issue": 225,
@@ -3578,7 +3578,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "9b690ab3ad0fe09656a9f086fe4841f29957cf14696e6827cec42192a4129542",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#5bcebf93-562f-4d72-ac02-a0cb5c74c41c"
     },
     {
       "issue": 226,
@@ -3828,7 +3828,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "e69cb2ca7b5ed80aa45ccff4fbfbfa9eae340f08a3d81a3982480ec9be601d99",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#0442bfab-1b40-4179-a991-b1ea8fecea50"
     },
     {
       "issue": 271,
@@ -3838,7 +3838,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "9b59262b78d349155b129262cf58832aa02904e941c432447d9b52dfe9fb488b",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#5f43e269-831c-48df-b3f4-902cba8e952f"
     },
     {
       "issue": 272,
@@ -6398,7 +6398,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "fcfb748d9e8922c52f351b778f1a31bad7264bbbf6d9f934fb6b5d1638c03936",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#68e86e6a-6eb7-43a2-8d4a94648edd0ff5"
     },
     {
       "issue": 475,
@@ -7598,7 +7598,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "121c9a40a07efd9926d798292ce98feb96d7955b33026b24c31e396ad6618c7f",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#78459659-c18f-4efd-8720da21db19fd6e"
     },
     {
       "issue": 732,
@@ -7608,7 +7608,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "4850b174b713d88cfc63de107830d5388929020e78abc91fc19bba7a6821625f",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#c518f13b-09cf-4efe-a16b932ac40822e7"
     },
     {
       "issue": 742,

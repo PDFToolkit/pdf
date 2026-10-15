@@ -102,7 +102,7 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "The AP qualifier is required except for Table166 exceptions in PDF2, but optional for PDF1.2–1.7. Effective page annotation graphs execute the condition; private dictionaries do not.",
+      "implemented_scope": "The AP qualifier is required except for Table166 exceptions in PDF 2.0, but optional for PDF1.2–1.7. Effective page annotation graphs execute the condition; private dictionaries do not.",
       "implementation": [
         "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
       ],
@@ -122,7 +122,7 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Rect uses zero-based array indices: the AP exception requires Rect[0]==Rect[2] AND Rect[1]==Rect[3]. A horizontal/vertical line alone remains subject to the PDF2 AP requirement.",
+      "implemented_scope": "Rect uses zero-based array indices: the AP exception requires Rect[0]==Rect[2] AND Rect[1]==Rect[3]. A horizontal/vertical line alone remains subject to the PDF 2.0 AP requirement.",
       "implementation": [
         "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
       ],
@@ -162,7 +162,7 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "PDF2 embedded-file Subtype names contain a MIME type/subtype without parameters, semicolon, equals or number sign. The associated-file graph, native PDF2 version gate and ISO2 schemas share the immutable media type object. PDF1.7 native first-class names remain possible.",
+      "implemented_scope": "PDF 2.0 embedded-file Subtype names contain a MIME type/subtype without parameters, semicolon, equals or number sign. The associated-file graph, native PDF 2.0 version gate and ISO2 schemas share the immutable media type object. PDF1.7 native first-class names remain possible.",
       "implementation": [
         "src/Document/Files/EmbeddedFileMediaType.php",
         "src/Document/Files/EmbeddedFileStream.php",
@@ -580,6 +580,349 @@
         "tests/Ec3SemanticCorrectionsTest.php",
         "tools/validate_pdf20_metadata.py",
         "tools/fixtures/document-parts-ec3.php"
+      ]
+    },
+    {
+      "issue": 271,
+      "physical_pdf_page": 118,
+      "annotation_name": "0442bfab-1b40-4179-a991-b1ea8fecea50",
+      "approval_chain": [
+        "82827e40-4b4b-4ea2-ab64-2f34f4f1e6bb",
+        "35331966-68c6-4aa4-b775-953fd918d590",
+        "641305d0-3ae9-4d0c-aef5ae6bb5c3bc52"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "PDF 2.0 page-tree Kids are nonempty indirect dictionary-reference arrays and Count is an integer at least one. The native projected graph enforces this for roots, nested nodes and catalog upgrades; PDF 1.x behavior is preserved.",
+      "implementation": [
+        "src/Document/DocumentGraphValidation.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php",
+        "src/Specification/Constraint/NumberEntry.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 271,
+      "physical_pdf_page": 118,
+      "annotation_name": "5f43e269-831c-48df-b3f4-902cba8e952f",
+      "approval_chain": [
+        "dac70652-8eeb-4087-b5c9-c5f07174ce95",
+        "8749240b-3389-4216-9061-84fb4bdfd362",
+        "9d45d2ab-c10f-4943-b23ac9b642cc6e52"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "PDF 2.0 page-tree Kids are nonempty indirect dictionary-reference arrays and Count is an integer at least one. The native projected graph enforces this for roots, nested nodes and catalog upgrades; PDF 1.x behavior is preserved.",
+      "implementation": [
+        "src/Document/DocumentGraphValidation.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php",
+        "src/Specification/Constraint/NumberEntry.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 81,
+      "physical_pdf_page": 120,
+      "annotation_name": "ee8fca80-7e20-461d-ad93-27f5116d1d45",
+      "approval_chain": [
+        "9dad7cdc-e4cb-4692-89d1-18b625546b84"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Existing native effective-page validation already requires direct or inherited Resources even when Contents is absent. A blank-page boundary test and independent serialized fixture retain that rule.",
+      "implementation": [
+        "src/Document/DocumentGraphValidation.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 732,
+      "physical_pdf_page": 157,
+      "annotation_name": "78459659-c18f-4efd-8720da21db19fd6e",
+      "approval_chain": [
+        "0a419b40-9146-485a-be028494b5146ca5"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "PDF 2.0 developer-extension schema and native effective-version validation require a direct URL string. Unique URLs are documented as a recommendation, without inventing a mandatory global uniqueness check.",
+      "implementation": [
+        "src/Document/Extensions/DeveloperExtension.php",
+        "src/Specification/Iso32000_2/Definition/DeveloperExtensionsDictionaryTable49Definition.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 732,
+      "physical_pdf_page": 157,
+      "annotation_name": "c518f13b-09cf-4efe-a16b932ac40822e7",
+      "approval_chain": [
+        "87a3b0b0-ac25-4e08-9c74103b84dd891f"
+      ],
+      "approval_states": [
+        "Accepted"
+      ],
+      "effective_approval": "Accepted",
+      "implemented_scope": "PDF 2.0 developer-extension schema and native effective-version validation require a direct URL string. Unique URLs are documented as a recommendation, without inventing a mandatory global uniqueness check.",
+      "implementation": [
+        "src/Document/Extensions/DeveloperExtension.php",
+        "src/Specification/Iso32000_2/Definition/DeveloperExtensionsDictionaryTable49Definition.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 225,
+      "physical_pdf_page": 301,
+      "annotation_name": "321a70a1-db4c-415c-a97f-ab28a4136579",
+      "approval_chain": [
+        "3f96e6c0-8da7-46db-b552-207bfef33f09"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native radio-button collections reject empty inner arrays; the outer empty array remains an explicit reset. The PDF 2.0 schema requires indirect dictionary members of nonempty inner arrays. Existing native GroupStates continues to allow all-OFF.",
+      "implementation": [
+        "src/Graphics/OptionalContent/RadioButtonGroups.php",
+        "src/Graphics/OptionalContent/GroupStates.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 225,
+      "physical_pdf_page": 301,
+      "annotation_name": "5ad1ff39-6014-479b-aae6-e5feeea93270",
+      "approval_chain": [
+        "bd419ba7-20bd-48fc-a2e0-a060dc7197d3"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native radio-button collections reject empty inner arrays; the outer empty array remains an explicit reset. The PDF 2.0 schema requires indirect dictionary members of nonempty inner arrays. Existing native GroupStates continues to allow all-OFF.",
+      "implementation": [
+        "src/Graphics/OptionalContent/RadioButtonGroups.php",
+        "src/Graphics/OptionalContent/GroupStates.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 225,
+      "physical_pdf_page": 301,
+      "annotation_name": "21b53589-8799-4c8e-8dc3-37e7f1063e74",
+      "approval_chain": [
+        "5e91460a-e2cc-4feb-bf2a-54dc2bf5b7a8"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native radio-button collections reject empty inner arrays; the outer empty array remains an explicit reset. The PDF 2.0 schema requires indirect dictionary members of nonempty inner arrays. Existing native GroupStates continues to allow all-OFF.",
+      "implementation": [
+        "src/Graphics/OptionalContent/RadioButtonGroups.php",
+        "src/Graphics/OptionalContent/GroupStates.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 225,
+      "physical_pdf_page": 301,
+      "annotation_name": "1de861b7-0aaf-4444-9b33-442faa8424a4",
+      "approval_chain": [
+        "e1e9bb5f-8bfc-4d9d-8b6b-cc0800d59b4c"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native radio-button collections reject empty inner arrays; the outer empty array remains an explicit reset. The PDF 2.0 schema requires indirect dictionary members of nonempty inner arrays. Existing native GroupStates continues to allow all-OFF.",
+      "implementation": [
+        "src/Graphics/OptionalContent/RadioButtonGroups.php",
+        "src/Graphics/OptionalContent/GroupStates.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 225,
+      "physical_pdf_page": 301,
+      "annotation_name": "5bcebf93-562f-4d72-ac02-a0cb5c74c41c",
+      "approval_chain": [
+        "4d8b0f03-25a5-4db0-962e-ee01968fc636"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native radio-button collections reject empty inner arrays; the outer empty array remains an explicit reset. The PDF 2.0 schema requires indirect dictionary members of nonempty inner arrays. Existing native GroupStates continues to allow all-OFF.",
+      "implementation": [
+        "src/Graphics/OptionalContent/RadioButtonGroups.php",
+        "src/Graphics/OptionalContent/GroupStates.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 474,
+      "physical_pdf_page": 359,
+      "annotation_name": "68e86e6a-6eb7-43a2-8d4a94648edd0ff5",
+      "approval_chain": [
+        "5e5af542-9919-41a0-a473fa46dc48e98c"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Native FontDescriptor and PDF 2.0 schema admit every finite numeric FontWeight from 1 through 1000 inclusive. Native effective-version validation keeps 100-step historical PDF 1.x weights. Recommended 100-step weights are not treated as mandatory inPDF 2.0.",
+      "implementation": [
+        "src/Document/Fonts/FontDescriptor.php",
+        "src/Specification/Constraint/NumberEntry.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 49,
+      "physical_pdf_page": 683,
+      "annotation_name": "7092e012-d7ab-4648-9695-3c5ba34d1d1b",
+      "approval_chain": [
+        "67af9285-e120-4399-92ee-db898cb15ca0"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Table 322 gains the missing optional boolean PV entry for cutting-plane visibility, with default true documented. This exposes typed serializable objects, not a 3D rendering engine.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Dictionary/ThreeDCrossSectionDictionaryTable322/PVEntry.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 59,
+      "physical_pdf_page": 717,
+      "annotation_name": "fd064f1b-d3fa-424c-9060-6259e0ae94c7",
+      "approval_chain": [
+        "28aaa703-7130-4b06-a4b7-fe71c0a84e88"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Table 335 gains the missing optional Scripts array of indirect file-specification dictionary references. Empty arrays serialize as no scripts. Asset-tree membership and JavaScript execution are explicitly outside this local schema check.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Dictionary/RichMediaActivationDictionaryTable335/ScriptsEntry.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 166,
+      "physical_pdf_page": 724,
+      "annotation_name": "dfc93586-b9bc-4b27-830b-ca4e7eb601a5",
+      "approval_chain": [
+        "baa40b51-8440-4514-a86b-920f4549449e"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "RichMediaContent Table 341 Configurations is required and a nonempty array of indirect dictionary references. This is a local shape constraint; media runtime execution and full configuration-to-assets relationships are not established by it.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/RichMediaContentDictionaryTable341Definition.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 166,
+      "physical_pdf_page": 724,
+      "annotation_name": "2e78f785-1a10-44a7-aa72-857065bbd3d5",
+      "approval_chain": [
+        "ee8ec5db-9101-4531-bbbc-aba428b445d9"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "RichMediaContent Table 341 Configurations is required and a nonempty array of indirect dictionary references. This is a local shape constraint; media runtime execution and full configuration-to-assets relationships are not established by it.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/RichMediaContentDictionaryTable341Definition.php",
+        "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
       ]
     }
   ]

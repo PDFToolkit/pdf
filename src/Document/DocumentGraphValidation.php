@@ -418,6 +418,9 @@ final class DocumentGraphValidation
         if (!$kids instanceof ArrayType || !$count instanceof IntegerType) {
             throw new \LogicException('The effective Pages dictionary requires Kids and an integer Count.');
         }
+        if ($version->value === PdfVersion::PDF20 && (count($kids) === 0 || $count->integer() < 1)) {
+            throw new \LogicException('EC3 #271 requires nonempty page-tree Kids and Count of at least one in PDF 2.0.');
+        }
         $leaves = 0;
         foreach ($kids->items as $kid) {
             if (!$kid instanceof IndirectReference) {

@@ -1337,6 +1337,67 @@
       "physical_pdf_page": 851,
       "constraint": "DocumentPartEntries",
       "arguments": {}
+    },
+    {
+      "id": "optional-content-radio-collections",
+      "table": "99",
+      "physical_pdf_page": 301,
+      "constraint": "DictionaryReferenceArray",
+      "arguments": {
+        "key": "RBGroups",
+        "nested": true
+      }
+    },
+    {
+      "id": "font-weight-range",
+      "table": "120",
+      "physical_pdf_page": 359,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "FontWeight",
+        "minimum": 1,
+        "maximum": 1000
+      }
+    },
+    {
+      "id": "rich-media-configurations",
+      "table": "341",
+      "physical_pdf_page": 724,
+      "constraint": "DictionaryReferenceArray",
+      "arguments": {
+        "key": "Configurations",
+        "minimum": 1
+      }
+    },
+    {
+      "id": "rich-media-scripts",
+      "table": "335",
+      "physical_pdf_page": 717,
+      "constraint": "DictionaryReferenceArray",
+      "arguments": {
+        "key": "Scripts"
+      }
+    },
+    {
+      "id": "page-tree-children",
+      "table": "30",
+      "physical_pdf_page": 118,
+      "constraint": "DictionaryReferenceArray",
+      "arguments": {
+        "key": "Kids",
+        "minimum": 1
+      }
+    },
+    {
+      "id": "page-tree-nonzero-count",
+      "table": "30",
+      "physical_pdf_page": 118,
+      "constraint": "NumberEntry",
+      "arguments": {
+        "key": "Count",
+        "minimum": 1,
+        "integer": true
+      }
     }
   ]
 }

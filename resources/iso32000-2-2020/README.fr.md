@@ -4,9 +4,9 @@
 
 Ce catalogue propre à l’édition inventorie les **440 tableaux de la source**, y
 compris les annexes et les emplacements conservant la numérotation. Ses
-**306 définitions de dictionnaires** fournissent **1 702 classes d’entrées fixes
+**306 définitions de dictionnaires** fournissent **1 704 classes d’entrées fixes
 et sept classes de clés variables explicites**. Le générateur produit
-**2 322 fichiers PHP**, dont l’agrégation immuable
+**2 324 fichiers PHP**, dont l’agrégation immuable
 `PDF\Specification\Iso32000_2\Catalogue`. Ces nombres décrivent l’inventaire des
 dictionnaires. Les règles conditionnelles, les algorithmes et la conformité globale
 restent suivis séparément dans [coverage.json](coverage.json).
@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 54 tableaux de résumés/corrections du projet et leurs
+- `reviewed-overrides.json` : les 64 entrées de résumés/corrections du projet, réparties dans 13 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -65,8 +65,8 @@ et la liste de propriétés des fichiers associés 409a (problème 374) sont deu
 exemples approuvés. Toutes les autres annotations EC3 n’ont **pas** encore reçu
 une revue d’implémentation sémantique.
 
-`semantic-rules.json` fournit maintenant **111 règles intrinsèques exécutables
-réparties sur 45 tableaux source**, héritées par leurs définitions dérivées.
+`semantic-rules.json` fournit maintenant **117 règles intrinsèques exécutables
+réparties sur 50 tableaux source**, héritées par leurs définitions dérivées.
 Elles contrôlent les domaines numériques, les tailles de tableaux, les dimensions
 des fonctions, les paramètres de filtres, les sections de références croisées,
 les couleurs calibrées, les masques et profondeurs d’images, les coordonnées de
@@ -75,8 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 26 annotations distinctes couvrant 15 problèmes
-(22, 30, 86, 124, 155, 246, 290, 307, 308, 403, 444, 463, 468, 609 et 612). Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 41 annotations distinctes couvrant 23 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -98,6 +97,20 @@ et classes structurels non nuls ; et l’exclusion mutuelle de `StructParent` et
 restent autorisés. Les noms de première classe des fichiers embarqués PDF 1.7
 conservent leurs règles ; une promotion du catalogue vers PDF 2.0 active la
 restriction MIME corrigée.
+
+
+EC3 #271 refuse les nœuds d’arbre de pages vides des documents PDF 2.0 effectifs,
+y compris après promotion du catalogue. Un document blanc requiert donc une
+page blanche explicite avec Resources (#81). #225 autorise RBGroups vide mais
+refuse les collections internes vides. #474 accepte tout FontWeight numérique
+de 1 à 1000 en PDF 2.0 ; PDF 1.x conserve les valeurs historiques par pas de 100.
+#732 impose une URL directe d’extension ; son unicité reste une recommandation.
+Configurations du tableau 341 devient obligatoire et non vide (#166) ; PV du
+tableau 322 et Scripts du tableau 335 disposent d’entrées typées (#49/#59).
+Ces contrôles locaux n’exécutent pas JavaScript, ne rendent pas le contenu 3D et
+ne prouvent pas l’appartenance des Scripts à l’arbre Assets. L’oracle des
+métadonnées vérifie arbres de pages, poids de police, tableaux radio et URL
+avec pypdf et qpdf dans les trois formats de références croisées.
 
 [ec3-annotation-inventory.json](ec3-annotation-inventory.json) inventorie les 761
 ancres de problèmes correspondant à 356 numéros dans la source conservée. La page

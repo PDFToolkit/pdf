@@ -11,7 +11,7 @@ use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
 
 /** One developer's extension of a PDF base version (ISO 32000-1, table 50). */
-final class DeveloperExtension extends SchemaDictionary
+final class DeveloperExtension extends SchemaDictionary implements \PDF\Document\VersionedComponent
 {
     public const string TABLE = '50';
 
@@ -29,6 +29,16 @@ final class DeveloperExtension extends SchemaDictionary
             new Entry(new NameType('ExtensionLevel'), $extensionLevel),
             ...$entries,
         );
+    }
+
+    public function validateVersion(\PDF\Syntax\FileStructure\EffectivePdfVersion $version): void
+    {
+        if ($version->value === \PDF\Syntax\FileStructure\PdfVersion::PDF20) {
+            (new \PDF\Specification\Constraint\DirectDictionaryObjects())->validate($this);
+            if (!$this->get('URL') instanceof \PDF\Syntax\Object\StringType) {
+                throw new \InvalidArgumentException('EC3 #732 requires a direct URL string in PDF 2.0 developer extensions.');
+            }
+        }
     }
 
     public function without(NameType|string $key): static

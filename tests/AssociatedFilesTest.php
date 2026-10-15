@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PDF\Tests;
 
+use PDF\Syntax\Object\NumericType;
 use PDF\Document\DocumentGraphContext;
 use PDF\Document\ResourceDictionary;
 use PDF\Document\Files as F;
@@ -112,7 +113,7 @@ final class AssociatedFilesTest extends TestCase
         $embedded = $this->embedded();
         $external = $this->external();
         $files = new F\AssociatedFiles(new IndirectReference($embedded), $external);
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry($files));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry($files));
         $revision = $this->file($catalog, format: $format)->toRevision();
         self::assertStringStartsWith('%PDF-2.0', $revision->bytes);
         self::assertStringContainsString('/AF [', $revision->bytes);
@@ -126,13 +127,13 @@ final class AssociatedFilesTest extends TestCase
     public function testStandaloneRelationshipRetainsPrePdf20ExtensionUses(): void
     {
         $file = $this->external();
-        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('PrivateFile', new IndirectReference($file)));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), $this->entry('PrivateFile', new IndirectReference($file)));
         self::assertStringStartsWith('%PDF-1.7', $this->file($catalog, '1.7')->toPdf());
     }
 
     public function testNativeAssociationRequiresPdf20(): void
     {
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry(new F\AssociatedFiles($this->external())));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry(new F\AssociatedFiles($this->external())));
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('requires PDF 2.0');
         $this->file($catalog, '1.7')->toPdf();
@@ -140,7 +141,7 @@ final class AssociatedFilesTest extends TestCase
 
     public function testCatalogVersionCanUpgradeTheHeaderForAnAssociation(): void
     {
-        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('Version', new NameType('2.0')), new F\AssociatedFilesEntry(new F\AssociatedFiles($this->external())));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), $this->entry('Version', new NameType('2.0')), new F\AssociatedFilesEntry(new F\AssociatedFiles($this->external())));
         self::assertStringContainsString('/Version /2.0', $this->file($catalog, '1.7')->toPdf());
     }
 
@@ -215,7 +216,7 @@ final class AssociatedFilesTest extends TestCase
             'empty-relationship' => new ArrayType($file->with($this->entry('AFRelationship', new NameType('')))),
             default => throw new \LogicException('Unknown fixture.'),
         };
-        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('AF', $array));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), $this->entry('AF', $array));
         $this->expectException(\InvalidArgumentException::class);
         $this->file($catalog)->toPdf();
     }
@@ -279,7 +280,7 @@ final class AssociatedFilesTest extends TestCase
         });
         $stream = new StreamObject('original bytes', new DictionaryType(...$entries));
         $file = new DictionaryType($this->entry('Type', new NameType('Filespec')), $this->entry('F', new LiteralString('data.bin')), $this->entry('AFRelationship', new NameType('Source')), $this->entry('EF', new DictionaryType($this->entry('F', new IndirectReference($stream)))));
-        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('AF', new ArrayType(new IndirectReference($file))));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), $this->entry('AF', new ArrayType(new IndirectReference($file))));
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($message);
         $this->file($catalog)->toPdf();
@@ -289,7 +290,7 @@ final class AssociatedFilesTest extends TestCase
     {
         $stream = new StreamObject('original bytes', new DictionaryType($this->entry('Type', new NameType('EmbeddedFile')), $this->entry('Subtype', new NameType('application/octet-stream'))));
         $file = new DictionaryType($this->entry('Type', new NameType('Filespec')), $this->entry('F', new LiteralString('data.bin')), $this->entry('AFRelationship', new NameType('Source')), $this->entry('EF', new DictionaryType($this->entry('F', new IndirectReference($stream)))));
-        $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('AF', new ArrayType(new IndirectReference($file))));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), $this->entry('AF', new ArrayType(new IndirectReference($file))));
         self::assertStringContainsString('/application#2Foctet-stream', $this->file($catalog)->toPdf());
     }
 
@@ -305,7 +306,7 @@ final class AssociatedFilesTest extends TestCase
     public function testIncrementalReplacementUsesTheEffectiveFilespecRatherThanTheFormerNativeObject(): void
     {
         $file = $this->embedded();
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
         $previous = $this->file($catalog)->toRevision();
         $replacement = new DictionaryType(...iterator_to_array($file->entries(), false));
         $replacement = $replacement->without('AFRelationship');
@@ -343,7 +344,7 @@ final class AssociatedFilesTest extends TestCase
         self::assertInstanceOf(IndirectReference::class, $reference);
         $stream = $reference->target();
         self::assertInstanceOf(StreamObject::class, $stream);
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
         $previous = $this->file($catalog)->toRevision();
         $replacement = new StreamObject('replacement bytes', $stream->dictionary()->without('Subtype'));
         $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($replacement, $previous->binding($stream)->identifier)));
@@ -362,7 +363,7 @@ final class AssociatedFilesTest extends TestCase
         self::assertInstanceOf(IndirectReference::class, $reference);
         $stream = $reference->target();
         self::assertInstanceOf(StreamObject::class, $stream);
-        $catalog = new DocumentCatalog(new PageTreeNode(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
+        $catalog = new DocumentCatalog($this->nonemptyPages(), new F\AssociatedFilesEntry(new F\AssociatedFiles(new IndirectReference($file))));
         $previous = $this->file($catalog)->toRevision();
         $dictionary = $stream->dictionary()->with($this->entry('Params', new DictionaryType($this->entry('ModDate', new LiteralString('D:20260230')))));
         $replacement = new StreamObject('replacement bytes', $dictionary);
@@ -374,7 +375,7 @@ final class AssociatedFilesTest extends TestCase
 
     public function testIncrementalCatalogUpgradeCanIntroduceAnAssociatedFile(): void
     {
-        $catalog = new DocumentCatalog(new PageTreeNode());
+        $catalog = new DocumentCatalog($this->nonemptyPages());
         $previous = $this->file($catalog, '1.7')->toRevision();
         $updated = $catalog->with($this->entry('Version', new NameType('2.0')))->with(new F\AssociatedFilesEntry(new F\AssociatedFiles($this->external())));
         $update = new IncrementalUpdate($previous, new FileBody(new IndirectObject($updated, $previous->binding($catalog)->identifier)));
@@ -382,4 +383,10 @@ final class AssociatedFilesTest extends TestCase
         self::assertStringStartsWith($previous->bytes, $revision->bytes);
         self::assertStringContainsString('/Version /2.0', substr($revision->bytes, strlen($previous->bytes)));
     }
+    private function nonemptyPages(): PageTreeNode
+    {
+        $box = new \PDF\Syntax\DataStructure\Rectangle(new NumericType(0), new NumericType(0), new NumericType(100), new NumericType(100));
+        return (new PageTreeNode())->addKid(new \PDF\Syntax\DocumentStructure\PageTree\PageObject($box, new \PDF\Document\ResourceDictionary()));
+    }
+
 }
