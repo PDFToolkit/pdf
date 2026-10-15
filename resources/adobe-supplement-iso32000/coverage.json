@@ -706,7 +706,7 @@
       "id": "barcode-data-preparation",
       "title": "Prepare a barcode field value",
       "category": "data-preparation-algorithm",
-      "status": "partially-implemented-and-validated",
+      "status": "native-source-procedure-implemented-external-symbology-required",
       "source": {
         "document": "adobe-supplement-iso32000-2008-extension-level-3",
         "filename": "adobe_supplement_iso32000.pdf",
@@ -720,21 +720,33 @@
       },
       "details": "Optional Flate compression, division among associated widgets, and a full-widget AP.N appearance produced from PMD. Barcode encoding itself is defined in external symbology specifications.",
       "implementation": {
-        "scope": "DataPrep=0 preserves explicitly supplied payload bytes; DataPrep=1 performs zlib-framed Flate compression before symbology encoding. No implicit text encoding, widget partitioning, PDF417/Data Matrix/QR codec or AP.N barcode appearance generation is implemented.",
+        "scope": "Preserve the actual encoded V bytes, apply optional whole-value zlib-framed Flate before ordered near-equal widget partitioning, bind PMD and Rect, then construct full-widget AP.N through an explicit BarcodeImageEncoder capability. Widget attachment and separate/merged single-widget representation remain explicit.",
         "classes": [
           "PDF\\Document\\Barcodes\\BarcodeDataPreparation",
-          "PDF\\Syntax\\Filters\\FlateDecode"
+          "PDF\\Document\\Barcodes\\BarcodeMessagePartition",
+          "PDF\\Document\\Barcodes\\BarcodeMessage",
+          "PDF\\Document\\Barcodes\\BarcodeWidgetParameters",
+          "PDF\\Document\\Barcodes\\BarcodeFieldPreparation",
+          "PDF\\Document\\Barcodes\\BarcodeEncodingRequest",
+          "PDF\\Document\\Barcodes\\BarcodeImageEncoder",
+          "PDF\\Document\\Barcodes\\BarcodeWidgetAppearance",
+          "PDF\\Document\\Barcodes\\BarcodeLimits"
         ],
-        "remainingSourceProcedure": [
-          "Divide the prepared value among associated widgets.",
-          "Encode the symbology defined by the external barcode standard.",
-          "Produce each full-widget normal appearance stream."
-        ]
+        "externalBoundaries": [
+          "PDF417, Data Matrix and QR algorithms, ECC, quiet zones, capacity and scanner reassembly belong to the explicitly selected external symbology encoder.",
+          "The appearance adapter accepts normalized opaque device-colour ImageXObject samples; it does not inspect arbitrary image graphs or execute JavaScript calculation.",
+          "The 255-widget default is a configurable processing budget informed by Acrobat implementation note E-7, not a universal PDF constraint."
+        ],
+        "coverage": "resources/barcodes/coverage.json"
       },
       "validation": {
-        "unitTests": "tests/AdobeMeasurementBarcodeTest.php",
-        "unitResult": "18 tests, 79 assertions on PHP 8.3.35 for the measurement/barcode suite",
-        "independentResult": "Twelve payload/mode cases were checked against Python zlib, including empty, all 256 byte values, binary PDF delimiter-like text, deterministic random data and repeated bytes."
+        "unitTests": [
+          "tests/BarcodeMessagePreparationTest.php",
+          "tests/BarcodeFieldPreparationTest.php"
+        ],
+        "unitResult": "38 tests and 147 assertions on PHP 8.3, 8.4 and 8.5, in addition to the existing barcode/measurement tests.",
+        "independentOracle": "tools/validate_barcode_appearances.py",
+        "independentResult": "Per runtime: five real PDFs, ten widgets and 45 pixel checks with qpdf, pypdf, Python zlib and Poppler. The announced two-by-two test image proves preparation/association/placement and is not a scannable barcode."
       }
     },
     {
@@ -5401,8 +5413,8 @@
             47
           ]
         },
-        "status": "partial-native-procedure-external-symbology-codec-required",
-        "existingEvidence": "DataPrep compression and module width remain independently verified baseline primitives; field/widget/PMD contracts are added. No barcode appearance encoder is claimed."
+        "status": "native-source-procedure-implemented-external-symbology-required",
+        "existingEvidence": "Ordered near-equal prepared-byte partitioning, immutable field/widget/PMD requests, explicit external encoding and full-widget native AP.N are executed and independently checked; see resources/barcodes/coverage.json. Symbology and scanner correctness remain external."
       },
       {
         "procedure": "Geospatial/2D measurement, RichMedia and remaining annotation/action/navigation graphs",
@@ -5416,12 +5428,12 @@
       }
     ],
     "readerRenderingAndExternalBoundaries": [
-      "External PDF parsing (including still-missing hybrid/encrypted support in pdf-reader) belongs to the separately released reader package.",
+      "External PDF parsing, authenticated source reading and reader-specific limits belongs to the separately released reader package.",
       "Image/font format conversion, ICC profiles, barcode symbologies, XFA/XML/HTML/JavaScript, media and 3D runtimes are separately specified processors or optional modules.",
       "Rendering, visual reading order/reflow, PDF/UA conformance, screen/print device behavior and cryptographic trust/revocation/timestamp policy are not inferred from model/schema presence."
     ],
     "isoCoverage": "../iso32000-1/coverage.json",
-    "coverageConclusion": "All supplement dictionary/table definitions remain inventoried. Historical cryptographic procedures and inherited ISO writer mechanisms now have evidenced generated revision lifecycle, file/collection/navigation and applied signing integration. Full MDP/UR change/authority analysis, barcode appearance procedures, geospatial/measurement/RichMedia and other conditional semantics remain incomplete; consumer/external-standard behavior is separately identified.",
+    "coverageConclusion": "All supplement dictionary/table definitions remain inventoried. Historical cryptographic procedures and inherited ISO writer mechanisms now have evidenced generated revision lifecycle, file/collection/navigation and applied signing integration. Full MDP/UR change/authority analysis, geospatial/measurement/RichMedia and other conditional semantics remain incomplete; consumer/external-standard behavior is separately identified.",
     "implementedChanges": [
       {
         "mechanism": "iso-standard-security-handler",
