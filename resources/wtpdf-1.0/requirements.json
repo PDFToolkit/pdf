@@ -226,12 +226,18 @@
       ],
       "aspect": "Avoid every deprecated feature",
       "status": "external",
-      "justification": "Deprecated annotation types are checked; a comprehensive deprecated-feature inventory across all ISO features remains external validation.",
+      "justification": "WTPDF6.2 uses SHOULD. Forty native family checks (34 constructed-graph contexts and six supplied-trailer contexts) report recommendations, preserving ISO exceptions; five opaque payload families, consumer behaviour and an unreviewed EC3 source case remain external/source review. This aspect is not closed by a catalogue or absence of recommendations.",
       "implementation_or_boundary": [
-        "src/Document/Structure/WtPdfGraphChecks.php"
+        "src/Document/Structure/WtPdfDeprecatedChecks.php",
+        "src/Document/Structure/WtPdfDeprecatedTraversal.php",
+        "src/Document/Structure/WtPdfDeprecatedCatalogue.php",
+        "src/Document/Structure/WtPdfDeprecatedFileContext.php",
+        "resources/wtpdf-1.0/deprecations/coverage.json"
       ],
       "evidence": [
-        "src/Document/Structure/WtPdfAudit.php"
+        "tests/WtPdfDeprecatedFeaturesTest.php",
+        "tests/WtPdfAuditTest.php",
+        "resources/wtpdf-1.0/deprecations/catalogue.json"
       ]
     },
     {

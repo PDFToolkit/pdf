@@ -30,6 +30,13 @@ une déclaration, un sous-ensemble vérifié ou l’absence d’échec détecté
 certificat WTPDF/PDF/UA. Budgets de parcours et preuves externes encore nécessaires
 sur les fontes/contenus restent explicites dans l’API et les constats d’audit.
 
+Le conseil sur les dépréciations de §6.2 utilise **SHOULD**, avec des
+contrôles natifs en contexte et des constats `Recommendation` distincts.
+Le [catalogue et guide de migration bilingue](deprecations/README.fr.md)
+présente les 47 familles examinées, le contexte trailer fourni, les exceptions
+des sources et les frontières externes restantes. Cela n’affaiblit pas les
+interdictions séparées concernant certaines annotations et XFA.
+
 L’équivalence du texte enrichi en 8.10.3.3 (page physique 46) dispose désormais
 d’une capacité XML explicite et exécutable. Elle se sélectionne avec
 `new WtPdfGraphChecks(richText: new WtPdfRichTextChecks(new WtPdfXmlRichTextParser()))`.

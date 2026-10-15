@@ -30,6 +30,13 @@ turns a declaration, successful subset or absence of detected failures into a
 WTPDF/PDF/UA certificate. Traversal budgets and incomplete external font/content
 evidence remain explicit in the audit API and findings.
 
+Deprecated-feature advice in §6.2 uses **SHOULD**, with contextual native
+checks and separate `Recommendation` findings. See the bilingual
+[deprecation catalogue and migration guide](deprecations/README.md) for the
+47 reviewed families, supplied trailer context, source exceptions and
+remaining external boundaries. This does not weaken the separate annotation
+and XFA prohibitions.
+
 Rich-text equivalence in 8.10.3.3 (physical page 46) now has an executable,
 explicit XML capability. Select it with
 `new WtPdfGraphChecks(richText: new WtPdfRichTextChecks(new WtPdfXmlRichTextParser()))`.

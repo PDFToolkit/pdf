@@ -166,8 +166,18 @@
     },
     {
       "clauses": "8.4.5.5.1, 8.4.5.9",
-      "pages": [33, 35],
+      "pages": [
+        33,
+        35
+      ],
       "mechanisms": "Managed Type3 byte encodings select actual CharProcs. Rendered glyph programs, auxiliary fonts, nested Forms and local/inherited resources share the enclosing operation/text/depth budgets. Undefined and explicit .notdef codes are detected. ISO2 Type3 modes3/7 suppress glyph rendering; generic font programs remain external."
+    },
+    {
+      "clauses": "6.2 (SHOULD)",
+      "pages": [
+        10
+      ],
+      "mechanisms": "47-family source catalogue; 34 contextual constructed-graph and six supplied-trailer detections report Recommendation separately from failures and pending human/external checks. Retained identities, standard relationship traversal, owner-specific triggers, deduplication and explicit object/edge/depth/operation budgets preserve source exceptions. Opaque programs, consumer behaviour and source approval remain external."
     }
   ],
   "additional_validation_required": [
@@ -176,7 +186,8 @@
     "Opaque content, generic XMP and external predefined CMap mappings require independent parsing/validation; the audit does not silently infer their semantics.",
     "MathML presentation grammar and semantic suitability require external MathML validation. Core namespace recognition is not a MathML validator.",
     "Language correctness and changes, semantic table-header applicability/completeness, omitted continued-list relationships, perceived page-label correspondence require explicit human or external evidence. Rich-text cases beyond the explicitly selected native XML backend require an explicit richer parser.",
-    "Font usage follows typed page, nested Form, annotation-appearance, selected tiling-pattern and managed selected Type3 glyph content. Generic Type3 dictionaries, opaque maps and font programs still require independent parsing. The independent oracle discloses Poppler's observed Type3 Tr7 rendering difference rather than claiming those pixels confirm ISO2 suppression."
+    "Font usage follows typed page, nested Form, annotation-appearance, selected tiling-pattern and managed selected Type3 glyph content. Generic Type3 dictionaries, opaque maps and font programs still require independent parsing. The independent oracle discloses Poppler's observed Type3 Tr7 rendering difference rather than claiming those pixels confirm ISO2 suppression.",
+    "Deprecated-feature detection is a bounded constructed-model recommendation audit, not universal ISO conformance. Missing trailer context, CMS/public-key recipient algorithms and permissions, opaque content/CMap/FDF programs, custom attribute semantics, processor behaviour and unreviewed EC3 issue133 require explicit additional/source review."
   ],
   "human_review_required": [
     "Real-content/artifact classification, logical reading order, grouping intent and semantic structure-type choice",
@@ -194,7 +205,11 @@
     "tools/validate_pdf20_structure_destinations.py",
     "tests/WtPdfRichTextTest.php",
     "tests/WtPdfType3UsageTest.php",
-    "tools/validate_wtpdf_type3_usage.py"
+    "tools/validate_wtpdf_type3_usage.py",
+    "tests/WtPdfDeprecatedFeaturesTest.php",
+    "resources/wtpdf-1.0/deprecations/catalogue.json",
+    "resources/wtpdf-1.0/deprecations/coverage.json"
   ],
-  "requirement_inventory": "resources/wtpdf-1.0/requirements.json"
+  "requirement_inventory": "resources/wtpdf-1.0/requirements.json",
+  "deprecated_feature_catalogue": "resources/wtpdf-1.0/deprecations/catalogue.json"
 }

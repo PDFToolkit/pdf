@@ -1,0 +1,748 @@
+{
+    "schema_version": 1,
+    "wtpdf_source": {
+        "document": "Well-Tagged-PDF-WTPDF-1.0.pdf",
+        "document_sha256": "ef321647824abd1dd336bf7ab8953ce5b8654590e48b7421990cf7d9ad713385",
+        "clause": "6.2",
+        "physical_pdf_page": 10,
+        "modal_force": "should"
+    },
+    "scope": "Reviewed feature families and their actual inspection boundaries. A row is not an assertion of universal ISO/WTPDF validation.",
+    "counts": {
+        "constructed-graph": 34,
+        "supplied-file-context": 6,
+        "opaque-payload": 5,
+        "consumer-or-semantic-review": 1,
+        "source-review-required": 1
+    },
+    "features": [
+        {
+            "identifier": "catalog-needs-rendering",
+            "scope": "constructed-graph",
+            "description": "NeedsRendering is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "29",
+                    "clause": "7.7.2",
+                    "physical_pdf_page": 117
+                }
+            ]
+        },
+        {
+            "identifier": "forms-xfa",
+            "scope": "constructed-graph",
+            "description": "XFA forms are deprecated; the separate WTPDF prohibition still applies.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "225",
+                    "clause": "12.7.2",
+                    "physical_pdf_page": 545
+                }
+            ]
+        },
+        {
+            "identifier": "forms-need-appearances",
+            "scope": "constructed-graph",
+            "description": "NeedAppearances is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "225",
+                    "clause": "12.7.2",
+                    "physical_pdf_page": 544
+                }
+            ]
+        },
+        {
+            "identifier": "alternate-presentations",
+            "scope": "constructed-graph",
+            "description": "AlternatePresentations are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "32",
+                    "clause": "7.7.4",
+                    "physical_pdf_page": 125
+                }
+            ]
+        },
+        {
+            "identifier": "resources-procset",
+            "scope": "constructed-graph",
+            "description": "Resource ProcSet declarations are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "34",
+                    "clause": "7.8.3",
+                    "physical_pdf_page": 128
+                }
+            ]
+        },
+        {
+            "identifier": "filespec-os-names",
+            "scope": "constructed-graph",
+            "description": "DOS, Mac and Unix file-specification names are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "43",
+                    "clause": "7.11.3",
+                    "physical_pdf_page": 150
+                }
+            ]
+        },
+        {
+            "identifier": "embedded-mac-params",
+            "scope": "constructed-graph",
+            "description": "Embedded-file parameter Mac is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "45",
+                    "clause": "7.11.4.1",
+                    "physical_pdf_page": 154
+                }
+            ]
+        },
+        {
+            "identifier": "xobject-name",
+            "scope": "constructed-graph",
+            "description": "The image/form XObject Name entry is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "87",
+                    "clause": "8.9.5",
+                    "physical_pdf_page": 275
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "93",
+                    "clause": "8.10.2",
+                    "physical_pdf_page": 288
+                }
+            ]
+        },
+        {
+            "identifier": "xobject-opi",
+            "scope": "constructed-graph",
+            "description": "XObject OPI proxies are deprecated; image-mask OPI is ignored.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "87",
+                    "clause": "8.9.5",
+                    "physical_pdf_page": 275
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "93",
+                    "clause": "8.10.2",
+                    "physical_pdf_page": 288
+                }
+            ]
+        },
+        {
+            "identifier": "font-name",
+            "scope": "constructed-graph",
+            "description": "Simple-font Name entries are deprecated through the Type1 table.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "109",
+                    "clause": "9.6.2",
+                    "physical_pdf_page": 328
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "110",
+                    "clause": "9.6.4",
+                    "physical_pdf_page": 332
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "clause9.6.3",
+                    "clause": "9.6.3",
+                    "physical_pdf_page": 331
+                }
+            ]
+        },
+        {
+            "identifier": "font-type1-charset",
+            "scope": "constructed-graph",
+            "description": "Type1 font-descriptor CharSet is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "120",
+                    "clause": "9.8.1",
+                    "physical_pdf_page": 360
+                }
+            ]
+        },
+        {
+            "identifier": "font-cidset",
+            "scope": "constructed-graph",
+            "description": "CID font-descriptor CIDSet is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "122",
+                    "clause": "9.8.3.1",
+                    "physical_pdf_page": 363
+                }
+            ]
+        },
+        {
+            "identifier": "cid-collections",
+            "scope": "constructed-graph",
+            "description": "Adobe-Japan2 and Adobe-Korea1 character collections are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "117",
+                    "clause": "9.7.5.2",
+                    "physical_pdf_page": 353
+                }
+            ]
+        },
+        {
+            "identifier": "extgstate-transfer",
+            "scope": "constructed-graph",
+            "description": "Graphics-state TR and TR2 transfer functions are deprecated; halftone transfer functions are a separate context.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "57",
+                    "clause": "8.4.5",
+                    "physical_pdf_page": 181
+                }
+            ]
+        },
+        {
+            "identifier": "blend-mode-array",
+            "scope": "constructed-graph",
+            "description": "Arrays of graphics-state blend modes are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "57",
+                    "clause": "8.4.5",
+                    "physical_pdf_page": 182
+                }
+            ]
+        },
+        {
+            "identifier": "blend-mode-compatible",
+            "scope": "constructed-graph",
+            "description": "The Compatible blend mode is deprecated and shall not be emitted by writers.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "134",
+                    "clause": "11.3.5",
+                    "physical_pdf_page": 409
+                }
+            ]
+        },
+        {
+            "identifier": "viewer-prepress",
+            "scope": "constructed-graph",
+            "description": "Viewer ViewArea, ViewClip, PrintArea and PrintClip are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "147",
+                    "clause": "12.2",
+                    "physical_pdf_page": 453
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "147",
+                    "clause": "12.2",
+                    "physical_pdf_page": 454
+                }
+            ]
+        },
+        {
+            "identifier": "annotations-legacy",
+            "scope": "constructed-graph",
+            "description": "Sound, Movie and TrapNet annotations are deprecated; WTPDF separately forbids them.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "171",
+                    "clause": "12.5.6",
+                    "physical_pdf_page": 492
+                }
+            ]
+        },
+        {
+            "identifier": "actions-legacy",
+            "scope": "constructed-graph",
+            "description": "Sound and Movie actions are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "212",
+                    "clause": "12.6.4.9",
+                    "physical_pdf_page": 535
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "213",
+                    "clause": "12.6.4.10",
+                    "physical_pdf_page": 536
+                }
+            ]
+        },
+        {
+            "identifier": "launch-os",
+            "scope": "constructed-graph",
+            "description": "Platform-specific Launch Win, Mac and Unix entries are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "207",
+                    "clause": "12.6.4.6",
+                    "physical_pdf_page": 532
+                }
+            ]
+        },
+        {
+            "identifier": "signature-seed-sha1",
+            "scope": "constructed-graph",
+            "description": "SHA1 in a signature seed DigestMethod declaration is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "237",
+                    "clause": "12.7.5.5",
+                    "physical_pdf_page": 561
+                }
+            ]
+        },
+        {
+            "identifier": "signature-legacy-subfilter",
+            "scope": "constructed-graph",
+            "description": "adbe.x509.rsa_sha1 and adbe.pkcs7.sha1 are deprecated signature formats.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "255",
+                    "clause": "12.8.1",
+                    "physical_pdf_page": 584
+                }
+            ]
+        },
+        {
+            "identifier": "signature-handler-version",
+            "scope": "constructed-graph",
+            "description": "The signature dictionary R handler-version entry is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "255",
+                    "clause": "12.8.1",
+                    "physical_pdf_page": 586
+                }
+            ]
+        },
+        {
+            "identifier": "signature-ur",
+            "scope": "constructed-graph",
+            "description": "UR transforms and usage-rights signatures are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "clause12.8.2.3",
+                    "clause": "12.8.2.3",
+                    "physical_pdf_page": 589
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "256",
+                    "clause": "12.8.1",
+                    "physical_pdf_page": 587
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "263",
+                    "clause": "12.8.6",
+                    "physical_pdf_page": 608
+                }
+            ]
+        },
+        {
+            "identifier": "signature-reference-digest",
+            "scope": "constructed-graph",
+            "description": "MD5 and SHA1 signature-reference digests are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "256",
+                    "clause": "12.8.1",
+                    "physical_pdf_page": 587
+                }
+            ]
+        },
+        {
+            "identifier": "legal-legacy-counts",
+            "scope": "constructed-graph",
+            "description": "Legal attestation MovieActions, SoundActions and ExternalOPIdicts entries are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "264",
+                    "clause": "12.8.7",
+                    "physical_pdf_page": 609
+                }
+            ]
+        },
+        {
+            "identifier": "info-metadata",
+            "scope": "supplied-file-context",
+            "description": "Document Info metadata other than CreationDate and ModDate is deprecated; thread information is not document Info.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "349",
+                    "clause": "14.3.3",
+                    "physical_pdf_page": 731
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "349",
+                    "clause": "14.3.3",
+                    "physical_pdf_page": 732
+                }
+            ]
+        },
+        {
+            "identifier": "markinfo-suspects",
+            "scope": "constructed-graph",
+            "description": "The MarkInfo Suspects entry is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "353",
+                    "clause": "14.7.1",
+                    "physical_pdf_page": 738
+                }
+            ]
+        },
+        {
+            "identifier": "structure-revisions",
+            "scope": "constructed-graph",
+            "description": "Structure-element and attribute/class association revision numbers are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "355",
+                    "clause": "14.7.6.3",
+                    "physical_pdf_page": 754
+                }
+            ]
+        },
+        {
+            "identifier": "printfield-checked",
+            "scope": "constructed-graph",
+            "description": "The lowercase PrintField checked attribute is deprecated; Checked is current.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "383",
+                    "clause": "14.8.5.6",
+                    "physical_pdf_page": 806
+                }
+            ]
+        },
+        {
+            "identifier": "web-capture",
+            "scope": "constructed-graph",
+            "description": "Web Capture structures and their object attributes are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "clause14.10",
+                    "clause": "14.10",
+                    "physical_pdf_page": 817
+                }
+            ]
+        },
+        {
+            "identifier": "page-separations",
+            "scope": "constructed-graph",
+            "description": "Page separation dictionaries are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "400",
+                    "clause": "14.11.4",
+                    "physical_pdf_page": 834
+                }
+            ]
+        },
+        {
+            "identifier": "trapping-appearance",
+            "scope": "constructed-graph",
+            "description": "Trap-network appearance mechanisms are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "404",
+                    "clause": "14.11.6.3",
+                    "physical_pdf_page": 843
+                }
+            ]
+        },
+        {
+            "identifier": "operator-F",
+            "scope": "constructed-graph",
+            "description": "The legacy path-fill operator F is deprecated; use f.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "59",
+                    "clause": "8.5.3.1",
+                    "physical_pdf_page": 188
+                }
+            ]
+        },
+        {
+            "identifier": "encrypted-fdf",
+            "scope": "constructed-graph",
+            "description": "EncryptionRevision on an identified embedded FDF stream is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "247",
+                    "clause": "12.7.8.3",
+                    "physical_pdf_page": 577
+                }
+            ]
+        },
+        {
+            "identifier": "encryption-version",
+            "scope": "supplied-file-context",
+            "description": "Encryption V values below 5 are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "20",
+                    "clause": "7.6.2",
+                    "physical_pdf_page": 88
+                }
+            ]
+        },
+        {
+            "identifier": "standard-revision",
+            "scope": "supplied-file-context",
+            "description": "Standard security revisions below 6 are deprecated; R5 remains prohibited for PDF2 writing.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "21",
+                    "clause": "7.6.4.2",
+                    "physical_pdf_page": 93
+                }
+            ]
+        },
+        {
+            "identifier": "crypt-filter-method",
+            "scope": "supplied-file-context",
+            "description": "V2 and AESV2 crypt filters are deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "25",
+                    "clause": "7.6.6",
+                    "physical_pdf_page": 106
+                }
+            ]
+        },
+        {
+            "identifier": "crypt-filter-length",
+            "scope": "supplied-file-context",
+            "description": "Crypt-filter Length is deprecated but remains required by this table; do not remove required entries automatically.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "25",
+                    "clause": "7.6.6",
+                    "physical_pdf_page": 107
+                }
+            ]
+        },
+        {
+            "identifier": "assistive-restriction",
+            "scope": "supplied-file-context",
+            "description": "Using permission bit10 to restrict assistive extraction is deprecated.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "22",
+                    "clause": "7.6.4.2",
+                    "physical_pdf_page": 95
+                },
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "24",
+                    "clause": "7.6.5.2",
+                    "physical_pdf_page": 103
+                }
+            ]
+        },
+        {
+            "identifier": "publickey-cms-algorithms",
+            "scope": "opaque-payload",
+            "description": "Inspect public-key CMS envelope algorithms and encrypted recipient permissions with an explicitly selected cryptographic validator.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "24",
+                    "clause": "7.6.5.3",
+                    "physical_pdf_page": 104
+                }
+            ]
+        },
+        {
+            "identifier": "signature-cms-digests",
+            "scope": "opaque-payload",
+            "description": "Inspect CMS signature and certificate digest algorithms independently; dictionary keys do not reveal all algorithms.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "257",
+                    "clause": "12.8.3",
+                    "physical_pdf_page": 593
+                }
+            ]
+        },
+        {
+            "identifier": "raw-content-operators",
+            "scope": "opaque-payload",
+            "description": "Parse opaque content programs independently before excluding deprecated operators.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "59",
+                    "clause": "8.5.3.1",
+                    "physical_pdf_page": 188
+                }
+            ]
+        },
+        {
+            "identifier": "cmap-character-collections",
+            "scope": "opaque-payload",
+            "description": "Inspect collection declarations inside opaque CMap programs with a CMap parser.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "117",
+                    "clause": "9.7.5.2",
+                    "physical_pdf_page": 353
+                }
+            ]
+        },
+        {
+            "identifier": "embedded-fdf-payload",
+            "scope": "opaque-payload",
+            "description": "Inspect untyped embedded FDF payloads with a format reader; attachment names do not prove their format.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "247",
+                    "clause": "12.7.8.3",
+                    "physical_pdf_page": 577
+                }
+            ]
+        },
+        {
+            "identifier": "reader-deprecated-behaviour",
+            "scope": "consumer-or-semantic-review",
+            "description": "A constructed-object audit cannot establish how an external processor ignores deprecated features or applies their contextual exceptions.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "definition3.15",
+                    "clause": "3.15",
+                    "physical_pdf_page": 23
+                }
+            ]
+        },
+        {
+            "identifier": "link-multiple-annotations",
+            "scope": "source-review-required",
+            "description": "The appended EC3 issue133 diff includes a Link deprecation note. Its approval chain and semantic applicability are not asserted as an implemented native rule.",
+            "sources": [
+                {
+                    "document": "ISO_32000-2_sponsored_EC3.pdf",
+                    "document_sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+                    "table_or_context": "EC3#133",
+                    "clause": "14.8.4.7.3",
+                    "physical_pdf_page": 1010
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "wtpdf_clause": "6.2",
+  "physical_pdf_page": 10,
+  "modal_force": "should",
+  "native_result": "Recommendation",
+  "catalogue": "resources/wtpdf-1.0/deprecations/catalogue.json",
+  "scope": "47 reviewed source families: 34 contextual constructed-graph detections, 6 supplied-file-context detections, 5 opaque payload boundaries, 1 consumer behaviour and 1 source approval review. Not a universal ISO/WTPDF validator.",
+  "implementation": [
+    "src/Document/Structure/WtPdfDeprecatedChecks.php",
+    "src/Document/Structure/WtPdfDeprecatedTraversal.php",
+    "src/Document/Structure/WtPdfDeprecatedCatalogue.php",
+    "src/Document/Structure/WtPdfDeprecatedFileContext.php",
+    "src/Document/Structure/WtPdfAudit.php",
+    "src/Document/Structure/WtPdfAuditReport.php"
+  ],
+  "evidence": [
+    "tests/WtPdfDeprecatedFeaturesTest.php",
+    "tests/WtPdfAuditTest.php"
+  ],
+  "exceptions": [
+    "Info.CreationDate and Info.ModDate are not deprecated; thread information does not become document Info.",
+    "Only contextual Type1 CharSet and CID-font CIDSet declarations are checked, not arbitrary fields with those spellings.",
+    "Image-mask OPI and redefinitions of the standard Identity crypt-filter name are ignored.",
+    "Halftone transfer functions are distinct from deprecated graphics-state TR/TR2.",
+    "Private action-trigger names and form/private ID values are not assigned unrelated standard semantics.",
+    "PrintField.Checked is current; lowercase checked in an explicit PrintField owner is deprecated.",
+    "Crypt-filter Length remains required by the same source table that labels it deprecated.",
+    "WTPDF8.9.1 and8.10.1 SHALL prohibitions remain separate existing failures."
+  ],
+  "remaining_boundaries": [
+    "Absent application-supplied trailer context leaves document Info and encryption declarations uninspected.",
+    "Opaque content, CMaps, CMS signatures, public-key recipients and untyped FDF payloads require independent format or cryptographic parsing.",
+    "Custom-owner/namespaced attribute semantics and processor behaviour require human or external validation.",
+    "EC3 issue133 source/approval and semantic applicability are not resolved by catalogue registration.",
+    "The API inspects constructed objects and supplied context; it does not authenticate imported PDF bytes or reconstruct historical revisions."
+  ]
+}
