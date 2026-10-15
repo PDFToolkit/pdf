@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 139 annotations distinctes couvrant 72 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 142 annotations distinctes couvrant 73 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -210,3 +210,5 @@ La description du type de contenu multimédia emploie désormais l’obligation 
 EC3 #296 exige des octets XMP décodés UTF-8 dans les graphes de métadonnées PDF 2.0 effectifs. Les encodeurs de flux normaux restent disponibles ; les flux préencodés opaques sont refusés. Une preuve immuable est enregistrée à l’émission et vérifiée contre les octets encodés non chiffrés des révisions suivantes, y compris lors d’une mise à niveau PDF 1.7 par catalogue. Les builders historiques ne sont jamais réévalués. L’oracle indépendant vérifie les octets XML exacts, deux filtres de décodage et les préfixes conservés dans neuf PDF supplémentaires ; la validité du schéma XML et les flux externes importés restent distincts.
 
 EC3 #188 ajoute `StructureAttributeSemantics::Pdf20` explicite pour Placement contextuel : Figure dans P est Inline, Figure dans Sect est Block. Les attributs directs/de classe priment ; un contexte ambigu exige une valeur explicite. `Pdf17` reste le défaut historique. Les objets natifs vérifient l’édition réelle ; les arbres génériques conservés/importés et la mise en page namespace/TS32005 restent distincts. Trois PDF indépendants supplémentaires conservent Placement absent et le Width ou Height approprié.
+
+EC3 #128 enregistre trois ancres sources exécutables (pages physiques 127, 333 et 334) : le premier dictionnaire Resources explicite du glyphe, de la police ou de la page héritée contrôle les ressources Type3, y compris depuis les Forms et apparences. Un dictionnaire vide arrête le repli. L’inspection des glyphes gérés et du graphe figé est bornée ; la rédaction destructive n’exécute pas de CharProcs arbitraires. L’oracle à deux moteurs conserve l’écart Poppler du Form imbriqué comme limite du consommateur. Les ancres explicatives historiques distinctes de la page 128 ne sont pas comptées comme revues exécutables.

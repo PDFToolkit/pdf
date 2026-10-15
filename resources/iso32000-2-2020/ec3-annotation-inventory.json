@@ -7,7 +7,7 @@
   "source_annotation_count": 11462,
   "named_issue_anchor_count": 761,
   "unique_issue_count": 356,
-  "reviewed_anchor_count": 139,
+  "reviewed_anchor_count": 142,
   "scope": "Exhaustive inventory of top-level annotations named Issue #N in this exact retained PDF. A null semantic_review means no evidence in the native semantic review register; it does not mean no source overlay or existing implementation. This machine inventory is not a semantic classification or a conformance claim.",
   "annotations": [
     {
@@ -1918,7 +1918,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "adf7fd63a5ddb70c28852c94e1e5e19b263285b0f4aa9b0f6c14aaa0c952bd4d",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#20369d7f-0aa6-4d3d-8047-98551f24817c"
     },
     {
       "issue": 128,
@@ -1948,7 +1948,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "d043cb3ba0010c021e8f74d20796dd84ce513a67e181b19a7951c43c07616e7c",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#1bd44d9a-ba17-4edb-8afc-73149dd72289"
     },
     {
       "issue": 128,
@@ -1958,7 +1958,7 @@
       "generation": 0,
       "annotation_subtype": "/Caret",
       "contents_sha256": "19f7b0407adf59c81efc1ef92210e35b2839bbc26fe6e75af680daa9b706d213",
-      "semantic_review": null
+      "semantic_review": "ec3-semantic-reviews.json#9f57881f-0146-43c0-b48d-a1ca5782fcdb"
     },
     {
       "issue": 131,

@@ -3123,6 +3123,84 @@
         "tools/fixtures/structure-placement-ec3.php",
         "tools/validate_pdf20_metadata.py"
       ]
+    },
+    {
+      "issue": 128,
+      "physical_pdf_page": 127,
+      "annotation_name": "20369d7f-0aa6-4d3d-8047-98551f24817c",
+      "approval_chain": [
+        "75241462-d899-4a22-8a79-83e1d8622bf7",
+        "576d39a4-0a31-4ecf-9e91-b15348bf73e2",
+        "d35c29f4-70bb-4d47-bfd551dff435bfdf"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Type3 named-resource resolution uses the first explicit dictionary at glyph, font, page or page ancestor; an empty explicit dictionary prevents fallback. Page context remains separate when a Type3 font is called from a Form or appearance. Effective frozen graphs and WTPDF managed glyph inspection preserve the same scopes with explicit traversal budgets. Arbitrary CharProc execution by the redaction engine remains unsupported. The two-renderer oracle records the nested-Form Poppler boundary rather than calling it normative confirmation.",
+      "implementation": [
+        "src/Document/Fonts/Type3Glyph.php",
+        "src/Document/DocumentGraphValidation.php",
+        "src/Document/Structure/WtPdfFontUsageChecks.php"
+      ],
+      "validation": [
+        "tests/Type3ResourceScopesTest.php",
+        "tools/validate_type3_resources.py"
+      ]
+    },
+    {
+      "issue": 128,
+      "physical_pdf_page": 333,
+      "annotation_name": "1bd44d9a-ba17-4edb-8afc-73149dd72289",
+      "approval_chain": [
+        "176c6a27-827a-4f11-9087-caa0b6f12f6c",
+        "3e927504-180f-4ddc-ada4-04ce40d7565e",
+        "b13f2608-8778-44b3-ba8a9279c5eed0af"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Type3 named-resource resolution uses the first explicit dictionary at glyph, font, page or page ancestor; an empty explicit dictionary prevents fallback. Page context remains separate when a Type3 font is called from a Form or appearance. Effective frozen graphs and WTPDF managed glyph inspection preserve the same scopes with explicit traversal budgets. Arbitrary CharProc execution by the redaction engine remains unsupported. The two-renderer oracle records the nested-Form Poppler boundary rather than calling it normative confirmation.",
+      "implementation": [
+        "src/Document/Fonts/Type3Glyph.php",
+        "src/Document/DocumentGraphValidation.php",
+        "src/Document/Structure/WtPdfFontUsageChecks.php"
+      ],
+      "validation": [
+        "tests/Type3ResourceScopesTest.php",
+        "tools/validate_type3_resources.py"
+      ]
+    },
+    {
+      "issue": 128,
+      "physical_pdf_page": 334,
+      "annotation_name": "9f57881f-0146-43c0-b48d-a1ca5782fcdb",
+      "approval_chain": [
+        "7a6daac3-1bcc-450d-80c8-ae919ea8f5f1",
+        "eb875c22-b89a-4a4a-b038-048ec6fe8cff",
+        "166fceac-419c-41d0-a4f7334721ab1642"
+      ],
+      "approval_states": [
+        "Completed",
+        "Accepted",
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Type3 named-resource resolution uses the first explicit dictionary at glyph, font, page or page ancestor; an empty explicit dictionary prevents fallback. Page context remains separate when a Type3 font is called from a Form or appearance. Effective frozen graphs and WTPDF managed glyph inspection preserve the same scopes with explicit traversal budgets. Arbitrary CharProc execution by the redaction engine remains unsupported. The two-renderer oracle records the nested-Form Poppler boundary rather than calling it normative confirmation.",
+      "implementation": [
+        "src/Document/Fonts/Type3Glyph.php",
+        "src/Document/DocumentGraphValidation.php",
+        "src/Document/Structure/WtPdfFontUsageChecks.php"
+      ],
+      "validation": [
+        "tests/Type3ResourceScopesTest.php",
+        "tools/validate_type3_resources.py"
+      ]
     }
   ]
 }
