@@ -351,6 +351,20 @@ final class CMapObjectsTest extends TestCase
         self::assertSame('A', $child->sequence($this->code('41'))->utf8());
         self::assertSame('B', $child->sequence($this->code('42'))->utf8());
     }
+
+    public function testToUnicodeDictionaryAndProgramShareTheirMetadata(): void
+    {
+        $info = new CMapSystemInfo(new LiteralString('Example'), new LiteralString('Unicode'), new IntegerType(4));
+        $unicode = new ToUnicodeCMap(new UnicodeCMap(new CMapName(new NameType('Vertical-UCS')), new CodeSpaces($this->space()), new UnicodeMappings(new UnicodeChar($this->code('41'), $this->scalar(0x41))), systemInfo: $info, mode: CMapWritingMode::Vertical));
+        self::assertSame('CMap', $unicode->dictionary()->get('Type')->value);
+        self::assertSame('Vertical-UCS', $unicode->dictionary()->get('CMapName')->value);
+        self::assertSame(1, $unicode->dictionary()->get('WMode')->value);
+        self::assertSame($info->registry, $unicode->dictionary()->get('CIDSystemInfo')->get('Registry'));
+        self::assertStringContainsString('/CMapName /Vertical-UCS def', $unicode->data);
+        self::assertStringContainsString('/WMode 1 def', $unicode->data);
+        self::assertStringContainsString('/CIDSystemInfo ' . $info->program() . ' def', $unicode->data);
+        self::assertSame('A', $unicode->sequence($this->code('41'))->utf8());
+    }
     public function testType0FontCanSelectIdentityV(): void
     {
         $font = new Type0Font($this->descendant(), encoding: new IdentityEncoding(CMapWritingMode::Vertical));

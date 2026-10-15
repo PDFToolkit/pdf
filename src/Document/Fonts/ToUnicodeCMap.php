@@ -40,7 +40,15 @@ final class ToUnicodeCMap extends FontStream implements UnicodeCMapResource
             );
         }
         $this->definition = $map;
-        $dictionary = $map->base === null ? new DictionaryType() : new DictionaryType(new Entry(new NameType('UseCMap'), $map->base->object()));
+        $dictionary = new DictionaryType(
+            new Entry(new NameType('Type'), new NameType('CMap')),
+            new Entry(new NameType('CMapName'), $map->name->value),
+            new Entry(new NameType('CIDSystemInfo'), $map->systemInfo->dictionary()),
+            new Entry(new NameType('WMode'), new IntegerType($map->mode->value)),
+        );
+        if ($map->base !== null) {
+            $dictionary = $dictionary->with(new Entry(new NameType('UseCMap'), $map->base->object()));
+        }
         parent::__construct($map->program(), $dictionary, ...$filters);
     }
 

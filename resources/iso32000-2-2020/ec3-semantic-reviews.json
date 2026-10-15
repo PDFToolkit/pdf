@@ -1923,14 +1923,19 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy. Native SignatureSeedSemantics preserves historical behavior and constructs integer parser capability V in PDF2; frozen policies derive the effective document edition.",
       "implementation": [
         "resources/iso32000-2-2020/reviewed-overrides.json",
         "src/Specification/Iso32000_2/Catalogue.php",
-        "src/Specification/Constraint/NameArray.php"
+        "src/Specification/Constraint/NameArray.php",
+        "src/Document/Signatures/Policies/SignatureSeedSemantics.php",
+        "src/Document/Signatures/Policies/SignatureSeedValue.php",
+        "src/Document/Signatures/Policies/FrozenSignatureSeedReader.php"
       ],
       "validation": [
-        "tests/Ec3CatalogueQualifiersTest.php"
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/SignatureSeedEc3Test.php",
+        "tools/validate_iso32000_crypto.py"
       ]
     },
     {
@@ -1944,14 +1949,19 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy. Native SignatureSeedSemantics preserves historical behavior and constructs integer parser capability V in PDF2; frozen policies derive the effective document edition.",
       "implementation": [
         "resources/iso32000-2-2020/reviewed-overrides.json",
         "src/Specification/Iso32000_2/Catalogue.php",
-        "src/Specification/Constraint/NameArray.php"
+        "src/Specification/Constraint/NameArray.php",
+        "src/Document/Signatures/Policies/SignatureSeedSemantics.php",
+        "src/Document/Signatures/Policies/SignatureSeedValue.php",
+        "src/Document/Signatures/Policies/FrozenSignatureSeedReader.php"
       ],
       "validation": [
-        "tests/Ec3CatalogueQualifiersTest.php"
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/SignatureSeedEc3Test.php",
+        "tools/validate_iso32000_crypto.py"
       ]
     },
     {
@@ -1965,14 +1975,19 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy.",
+      "implemented_scope": "Seed DigestMethod is an unordered array of allowed names. Both orders and duplicates are admitted; scalar strings, unknown names and MD5 are rejected in the PDF2 schema. Algorithm-intrinsic digest selection is a separate signature policy. Native SignatureSeedSemantics preserves historical behavior and constructs integer parser capability V in PDF2; frozen policies derive the effective document edition.",
       "implementation": [
         "resources/iso32000-2-2020/reviewed-overrides.json",
         "src/Specification/Iso32000_2/Catalogue.php",
-        "src/Specification/Constraint/NameArray.php"
+        "src/Specification/Constraint/NameArray.php",
+        "src/Document/Signatures/Policies/SignatureSeedSemantics.php",
+        "src/Document/Signatures/Policies/SignatureSeedValue.php",
+        "src/Document/Signatures/Policies/FrozenSignatureSeedReader.php"
       ],
       "validation": [
-        "tests/Ec3CatalogueQualifiersTest.php"
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/SignatureSeedEc3Test.php",
+        "tools/validate_iso32000_crypto.py"
       ]
     },
     {
@@ -1986,13 +2001,18 @@
         "Accepted"
       ],
       "effective_approval": "Accepted",
-      "implemented_scope": "Seed capability V=2 describes PDF1.7 and earlier, V=3 PDF2.0 and earlier. This review concerns catalogue wording; native version-aware seed construction is tracked separately.",
+      "implemented_scope": "Seed capability V=2 describes PDF1.7 and earlier, V=3 PDF2.0 and earlier. This review concerns catalogue wording; native version-aware seed construction is tracked separately. Native SignatureSeedSemantics preserves historical behavior and constructs integer parser capability V in PDF2; frozen policies derive the effective document edition.",
       "implementation": [
         "resources/iso32000-2-2020/reviewed-overrides.json",
-        "src/Specification/Iso32000_2/Catalogue.php"
+        "src/Specification/Iso32000_2/Catalogue.php",
+        "src/Document/Signatures/Policies/SignatureSeedSemantics.php",
+        "src/Document/Signatures/Policies/SignatureSeedValue.php",
+        "src/Document/Signatures/Policies/FrozenSignatureSeedReader.php"
       ],
       "validation": [
-        "tests/Ec3CatalogueQualifiersTest.php"
+        "tests/Ec3CatalogueQualifiersTest.php",
+        "tests/SignatureSeedEc3Test.php",
+        "tools/validate_iso32000_crypto.py"
       ]
     },
     {
@@ -2535,6 +2555,153 @@
       ],
       "validation": [
         "tests/Ec3CatalogueQualifiersTest.php"
+      ]
+    },
+    {
+      "issue": 5,
+      "physical_pdf_page": 364,
+      "annotation_name": "8ac6cbfc-192c-4629-9b07-3dcc9d9fe1bd",
+      "approval_chain": [
+        "7fc0cb30-a10b-48cc-a3c4-722146612f53"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "CID glyph-class overrides admit the Table120 metric/classification keys, including FontBBox/FontFamily/FontStretch/FontWeight, inherit unspecified defaults and prohibit font programs and CID-only Table122 keys. Effective version distinguishes PDF2 integer weights1..1000 from historical100-step weights.",
+      "implementation": [
+        "src/Document/Fonts/CIDFontMetricOverride.php",
+        "src/Document/Fonts/CIDFontDescriptors.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 5,
+      "physical_pdf_page": 364,
+      "annotation_name": "131a554b-735e-417e-bc4a-276c08dee47d",
+      "approval_chain": [
+        "3a572f1f-1cfe-47b0-bec3-0ff9b9d7a181"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "CID glyph-class overrides admit the Table120 metric/classification keys, including FontBBox/FontFamily/FontStretch/FontWeight, inherit unspecified defaults and prohibit font programs and CID-only Table122 keys. Effective version distinguishes PDF2 integer weights1..1000 from historical100-step weights.",
+      "implementation": [
+        "src/Document/Fonts/CIDFontMetricOverride.php",
+        "src/Document/Fonts/CIDFontDescriptors.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 5,
+      "physical_pdf_page": 364,
+      "annotation_name": "4b0f2a0c-a137-4328-9f47-434c4efdfc2e",
+      "approval_chain": [
+        "30eec3a5-96dd-4ff4-996f-5e76ff33f935"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "CID glyph-class overrides admit the Table120 metric/classification keys, including FontBBox/FontFamily/FontStretch/FontWeight, inherit unspecified defaults and prohibit font programs and CID-only Table122 keys. Effective version distinguishes PDF2 integer weights1..1000 from historical100-step weights.",
+      "implementation": [
+        "src/Document/Fonts/CIDFontMetricOverride.php",
+        "src/Document/Fonts/CIDFontDescriptors.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php"
+      ]
+    },
+    {
+      "issue": 462,
+      "physical_pdf_page": 372,
+      "annotation_name": "e92d023d-0599-48a8-81d29b635822bcb1",
+      "approval_chain": [
+        "a4c5e9a5-c97b-4023-8c0fa5ecbcb678c5"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Table125a is exposed as a PDF2 schema and native ToUnicodeCMap emits Type, CMapName, CIDSystemInfo and WMode from the same immutable definition as its program, retaining UseCMap inheritance. Explicit external named CMap resources still require caller-supplied mappings; no network loading or arbitrary PostScript execution.",
+      "implementation": [
+        "src/Document/Fonts/CMaps/UnicodeCMap.php",
+        "src/Document/Fonts/ToUnicodeCMap.php",
+        "src/Specification/Iso32000_2/Definition/ToUnicodeCMapStreamDictionaryTable125aDefinition.php"
+      ],
+      "validation": [
+        "tests/CMapObjectsTest.php",
+        "tools/validate_cmaps.py"
+      ]
+    },
+    {
+      "issue": 462,
+      "physical_pdf_page": 372,
+      "annotation_name": "82b21bff-f896-4c42-a027616f60d4ee0a",
+      "approval_chain": [
+        "22e7cb6f-bee2-4fcd-82c45ca8c4a99da4"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Table125a is exposed as a PDF2 schema and native ToUnicodeCMap emits Type, CMapName, CIDSystemInfo and WMode from the same immutable definition as its program, retaining UseCMap inheritance. Explicit external named CMap resources still require caller-supplied mappings; no network loading or arbitrary PostScript execution.",
+      "implementation": [
+        "src/Document/Fonts/CMaps/UnicodeCMap.php",
+        "src/Document/Fonts/ToUnicodeCMap.php",
+        "src/Specification/Iso32000_2/Definition/ToUnicodeCMapStreamDictionaryTable125aDefinition.php"
+      ],
+      "validation": [
+        "tests/CMapObjectsTest.php",
+        "tools/validate_cmaps.py"
+      ]
+    },
+    {
+      "issue": 462,
+      "physical_pdf_page": 372,
+      "annotation_name": "f36573ef-d345-475e-84974d880f8b6a74",
+      "approval_chain": [
+        "fa36a5df-6056-4fb9-917c691ce867f335"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Table125a is exposed as a PDF2 schema and native ToUnicodeCMap emits Type, CMapName, CIDSystemInfo and WMode from the same immutable definition as its program, retaining UseCMap inheritance. Explicit external named CMap resources still require caller-supplied mappings; no network loading or arbitrary PostScript execution.",
+      "implementation": [
+        "src/Document/Fonts/CMaps/UnicodeCMap.php",
+        "src/Document/Fonts/ToUnicodeCMap.php",
+        "src/Specification/Iso32000_2/Definition/ToUnicodeCMapStreamDictionaryTable125aDefinition.php"
+      ],
+      "validation": [
+        "tests/CMapObjectsTest.php",
+        "tools/validate_cmaps.py"
+      ]
+    },
+    {
+      "issue": 158,
+      "physical_pdf_page": 561,
+      "annotation_name": "a9e617bc-ce57-47a0-bb6d-628687782b35",
+      "approval_chain": [
+        "9a881534-bc70-4775-9143-a59df21c14b7"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "Signature seed digest requirements are interpreted with explicit edition semantics. EdDSA uses its intrinsic algorithm digest, while actual credential curve and backend digest are checked. Legacy DSA SHA1 behavior is limited to historical seed semantics.",
+      "implementation": [
+        "src/Document/Signatures/SignatureDigestSelection.php",
+        "src/Document/Signatures/Policies/SignatureSeedValue.php"
+      ],
+      "validation": [
+        "tests/SignatureSeedEc3Test.php",
+        "tools/validate_iso32000_crypto.py"
       ]
     }
   ]

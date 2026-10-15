@@ -81,7 +81,14 @@ def validate(path: Path, pdftotext: str, poppler_glib_bin: Path | None):
     require(b"<41> <46> 1" in base.get_data(), "Missing inherited CID range")
     require(b"<A4> <A6> 8" in encoding.get_data(), "Missing additional CID range")
     require(b"beginnotdefrange" in base.get_data(), "Missing explicit notdef mapping")
-    unicode = font["/ToUnicode"].get_data()
+    unicode_stream = font["/ToUnicode"]
+    unicode = unicode_stream.get_data()
+    require(unicode_stream["/Type"] == "/CMap", "ToUnicode Type must identify a CMap")
+    require(("/CMapName " + unicode_stream["/CMapName"] + " def").encode("ascii") in unicode, "ToUnicode CMapName differs between dictionary and program")
+    require(("/WMode " + str(unicode_stream["/WMode"]) + " def").encode("ascii") in unicode, "ToUnicode WMode differs between dictionary and program")
+    collection = unicode_stream["/CIDSystemInfo"]
+    require(collection["/Registry"] == "Adobe" and collection["/Ordering"] == "UCS" and collection["/Supplement"] == 0, "Default ToUnicode metadata differs")
+    require(b"/Registry (Adobe)" in unicode and b"/Ordering (UCS)" in unicode and b"/Supplement 0" in unicode, "ToUnicode character-collection metadata differs from program")
     require(re.search(rb"<41>\s*<46>\s*<0041>", unicode), "Missing incremental Unicode bfrange")
     require(re.search(rb"<A4>\s*<A6>\s*\[\s*<00E9>\s*<03A9>\s*<00660069>\s*\]", unicode), "Missing array Unicode bfrange/ligature")
     require(b"<20> <0020>" in unicode, "Missing bfchar mapping")

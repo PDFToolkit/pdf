@@ -341,6 +341,54 @@ final class NativeFontObjectsTest extends TestCase
         new CIDFontMetricOverride(new Entry(new NameType('FontFile2'), new IndirectReference(new FontFile2('bytes'))));
     }
 
+    public function testGlyphClassOverridesPreserveClassificationAndBoundingBox(): void
+    {
+        $box = $this->rectangle(450);
+        $overrides = new CIDFontMetricOverride(
+            new Entry(new NameType('FontBBox'), $box),
+            new Entry(new NameType('FontFamily'), new LiteralString('Example CJK')),
+            new Entry(new NameType('FontStretch'), new NameType('Condensed')),
+            new Entry(new NameType('FontWeight'), new IntegerType(450)),
+        );
+        $classes = new CIDFontDescriptors($this->info('Japan1'), new CIDClassDescriptor(CIDGlyphClass::HKana, $overrides));
+        $descriptor = $this->descriptor(null, new NameType('CJK'), new Entry(new NameType('FD'), $classes));
+        $effective = $classes->effective(CIDGlyphClass::HKana, $descriptor);
+        self::assertSame($box, $effective->get('FontBBox'));
+        self::assertSame('Example CJK', $effective->get('FontFamily')->value);
+        self::assertSame('Condensed', $effective->get('FontStretch')->value);
+        self::assertSame(450, $effective->get('FontWeight')->value);
+        self::assertSame(700, $effective->get('Ascent')->value);
+        $overrides->validateVersion(new EffectivePdfVersion(new FileHeader('2.0'), new DictionaryType()));
+        $this->expectException(\LogicException::class);
+        $overrides->validateVersion(new EffectivePdfVersion(new FileHeader('1.7'), new DictionaryType()));
+    }
+
+    #[DataProvider('invalidGlyphClassProperties')]
+    public function testGlyphClassOverridesRejectInvalidClassification(Entry $entry): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new CIDFontMetricOverride($entry);
+    }
+
+    public static function invalidGlyphClassProperties(): iterable
+    {
+        yield [new Entry(new NameType('FontBBox'), new NameType('Box'))];
+        yield [new Entry(new NameType('FontFamily'), new NameType('Family'))];
+        yield [new Entry(new NameType('FontStretch'), new NameType('Wide'))];
+        yield [new Entry(new NameType('FontWeight'), new IntegerType(1001))];
+        yield [new Entry(new NameType('FontWeight'), new NumericType(450.5))];
+        yield [new Entry(new NameType('Lang'), new NameType('ja'))];
+        yield [new Entry(new NameType('Style'), new DictionaryType())];
+    }
+
+    public function testGlyphClassPdf20WeightRequiresAnIntegerObject(): void
+    {
+        $overrides = new CIDFontMetricOverride(new Entry(new NameType('FontWeight'), new NumericType(700.0)));
+        $overrides->validateVersion(new EffectivePdfVersion(new FileHeader('1.7'), new DictionaryType()));
+        $this->expectException(\LogicException::class);
+        $overrides->validateVersion(new EffectivePdfVersion(new FileHeader('2.0'), new DictionaryType()));
+    }
+
     public function testInvalidGlyphClassForCollectionIsRejected(): void
     {
         $this->expectException(\InvalidArgumentException::class);

@@ -12,9 +12,11 @@ use PDF\Syntax\Object\NameType;
 final readonly class UnicodeCMap
 {
     public CodeSpaces $effectiveSpaces;
+    public CMapSystemInfo $systemInfo;
 
-    public function __construct(public CMapName $name, public CodeSpaces $spaces, public UnicodeMappings $mappings, public ?UnicodeCMapResource $base = null)
+    public function __construct(public CMapName $name, public CodeSpaces $spaces, public UnicodeMappings $mappings, public ?UnicodeCMapResource $base = null, ?CMapSystemInfo $systemInfo = null, public CMapWritingMode $mode = CMapWritingMode::Horizontal)
     {
+        $this->systemInfo = $systemInfo ?? new CMapSystemInfo(new LiteralString('Adobe'), new LiteralString('UCS'), new IntegerType(0));
         $this->effectiveSpaces = new CodeSpaces(...[...($base?->codeSpaces()->ranges ?? []), ...$spaces->ranges]);
         if ($this->effectiveSpaces->ranges === [] || ($base !== null && $base->name()->value->value === $name->value->value)) {
             throw new \InvalidArgumentException('ToUnicode has a nonempty effective codespace and a distinct base resource name.');
@@ -25,7 +27,7 @@ final readonly class UnicodeCMap
     public function program(): string
     {
         $programBase = $this->base !== null && $this->base->object() instanceof NameType ? $this->base->name() : null;
-        return (new CMapProgram($this->name, new CMapSystemInfo(new LiteralString('Adobe'), new LiteralString('UCS'), new IntegerType(0)), $this->effectiveSpaces, $this->mappings, base: $programBase))->bytes();
+        return (new CMapProgram($this->name, $this->systemInfo, $this->effectiveSpaces, $this->mappings, $this->mode, $programBase))->bytes();
     }
 
     public function sequence(CMapCode $code): ?UnicodeSequence
