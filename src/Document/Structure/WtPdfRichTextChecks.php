@@ -72,7 +72,7 @@ final readonly class WtPdfRichTextChecks
             if ($seen->offsetExists($node) || count($seen) >= $this->maximumParents) {
                 throw new \InvalidArgumentException('Rich-text inheritance requires a bounded, acyclic field parent chain.');
             }
-            $seen->attach($node);
+            $seen->offsetSet($node);
             $value = $this->value($node->get($name));
             if ($value !== null) {
                 return $value;
