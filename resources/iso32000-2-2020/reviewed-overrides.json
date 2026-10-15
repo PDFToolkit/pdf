@@ -1041,6 +1041,31 @@
           },
           "description_origin": "project-authored",
           "description_language": "en"
+        },
+        {
+          "name": "FontName",
+          "type": "name",
+          "description": "Required for non-Type3 fonts. The PostScript name agrees with BaseFont in the referring font or CIDFont. For a Type3 font including a Name entry, a present descriptor FontName agrees with that Name.",
+          "qualifier": "Required for non-Type3 fonts",
+          "required": true,
+          "conditional": true,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 358,
+          "errata": {
+            "id": "ec3-11-fontname",
+            "pdf_page": 358,
+            "review_status": "Completed",
+            "issue_number": 11,
+            "annotation_name": "05652d88-d617-4383-a82b-42208792d8f3"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
         }
       ]
     },

@@ -22,12 +22,12 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
 {
     public const string TABLE = '122';
     public readonly FontDescriptorOptions $options;
-    public readonly NameType $fontName;
+    public readonly ?NameType $fontName;
     public readonly ?SubsetFontName $subset;
 
     public function __construct(
         public readonly (FontStream&EmbeddedFontProgram)|null $fontFile,
-        NameType|SubsetFontName $fontName,
+        NameType|SubsetFontName|null $fontName,
         FontDescriptorFlags $flags,
         ?Rectangle $fontBBox,
         NumericType $italicAngle,
@@ -90,11 +90,10 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
         $this->options = $options ?? new FontDescriptorOptions();
         $required = [
             new Entry(new NameType('Type'), new NameType('FontDescriptor')),
-            new Entry(new NameType('FontName'), $this->fontName),
             new Entry(new NameType('Flags'), $flags),
             new Entry(new NameType('ItalicAngle'), $italicAngle),
         ];
-        foreach (['FontBBox' => $fontBBox, 'Ascent' => $ascent, 'Descent' => $descent, 'CapHeight' => $capHeight, 'StemV' => $stemV] as $key => $value) {
+        foreach (['FontName' => $this->fontName, 'FontBBox' => $fontBBox, 'Ascent' => $ascent, 'Descent' => $descent, 'CapHeight' => $capHeight, 'StemV' => $stemV] as $key => $value) {
             if ($value !== null) {
                 $required[] = new Entry(new NameType($key), $value);
             }
@@ -103,7 +102,7 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
             $required[] = new Entry(new NameType($fontFile->descriptorKey()), new IndirectReference($fontFile));
         }
         parent::__construct(
-            new FontDescriptorsTable122Definition(),
+            $this->fontName === null ? new \PDF\Specification\Iso32000_2\Definition\FontDescriptorsTable120Definition() : new FontDescriptorsTable122Definition(),
             [...$managed, 'FontWeight', 'FontStretch', 'FontFamily', 'CharSet', 'CIDSet', 'Style', 'Lang', 'FD'],
             ...[...$required, ...$additional],
         );
@@ -112,7 +111,7 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
     public function assertFor(FontSubtype $subtype): void
     {
         if ($subtype !== FontSubtype::Type3) {
-            foreach (['FontBBox', 'Ascent', 'Descent', 'StemV'] as $key) {
+            foreach (['FontName', 'FontBBox', 'Ascent', 'Descent', 'StemV'] as $key) {
                 if (!$this->has($key)) {
                     throw new \InvalidArgumentException('A non-Type3 descriptor requires /' . $key . '.');
                 }
@@ -132,6 +131,12 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
         }
     }
 
+    /** A name is mandatory for every non-Type3 font using this descriptor. */
+    public function requiredName(): NameType
+    {
+        return $this->fontName ?? throw new \InvalidArgumentException('A non-Type3 descriptor requires /FontName.');
+    }
+
     public function assertCollection(\PDF\Document\Fonts\CMaps\CMapSystemInfo $collection): void
     {
         $classes = $this->get('FD');
@@ -141,6 +146,9 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
     }
     public function validateVersion(EffectivePdfVersion $version): void
     {
+        if ($this->fontName === null) {
+            $version->require(PdfVersion::PDF20, 'Type3 FontDescriptor without FontName (EC3 #11)');
+        }
         $weight = $this->get('FontWeight');
         if ($weight !== null && $version->value === PdfVersion::PDF20 && !$weight instanceof IntegerType) {
             throw new \LogicException('PDF 2.0 FontWeight requires IntegerType (EC3 #152).');

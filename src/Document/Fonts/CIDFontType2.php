@@ -27,7 +27,7 @@ final class CIDFontType2 extends ManagedFontDictionary implements VersionedCompo
         $descriptor->assertFor(FontSubtype::CIDFontType2);
         $this->map = $glyphMap instanceof CIDToGIDMap ? $glyphMap->map : null;
         if ($glyphMap instanceof CIDToGIDMap) {
-            if (!$widths instanceof CIDWidths || $glyphMap->map !== $widths->map || $glyphMap->map->fontFile !== $descriptor->fontFile || $glyphMap->map->fontName->value !== $descriptor->fontName->value) {
+            if (!$widths instanceof CIDWidths || $glyphMap->map !== $widths->map || $glyphMap->map->fontFile !== $descriptor->fontFile || $glyphMap->map->fontName->value !== $descriptor->requiredName()->value) {
                 throw new \InvalidArgumentException('Descriptor, CID map and widths describe the same embedded font, name and repertoire.');
             }
         } elseif ($widths instanceof CIDWidths) {
@@ -63,7 +63,7 @@ final class CIDFontType2 extends ManagedFontDictionary implements VersionedCompo
         $required = [
             new Entry(new NameType('Type'), new NameType('Font')),
             new Entry(new NameType('Subtype'), new NameType('CIDFontType2')),
-            new Entry(new NameType('BaseFont'), $descriptor->fontName),
+            new Entry(new NameType('BaseFont'), $descriptor->requiredName()),
             new Entry(new NameType('CIDSystemInfo'), $this->systemInfo->dictionary()),
             new Entry(new NameType('FontDescriptor'), new IndirectReference($descriptor)),
         ];

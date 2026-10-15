@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 75 authored summary/overlay entries across 19 tables and selected EC3
+- `reviewed-overrides.json`: 76 authored summary/overlay entries across 19 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 59 distinct annotations across 31 issues. A polygon `Path` ignores
+and approval reply chains for 61 distinct annotations across 32 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -156,3 +156,10 @@ DeviceRGB 3D backgrounds with three components in [0, 1] (#38). The 3D
 cross-section IV default is recorded as true (#50). Continued-list and Artifact
 attributes explicitly remain non-inheritable (#346), and Artifact attribute
 version qualifiers are PDF 2.0. These definitions do not implement a 3D renderer.
+
+EC3 #11 permits `new FontDescriptor(null, null, ...)` for a PDF 2.0 Type3
+font. The public `fontName` property is now nullable; `requiredName()` returns
+the explicit name or rejects its absence for non-Type3 use. Existing named
+descriptors keep their construction syntax. When both Type3 `Name` and
+descriptor `FontName` exist they must match, including effective incremental
+graphs. An unnamed native descriptor requires effective PDF 2.0.

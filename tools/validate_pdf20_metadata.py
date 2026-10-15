@@ -116,6 +116,8 @@ def main() -> None:
         assert len(root["/Pages"]["/Kids"]) == 1
         assert "/Contents" not in domains.pages[0] and "/Resources" in domains.pages[0]
         assert domains.pages[0]["/Resources"]["/Font"]["/F1"]["/FontDescriptor"]["/FontWeight"] == 450
+        type3 = domains.pages[0]["/Resources"]["/Font"]["/F2"]
+        assert type3["/Subtype"] == "/Type3" and "/FontName" not in type3["/FontDescriptor"]
         radio = root["/OCProperties"]["/D"]["/RBGroups"]
         assert len(radio) == 1 and len(radio[0]) == 2
         assert all(isinstance(item, IndirectObject) for item in radio[0])

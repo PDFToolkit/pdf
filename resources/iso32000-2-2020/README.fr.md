@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 75 entrées de résumés/corrections du projet, réparties dans 19 tableaux et leurs
+- `reviewed-overrides.json` : les 76 entrées de résumés/corrections du projet, réparties dans 19 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 59 annotations distinctes couvrant 31 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 61 annotations distinctes couvrant 32 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -170,3 +170,11 @@ les arrière-plans 3D DeviceRGB à trois composantes dans [0, 1] (#38). La valeu
 par défaut de IV pour les coupes 3D est true (#50). Les attributs de continuation
 de liste et Artifact sont explicitement non héritables (#346), et les attributs
 Artifact sont qualifiés PDF 2.0. Ces définitions ne constituent pas un moteur 3D.
+
+EC3 #11 autorise `new FontDescriptor(null, null, ...)` pour une police Type3
+PDF 2.0. La propriété publique `fontName` peut maintenant être nulle ;
+`requiredName()` retourne le nom explicite ou refuse son absence pour un usage
+non-Type3. La syntaxe des descripteurs nommés reste identique. Si `Name` de
+Type3 et `FontName` du descripteur existent, ils doivent correspondre, y compris
+dans les graphes incrémentaux effectifs. Un descripteur natif sans nom exige
+la version effective PDF 2.0.

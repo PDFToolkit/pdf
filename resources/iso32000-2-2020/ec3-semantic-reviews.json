@@ -1344,6 +1344,56 @@
         "tests/Ec3SemanticCorrectionsTest.php",
         "tests/TaggedStructureTest.php"
       ]
+    },
+    {
+      "issue": 11,
+      "physical_pdf_page": 358,
+      "annotation_name": "05652d88-d617-4383-a82b-42208792d8f3",
+      "approval_chain": [
+        "f1beeb67-b2a2-4531-8528-80ee73615f32"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "PDF 2.0 Type3 descriptors may omit FontName; all non-Type3 native font constructors require it. Native Type3 and raw effective graphs compare a present descriptor FontName with a present Type3 Name, including incremental replacements. Omitting FontName through the explicit native descriptor requires effective PDF 2.0; historical named descriptors retain their existing schema.",
+      "implementation": [
+        "src/Document/Fonts/FontDescriptor.php",
+        "src/Document/Fonts/Type3Font.php",
+        "src/Document/Fonts/Pdf20FontGraphValidation.php",
+        "src/Specification/Iso32000_2/Definition/FontDescriptorsTable120Definition.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php",
+        "tests/Pdf20FontGraphValidationTest.php",
+        "tools/fixtures/ec3-dictionary-domains.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 11,
+      "physical_pdf_page": 358,
+      "annotation_name": "bc3bec14-7032-48fd-bbd7-c4f533d46d05",
+      "approval_chain": [
+        "64b36da6-0f57-41a3-9558-eaf31777e0ed"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "PDF 2.0 Type3 descriptors may omit FontName; all non-Type3 native font constructors require it. Native Type3 and raw effective graphs compare a present descriptor FontName with a present Type3 Name, including incremental replacements. Omitting FontName through the explicit native descriptor requires effective PDF 2.0; historical named descriptors retain their existing schema.",
+      "implementation": [
+        "src/Document/Fonts/FontDescriptor.php",
+        "src/Document/Fonts/Type3Font.php",
+        "src/Document/Fonts/Pdf20FontGraphValidation.php",
+        "src/Specification/Iso32000_2/Definition/FontDescriptorsTable120Definition.php"
+      ],
+      "validation": [
+        "tests/NativeFontObjectsTest.php",
+        "tests/Pdf20FontGraphValidationTest.php",
+        "tools/fixtures/ec3-dictionary-domains.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
     }
   ]
 }

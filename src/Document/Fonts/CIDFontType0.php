@@ -33,7 +33,7 @@ final class CIDFontType0 extends ManagedFontDictionary implements VersionedCompo
             $managed,
             new Entry(new NameType('Type'), new NameType('Font')),
             new Entry(new NameType('Subtype'), new NameType('CIDFontType0')),
-            new Entry(new NameType('BaseFont'), $descriptor->fontName),
+            new Entry(new NameType('BaseFont'), $descriptor->requiredName()),
             new Entry(new NameType('CIDSystemInfo'), $systemInfo->dictionary()),
             new Entry(new NameType('FontDescriptor'), new IndirectReference($descriptor)),
             ...[...$metrics->entries(), ...$entries]

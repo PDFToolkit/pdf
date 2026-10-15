@@ -167,6 +167,29 @@ final class Pdf20FontGraphValidationTest extends TestCase
         $this->validate($font, $catalog);
     }
 
+    public function testRawType3DescriptorsMayBeUnnamedWhileOtherFontsRequireNames(): void
+    {
+        $descriptor = $this->descriptor()->without('FontName');
+        $font = $this->font($descriptor)->without('BaseFont')->with($this->entry('Subtype', new NameType('Type3')));
+        $this->validate($font);
+        self::assertFalse($descriptor->has('FontName'));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('FontName for non-Type3');
+        $this->validate($this->font($descriptor));
+    }
+
+    #[DataProvider('formats')]
+    public function testRetainedType3NameAndDescriptorMustContinueToAgree(CrossReferenceFormat $format): void
+    {
+        $descriptor = $this->descriptor()->with($this->entry('FontName', new NameType('Shapes')));
+        $font = $this->font($descriptor)->without('BaseFont')->with($this->entry('Subtype', new NameType('Type3')))->with($this->entry('Name', new NameType('Shapes')));
+        [$revision] = $this->document($font, '2.0', $format);
+        $replacement = $this->dictionary($revision, $descriptor)->with($this->entry('FontName', new NameType('Other')));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Type3 Name');
+        (new IncrementalUpdate($revision, new FileBody(new IndirectObject($replacement, $revision->binding($descriptor)->identifier))))->toRevision();
+    }
+
     public function testPrivateResourceSpellingDoesNotCreateFontSemantics(): void
     {
         $private = new DictionaryType($this->entry('Resources', new DictionaryType($this->entry('Font', new LiteralString('private application data')))));

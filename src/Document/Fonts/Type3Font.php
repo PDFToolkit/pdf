@@ -100,6 +100,18 @@ final class Type3Font extends ManagedFontDictionary implements CatalogComponent,
         parent::__construct(new Type3FontDictionaryTable112Definition(), $managed, ...[...$required, ...$entries]);
     }
 
+    public function validate(): void
+    {
+        parent::validate();
+        $name = $this->get('Name');
+        $reference = $this->get('FontDescriptor');
+        $descriptor = $reference instanceof IndirectReference ? $reference->target() : null;
+        $fontName = $descriptor instanceof FontDescriptor ? $descriptor->fontName : null;
+        if ($name instanceof NameType && $fontName !== null && $name->value !== $fontName->value) {
+            throw new \InvalidArgumentException('Type3 Name and FontDescriptor FontName must agree (EC3 #11).');
+        }
+    }
+
     public function validateCatalog(DictionaryType $catalog): void
     {
         $markInfo = $catalog->get('MarkInfo');

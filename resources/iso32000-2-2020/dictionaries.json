@@ -9314,10 +9314,10 @@
       {
         "name": "FontName",
         "type": "name",
-        "description": "(Required) The PostScript name of the font. This name shall be the same as the value of BaseFont in the font or CIDFont dictionary that refers to this font descriptor.",
-        "qualifier": "Required",
+        "description": "Required for non-Type3 fonts. The PostScript name agrees with BaseFont in the referring font or CIDFont. For a Type3 font including a Name entry, a present descriptor FontName agrees with that Name.",
+        "qualifier": "Required for non-Type3 fonts",
         "required": true,
-        "conditional": false,
+        "conditional": true,
         "inheritable": false,
         "introduced_in": null,
         "deprecated_in": null,
@@ -9326,8 +9326,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 358,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-11-fontname",
+          "pdf_page": 358,
+          "review_status": "Completed",
+          "issue_number": 11,
+          "annotation_name": "05652d88-d617-4383-a82b-42208792d8f3"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {

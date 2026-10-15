@@ -76,7 +76,7 @@ abstract class SimpleFont extends ManagedFontDictionary implements VersionedComp
                 }
             }
             $fontDescriptor = $descriptor->target();
-            if ($fontDescriptor->fontName->value !== $baseFont->value) {
+            if ($fontDescriptor->requiredName()->value !== $baseFont->value) {
                 throw new \InvalidArgumentException('Simple BaseFont and FontDescriptor FontName agree.');
             }
             $fontDescriptor->assertFor($subtype);

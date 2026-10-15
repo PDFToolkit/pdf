@@ -138,9 +138,9 @@ final class NativeFontObjectsTest extends TestCase
     {
         return new Type3Glyph(new Type3GlyphContentStream(new SetGlyphWidthAndBoundingBox(new NumericType($width), new NumericType(0), new NumericType(0), new NumericType(0), new NumericType(500), new NumericType(700))));
     }
-    private function type3(int $width = 500, int $glyphWidth = 500, int $right = 600): Type3Font
+    private function type3(int $width = 500, int $glyphWidth = 500, int $right = 600, ?FontDescriptor $descriptor = null, Entry ...$entries): Type3Font
     {
-        return new Type3Font($this->rectangle($right), new Matrix(), new Type3CharProcs(new Type3CharProc(new NameType('A'), $this->glyph($glyphWidth))), new EncodingDictionary(new EncodingDifferences(new EncodingDifference(new IntegerType(65), new NameType('A')))), $this->widths(65, $width), new DictionaryType());
+        return new Type3Font($this->rectangle($right), new Matrix(), new Type3CharProcs(new Type3CharProc(new NameType('A'), $this->glyph($glyphWidth))), new EncodingDictionary(new EncodingDifferences(new EncodingDifference(new IntegerType(65), new NameType('A')))), $this->widths(65, $width), new DictionaryType(), $descriptor, null, ...$entries);
     }
     private function unicode(int $width = 1): ToUnicodeCMap
     {
@@ -282,6 +282,37 @@ final class NativeFontObjectsTest extends TestCase
         self::assertFalse($nonLatin->has('CapHeight'));
         $this->expectException(\InvalidArgumentException::class);
         $type3->assertFor(FontSubtype::Type1);
+    }
+
+    public function testPdf20Type3DescriptorCanOmitItsFontName(): void
+    {
+        $descriptor = new FontDescriptor(null, null, new FontDescriptorFlags(4), null, new NumericType(0), null, null, null, null);
+        $descriptor->assertFor(FontSubtype::Type3);
+        $descriptor->validateVersion(new \PDF\Syntax\FileStructure\EffectivePdfVersion(new FileHeader('2.0'), new DictionaryType()));
+        self::assertNull($descriptor->fontName);
+        self::assertStringNotContainsString('/FontName', $descriptor->toPdf(new SerializationContext()));
+        $font = $this->type3(descriptor: $descriptor);
+        self::assertStringContainsString('/FontDescriptor', $font->toPdf(new SerializationContext()));
+        $this->expectException(\InvalidArgumentException::class);
+        $descriptor->assertFor(FontSubtype::Type1);
+    }
+
+    public function testUnnamedDescriptorRequiresPdf20(): void
+    {
+        $descriptor = new FontDescriptor(null, null, new FontDescriptorFlags(4), null, new NumericType(0), null, null, null, null);
+        $this->expectException(\LogicException::class);
+        $descriptor->validateVersion(new \PDF\Syntax\FileStructure\EffectivePdfVersion(new FileHeader('1.7'), new DictionaryType()));
+    }
+
+    public function testType3NameMatchesDescriptorIncludingImmutableReplacements(): void
+    {
+        $descriptor = new FontDescriptor(null, new NameType('Shapes'), new FontDescriptorFlags(4), null, new NumericType(0), null, null, null, null);
+        $font = $this->type3(descriptor: $descriptor)->with(new Entry(new NameType('Name'), new NameType('Shapes')));
+        $font->validate();
+        self::assertSame('Shapes', $descriptor->requiredName()->value);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Type3 Name');
+        $font->with(new Entry(new NameType('Name'), new NameType('Other')))->toPdf(new SerializationContext());
     }
 
     public function testFontStretchAndWeightConditions(): void

@@ -105,7 +105,11 @@ final class Pdf20FontGraphValidation
         if ($descriptor === null) {
             throw new \InvalidArgumentException('FontDescriptor must resolve to a dictionary.');
         }
-        $this->descriptor($descriptor, $graph, $isType3, !$isType3 && $baseFont instanceof NameType ? $baseFont : null);
+        $fontName = $isType3 ? $this->resolved($font, 'Name', $graph) : $baseFont;
+        if ($fontName !== null && !$fontName instanceof NameType) {
+            throw new \InvalidArgumentException('A font Name or BaseFont must be a PDF name.');
+        }
+        $this->descriptor($descriptor, $graph, $isType3, $fontName);
     }
 
     private function descriptor(DictionaryType $descriptor, DocumentGraphContext $graph, bool $isType3, ?NameType $baseFont): void
@@ -113,12 +117,12 @@ final class Pdf20FontGraphValidation
         $type = $this->resolved($descriptor, 'Type', $graph);
         $name = $this->resolved($descriptor, 'FontName', $graph);
         $flags = $this->resolved($descriptor, 'Flags', $graph);
-        if (!$type instanceof NameType || $type->value !== 'FontDescriptor' || !$name instanceof NameType || $name->value === '' || !$flags instanceof IntegerType || !$this->resolved($descriptor, 'ItalicAngle', $graph) instanceof NumericType) {
-            throw new \InvalidArgumentException('A FontDescriptor requires Type FontDescriptor, FontName, integer Flags and numeric ItalicAngle (Table120).');
+        if (!$type instanceof NameType || $type->value !== 'FontDescriptor' || (!$isType3 && $name === null) || ($name !== null && (!$name instanceof NameType || $name->value === '')) || !$flags instanceof IntegerType || !$this->resolved($descriptor, 'ItalicAngle', $graph) instanceof NumericType) {
+            throw new \InvalidArgumentException('A FontDescriptor requires Type FontDescriptor, integer Flags, numeric ItalicAngle and FontName for non-Type3 fonts (EC3 #11, Table120).');
         }
         new FontDescriptorFlags($flags->integer());
-        if ($baseFont !== null && $baseFont->value !== $name->value) {
-            throw new \InvalidArgumentException('Simple BaseFont and FontDescriptor FontName must agree.');
+        if ($baseFont !== null && $name instanceof NameType && $baseFont->value !== $name->value) {
+            throw new \InvalidArgumentException('Font BaseFont or Type3 Name and FontDescriptor FontName must agree (EC3 #11).');
         }
         if (!$isType3) {
             $bounds = $this->resolved($descriptor, 'FontBBox', $graph);
