@@ -98,26 +98,26 @@ final class DocumentTimestampRevisionPolicyTest extends TestCase
     public function testTimestampCannotHideOtherChangesFromDocMdpP1(string $attack): void
     {
         [$prior, $catalog, $page, $content] = $this->certified();
-        [$revision, $pending] = $this->following($prior, $catalog, $attack, $page, $content);
         $this->expectException(\LogicException::class);
+        [$revision, $pending] = $this->following($prior, $catalog, $attack, $page, $content);
         new PreparedSignature($revision, $pending);
     }
 
     public function testTimestampCannotIgnoreHistoricalFieldMdp(): void
     {
         [$prior, $catalog] = $this->certified(lock: new SignatureFieldLock(SignatureLockAction::All));
-        [$revision, $pending] = $this->following($prior, $catalog);
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('historical FieldMDP');
+        [$revision, $pending] = $this->following($prior, $catalog);
         new PreparedSignature($revision, $pending);
     }
 
     public function testTimestampCannotIgnoreAdditionalAdobeP1FieldLock(): void
     {
         [$prior, $catalog] = $this->certified(lock: new SignatureFieldLock(SignatureLockAction::Include, new ArrayType(), new IntegerType(1)));
-        [$revision, $pending] = $this->following($prior, $catalog);
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('field lock P1 remains binding');
+        [$revision, $pending] = $this->following($prior, $catalog);
         new PreparedSignature($revision, $pending);
     }
 

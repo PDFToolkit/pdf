@@ -154,9 +154,9 @@ final class DocumentTimestampGraphValidationTest extends TestCase
         $record = $signed->binding($pending);
         $range = $record->dictionary->get('ByteRange');
         $shifted = new ArrayType(new IntegerType(0), new IntegerType($range->items[1]->value + 1), new IntegerType($range->items[2]->value + 1), new IntegerType($range->items[3]->value - 1));
-        $frozen = $signed->withReservedBytes($signed->bytes, $record->replacedBy($record->dictionary->with($this->entry('ByteRange', $shifted))));
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('actual frozen Contents token');
+        $this->expectExceptionMessage('actual pending signature');
+        $frozen = $signed->withReservedBytes($signed->bytes, $record->replacedBy($record->dictionary->with($this->entry('ByteRange', $shifted))));
         (new IncrementalUpdate($frozen, new FileBody()))->toRevision();
     }
 

@@ -180,9 +180,9 @@ final class SignaturePermissionHistoryTest extends TestCase
         $second = $this->operation('approval');
         $replacementForm = new AcroForm((new FieldTree())->addRoot($second->field));
         $replacement = new IndirectObject($replacementForm, $signed->revision->binding($form)->identifier);
-        $revision = (new IncrementalUpdate($signed->revision, new FileBody($replacement)))->toRevision();
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('historical FieldMDP');
+        $revision = (new IncrementalUpdate($signed->revision, new FileBody($replacement)))->toRevision();
         (new SignatureWriter())->prepareRevision($revision, $second->signature);
     }
     public function testFinalizationKeepsExactlyTheNestedDictionaryThatWasActuallyEmitted(): void
@@ -203,12 +203,14 @@ final class SignaturePermissionHistoryTest extends TestCase
         return new PendingSignature(new SignatureCapacity(8192), SignatureFormat::Pkcs7Detached, entries: $this->entry('Reference', new SignatureReferences(new SignatureReference(new UsageRightsTransform(UsageRightsMode::ByteRange)))));
     }
 
-    public function testActualUr3TargetsOutsideFieldsCanHaveAtMostTwoHistoricalSignatures(): void
+    public function testNativeUpdatesCannotAssumeAUsageRightsGrantAuthority(): void
     {
         $first = $this->usageReservation();
         $catalog = new DocumentCatalog(new PageTreeNode(), $this->entry('Perms', new DictionaryType($this->entry('UR3', new IndirectReference($first)))));
         // Mathematical signing does not assert that this public test identity is a granting authority.
         $signed = (new SignatureWriter())->prepare(new FileStructure(new FileHeader(), new FileBody($catalog)), $first)->sign($this->backend());
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('authorized granting identity');
         for ($index = 2; $index <= 3; ++$index) {
             $pending = $this->usageReservation();
             $replacement = new DocumentCatalog((new FrozenSignatureGraph($signed->revision))->catalog->get('Pages'), $this->entry('Perms', new DictionaryType($this->entry('UR3', new IndirectReference($pending)))));

@@ -116,6 +116,14 @@ final readonly class SignaturePermissionHistory
         $this->assertFieldRestrictions($field);
     }
 
+    /** The PDF 2.0 DocMDP DSS exclusion does not loosen an additional Adobe field lock P1. */
+    public function assertDssMaintenance(): void
+    {
+        if ($this->fieldLockPermissions->integer() === 1) {
+            throw new \LogicException('Historical signature field lock P1 remains binding for DSS maintenance.');
+        }
+    }
+
     private function assertFieldRestrictions(FrozenSignatureField $field): void
     {
         foreach ($this->fieldRestrictions as [$source, $restriction]) {

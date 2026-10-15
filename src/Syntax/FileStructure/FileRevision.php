@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace PDF\Syntax\FileStructure;
 
 use PDF\Serialization\PdfFileOutput;
+use PDF\Serialization\NativeRevisionEmission;
+use PDF\Document\Signatures\PendingSignatureDictionary;
+use PDF\Document\Signatures\SignatureByteRange;
+use PDF\Document\Signatures\VerifiedRevisionSignature;
+use PDF\Serialization\SerializationContext;
+use PDF\Syntax\Object\ArrayType;
+use PDF\Syntax\Object\StringType;
 use PDF\Security\FileEncryption;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectObject\ObjectIdentifier;
@@ -32,6 +39,8 @@ final readonly class FileRevision implements \Stringable
     private array $compressed;
     /** @var array<int, true> Numbers allocated from a prior free entry, including unused generation-zero holes. */
     private array $reusedNumbers;
+    private ?NativeRevisionEmission $emission;
+    public ?VerifiedRevisionSignature $verifiedSignature;
 
     public function __construct(
         public string $bytes,
@@ -42,7 +51,7 @@ final readonly class FileRevision implements \Stringable
         DictionaryType $trailerEntries,
         public CrossReferenceFormat $crossReferenceFormat,
         public IntegerType $freeListHead,
-        RevisionObject|RevisionReference|ObjectByteSpan|FileEncryption|GeneratedRevisionTimeline|FreeListState|RetiredObjectGeneration|CrossReferenceStreamCompressedEntry ...$objects,
+        RevisionObject|RevisionReference|ObjectByteSpan|FileEncryption|GeneratedRevisionTimeline|FreeListState|RetiredObjectGeneration|CrossReferenceStreamCompressedEntry|NativeRevisionEmission|VerifiedRevisionSignature ...$objects,
     ) {
         $this->trailerEntries = new DictionaryType(...iterator_to_array($trailerEntries->entries(), false));
         if (!str_starts_with($bytes, (string) $header) || $crossReferenceOffset->value >= strlen($bytes)
@@ -66,7 +75,23 @@ final readonly class FileRevision implements \Stringable
         $freeList = null;
         $retired = [];
         $compressed = [];
+        $emission = null;
+        $verified = null;
         foreach ($objects as $object) {
+            if ($object instanceof NativeRevisionEmission) {
+                if ($emission !== null) {
+                    throw new \InvalidArgumentException('One native revision has one emission capability.');
+                }
+                $emission = $object;
+                continue;
+            }
+            if ($object instanceof VerifiedRevisionSignature) {
+                if ($verified !== null) {
+                    throw new \InvalidArgumentException('One native revision finalizes one verified signature.');
+                }
+                $verified = $object;
+                continue;
+            }
             if ($object instanceof FreeListState) {
                 if ($freeList !== null) {
                     throw new \InvalidArgumentException('A revision has one effective free-list index.');
@@ -238,6 +263,14 @@ final readonly class FileRevision implements \Stringable
             throw new \InvalidArgumentException('The page-tree reference has a conflicting identifier.');
         }
         $this->pageTreeIdentifier = $pageTree->identifier;
+        $this->emission = $emission;
+        $this->verifiedSignature = $verified;
+        $verified?->validateBinding($this);
+    }
+
+    public function isNativeEmission(): bool
+    {
+        return $this->emission?->owns($this) ?? false;
     }
 
     /** @return list<RevisionObject> */
@@ -286,17 +319,65 @@ final readonly class FileRevision implements \Stringable
     /** Replace reserved bytes without moving objects or changing reference identities. */
     public function withReservedBytes(string $bytes, RevisionObject $replacement): self
     {
+        return (new NativeRevisionEmission(new \PDF\Serialization\ReservedSignatureFinalization($bytes, $replacement), $this))->revision;
+    }
+
+    /** @internal A successful reserved finalization establishes a new native emission. */
+    public function finalizeReserved(string $bytes, RevisionObject $replacement, NativeRevisionEmission $emission): self
+    {
+        if (!$this->isNativeEmission()) {
+            throw new \LogicException('Reserved finalization requires a native emitted revision.');
+        }
         if (strlen($bytes) !== strlen($this->bytes)) {
             throw new \InvalidArgumentException('Reserved-byte finalization must preserve the file length.');
         }
         $old = $this->binding($replacement->identifier);
         $span = $this->span($old->identifier);
+        if (!$old->value instanceof PendingSignatureDictionary || !$replacement->dictionary instanceof DictionaryType) {
+            throw new \InvalidArgumentException('Reserved finalization replaces its actual pending signature dictionary.');
+        }
+        $dictionary = $replacement->dictionary;
+        $contents = $dictionary->get('Contents');
+        $range = $dictionary->get('ByteRange');
+        if (!$contents instanceof StringType || strlen($contents->value) !== $old->value->capacity->bytes || !$range instanceof ArrayType) {
+            throw new \InvalidArgumentException('Finalized Contents preserves its exact reserved capacity and ByteRange.');
+        }
+        $context = new SerializationContext(new \PDF\Syntax\Object\IndirectObject\ObjectNumber($this->size->integer()), ...$this->objects());
+        $prefix = $span->identifier . " obj\n<< /Contents ";
+        $before = $span->offset->value + strlen($prefix);
+        $token = '<' . strtoupper(bin2hex($contents->value)) . '>';
+        $after = $before + strlen($token);
+        $expectedRange = new SignatureByteRange($before, $after, strlen($bytes) - $after);
+        if ($range->toPdf($context) !== $expectedRange->object()->toPdf($context)) {
+            throw new \InvalidArgumentException('Finalization uses the actual generated complete-file Contents gap.');
+        }
+        $frozen = $old->dictionary ?? throw new \LogicException('Pending signatures retain their emitted dictionary.');
+        $keys = [];
+        foreach ([$frozen, $dictionary] as $candidate) {
+            foreach ($candidate->entries() as $entry) {
+                $keys[$entry->key->value] = true;
+            }
+        }
+        foreach (array_keys($keys) as $key) {
+            $oldValue = $frozen->get($key);
+            $newValue = $dictionary->get($key);
+            if (!in_array($key, ['Contents', 'ByteRange'], true) && ($oldValue === null ? $newValue !== null : ($newValue === null || $oldValue->toPdf($context) !== $newValue->toPdf($context)))) {
+                throw new \InvalidArgumentException('Finalization cannot replace the frozen signature policies or metadata.');
+            }
+        }
+        $expected = substr_replace($this->bytes, $token, $before, $after - $before);
+        $rangeOffset = $after + strlen(' /ByteRange ');
+        $reservedRange = $old->value->byteRange->toPdf($context);
+        $expected = substr_replace($expected, $old->value->byteRange->filled($expectedRange), $rangeOffset, strlen($reservedRange));
+        if ($bytes !== $expected) {
+            throw new \InvalidArgumentException('Finalization changes only the exact Contents and ByteRange reservations.');
+        }
         if (substr($bytes, 0, $span->offset->value) !== substr($this->bytes, 0, $span->offset->value)
             || substr($bytes, $span->offset->value + $span->length) !== substr($this->bytes, $span->offset->value + $span->length)) {
             throw new \InvalidArgumentException('Finalization may change only its reserved indirect object.');
         }
         $records = $this->effectiveObjects;
-        $records[$old->identifier->objectNumber->value] = $replacement;
+        $records[$old->identifier->objectNumber->value] = $old->replacedBy($dictionary);
         return new self(
             $bytes,
             $this->header,
@@ -306,7 +387,32 @@ final readonly class FileRevision implements \Stringable
             $this->trailerEntries,
             $this->crossReferenceFormat,
             $this->freeListHead,
-            ...[...array_values($records), ...$this->spans(), ...$this->references(), ...$this->retiredObjects(), ...array_values($this->compressedObjects()), $this->freeList, ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
+            ...[$emission, ...array_values($records), ...$this->spans(), ...$this->references(), ...$this->retiredObjects(), ...array_values($this->compressedObjects()), $this->freeList, ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
+        );
+    }
+
+    public function withVerifiedSignature(VerifiedRevisionSignature $signature): self
+    {
+        return (new NativeRevisionEmission(new \PDF\Serialization\VerifiedSignatureAttachment($signature), $this))->revision;
+    }
+
+    /** @internal Attach mathematical evidence without changing any bytes or frozen objects. */
+    public function attachVerifiedSignature(VerifiedRevisionSignature $signature, NativeRevisionEmission $emission): self
+    {
+        if (!$this->isNativeEmission()) {
+            throw new \LogicException('Signature evidence belongs to an actual native emission.');
+        }
+        $signature->validateBinding($this);
+        return new self(
+            $this->bytes,
+            $this->header,
+            $this->crossReferenceOffset,
+            $this->size,
+            $this->root,
+            $this->trailerEntries,
+            $this->crossReferenceFormat,
+            $this->freeListHead,
+            ...[$emission, $signature, ...$this->objects(), ...$this->spans(), ...$this->references(), ...$this->retiredObjects(), ...array_values($this->compressedObjects()), $this->freeList, ...($this->encryption === null ? [] : [$this->encryption]), new GeneratedRevisionTimeline($this->previous)]
         );
     }
 

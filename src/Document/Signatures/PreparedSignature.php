@@ -19,6 +19,7 @@ use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\StringType;
 use PDF\Security\PdfMacTokenComposer;
 use PDF\Security\PdfMacSignatureAttachment;
+use PDF\Security\CertificateChain;
 
 /** Exact byte reservations identified from the writer's object spans, never by scanning arbitrary PDF bytes. */
 final readonly class PreparedSignature
@@ -100,7 +101,9 @@ final readonly class PreparedSignature
                 throw new \InvalidArgumentException('The signature Cert must match the certificate of the actual signing key.');
             }
         }
-        return $this->finalize($backend->sign($this->coveredBytes(), $this->signature->format));
+        $verifier = $backend instanceof PolicySignatureBackend ? $backend->outputVerifier() : ($backend instanceof SignatureOutputVerifier ? $backend : null);
+        $certificate = $backend instanceof CertificateAwareSignatureBackend ? $backend->certificateChain() : null;
+        return $this->finalizeValidated($backend->sign($this->coveredBytes(), $this->signature->format), $verifier, $certificate);
     }
 
     /** External/hardware signature handlers can finalize the same immutable prepared bytes. */
@@ -120,8 +123,7 @@ final readonly class PreparedSignature
         $this->validateCatalog($backend);
         $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
         $value = $backend->signWithDigest($this->coveredBytes(), $this->signature->format, $contract->choice->digest);
-        $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
-        return $this->finalizeValidated($value);
+        return $this->finalizeValidated($value, $verifier ?? $backend->outputVerifier(), $backend->certificateChain(), $contract, $evidence);
     }
 
     public function finalizeWithPolicy(
@@ -134,8 +136,7 @@ final readonly class PreparedSignature
     ): SignedRevision {
         $this->validateCatalog($backend);
         $contract = new SignatureFieldPolicyContract($this, $backend, $intent, $urlUsage);
-        $contract->validateOutput($value, $verifier ?? $backend->outputVerifier(), $evidence);
-        return $this->finalizeValidated($value);
+        return $this->finalizeValidated($value, $verifier ?? $backend->outputVerifier(), $backend->certificateChain(), $contract, $evidence);
     }
 
     private function validateCatalog(SignatureBackend $backend): void
@@ -146,7 +147,7 @@ final readonly class PreparedSignature
         }
     }
 
-    private function finalizeValidated(SignatureValue $value): SignedRevision
+    private function finalizeValidated(SignatureValue $value, ?SignatureOutputVerifier $verifier = null, ?CertificateChain $certificate = null, ?SignatureFieldPolicyContract $contract = null, SignatureSigningEvidence $evidence = new UnavailableSignatureEvidence()): SignedRevision
     {
         if ($this->mac !== null) {
             $attachment = new PdfMacSignatureAttachment();
@@ -155,6 +156,9 @@ final readonly class PreparedSignature
         }
         if (strlen($value->bytes) > $this->signature->capacity->bytes) {
             throw new \LengthException('Signature output exceeds its reserved capacity; prepare a new reservation and sign again.');
+        }
+        if ($contract !== null) {
+            $contract->validateOutput($value, $verifier ?? throw new \LogicException('Policy finalization requires an actual verifier.'), $evidence);
         }
         $padded = str_pad($value->bytes, $this->signature->capacity->bytes, "\0");
         $bytes = substr_replace(
@@ -168,7 +172,11 @@ final readonly class PreparedSignature
         $dictionary = $dictionary->with(new Entry(new NameType('Contents'), new HexadecimalString($padded)))
             ->with(new Entry(new NameType('ByteRange'), $this->range->object()));
         $record = $this->revision->binding($this->signature)->replacedBy($dictionary);
-        return new SignedRevision($this->revision->withReservedBytes($bytes, $record), $this->range, $value, $this->signature->format);
+        $revision = $this->revision->withReservedBytes($bytes, $record);
+        if ($verifier !== null && $certificate !== null) {
+            $revision = $revision->withVerifiedSignature(new VerifiedRevisionSignature($revision, $record->identifier, $this->range, $value, $this->signature->format, $certificate, $verifier));
+        }
+        return new SignedRevision($revision, $this->range, $value, $this->signature->format);
     }
 
     /** Mandatory field policies cannot silently be bypassed by the low-level byte-range operation. */

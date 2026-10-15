@@ -74,6 +74,12 @@ final readonly class LinearizedWriter
 
     private function write(FileStructure $file): FileRevision
     {
+        return (new NativeRevisionEmission($this, $file))->revision;
+    }
+
+    /** @internal Called only by a per-operation emission capability. */
+    public function emit(FileStructure $file, NativeRevisionEmission $emission): FileRevision
+    {
         if ($file->trailerEntries?->has('AuthCode')) {
             throw new \LogicException('AuthCode belongs to an explicit PDF MAC writer operation.');
         }
@@ -331,7 +337,7 @@ final readonly class LinearizedWriter
             $trailerSnapshot,
             $file->crossReferenceFormat,
             new IntegerType(0),
-            ...[...$records, ...$spans, ...$context->references(),
+            ...[$emission, ...$records, ...$spans, ...$context->references(),
                 ...array_values(array_filter([...$firstRecords, ...$mainRecords], fn ($record): bool => $record instanceof CrossReferenceStreamCompressedEntry)),
                 new FreeListState(new IntegerType($size), new CrossReferenceStreamFreeEntry(new IntegerType(0), new IntegerType(0), new \PDF\Syntax\Object\IndirectObject\GenerationNumber(65535))),
                 ...($this->encryption === null ? [] : [$this->encryption])]

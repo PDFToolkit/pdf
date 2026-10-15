@@ -68,6 +68,12 @@ final class FileWriter
 
     private function write(FileStructure $file): FileRevision
     {
+        return (new NativeRevisionEmission($this, $file))->revision;
+    }
+
+    /** @internal Called only by a per-operation emission capability. */
+    public function emit(FileStructure $file, NativeRevisionEmission $emission): FileRevision
+    {
         $root = $file->root ?? $this->findRoot($file);
         $catalog = $root->target();
         if (!$catalog instanceof DictionaryType || !($catalog->get('Type') instanceof NameType) || $catalog->get('Type')->value !== 'Catalog') {
@@ -224,7 +230,7 @@ final class FileWriter
                 $bytes = $final->bytes;
                 $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
             }
-            return $this->snapshot($file, $context, $bytes, $offset, $section, $trailerEntries, $spans, $hybrid, $reservation);
+            return $this->snapshot($emission, $file, $context, $bytes, $offset, $section, $trailerEntries, $spans, $hybrid, $reservation);
         }
         if ($hybrid !== null) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
@@ -270,7 +276,7 @@ final class FileWriter
                 $bytes = $final->bytes;
                 $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
             }
-            return $this->snapshot($file, $context, $bytes, $updateOffset, $section, $trailerEntries, $spans, $hybrid, $reservation);
+            return $this->snapshot($emission, $file, $context, $bytes, $updateOffset, $section, $trailerEntries, $spans, $hybrid, $reservation);
         }
         if ($file->crossReferenceFormat === CrossReferenceFormat::Stream) {
             $identifier = new ObjectIdentifier(new ObjectNumber($size));
@@ -293,7 +299,7 @@ final class FileWriter
                 $bytes = $final->bytes;
                 $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
             }
-            return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
+            return $this->snapshot($emission, $file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
         }
         $section = new CrossReferenceSection(new IntegerType($size), new IntegerType(1), new IntegerType(0), $this->limits, ...$entries);
         $traditional = [];
@@ -315,11 +321,11 @@ final class FileWriter
             $bytes = $final->bytes;
             $trailerEntries = ($trailerEntries ?? new DictionaryType())->with(new Entry(new NameType('AuthCode'), $final->authCode));
         }
-        return $this->snapshot($file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
+        return $this->snapshot($emission, $file, $context, $bytes, $xrefOffset, $section, $trailerEntries, $spans, reservation: $reservation);
     }
 
     /** @param list<ObjectByteSpan> $spans */
-    private function snapshot(FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null, ?PdfMacReservation $reservation = null): FileRevision
+    private function snapshot(NativeRevisionEmission $emission, FileStructure $file, SerializationContext $context, string $bytes, int $offset, CrossReferenceSection $section, ?DictionaryType $trailerEntries, array $spans, ?HybridReferenceObjects $hybrid = null, ?PdfMacReservation $reservation = null): FileRevision
     {
         $trailerSnapshot = $context->serializedSnapshot($trailerEntries ?? new DictionaryType())->value;
         if (!$trailerSnapshot instanceof DictionaryType) {
@@ -346,7 +352,7 @@ final class FileWriter
             $trailerSnapshot,
             $file->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...$objects, ...$spans, ...$context->references(),
+            ...[$emission, ...$objects, ...$spans, ...$context->references(),
                 ...array_values(array_filter($section->entries(), fn ($entry): bool => $entry instanceof CrossReferenceStreamCompressedEntry)),
                 new FreeListState($section->size, ...array_values(array_filter($section->entries(), fn ($entry): bool => $entry instanceof CrossReferenceStreamFreeEntry))),
                 ...($this->encryption === null ? [] : [$this->encryption])],

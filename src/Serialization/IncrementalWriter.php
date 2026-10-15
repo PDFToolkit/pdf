@@ -55,7 +55,16 @@ final class IncrementalWriter
 
     public function serialize(IncrementalUpdate $update): FileRevision
     {
+        return (new NativeRevisionEmission($this, $update))->revision;
+    }
+
+    /** @internal Called only by a per-operation emission capability. */
+    public function emit(IncrementalUpdate $update, NativeRevisionEmission $emission): FileRevision
+    {
         $previous = $update->previous;
+        if (!$previous->isNativeEmission()) {
+            throw new \LogicException('Incremental writing requires a native emitted revision; manually supplied bytes and snapshots are not authenticated history.');
+        }
         $lifecycle = new ObjectLifecycleTransition($previous, ...$update->objectOperations);
         $security = $previous->encryption === null ? [] : [$previous->encryption];
         $context = new SerializationContext(new ObjectNumber($previous->size->integer()), ...[...$lifecycle->liveObjects, ...$previous->references(), ...$lifecycle->retiredObjects, $previous->freeList, ...$security]);
@@ -397,7 +406,7 @@ final class IncrementalWriter
             }
         }
         $freeList = $lifecycle->freeList->withSection($section->size, ...$section->entries());
-        return new FileRevision(
+        $revision = new FileRevision(
             $bytes,
             $previous->header,
             new ByteOffset($offset),
@@ -406,8 +415,10 @@ final class IncrementalWriter
             $trailer,
             $previous->crossReferenceFormat,
             $section->freeListHead(),
-            ...[...array_values($effective), ...array_values($spans), ...$context->references(), ...$lifecycle->retiredObjects, ...array_values($effectiveCompressed), $freeList, ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
+            ...[$emission, ...array_values($effective), ...array_values($spans), ...$context->references(), ...$lifecycle->retiredObjects, ...array_values($effectiveCompressed), $freeList, ...($previous->encryption === null ? [] : [$previous->encryption]), new GeneratedRevisionTimeline($previous)],
         );
+        (new \PDF\Document\Signatures\IncrementalSignaturePermissions())->validate($revision);
+        return $revision;
     }
 
     private function structural(RevisionObject $record): bool
