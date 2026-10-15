@@ -8,6 +8,8 @@ use PDF\Document\Fonts\CMaps\CMapCode;
 use PDF\Document\Fonts\CMaps\CMapDecoder;
 use PDF\Document\Fonts\ToUnicodeCMap;
 use PDF\Document\Fonts\Type0Font;
+use PDF\Document\Fonts\Type3Font;
+use PDF\Document\Fonts\Type3GlyphSelection;
 use PDF\Syntax\ContentStreamsResources\ContentStreams;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\Object\ArrayType;
@@ -146,10 +148,10 @@ final readonly class WtPdfFontUsageChecks
     {
         $identity = spl_object_id($stream);
         if (isset($activeStreams[$identity])) {
-            throw new \InvalidArgumentException('Form XObject content-stream recursion contains a cycle.');
+            throw new \InvalidArgumentException('Font-usage content-stream recursion contains a cycle.');
         }
         if ($depth >= $this->maximumDepth) {
-            throw new \OverflowException('Font-usage Form recursion exceeds its explicit depth budget.');
+            throw new \OverflowException('Font-usage content recursion exceeds its explicit depth budget.');
         }
         if (!$stream->data instanceof ContentStreams) {
             $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::AdditionalValidationRequired, 'Read opaque content bytes with the optional reader before auditing font usage.');
@@ -249,6 +251,9 @@ final readonly class WtPdfFontUsageChecks
                             }
                             $textBytes += $length;
                             $this->text($state['font'], $string, $state['mode'] !== 3, $findings, $level, $semantics);
+                            if ($state['font'] instanceof Type3Font) {
+                                $this->type3($state['font'], $string, $resources, $state, $depth, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $semantics);
+                            }
                         }
                     }
                 }
@@ -287,7 +292,7 @@ final readonly class WtPdfFontUsageChecks
         if ($rendered && !$embedded) {
             $fail('8.4.5.5.1', 33, 'A font whose glyphs are rendered must have its font program embedded.');
         }
-        if ($physicalSubtype instanceof NameType && $physicalSubtype->value === 'Type3') {
+        if ($physicalSubtype instanceof NameType && $physicalSubtype->value === 'Type3' && !$font instanceof Type3Font) {
             $findings[] = new WtPdfFinding('8.4.5', 32, WtPdfFindingStatus::AdditionalValidationRequired, 'Inspect selected Type3 CharProc auxiliary font usage independently; this audit does not infer glyph-program selection from arbitrary Encoding dictionaries.');
         }
         $encoding = $this->target($font->get('Encoding'));
@@ -348,6 +353,37 @@ final readonly class WtPdfFontUsageChecks
                 } elseif ($this->privateUse($unicode->sequence($code)->utf8()) && !$semantics[1] && !$semantics[0] && $level === WtPdfConformanceLevel::Accessibility) {
                     $fail('8.4.3', 31, 'Real content mapping to Unicode private use requires an enclosing Alt or ActualText.');
                 }
+            }
+        }
+    }
+
+    /**
+     * @param array{font: ?DictionaryType, mode: int} $state
+     * @param list<WtPdfFinding> $findings
+     * @param array<int, true> $activeStreams
+     * @param array<int, array<int, array{bool, bool}>> $alternatives
+     * @param array{bool, bool} $semantics
+     */
+    private function type3(Type3Font $font, StringType $text, DictionaryType $resources, array $state, int $depth, int &$operations, int &$textBytes, array &$activeStreams, array &$findings, WtPdfConformanceLevel $level, array $alternatives, array $semantics): void
+    {
+        $selection = new Type3GlyphSelection($font, $text, $this->maximumTextBytes);
+        if ($selection->undefinedCodes !== []) {
+            $findings[] = new WtPdfFinding('8.4.5.9', 35, WtPdfFindingStatus::Failed, 'A text-showing operation references an undefined or .notdef Type 3 glyph.');
+        }
+        // ISO_32000-2_sponsored_EC3.pdf, 9.3.6, physical p.320:
+        // Type 3 rendering modes 3 and 7 do not execute rendered glyph descriptions.
+        if (in_array($state['mode'], [3, 7], true)) {
+            return;
+        }
+        $glyphResources = $this->dictionary($font->get('Resources')) ?? $resources;
+        foreach ($selection->glyphs as $glyph) {
+            $glyphState = $state;
+            $glyphStack = [];
+            $glyphSemantics = $semantics;
+            $glyphMarkedStack = [];
+            $this->stream($glyph, $glyphResources, $glyphState, $glyphStack, $depth + 1, $operations, $textBytes, $activeStreams, $findings, $level, $alternatives, $glyphSemantics, $glyphMarkedStack);
+            if ($glyphStack !== [] || $glyphMarkedStack !== []) {
+                throw new \InvalidArgumentException('Type 3 glyphs require balanced graphics/marked-content scopes.');
             }
         }
     }
