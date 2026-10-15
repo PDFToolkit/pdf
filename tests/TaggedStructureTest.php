@@ -105,6 +105,8 @@ final class TaggedStructureTest extends TestCase
         self::assertStringContainsString('/Marked true', $bytes);
         self::assertStringContainsString('/MCID 0', $bytes);
         self::assertStringContainsString('/StructParents 0', $bytes);
+        self::assertStringNotContainsString('/R 0', $bytes);
+        self::assertSame(0, $paragraph->revision->integer());
     }
 
     public function testMutationInvalidatesOnlyTheDocumentLocalIndexAndKeepsCatalogValidation(): void
@@ -331,6 +333,9 @@ final class TaggedStructureTest extends TestCase
         $association = new AttributeAssociation($this->attribute('Layout', 'TextAlign', new NameType('Start')), new IntegerType(2));
         $classes = new AttributeClassAssociations(new AttributeClassAssociation(new NameType('Normal'), new IntegerType(2)));
         $element = new StructureElement(StandardStructureType::P, attributes: new StructureAttributes($association), classes: $classes, revision: new IntegerType(3));
+        (new StructureTreeRoot(new PageTreeNode(), classMap: new ClassMap(new AttributeClass(new NameType('Normal'), $association->attribute))))->addKid($element);
+        self::assertSame($element->revision, $element->get('R'));
+        self::assertStringContainsString('/R 3', $element->toPdf(new SerializationContext()));
         self::assertFalse($association->currentFor($element));
         self::assertFalse($classes->associations[0]->currentFor($element));
         $value = $element->attributes->value();

@@ -50,8 +50,12 @@ final class StructureElement extends SchemaDictionary
         $required = [
             new Entry(new NameType('Type'), new NameType('StructElem')),
             new Entry(new NameType('S'), $this->type),
-            new Entry(new NameType('R'), $revision),
         ];
+        // ISO 32000-2, 14.7.6.3 (physical PDF p. 754): omitted R defaults to 0.
+        // Emit the deprecated revision mechanism only when explicitly used.
+        if ($revision->integer() !== 0) {
+            $required[] = new Entry(new NameType('R'), $revision);
+        }
         if ($this->namespace !== null) {
             $required[] = new Entry(new NameType('NS'), new IndirectReference($this->namespace));
         }
