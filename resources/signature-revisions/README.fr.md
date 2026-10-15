@@ -60,6 +60,17 @@ remplacement utilisent des identités neuves et des ressources historiques incha
   `I`/`TI` concordent avec les options fixes et la version PDF. Cases à cocher et
   boutons radio concordent avec `AS` et les apparences Off/actif existantes ; le
   remplissage ne permet pas de remplacer leurs programmes d’apparence.
+- Les champs FileSelect stockent le chemin fourni comme texte ; aucun fichier
+  n’est ouvert ni téléchargé. Les champs enrichis exigent des chaînes directes
+  `V`/`RV` cohérentes et un `RichTextFilling(new WtPdfXmlRichTextParser())`
+  explicite par mise à jour. L’interpréteur XML borné vérifie l’équivalence des
+  valeurs sans DTD, entités externes ni réseau. Chaque widget concerné exige
+  une nouvelle apparence normale complète ; une apparence périmée est refusée.
+  ISO 2 §12.7.4.3 impose cette régénération complète : la restriction `/Tx` du
+  texte simple ne s’applique pas. Ressources historiques, géométrie et verrous
+  restent fixes. L’appelant fournit les instructions graphiques ; l’accord
+  XML/valeur ne prouve pas leur équivalence visuelle. L’interpréteur n’est jamais
+  activé implicitement.
 - Le remplacement d’apparence à texte variable non enrichi conserve la géométrie
   et chaque octet décodé hors de l’unique région `/Tx BMC`…`EMC` correspondant ;
   sans région existante, il l’ajoute à la fin. Les instructions de dessin/état
@@ -122,7 +133,7 @@ classifiée et sauvegarde générale sont refusés. UR est déprécié en PDF 2.
 ## Limites restantes et preuves
 
 L’instanciation de modèles de pages, la création/suppression/renommage généraux
-de champs, le remplissage enrichi ou de sélection de fichier, la régénération
+de champs, les valeurs texte indirectes et les flux texte, la régénération
 arbitraire d’apparences, les nouvelles ressources et la lecture/classification
 authentifiée de chaînes externes restent hors de ce périmètre natif. Intégrité
 mathématique, politique de modification, confiance du certificat, révocation et
@@ -148,13 +159,13 @@ intersections d’opération et de sauvegarde. `IncrementalSignaturePermissionsT
 conserve les attaques sur points d’entrée, sorties opaques et historiques fournis.
 
 `tools/validate_incremental_permissions.py` utilise pyHanko 0.37.0 non modifié,
-qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 97 refus natifs et 148
+qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 105 refus natifs et 196
 PDF contrôlés indépendamment par runtime ; 32 combinaisons natives de formulaire
 et 32 remplissages indépendants ; quatre chaînes d’annotations P3 ; 198 pixels
 contrôlés (144 boutons, 48 annotations, six attaque d’apparence partagée). UR3
 apporte huit sources signées, trois remplissages autorisés et 11 fichiers CMS
 vérifiés indépendamment ; altérer un octet signé est détecté. Ces contrôles
-portent sur CMS/structure/rendu, pas 148 approbations de permissions ni une
+portent sur CMS/structure/rendu, pas 196 approbations de permissions ni une
 décision indépendante d’autorité de droits d’usage.
 
 La politique pyHanko inchangée confirme les 16 combinaisons `Tx`/`Ch`, mais renvoie
@@ -165,3 +176,9 @@ refusés par le classificateur natif. Le mode strict ne valide pas les signature
 hybrides : sa matrice utilise Table/Stream, et les tests hybrides natifs restent
 distincts. Les rapports conservent ces différences, sans politique modifiée,
 récupération réseau ni racine de confiance PKI implicite.
+
+La matrice de texte étendue ajoute 16 remplissages natifs et 16 indépendants.
+pyHanko accepte les huit combinaisons FileSelect mais classe `OTHER` les huit
+combinaisons enrichies dans les deux implémentations. L’oracle examine le vrai
+`RV` du dictionnaire physique : le résumé normalisé des champs pypdf l’omet.
+Ces résultats ne revendiquent pas l’équivalence visuelle du texte enrichi.

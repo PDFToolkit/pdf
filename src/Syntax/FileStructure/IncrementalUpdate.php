@@ -14,12 +14,13 @@ final readonly class IncrementalUpdate implements \Stringable
     /** @var list<ReleaseIndirectObject|ReuseObjectNumber> */
     public array $objectOperations;
     public ?\PDF\Document\Signatures\UsageRightsAuthorization $usageRights;
+    public ?\PDF\Document\Signatures\RichTextFilling $richTextFilling;
     public function __construct(
         public FileRevision $previous,
         public FileBody $body,
         public ?IndirectReference $root = null,
         public ?DictionaryType $trailerEntries = null,
-        ReleaseIndirectObject|ReuseObjectNumber|\PDF\Document\Signatures\UsageRightsAuthorization ...$objectOperations,
+        ReleaseIndirectObject|ReuseObjectNumber|\PDF\Document\Signatures\UsageRightsAuthorization|\PDF\Document\Signatures\RichTextFilling ...$objectOperations,
     ) {
         foreach (['Size', 'Root', 'Prev', 'XRefStm', 'Encrypt'] as $managed) {
             if ($trailerEntries?->has($managed)) {
@@ -28,8 +29,14 @@ final readonly class IncrementalUpdate implements \Stringable
         }
         $operations = [];
         $usageRights = null;
+        $richTextFilling = null;
         foreach ($objectOperations as $operation) {
-            if ($operation instanceof \PDF\Document\Signatures\UsageRightsAuthorization) {
+            if ($operation instanceof \PDF\Document\Signatures\RichTextFilling) {
+                if ($richTextFilling !== null) {
+                    throw new \InvalidArgumentException('An incremental update selects one rich-text filling interpreter.');
+                }
+                $richTextFilling = $operation;
+            } elseif ($operation instanceof \PDF\Document\Signatures\UsageRightsAuthorization) {
                 if ($usageRights !== null) {
                     throw new \InvalidArgumentException('An incremental update selects one usage-rights authorization.');
                 }
@@ -40,6 +47,7 @@ final readonly class IncrementalUpdate implements \Stringable
         }
         $this->objectOperations = $operations;
         $this->usageRights = $usageRights;
+        $this->richTextFilling = $richTextFilling;
     }
 
     public function toRevision(): FileRevision

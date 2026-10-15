@@ -321,15 +321,106 @@ final class ProtectedFormFillChangesTest extends TestCase
         $this->replace($revision, $field, ['V' => new TextString('four')])->toRevision();
     }
 
+    public function testFileSelectionFillingOnlyStoresTheExplicitTextAndDoesNotReadItsPath(): void
+    {
+        $field = new TextField($this->fieldName('file'), new \PDF\Document\Forms\TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::FileSelect));
+        $revision = $this->certified($field);
+        $path = '/does-not-exist/private-document.pdf';
+        $filled = $this->replace($revision, $field, ['V' => new TextString($path)])->toRevision();
+        self::assertSame($path, $filled->binding($field)->dictionary->get('V')->value);
+        self::assertStringStartsWith($revision->bytes, $filled->bytes);
+    }
+
+    public function testRichTextNeedsTheExplicitInterpreterOnEveryUpdate(): void
+    {
+        $field = $this->richField();
+        $revision = $this->certified($field);
+        $filled = $this->replace($revision, $field, [
+            'V' => new TextString('Reviewed'), 'RV' => new TextString('<body><p><b>Reviewed</b></p></body>'),
+        ], $this->richTextFilling())->toRevision();
+        self::assertSame('Reviewed', $filled->binding($field)->dictionary->get('V')->value);
+        self::assertStringStartsWith($revision->bytes, $filled->bytes);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('explicit XML interpreter');
+        $this->replace($filled, $field, ['V' => new TextString('next'), 'RV' => new TextString('<body><p>next</p></body>')])->toRevision();
+    }
+
+    public function testRichAndPlainValuesMustAgreeBeforeEmission(): void
+    {
+        $field = $this->richField();
+        $revision = $this->certified($field);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('same text');
+        $this->replace($revision, $field, ['V' => new TextString('approved'), 'RV' => new TextString('<body><p>rejected</p></body>')], $this->richTextFilling())->toRevision();
+    }
+
+    public function testRichTextRejectsExternalEntityDeclarations(): void
+    {
+        $field = $this->richField();
+        $revision = $this->certified($field);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('DTD');
+        $this->replace($revision, $field, ['V' => new TextString('ignored'), 'RV' => new TextString('<!DOCTYPE body [<!ENTITY x SYSTEM "file:///private.txt">]><body><p>&x;</p></body>')], $this->richTextFilling())->toRevision();
+    }
+
+    public function testRichTextCannotLeaveAStaleWidgetAppearance(): void
+    {
+        $field = $this->richField();
+        $widget = new WidgetAnnotation($this->box(), new WidgetAppearance($this->appearance()));
+        $field->addWidget($widget);
+        $revision = $this->certified($field, widget: $widget);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('regenerates the complete normal appearance');
+        $this->replace($revision, $field, ['V' => new TextString('new'), 'RV' => new TextString('<body><p>new</p></body>')], $this->richTextFilling())->toRevision();
+    }
+
+    public function testRichTextReplacesTheWholeAppearanceWithoutThePlainTextTxConvention(): void
+    {
+        $field = $this->richField();
+        $stream = $this->appearance();
+        $widget = new WidgetAnnotation($this->box(), new WidgetAppearance($stream));
+        $field->addWidget($widget);
+        $revision = $this->certified($field, widget: $widget);
+        $fresh = new StreamObject('q 0 0 1 rg 10 10 20 20 re f Q', $revision->binding($stream)->dictionary->without('Length'));
+        $fieldRecord = $revision->binding($field);
+        $widgetRecord = $revision->binding($widget);
+        $filled = (new IncrementalUpdate($revision, new FileBody(
+            new IndirectObject($fieldRecord->dictionary->with($this->entry('V', new TextString('new')))->with($this->entry('RV', new TextString('<body><p>new</p></body>'))), $fieldRecord->identifier),
+            new IndirectObject($widgetRecord->dictionary->with($this->entry('AP', new DictionaryType($this->entry('N', new IndirectReference($fresh))))), $widgetRecord->identifier),
+        ), null, null, $this->richTextFilling()))->toRevision();
+        self::assertStringStartsWith($revision->bytes, $filled->bytes);
+        self::assertSame('q 0 0 1 rg 10 10 20 20 re f Q', $filled->binding($fresh)->snapshot->encodedBytes);
+        self::assertSame($revision->binding($stream)->snapshot->encodedBytes, $filled->binding($stream)->snapshot->encodedBytes);
+    }
+
+    public function testRichTextStillHonoursHistoricalFieldLocks(): void
+    {
+        $field = $this->richField();
+        $revision = $this->certified($field, lock: new SignatureFieldLock(SignatureLockAction::All));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('FieldMDP');
+        $this->replace($revision, $field, ['V' => new TextString('new'), 'RV' => new TextString('<body><p>new</p></body>')], $this->richTextFilling())->toRevision();
+    }
+
+    private function richField(): TextField
+    {
+        return new TextField($this->fieldName('rich'), new \PDF\Document\Forms\TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::RichText), new TextString('old'), entries: $this->entry('RV', new TextString('<body><p>old</p></body>')));
+    }
+
+    private function richTextFilling(): \PDF\Document\Signatures\RichTextFilling
+    {
+        return new \PDF\Document\Signatures\RichTextFilling(new \PDF\Document\Structure\WtPdfXmlRichTextParser());
+    }
+
     /** @param array<string, BasicType> $entries */
-    private function replace(FileRevision $revision, BasicType $object, array $entries): IncrementalUpdate
+    private function replace(FileRevision $revision, BasicType $object, array $entries, ?\PDF\Document\Signatures\RichTextFilling $richTextFilling = null): IncrementalUpdate
     {
         $record = $revision->binding($object);
         $dictionary = $record->dictionary;
         foreach ($entries as $name => $value) {
             $dictionary = $dictionary->with($this->entry($name, $value));
         }
-        return new IncrementalUpdate($revision, new FileBody(new IndirectObject($dictionary, $record->identifier)));
+        return new IncrementalUpdate($revision, new FileBody(new IndirectObject($dictionary, $record->identifier)), null, null, ...($richTextFilling === null ? [] : [$richTextFilling]));
     }
 
     private function certified(Field $field, ?SignatureFieldLock $lock = null, ?WidgetAnnotation $widget = null, bool $merged = false, bool $sharedAlias = false): FileRevision

@@ -57,6 +57,16 @@ object identities and unchanged historical resources.
   agree with fixed options and the PDF version. Checkbox/radio values agree with
   widget `AS` and existing Off/on appearances; filling cannot replace those
   button appearance programs.
+- File-selection fields store the supplied path as ordinary text; no file is
+  opened or fetched. Rich-text fields require paired direct `V`/`RV` strings and
+  an explicit per-update `RichTextFilling(new WtPdfXmlRichTextParser())`. The
+  bounded XML interpreter checks plain/rich equivalence without DTDs, external
+  entities or network access. Every affected widget needs a fresh complete normal
+  appearance; a stale appearance is refused. ISO 2 §12.7.4.3 requires complete
+  rich-text appearance regeneration, so the non-rich `/Tx` restriction does not
+  apply. Historical resources, widget geometry and all field locks remain fixed.
+  The caller supplies appearance instructions; XML/value agreement does not prove
+  their visual equivalence. The interpreter is never enabled implicitly.
 - Non-rich variable-text appearance replacement preserves geometry and every
   decoded byte outside one `/Tx BMC`…matching `EMC` region; if absent, append it.
   Drawing/state instructions own their `q`/`Q` isolation. Paths, pending clipping
@@ -115,8 +125,8 @@ deprecated in PDF 2.0.
 
 ## Remaining boundaries and evidence
 
-Page-template instantiation, general field creation/deletion/renaming, rich-text
-and file-selection filling, arbitrary appearance regeneration, new resource
+Page-template instantiation, general field creation/deletion/renaming, indirect
+text values and text streams, arbitrary appearance regeneration, new resource
 objects and authenticated reading/classification of external revision chains
 remain outside this native scope. Mathematical integrity, modification policy,
 certificate trust, revocation and human appearance review are separate. The core
@@ -140,12 +150,12 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The validation passes on PHP 8.3/8.4/8.5: 97 native refusals and 148
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 105 native refusals and 196
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
 annotation, six shared-appearance attack). UR3 contributes eight signed sources,
 three permitted fills and 11 independently verified CMS files; changing a signed
-byte is detected. These are CMS/structure/rendering checks, not 148 permission
+byte is detected. These are CMS/structure/rendering checks, not 196 permission
 approvals or an independent usage-rights authority decision.
 
 The unmodified pyHanko policy confirms the 16 `Tx`/`Ch` combinations, but reports
@@ -156,3 +166,9 @@ that the native classifier refuses. Strict pyHanko does not validate hybrid
 signatures, so its matrix uses Table/Stream while native hybrid tests remain
 separate. Reports retain these differences, with no policy patch, fetching or
 implicit PKI trust root.
+
+The extended text matrix adds 16 native and 16 independent fills. pyHanko
+accepts the eight FileSelect combinations but reports `OTHER` for the eight
+rich-text combinations in both implementations. The oracle checks actual `RV`
+from the physical field dictionary because pypdf’s normalized field summary
+omits it. These results do not claim rendered rich-text equivalence.

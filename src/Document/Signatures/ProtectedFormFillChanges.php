@@ -23,6 +23,10 @@ use PDF\Syntax\Object\StringType;
 /** Conservative filling of existing terminal fields, with their immutable tree and policies. */
 final class ProtectedFormFillChanges
 {
+    public function __construct(private readonly ?RichTextFilling $richTextFilling = null)
+    {
+    }
+
     public function classify(ProtectedRevisionChanges $changes, SignaturePermissionHistory $history): int
     {
         $before = new FrozenFormFields($changes->prior);
@@ -77,6 +81,10 @@ final class ProtectedFormFillChanges
                 $merged = $merged || (string) $widget->identifier === $id;
             }
             $keys = ['V'];
+            $rich = $type->value === 'Tx' && ($mask & TextFieldFlag::RichText->value) !== 0;
+            if ($rich) {
+                $keys[] = 'RV';
+            }
             if ($type->value === 'Ch') {
                 array_push($keys, 'I', 'TI');
             }
@@ -116,7 +124,16 @@ final class ProtectedFormFillChanges
                     }
                 }
                 if ($type->value !== 'Btn') {
-                    $changes->appearance($dictionary->get('AP'), $oldDictionary->get('AP'), true);
+                    if ($rich && (!$changes->same($old->effective('V'), $field->effective('V'))
+                        || !$changes->same($old->dictionary->get('RV'), $field->dictionary->get('RV')))) {
+                        $oldAppearance = $changes->prior->resolve($oldDictionary->get('AP'));
+                        $appearance = $changes->current->resolve($dictionary->get('AP'));
+                        if (!$appearance instanceof DictionaryType || $appearance->get('N') === null
+                            || $changes->same($oldAppearance instanceof DictionaryType ? $oldAppearance->get('N') : null, $appearance->get('N'))) {
+                            throw new \LogicException('Rich-text filling regenerates the complete normal appearance of every widget.');
+                        }
+                    }
+                    $changes->appearance($dictionary->get('AP'), $oldDictionary->get('AP'), !$rich);
                     $this->appearanceState($changes->current, $dictionary);
                 }
             }
@@ -127,15 +144,23 @@ final class ProtectedFormFillChanges
 
     private function text(FrozenSignatureGraph $graph, FrozenFormField $field, ?BasicType $value, int $flags): void
     {
-        if (($flags & (TextFieldFlag::RichText->value | TextFieldFlag::FileSelect->value)) !== 0
-            || ($value !== null && !$value instanceof StringType) || $field->dictionary->has('RV')) {
-            throw new \LogicException('Protected text filling requires direct plain text; rich text and file selection remain unclassified.');
+        if ($value !== null && !$value instanceof StringType) {
+            throw new \LogicException('Protected text filling requires direct text values.');
+        }
+        if (($flags & TextFieldFlag::RichText->value) !== 0) {
+            $rich = $field->dictionary->get('RV');
+            if (!$value instanceof StringType || !$rich instanceof StringType || $this->richTextFilling === null) {
+                throw new \LogicException('Protected rich-text filling requires paired direct V/RV strings and an explicit XML interpreter.');
+            }
+            $this->richTextFilling->validate($value, $rich);
+        } elseif ($field->dictionary->has('RV')) {
+            throw new \LogicException('Protected plain text does not reinterpret an RV declaration.');
         }
         $maximum = $graph->resolve($field->effective('MaxLen'));
         if ($maximum !== null && (!$maximum instanceof IntegerType || $maximum->integer() < 0)) {
             throw new \LogicException('Protected text MaxLen must be a nonnegative integer.');
         }
-        if (($flags & TextFieldFlag::Comb->value) !== 0 && (!$maximum instanceof IntegerType || $maximum->integer() < 1 || ($flags & (TextFieldFlag::Multiline->value | TextFieldFlag::Password->value)) !== 0)) {
+        if (($flags & TextFieldFlag::Comb->value) !== 0 && (!$maximum instanceof IntegerType || $maximum->integer() < 1 || ($flags & (TextFieldFlag::Multiline->value | TextFieldFlag::Password->value | TextFieldFlag::FileSelect->value)) !== 0)) {
             throw new \LogicException('Protected comb text retains consistent length and flags.');
         }
         if ($value instanceof StringType && $maximum instanceof IntegerType

@@ -140,9 +140,11 @@ explicite par mise à jour : l’autorité applicative doit reconnaître l’ide
 signataire vérifiée, et chaque opération doit respecter droits signés, sélection,
 conditions de sauvegarde et toutes les autres restrictions historiques. La
 validité mathématique seule n’accorde ni droits d’usage ni confiance PKI. UR ancien,
-UR chiffré et PDF 2.0 `P=false`/absent restent hors périmètre, comme les modèles,
-le texte enrichi, les nouvelles ressources, la classification de chaînes externes
-et les mises à jour mêlant remplissage, signature ou maintenance.
+UR chiffré et PDF 2.0 `P=false`/absent restent hors périmètre. FileSelect et les
+valeurs enrichies V/RV avec interpréteur XML explicite sont pris en charge, avec
+renouvellement complet de l’apparence enrichie. Les modèles, les nouvelles
+ressources, la classification de chaînes externes
+et les mises à jour mêlant remplissage, signature ou maintenance restent hors périmètre.
 Voir les [opérations prises en charge, migration et preuves indépendantes](resources/signature-revisions/README.fr.md).
 
 Conserver la `FileRevision` originale renvoyée par l’écriture ou la signature

@@ -75,6 +75,7 @@ if (!is_dir($output) && !mkdir($output, 0777, true) && !is_dir($output)) {
 }
 $rejected = [];
 $forms = [];
+$extendedText = [];
 $annotations = [];
 $usageRights = [];
 $refuse = static function (string $name, IncrementalUpdate $update) use (&$rejected): void {
@@ -110,8 +111,10 @@ foreach (DocMdpPermissions::cases() as $permission) {
         [$hidden] = $fixture->signing(attack: 'content');
         $refuse('P' . $permission->value . ':approval:content', $hidden);
         $fieldFill = $fixture->mutation('field-value');
-        $refuse('P' . $permission->value . ':form-fill:content', new IncrementalUpdate($fixture->revision,
-            new FileBody(...[...$fieldFill->body->objects(), new IndirectObject(new StreamObject('0 0 30 30 re f'), $fixture->revision->binding($fixture->content)->identifier)])));
+        $refuse('P' . $permission->value . ':form-fill:content', new IncrementalUpdate(
+            $fixture->revision,
+            new FileBody(...[...$fieldFill->body->objects(), new IndirectObject(new StreamObject('0 0 30 30 re f'), $fixture->revision->binding($fixture->content)->identifier)])
+        ));
     }
     if ($permission === DocMdpPermissions::NoChanges) {
         $fixture->dss()->toRevision()->writeTo($output . '/core-p1-dss.pdf');
@@ -128,6 +131,8 @@ $formFixture = static function (string $kind, DocMdpPermissions $permission, Cro
     $name = new PartialFieldName(new TextString('value'));
     $field = match ($kind) {
         'text' => new TextField($name, $readOnly ? new TextFieldFlags(CommonFieldFlag::ReadOnly) : null, new TextString('original')),
+        'file-select' => new TextField($name, new TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::FileSelect), new TextString('original')),
+        'richtext' => new TextField($name, new TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::RichText), new TextString('original'), entries: new Entry(new NameType('RV'), new TextString('<body><p>original</p></body>'))),
         'choice' => new ChoiceField($name, new ChoiceOptions(new ChoiceOption(new TextString('original')), new ChoiceOption(new TextString('changed'))), value: new ChoiceFieldValue(ChoiceValueDomain::ExportValues, new TextString('original'))),
         'checkbox' => new ButtonField($name, value: new NameType('Off')),
         'radio' => new ButtonField($name, new ButtonFieldFlags(ButtonFieldFlag::Radio), new NameType('Off')),
@@ -164,7 +169,8 @@ $formFixture = static function (string $kind, DocMdpPermissions $permission, Cro
     $font = require dirname(__DIR__, 2) . '/examples/fixtures/pdf20-courier-font.php';
     $defaults = new DictionaryType(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F'), new IndirectReference($font)))));
     $form = new AcroForm((new FieldTree(new DefaultAppearance(new SetTextFontAndSize(new NameType('F'), new IntegerType(12))), $defaults))->addRoot($author->field)->addRoot($field));
-    $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page),
+    $catalog = new DocumentCatalog(
+        (new PageTreeNode())->addKid($page),
         new Entry(new NameType('AcroForm'), new IndirectReference($form)),
         new Entry(new NameType('Perms'), $author->certificationPermissions()),
     );
@@ -172,8 +178,12 @@ $formFixture = static function (string $kind, DocMdpPermissions $permission, Cro
     $prepared = (new SignatureWriter())->prepare(new FileStructure(new FileHeader($version), new FileBody($catalog), crossReferenceFormat: $format), $author->signature);
     $revision = $author->sign($prepared)->revision;
     $record = $revision->binding($field);
-    $value = $kind === 'text' || $kind === 'choice' ? new TextString('changed') : new NameType($kind === 'radio' ? 'A' : 'Yes');
-    $objects = [new IndirectObject($record->dictionary->with(new Entry(new NameType('V'), $value)), $record->identifier)];
+    $value = in_array($kind, ['text', 'choice', 'file-select', 'richtext'], true) ? new TextString('changed') : new NameType($kind === 'radio' ? 'A' : 'Yes');
+    $replacement = $record->dictionary->with(new Entry(new NameType('V'), $value));
+    if ($kind === 'richtext') {
+        $replacement = $replacement->with(new Entry(new NameType('RV'), new TextString('<body><p><b>changed</b></p></body>')));
+    }
+    $objects = [new IndirectObject($replacement, $record->identifier)];
     if ($widgets !== []) {
         $widget = $revision->binding($widgets[0]);
         $objects[] = new IndirectObject($widget->dictionary->with(new Entry(new NameType('AS'), $value)), $widget->identifier);
@@ -204,6 +214,24 @@ foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::
     [$revision, $objects] = $formFixture('text', $permission, CrossReferenceFormat::Table, '2.0', readOnly: true);
     $revision->writeTo($output . '/core-p' . $permission->value . '-readonly.pdf');
     $refuse('P' . $permission->value . ':readonly-value', new IncrementalUpdate($revision, new FileBody(...$objects)));
+}
+$richTextFilling = new \PDF\Document\Signatures\RichTextFilling(new \PDF\Document\Structure\WtPdfXmlRichTextParser());
+foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::FormsTemplatesSigningAndAnnotations] as $permission) {
+    foreach ([CrossReferenceFormat::Table, CrossReferenceFormat::Stream] as $format) {
+        foreach (['1.7', '2.0'] as $version) {
+            foreach (['richtext', 'file-select'] as $kind) {
+                [$revision, $objects] = $formFixture($kind, $permission, $format, $version);
+                $stem = 'extended-p' . $permission->value . '-' . strtolower($format->name) . '-' . str_replace('.', '', $version) . '-' . $kind;
+                $revision->writeTo($output . '/' . $stem . '.pdf');
+                $filled = (new IncrementalUpdate($revision, new FileBody(...$objects), null, null, ...($kind === 'richtext' ? [$richTextFilling] : [])))->toRevision();
+                $filled->writeTo($output . '/' . $stem . '-filled.pdf');
+                $extendedText[] = ['source' => $stem . '.pdf', 'filled' => $stem . '-filled.pdf', 'kind' => $kind, 'permission' => $permission->value, 'format' => $format->name, 'version' => $version];
+                if ($kind === 'richtext') {
+                    $refuse($stem . ':missing-xml-interpreter', new IncrementalUpdate($revision, new FileBody(...$objects)));
+                }
+            }
+        }
+    }
 }
 $appearance = static fn (string $color): StreamObject => new StreamObject('q ' . $color . ' rg 0 0 20 20 re f Q', new DictionaryType(
     new Entry(new NameType('Type'), new NameType('XObject')),
@@ -240,10 +268,12 @@ foreach ([CrossReferenceFormat::Table, CrossReferenceFormat::Stream] as $format)
         $added->writeTo($output . '/' . $stem . '-added.pdf');
         $record = $added->binding($markup);
         $red = $appearance('1 0 0');
-        $modified = (new IncrementalUpdate($added, new FileBody(new IndirectObject($record->dictionary
+        $modified = (new IncrementalUpdate($added, new FileBody(new IndirectObject(
+            $record->dictionary
             ->with(new Entry(new NameType('Contents'), new TextString('updated review')))
             ->with(new Entry(new NameType('AP'), new DictionaryType(new Entry(new NameType('N'), new IndirectReference($red))))),
-            $record->identifier))))->toRevision();
+            $record->identifier
+        ))))->toRevision();
         $modified->writeTo($output . '/' . $stem . '-modified.pdf');
         $page = $modified->binding($fixture->page);
         $detached = (new IncrementalUpdate($modified, new FileBody(new IndirectObject($page->dictionary->without('Annots'), $page->identifier))))->toRevision();
@@ -272,16 +302,22 @@ $record = $signed->revision->binding($catalog);
 $refuse('UR:hidden-authority', new IncrementalUpdate($signed->revision, new FileBody(new IndirectObject($record->dictionary->without('Perms'), $record->identifier))));
 $usageFixture = static function (array $rights, bool $restrict, string $version) use ($backend): array {
     $transform = new UsageRightsTransform(UsageRightsMode::ByteRange, $restrict, null, ...$rights);
-    $pending = new PendingSignature(new SignatureCapacity(8192), SignatureFormat::Pkcs7Detached,
-        entries: new Entry(new NameType('Reference'), new SignatureReferences(new SignatureReference($transform))));
+    $pending = new PendingSignature(
+        new SignatureCapacity(8192),
+        SignatureFormat::Pkcs7Detached,
+        entries: new Entry(new NameType('Reference'), new SignatureReferences(new SignatureReference($transform)))
+    );
     $field = new TextField(new PartialFieldName(new TextString('value')), value: new TextString('original'));
     $font = require dirname(__DIR__, 2) . '/examples/fixtures/pdf20-courier-font.php';
     $resources = new DictionaryType(new Entry(new NameType('Font'), new DictionaryType(new Entry(new NameType('F'), new IndirectReference($font)))));
     $form = new AcroForm((new FieldTree(new DefaultAppearance(new SetTextFontAndSize(new NameType('F'), new IntegerType(12))), $resources))->addRoot($field));
     $content = new StreamObject('q Q');
     $page = new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary(), $content);
-    $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page), new Entry(new NameType('AcroForm'), new IndirectReference($form)),
-        new Entry(new NameType('Perms'), new DictionaryType(new Entry(new NameType('UR3'), new IndirectReference($pending)))));
+    $catalog = new DocumentCatalog(
+        (new PageTreeNode())->addKid($page),
+        new Entry(new NameType('AcroForm'), new IndirectReference($form)),
+        new Entry(new NameType('Perms'), new DictionaryType(new Entry(new NameType('UR3'), new IndirectReference($pending))))
+    );
     $revision = (new SignatureWriter())->prepare(new FileStructure(new FileHeader($version), new FileBody($catalog)), $pending)->sign($backend)->revision;
     return [$revision, $field, $catalog, $content];
 };
@@ -289,7 +325,9 @@ $authorize = static function (FileRevision $revision, bool $permit, UsageRight .
     $fingerprint = hash('sha256', $revision->verifiedSignature->facts->certificate->certificate()->value);
     $authority = new class ($fingerprint, $permit) implements UsageRightsAuthority {
         public bool $called = false;
-        public function __construct(private string $fingerprint, private bool $permit) {}
+        public function __construct(private string $fingerprint, private bool $permit)
+        {
+        }
         public function permits(VerifiedRevisionSignature $signature): bool
         {
             $this->called = true;
@@ -300,8 +338,13 @@ $authorize = static function (FileRevision $revision, bool $permit, UsageRight .
 };
 $usageFill = static function (FileRevision $revision, TextField $field, ?UsageRightsAuthorization $authorization = null): IncrementalUpdate {
     $record = $revision->binding($field);
-    return new IncrementalUpdate($revision, new FileBody(new IndirectObject($record->dictionary->with(new Entry(new NameType('V'), new TextString('changed'))), $record->identifier)),
-        null, null, ...($authorization === null ? [] : [$authorization]));
+    return new IncrementalUpdate(
+        $revision,
+        new FileBody(new IndirectObject($record->dictionary->with(new Entry(new NameType('V'), new TextString('changed'))), $record->identifier)),
+        null,
+        null,
+        ...($authorization === null ? [] : [$authorization])
+    );
 };
 foreach ([
     ['ur3-p17', [UsageRight::FillField], true, '1.7', true],
@@ -347,4 +390,4 @@ foreach ([
             new IndirectObject($catalogRecord->dictionary->without('Perms'), $catalogRecord->identifier)]), null, null, $authorization));
     }
 }
-echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'annotations' => $annotations, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";
+echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'extended_text_fills' => $extendedText, 'annotations' => $annotations, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";

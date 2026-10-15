@@ -160,7 +160,9 @@ an application authority must recognize the verified signing identity, and each
 operation must satisfy signed rights, selected scope, saving conditions and all
 other historical restrictions. Mathematical validity alone grants no usage
 rights or PKI trust. Legacy/encrypted UR and PDF 2.0 `P=false`/absent declarations
-remain unsupported. Templates, rich text, new resources, external revision-chain
+remain unsupported. FileSelect filling and rich-text V/RV updates with an explicit
+XML interpreter are supported, with complete rich-text appearance renewal.
+Templates, new resources, external revision-chain
 classification and mixed fill/signing/maintenance updates remain outside scope.
 See the [supported operations, migration and independent evidence](resources/signature-revisions/README.md).
 

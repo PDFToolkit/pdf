@@ -21,7 +21,7 @@ use PDF\Syntax\Object\StringType;
  */
 final readonly class IncrementalSignaturePermissions
 {
-    public function validate(FileRevision $current, ?UsageRightsAuthorization $authorization = null): void
+    public function validate(FileRevision $current, ?UsageRightsAuthorization $authorization = null, ?RichTextFilling $richTextFilling = null): void
     {
         $previous = $current->previous ?? throw new \LogicException('Incremental permissions require an actual previous revision.');
         $protected = false;
@@ -141,7 +141,7 @@ final readonly class IncrementalSignaturePermissions
                 (new SignatureRevisionDelta())->validate($graph, null, null);
                 return;
             }
-            $fields = (new ProtectedFormFillChanges())->classify($changes, $history);
+            $fields = (new ProtectedFormFillChanges($richTextFilling))->classify($changes, $history);
             $annotations = (new ProtectedAnnotationChanges())->classify($changes, $history);
             if ($fields === 0 && $annotations === []) {
                 throw new \LogicException('A protected revision requires a classified form-fill, annotation, signing or maintenance operation.');

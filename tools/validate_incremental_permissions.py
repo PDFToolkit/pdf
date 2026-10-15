@@ -92,8 +92,10 @@ def change_form_value(source: Path, target: Path, kind: str, name='value'):
         writer = IncrementalPdfFileWriter(stream, strict=True)
         reference = field_reference(writer, name)
         field = reference.get_object()
-        value = generic.TextStringObject('changed') if kind in ('text', 'choice') else generic.NameObject('/A' if kind == 'radio' else '/Yes')
+        value = generic.TextStringObject('changed') if kind in ('text', 'choice', 'richtext', 'file-select') else generic.NameObject('/A' if kind == 'radio' else '/Yes')
         field[generic.NameObject('/V')] = value
+        if kind == 'richtext':
+            field[generic.NameObject('/RV')] = generic.TextStringObject('<body><p><b>changed</b></p></body>')
         writer.mark_update(reference)
         widgets = field.get('/Kids', [])
         for widget_reference in widgets:
@@ -133,9 +135,18 @@ def assert_form_value(path: Path, kind: str, name='value', read_only=False):
     fields = reader.get_fields()
     assert fields is not None and name in fields, (path.name, name)
     field = fields[name]
-    expected_type = {'text': '/Tx', 'choice': '/Ch', 'checkbox': '/Btn', 'radio': '/Btn'}[kind]
-    expected_value = 'changed' if kind in ('text', 'choice') else '/A' if kind == 'radio' else '/Yes'
+    expected_type = {'text': '/Tx', 'choice': '/Ch', 'checkbox': '/Btn', 'radio': '/Btn', 'richtext': '/Tx', 'file-select': '/Tx'}[kind]
+    expected_value = 'changed' if kind in ('text', 'choice', 'richtext', 'file-select') else '/A' if kind == 'radio' else '/Yes'
     assert str(field['/FT']) == expected_type and str(field['/V']) == expected_value, path.name
+    if kind == 'richtext':
+        assert int(field['/Ff']) & (1 << 25)
+        # get_fields() exposes a normalized subset and intentionally omits RV.
+        raw_fields = reader.trailer['/Root']['/AcroForm']['/Fields']
+        raw = next(reference.get_object() for reference in raw_fields
+                   if str(reference.get_object().get('/T', '')) == name)
+        assert str(raw['/RV']) == '<body><p><b>changed</b></p></body>'
+    if kind == 'file-select':
+        assert int(field['/Ff']) & (1 << 20)
     if read_only:
         assert int(field.get('/Ff', 0)) & 1, 'The source must actually retain its ReadOnly flag.'
     for index, widget_reference in enumerate(field.get('/Kids', [])):
@@ -464,6 +475,22 @@ def main() -> None:
         read_only_limits.append({'file': changed.name, 'nativeRefused': True,
             'pyhankoDocMdpOk': reports[changed.name]['signatures'][0]['docmdp_ok'],
             'readOnlyFlagAndChangedValueIndependentlyVerified': True})
+    extended_text_results = []
+    extended = native['extended_text_fills']
+    assert {(r['permission'], r['format'], r['version'], r['kind']) for r in extended} == {
+        (p, xref, v, kind) for p in (2, 3) for xref in ('Table', 'Stream')
+        for v in ('1.7', '2.0') for kind in ('richtext', 'file-select')}
+    for item in extended:
+        source, filled = work / item['source'], work / item['filled']
+        assert filled.read_bytes().startswith(source.read_bytes())
+        assert_form_value(filled, item['kind'])
+        reports[source.name] = inspect(source, args.qpdf)
+        reports[filled.name] = inspect(filled, args.qpdf, expected_permission=None)
+        independent = work / ('independent-' + filled.name)
+        change_form_value(source, independent, item['kind'])
+        reports[independent.name] = inspect(independent, args.qpdf, expected_permission=None)
+        extended_text_results.append({'kind': item['kind'], 'native': reports[filled.name]['signatures'],
+                                     'independent': reports[independent.name]['signatures']})
     annotation_limits = inspect_annotations(work, native, args.qpdf, args.pdftoppm, reports)
     usage_rights = inspect_usage_rights(work, native, args.qpdf, reports)
     report = {'native_rejected': len(rejected), 'native_cases': sorted(rejected),
@@ -473,6 +500,7 @@ def main() -> None:
         'read_only_oracle_limits': read_only_limits,
         'button_widget_oracle_limits': button_limits,
         'annotation_oracle_limits': annotation_limits,
+        'extended_text_fills': extended_text_results,
         'native_annotation_combinations': len(native['annotations']),
         'usage_rights': usage_rights,
         'hybrid_boundary': 'Native hybrid coverage is separate; unmodified strict pyHanko rejects hybrid signature validation.',
@@ -480,6 +508,7 @@ def main() -> None:
     (work / 'incremental-permissions-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps({'native_rejected': len(rejected), 'independent_adversarial_updates': 12,
         'native_form_fill_combinations': len(combinations), 'read_only_oracle_limits': read_only_limits,
+        'extended_text_fill_combinations': len(extended),
         'button_widget_oracle_limits': len(button_limits),
         'independent_button_pixel_checks': sum(item.get('buttonRendering', {}).get('pixelChecks', 0) for item in reports.values()),
         'native_annotation_combinations': len(native['annotations']),
