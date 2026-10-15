@@ -76,7 +76,7 @@ composées ; une entrée de catalogue seule ne prouve pas une implémentation s�
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
 des annotations et leurs chaînes de réponses d’approbation pour les problèmes
-246, 403, 444 et 468. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+22, 124, 246, 403, 444 et 468. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -84,8 +84,10 @@ libellés distincts le rendent obligatoire, et un `/V` tableau ne suffit plus à
 l’exiger. La version effective du document contrôle toujours la construction PDF 2.0.
 La construction historique `Pdf17` reste utilisée par défaut. Si des entrées de
 champ supplémentaires étaient passées par position, fournir d’abord
-`indexSemantics` ou utiliser l’argument nommé `entries`. Ces quatre revues ne
-déclarent pas implémentées les autres annotations EC3.
+`indexSemantics` ou utiliser l’argument nommé `entries`. Le graphe des annotations
+PDF2 exécute aussi l’exigence AP et ses exceptions de point/sous-type (#22/#124) ;
+voir les [contrôles d’apparence](../annotation-appearances/README.fr.md). Ces six
+revues ne déclarent pas implémentées les autres annotations EC3.
 
 Pour reconstruire à partir des preuves conservées et comparer les objets PHP,
 sans dépendances d’extraction PDF :

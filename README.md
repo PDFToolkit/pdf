@@ -137,6 +137,14 @@ or NULL parameters; SHA-3 parameters remain absent. Historical
 `Revision5Permissions` can explicitly represent required MAC policy. Source-file
 authentication is implemented by the optional reader, not by the core parser.
 
+Version **0.9.1** enforces PDF2 annotation appearance requirements in the effective
+page graph, including frozen catalog upgrades. Only point rectangles (both
+dimensions zero), Popup, Projection and Link are exempt from AP; PDF1.7 remains
+optional. AP.N, Form streams and required AS names are checked while preserving
+the source-defined fallback for an unmatched state. The [appearance guide](resources/annotation-appearances/README.md)
+records EC3 #22/#124: six exact semantic review chains are now verified, separate
+from the 197 intrinsic rules. No appearance is generated implicitly.
+
 ## Protected incremental revisions
 
 Version 0.8.1 enforces historical DocMDP and FieldMDP restrictions at every

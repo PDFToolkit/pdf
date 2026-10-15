@@ -95,7 +95,7 @@
     ]
   },
   "boundaries": [
-    "These graph checks are separate from the 197 intrinsic dictionary rules and the four approved EC3 semantic corrections.",
+    "These graph checks are separate from the 197 intrinsic dictionary rules and the six approved EC3 semantic corrections, including #22/#124 in resources/annotation-appearances/coverage.json.",
     "They do not implement every conditional annotation/action/measurement requirement, execute actions, open external resources, render appearances or establish complete ISO conformance."
   ]
 }

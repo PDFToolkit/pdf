@@ -3473,6 +3473,44 @@
         "Only EC3 corrections explicitly listed in reviewed-overrides.json and ec3-semantic-reviews.json have semantic review evidence.",
         "ChoiceField preserves Pdf17 construction by default; Pdf20Ec3 construction is explicit and actual document version is validated."
       ]
+    },
+    {
+      "id": "annotation-appearance-context",
+      "title": "PDF2 annotation appearance requirement and native Form/state relationships",
+      "status": "implemented-in-stated-scope",
+      "source": {
+        "document": "ISO_32000-2_sponsored_EC3.pdf",
+        "physical_pdf_pages": [
+          287,
+          483,
+          489,
+          490,
+          491
+        ],
+        "clauses": [
+          "8.10.2",
+          "12.5.2",
+          "12.5.5"
+        ],
+        "errata": [
+          22,
+          124
+        ]
+      },
+      "implemented_scope": "Effective page annotation AP requirement, simultaneous zero-width/zero-height and Popup/Projection/Link exceptions, AP.N and named-state relationships, native Form stream types and geometry, including retained snapshot upgrades. Unmatched AS retains the explicit processor fallback.",
+      "implementation_files": [
+        "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
+      ],
+      "unit_test_files": [
+        "tests/AnnotationAppearanceGraphTest.php"
+      ],
+      "independent_validation_files": [
+        "tools/validate_annotation_appearances.py"
+      ],
+      "limits": [
+        "These graph checks do not render interactions or supply a missing appearance.",
+        "The six reviewed EC3 corrections do not resolve all remaining source annotations."
+      ]
     }
   ],
   "validation_commands": [
@@ -3487,7 +3525,8 @@
     "python tools/validate_pdf20_geospatial.py --help",
     "python tools/validate_pdf20_structure_destinations.py --help",
     "python tools/check_wtpdf_requirements.py",
-    "python tools/validate_pdf20_fonts.py <pdf-directory>"
+    "python tools/validate_pdf20_fonts.py <pdf-directory>",
+    "python tools/validate_annotation_appearances.py --help"
   ],
   "dictionary_inventory": {
     "source_tables": 440,

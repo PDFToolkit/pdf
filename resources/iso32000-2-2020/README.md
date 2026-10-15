@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for issues 246, 403, 444 and 468. A polygon `Path` ignores
+and approval reply chains for issues 22, 124, 246, 403, 444 and 468. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -78,7 +78,7 @@ with different display names require it, and an array `/V` alone does not requir
 it. The effective document version still gates PDF 2.0 construction. Historical
 `Pdf17` construction remains the default. If additional field entries were passed
 positionally, supply `indexSemantics` first or use the named `entries` argument.
-These four reviews do not mark the remaining EC3 annotations as implemented.
+The PDF2 annotation graph additionally executes the AP requirement and its point/subtype exceptions (#22/#124); see [appearance checks](../annotation-appearances/README.md). These six reviews do not mark the remaining EC3 annotations as implemented.
 
 Regenerate from retained evidence and compare PHP objects without PDF extraction
 dependencies:

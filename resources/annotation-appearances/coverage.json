@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "introducedIn": "0.9.1",
+  "source": {
+    "document": "ISO_32000-2_sponsored_EC3.pdf",
+    "path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
+    "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+    "clauses": [
+      "12.5.2",
+      "12.5.5",
+      "8.10.2"
+    ],
+    "tables": [
+      "166",
+      "170",
+      "93"
+    ],
+    "physicalPdfPages": [
+      483,
+      489,
+      490,
+      491,
+      287
+    ],
+    "reviewedEc3Issues": [
+      22,
+      124
+    ],
+    "reviewResource": "../iso32000-2-2020/ec3-semantic-reviews.json"
+  },
+  "implemented": [
+    "Actual page annotations in an effective native/frozen PDF2 graph require AP, except simultaneous zero width and height, Popup, Projection or Link.",
+    "AP is a dictionary with N; N/R/D are actual Form XObject streams or state dictionaries. Null optional entries retain absence semantics.",
+    "Any N/R/D state dictionary requires a name AS; an unmatched AS remains representable under the consumer fallback expressly permitted on physical page491.",
+    "Appearance streams have Form subtype, optional Type XObject, optional FormType1, numeric BBox and optional numeric Matrix; their graph context remains the actual current or retained revision.",
+    "Cumulative appearance/state traversal is explicitly bounded. No private key-name scan is used."
+  ],
+  "notClaimed": [
+    "No implicit appearance generation, event execution or rollover/down rasterization.",
+    "No full PDF/WTPDF conformance certification.",
+    "PDF1.7 AP absence retains its previous behavior. Existing managed WidgetAnnotation selection remains its explicit construction contract."
+  ],
+  "implementation": [
+    "src/Document/Annotations/AnnotationAppearanceGraphValidation.php",
+    "src/Document/Annotations/AnnotationGraphValidation.php"
+  ],
+  "evidence": [
+    "tests/AnnotationAppearanceGraphTest.php",
+    "tests/AnnotationRelationshipsTest.php",
+    "tests/Pdf20GeospatialTest.php",
+    "tools/fixtures/annotation-appearances.php",
+    "tools/validate_annotation_appearances.py"
+  ],
+  "oracle": {
+    "pdfsPerRuntime": 8,
+    "nativeRejections": 9,
+    "pixelChecks": 28,
+    "processors": [
+      "qpdf",
+      "pypdf",
+      "Poppler"
+    ]
+  }
+}

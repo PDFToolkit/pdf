@@ -4,6 +4,12 @@
 
 ## [Non publié]
 
+## [0.9.1] - 2026-10-15
+
+- Refuser les véritables annotations de page PDF 2.0 sans AP requis, en conservant les exceptions de rectangle réduit à un point, Popup/Projection/Link et le caractère facultatif en PDF 1.7. Vérifier AP.N, la géométrie des streams Form et les noms d’état requis dans les graphes natifs/figés effectifs ; préserver le repli prévu pour un AS inconnu.
+- Consigner les chaînes EC3 #22/#124 achevées et la métadonnée AP conditionnelle. Six revues exactes sont vérifiées ; les 197 règles intrinsèques restent séparées. Aucune apparence implicite ni conformité universelle n’est revendiquée.
+- Ajouter une preuve AP indépendante : huit PDF, neuf refus natifs et 28 pixels rendus, dont une mise à niveau réparée du catalogue PDF1.7 vers PDF2. Les fixtures positives d’annotations et géospatiales fournissent des apparences explicites sans retirer d’assertions.
+
 ## [0.9.0] - 2026-10-15
 
 - Vérifier les pages propriétaires des annotations, leurs noms par page, réponses/groupes et popups ; vérifier les chemins des actions distantes/embarquées et les tableaux de mesures rectilignes dans leur contexte réel.

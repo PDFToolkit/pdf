@@ -75,6 +75,8 @@ jobs:
         run: python tools/validate_barcode_appearances.py --php php --qpdf qpdf --pdftoppm pdftoppm --work-dir /tmp/pdf-barcode-appearances
       - name: Verify selected Type3 glyph programs and WTPDF font usage
         run: python tools/validate_wtpdf_type3_usage.py --php php --qpdf qpdf --pdftoppm pdftoppm --work-dir /tmp/pdf-wtpdf-type3
+      - name: Verify PDF2 annotation appearances, source exceptions and frozen upgrades
+        run: python tools/validate_annotation_appearances.py --php php --qpdf qpdf --pdftoppm pdftoppm --work-dir /tmp/pdf-annotation-appearances
       - name: Verify historical encryption and Unicode preparation independently
         run: python tools/validate_adobe_encryption.py --php php --qpdf qpdf
       - name: Verify PDF 2.0 foundations and public-key permission semantics

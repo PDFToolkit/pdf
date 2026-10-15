@@ -115,6 +115,15 @@ des paramètres absents ou NULL équivalents ; ceux de SHA-3 restent absents.
 historique. L’authentification des fichiers externes appartient au lecteur
 optionnel, pas à un parseur du core.
 
+La version **0.9.1** contrôle les apparences des annotations PDF 2.0 dans le graphe
+effectif des pages, y compris lors d’une mise à niveau du catalogue figé. Seuls
+les rectangles réduits à un point (deux dimensions nulles), Popup, Projection et
+Link sont exemptés d’AP ; PDF 1.7 conserve son caractère facultatif. AP.N, les
+streams Form et les noms AS requis sont vérifiés, en préservant le repli prévu
+par la norme lorsqu’un état est inconnu. Le [guide des apparences](resources/annotation-appearances/README.fr.md)
+consigne EC3 #22/#124 : six chaînes exactes sont désormais vérifiées, distinctes
+des 197 règles intrinsèques. Aucune apparence n’est générée implicitement.
+
 ## Révisions incrémentales protégées
 
 La version 0.8.1 impose les restrictions DocMDP et FieldMDP historiques à chaque
