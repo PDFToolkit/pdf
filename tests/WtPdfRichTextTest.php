@@ -59,6 +59,16 @@ final class WtPdfRichTextTest extends TestCase
         self::assertSame([], array_values(array_filter((new WtPdfGraphChecks(richText: $checks))->inspect($child, null, WtPdfConformanceLevel::Reuse), static fn ($finding): bool => $finding->clause === '8.10.3.3')));
     }
 
+    public function testCommentsDoNotEraseParagraphBreaksAndMixedContentDoesNotPass(): void
+    {
+        $parser = new WtPdfXmlRichTextParser();
+        self::assertSame("A\nB", $parser->plainText('<body><p>A</p><!-- formatting --><p>B</p></body>'));
+        $checks = new WtPdfRichTextChecks($parser);
+        $findings = $checks->inspect($this->field('<body>A<p>B</p>C</body>', 'ABC'));
+        self::assertCount(1, $findings);
+        self::assertSame(\PDF\Document\Structure\WtPdfFindingStatus::AdditionalValidationRequired, $findings[0]->status);
+    }
+
     private function field(string $xml, string $plain): DictionaryType
     {
         return new DictionaryType(new Entry(new NameType('FT'), new NameType('Tx')), new Entry(new NameType('RV'), new TextString($xml)), new Entry(new NameType('V'), new IndirectReference(new TextString($plain))));

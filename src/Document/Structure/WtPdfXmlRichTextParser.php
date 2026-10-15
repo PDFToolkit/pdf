@@ -63,16 +63,34 @@ final readonly class WtPdfXmlRichTextParser implements WtPdfRichTextParser
             }
         }
         if ($node->localName === 'br') {
+            if ($node->hasChildNodes()) {
+                throw new \InvalidArgumentException('A rich-text br element is empty.');
+            }
             return "\n";
         }
         $text = '';
         $previousParagraph = false;
+        $paragraphs = false;
+        $inlineBody = false;
         foreach ($node->childNodes as $child) {
+            if ($child instanceof \DOMComment) {
+                continue; // XML comments cannot change paragraph separation.
+            }
             if ($node->localName === 'body' && $child instanceof \DOMText && trim($child->nodeValue ?? '') === '') {
                 // XML formatting between paragraphs is not an additional displayed paragraph.
                 continue;
             }
             $paragraph = $child instanceof \DOMElement && $child->localName === 'p';
+            if ($paragraph && $node->localName !== 'body') {
+                throw new WtPdfRichTextUnsupported('Nested rich-text paragraphs require an explicit richer parser.');
+            }
+            if ($node->localName === 'body') {
+                $paragraphs = $paragraphs || $paragraph;
+                $inlineBody = $inlineBody || !$paragraph;
+                if ($paragraphs && $inlineBody) {
+                    throw new WtPdfRichTextUnsupported('Mixed block and inline body content requires explicit rich-text layout semantics.');
+                }
+            }
             if ($paragraph && $previousParagraph) {
                 $text .= "\n";
             }
