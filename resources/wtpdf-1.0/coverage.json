@@ -156,6 +156,13 @@
         56
       ],
       "mechanisms": "Explicit typed document PDF/UA-2 identification requires part=2 and rev=2024 together; it is never added automatically or treated as certification"
+    },
+    {
+      "clauses": "8.10.3.3",
+      "pages": [
+        46
+      ],
+      "mechanisms": "Explicit bounded DTD-free XML rich-text backend compares paragraph/span text, Unicode/entity decoding and line endings to inherited V; unsupported richer textual semantics stay pending."
     }
   ],
   "additional_validation_required": [
@@ -163,7 +170,7 @@
     "Font-program formats, cmap subtable requirements, embedding rights, metrics and complete glyph coverage require the independent font modules and external validation. The example oracle checks its actual shown glyph widths against its embedded TrueType program.",
     "Opaque content, generic XMP and external predefined CMap mappings require independent parsing/validation; the audit does not silently infer their semantics.",
     "MathML presentation grammar and semantic suitability require external MathML validation. Core namespace recognition is not a MathML validator.",
-    "Language correctness and changes, semantic table-header applicability/completeness, omitted continued-list relationships, perceived page-label correspondence and rich-text equivalence require explicit human or external evidence.",
+    "Language correctness and changes, semantic table-header applicability/completeness, omitted continued-list relationships, perceived page-label correspondence require explicit human or external evidence. Rich-text cases beyond the explicitly selected native XML backend require an explicit richer parser.",
     "Font usage follows typed page, nested Form, annotation-appearance and selected tiling-pattern content; selected Type3 CharProc auxiliary font usage still requires independent inspection. Opaque/generic maps and font programs are never assumed validated."
   ],
   "human_review_required": [
@@ -179,7 +186,8 @@
     "tests/WtPdfRequirementsTest.php",
     "tests/StructureDestinationTest.php",
     "examples/pdf20-structure-destinations.php",
-    "tools/validate_pdf20_structure_destinations.py"
+    "tools/validate_pdf20_structure_destinations.py",
+    "tests/WtPdfRichTextTest.php"
   ],
   "requirement_inventory": "resources/wtpdf-1.0/requirements.json"
 }

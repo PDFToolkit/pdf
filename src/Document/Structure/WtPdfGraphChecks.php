@@ -26,7 +26,7 @@ use PDF\Syntax\Object\StringType;
 /** Bounded native-object inspection; font program parsing stays in the independent font modules. */
 final readonly class WtPdfGraphChecks
 {
-    public function __construct(private int $maximumObjects = 100000, private int $maximumUnicodeMappings = 1000000)
+    public function __construct(private int $maximumObjects = 100000, private int $maximumUnicodeMappings = 1000000, private ?WtPdfRichTextChecks $richText = null)
     {
         if ($maximumObjects < 1 || $maximumUnicodeMappings < 1) {
             throw new \InvalidArgumentException('WTPDF graph and mapping audits require positive explicit limits.');
@@ -188,7 +188,9 @@ final readonly class WtPdfGraphChecks
                 $fail('8.4.4', 32, 'An explicit Lang override must resolve to a nonempty natural language.');
             }
             $fieldType = $this->dereference($dictionary->get('FT'));
-            if ($fieldType instanceof NameType && $fieldType->value === 'Tx' && $dictionary->has('RV')) {
+            if ($this->richText !== null && $dictionary->has('RV')) {
+                array_push($findings, ...$this->richText->inspect($dictionary));
+            } elseif ($fieldType instanceof NameType && $fieldType->value === 'Tx' && $dictionary->has('RV')) {
                 if (!$this->dereference($dictionary->get('V')) instanceof StringType) {
                     $fail('8.10.3.3', 46, 'A rich-text field RV requires a corresponding plain-text V.');
                 } else {

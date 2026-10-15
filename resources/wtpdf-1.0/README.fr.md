@@ -30,6 +30,19 @@ une déclaration, un sous-ensemble vérifié ou l’absence d’échec détecté
 certificat WTPDF/PDF/UA. Budgets de parcours et preuves externes encore nécessaires
 sur les fontes/contenus restent explicites dans l’API et les constats d’audit.
 
+L’équivalence du texte enrichi en 8.10.3.3 (page physique 46) dispose désormais
+d’une capacité XML explicite et exécutable. Elle se sélectionne avec
+`new WtPdfGraphChecks(richText: new WtPdfRichTextChecks(new WtPdfXmlRichTextParser()))`.
+Ce backend optionnel demande `ext-dom`, utilise des objets DOM locaux et
+désactive DTD, développement d’entités, ressources externes et contenu actif.
+Il compare le contenu Unicode des paragraphes/spans, après décodage des entités
+et normalisation des fins de ligne, à la valeur canonique `V` héritée du champ.
+Des budgets bornent octets, nœuds, profondeur et chaîne des parents. Un backend
+absent, un flux RV encodé opaque ou une sémantique d’espace de noms/CSS non
+prise en charge restent en attente ; aucun succès n’est déduit. L’interface du
+parseur permet de sélectionner explicitement un backend plus complet. Cet
+ajout ne certifie pas les exigences sémantiques ou externes restantes.
+
 Après installation des dépendances Python de validation verrouillées, contrôler
 l’identité de source, les clauses normatives terminales et chaque chemin de
 preuve déclaré avec :

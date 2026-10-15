@@ -3067,14 +3067,35 @@
       "physical_pdf_pages": [
         46
       ],
-      "aspect": "RV and V are textually equivalent",
-      "status": "external",
-      "justification": "A deliberate pending finding requests an independent rich-text parser.",
+      "aspect": "RV and V textual equivalence for explicitly selected bounded native XML parsing",
+      "status": "executed",
+      "justification": "WtPdfRichTextChecks with WtPdfXmlRichTextParser compares normalized simple XHTML paragraph/span content to inherited canonical V, including entities, Unicode and line endings; DTDs/entities and active content are rejected. It is an explicit ext-dom capability; unavailable or unsupported content remains pending, not a pass.",
       "implementation_or_boundary": [
-        "src/Document/Structure/WtPdfGraphChecks.php"
+        "src/Document/Structure/WtPdfRichTextChecks.php",
+        "src/Document/Structure/WtPdfRichTextParser.php",
+        "src/Document/Structure/WtPdfXmlRichTextParser.php",
+        "src/Document/Structure/WtPdfRichTextUnsupported.php"
       ],
       "evidence": [
-        "src/Document/Structure/WtPdfAudit.php"
+        "tests/WtPdfRichTextTest.php"
+      ]
+    },
+    {
+      "id": "8.10.3.3:3",
+      "clause": "8.10.3.3",
+      "physical_pdf_pages": [
+        46
+      ],
+      "aspect": "Opaque or unsupported rich-text textual semantics",
+      "status": "external",
+      "justification": "Unnormalized compressed RV streams, unsupported namespaces and CSS changing text/visibility need an explicitly selected richer parser or normalization. The default graph audit remains pending when no rich-text parser is selected.",
+      "implementation_or_boundary": [
+        "src/Document/Structure/WtPdfRichTextChecks.php",
+        "src/Document/Structure/WtPdfRichTextParser.php"
+      ],
+      "evidence": [
+        "tests/WtPdfRichTextTest.php",
+        "tests/WtPdfRequirementsTest.php"
       ]
     },
     {

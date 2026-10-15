@@ -30,6 +30,19 @@ turns a declaration, successful subset or absence of detected failures into a
 WTPDF/PDF/UA certificate. Traversal budgets and incomplete external font/content
 evidence remain explicit in the audit API and findings.
 
+Rich-text equivalence in 8.10.3.3 (physical page 46) now has an executable,
+explicit XML capability. Select it with
+`new WtPdfGraphChecks(richText: new WtPdfRichTextChecks(new WtPdfXmlRichTextParser()))`.
+The optional backend requires `ext-dom`, uses document-local DOM objects and
+disables DTDs, entity expansion, external resources and active content. It
+compares Unicode/entity-decoded paragraph/span content and normalized line
+endings to the inherited canonical field `V`. Byte, node, depth and parent-chain
+budgets bound processing. An unavailable backend, opaque encoded RV stream or
+unsupported namespace/CSS semantics remains a pending finding; it never becomes
+an inferred pass. The parser interface permits an explicitly selected richer
+backend. This addition does not certify the remaining semantic or external
+requirements.
+
 After installing the pinned Python validation dependencies, check source
 identity, normative leaf clauses and every declared evidence path with:
 
