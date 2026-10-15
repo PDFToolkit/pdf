@@ -92,10 +92,14 @@ def change_form_value(source: Path, target: Path, kind: str, name='value'):
         writer = IncrementalPdfFileWriter(stream, strict=True)
         reference = field_reference(writer, name)
         field = reference.get_object()
-        value = generic.TextStringObject('changed') if kind in ('text', 'choice', 'richtext', 'file-select') else generic.NameObject('/A' if kind == 'radio' else '/Yes')
+        value = generic.TextStringObject('changed') if kind in ('text', 'choice', 'richtext', 'file-select', 'text-stream', 'richtext-stream') else generic.NameObject('/A' if kind == 'radio' else '/Yes')
+        if kind.endswith('-stream'):
+            value = writer.add_object(generic.StreamObject(stream_data=b'changed'))
         field[generic.NameObject('/V')] = value
-        if kind == 'richtext':
-            field[generic.NameObject('/RV')] = generic.TextStringObject('<body><p><b>changed</b></p></body>')
+        if kind.startswith('richtext'):
+            xml = '<body><p><b>changed</b></p></body>'
+            field[generic.NameObject('/RV')] = (writer.add_object(generic.StreamObject(stream_data=xml.encode()))
+                if kind.endswith('-stream') else generic.TextStringObject(xml))
         writer.mark_update(reference)
         widgets = field.get('/Kids', [])
         for widget_reference in widgets:
@@ -135,16 +139,21 @@ def assert_form_value(path: Path, kind: str, name='value', read_only=False):
     fields = reader.get_fields()
     assert fields is not None and name in fields, (path.name, name)
     field = fields[name]
-    expected_type = {'text': '/Tx', 'choice': '/Ch', 'checkbox': '/Btn', 'radio': '/Btn', 'richtext': '/Tx', 'file-select': '/Tx'}[kind]
-    expected_value = 'changed' if kind in ('text', 'choice', 'richtext', 'file-select') else '/A' if kind == 'radio' else '/Yes'
-    assert str(field['/FT']) == expected_type and str(field['/V']) == expected_value, path.name
-    if kind == 'richtext':
+    expected_type = {'text': '/Tx', 'choice': '/Ch', 'checkbox': '/Btn', 'radio': '/Btn', 'richtext': '/Tx', 'file-select': '/Tx', 'text-stream': '/Tx', 'richtext-stream': '/Tx'}[kind]
+    expected_value = 'changed' if kind in ('text', 'choice', 'richtext', 'file-select', 'text-stream', 'richtext-stream') else '/A' if kind == 'radio' else '/Yes'
+    # Inspect actual objects: get_fields() normalizes stream V into a text value.
+    raw_fields = reader.trailer['/Root']['/AcroForm']['/Fields']
+    raw = next(reference.get_object() for reference in raw_fields
+               if str(reference.get_object().get('/T', '')) == name)
+    actual = raw['/V']
+    actual = actual.get_data().decode('utf-8') if kind.endswith('-stream') else str(actual)
+    assert str(field['/FT']) == expected_type and actual == expected_value, path.name
+    if kind.startswith('richtext'):
         assert int(field['/Ff']) & (1 << 25)
         # get_fields() exposes a normalized subset and intentionally omits RV.
-        raw_fields = reader.trailer['/Root']['/AcroForm']['/Fields']
-        raw = next(reference.get_object() for reference in raw_fields
-                   if str(reference.get_object().get('/T', '')) == name)
-        assert str(raw['/RV']) == '<body><p><b>changed</b></p></body>'
+        rich = raw['/RV']
+        rich = rich.get_data().decode('utf-8') if kind.endswith('-stream') else str(rich)
+        assert rich == '<body><p><b>changed</b></p></body>'
     if kind == 'file-select':
         assert int(field['/Ff']) & (1 << 20)
     if read_only:
@@ -479,7 +488,7 @@ def main() -> None:
     extended = native['extended_text_fills']
     assert {(r['permission'], r['format'], r['version'], r['kind']) for r in extended} == {
         (p, xref, v, kind) for p in (2, 3) for xref in ('Table', 'Stream')
-        for v in ('1.7', '2.0') for kind in ('richtext', 'file-select')}
+        for v in ('1.7', '2.0') for kind in ('richtext', 'file-select', 'text-stream', 'richtext-stream')}
     for item in extended:
         source, filled = work / item['source'], work / item['filled']
         assert filled.read_bytes().startswith(source.read_bytes())

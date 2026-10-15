@@ -138,24 +138,46 @@ final class ProtectedRevisionChanges
         }
     }
 
+    /** A mutable field-value object is referenced exclusively by that exact field entry. */
+    public function assertExclusiveFieldValue(ObjectIdentifier $identifier, ObjectIdentifier $field, string $key): void
+    {
+        if (!in_array($key, ['V', 'RV'], true)) {
+            throw new \InvalidArgumentException('Protected text ownership names V or RV.');
+        }
+        foreach ([$this->prior, $this->current] as $graph) {
+            foreach ($graph->revision->objects() as $record) {
+                $this->references(
+                    $record->snapshot instanceof RevisionStreamSnapshot ? $record->snapshot->dictionary() : $record->snapshot,
+                    $graph,
+                    (string) $identifier,
+                    (string) $record->identifier,
+                    '',
+                    [(string) $field],
+                    '/' . $key
+                );
+            }
+            $this->references($graph->revision->trailerEntries, $graph, (string) $identifier, 'trailer', '', [(string) $field], '/' . $key);
+        }
+    }
+
     /** @param list<string> $owners */
-    private function references(BasicType $value, FrozenSignatureGraph $graph, string $target, string $owner, string $path, array $owners): void
+    private function references(BasicType $value, FrozenSignatureGraph $graph, string $target, string $owner, string $path, array $owners, ?string $valuePath = null): void
     {
         $this->charge();
         if ($value instanceof IndirectReference) {
             if ((string) $graph->record($value)->identifier === $target
-                && (!in_array($owner, $owners, true) || preg_match('~^(?:(?:/AcroForm)?/(?:Fields|Kids|Annots)(?:/[0-9]+)*|/Parent|(?:/[0-9]+)+)$~D', $path) !== 1)) {
+                && (!in_array($owner, $owners, true) || ($valuePath !== null ? $path !== $valuePath : preg_match('~^(?:(?:/AcroForm)?/(?:Fields|Kids|Annots)(?:/[0-9]+)*|/Parent|(?:/[0-9]+)+)$~D', $path) !== 1))) {
                 throw new \LogicException('A changed field, widget or annotation has an unrelated shared reference.');
             }
             return;
         }
         if ($value instanceof ArrayType) {
             foreach ($value->items as $index => $item) {
-                $this->references($item, $graph, $target, $owner, $path . '/' . $index, $owners);
+                $this->references($item, $graph, $target, $owner, $path . '/' . $index, $owners, $valuePath);
             }
         } elseif ($value instanceof DictionaryType) {
             foreach ($value->entries() as $entry) {
-                $this->references($entry->value, $graph, $target, $owner, $path . '/' . $entry->key->value, $owners);
+                $this->references($entry->value, $graph, $target, $owner, $path . '/' . $entry->key->value, $owners, $valuePath);
             }
         }
     }

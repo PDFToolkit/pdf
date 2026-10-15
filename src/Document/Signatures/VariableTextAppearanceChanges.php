@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace PDF\Document\Signatures;
 
 use PDF\Syntax\FileStructure\RevisionStreamSnapshot;
-use PDF\Syntax\Object\ArrayType;
-use PDF\Syntax\Object\DictionaryType;
-use PDF\Syntax\Object\NameType;
-use PDF\Syntax\Object\NullType;
 
 /**
  * ISO 32000-1 12.7.3.3, physical pages 443-444; ISO 32000-2 12.7.4.3, pages 548-549.
@@ -41,8 +37,8 @@ final readonly class VariableTextAppearanceChanges
 
     public function validate(RevisionStreamSnapshot $old, RevisionStreamSnapshot $new): void
     {
-        $before = $this->decode($old);
-        $after = $this->decode($new);
+        $before = (new ProtectedStreamDecoder($this->maximumBytes))->decode($old);
+        $after = (new ProtectedStreamDecoder($this->maximumBytes))->decode($new);
         $oldSection = $this->section($before);
         $newSection = $this->section($after);
         if ($before === $after) {
@@ -63,52 +59,6 @@ final readonly class VariableTextAppearanceChanges
             || !$this->trivia(substr($after, $newSection[1]))) {
             throw new \LogicException('An appearance without Tx permits only an appended Tx section.');
         }
-    }
-
-    private function decode(RevisionStreamSnapshot $stream): string
-    {
-        $bytes = $stream->encodedBytes;
-        if (strlen($bytes) > $this->maximumBytes) {
-            throw new \LogicException('Encoded appearance content exceeds its byte limit.');
-        }
-        $filter = $stream->dictionary()->get('Filter');
-        $parameters = $stream->dictionary()->get('DecodeParms');
-        if ($filter instanceof ArrayType && count($filter->items) === 1) {
-            $filter = $filter->items[0];
-            if ($parameters instanceof ArrayType && count($parameters->items) === 1) {
-                $parameters = $parameters->items[0];
-            }
-        }
-        if ($parameters !== null && !$parameters instanceof NullType && !($parameters instanceof DictionaryType && count($parameters) === 0)) {
-            throw new \LogicException('Appearance content decoding does not support predictors or indirect parameters.');
-        }
-        if ($filter === null || $filter instanceof NullType) {
-            return $bytes;
-        }
-        if (!$filter instanceof NameType || $filter->value !== 'FlateDecode') {
-            throw new \LogicException('Appearance content supports only plain bytes or a single FlateDecode filter.');
-        }
-        $decoder = inflate_init(ZLIB_ENCODING_DEFLATE);
-        if ($decoder === false) {
-            throw new \LogicException('Cannot initialise the bounded appearance decoder.');
-        }
-        $result = '';
-        $length = strlen($bytes);
-        // Small input pieces also bound the temporary expansion before the output limit check.
-        for ($offset = 0; $offset < $length; $offset += 64) {
-            $part = @inflate_add($decoder, substr($bytes, $offset, 64), $offset + 64 >= $length ? ZLIB_FINISH : ZLIB_SYNC_FLUSH);
-            if ($part === false || strlen($part) > $this->maximumBytes - strlen($result)) {
-                throw new \LogicException('Invalid or oversized Flate appearance content.');
-            }
-            $result .= $part;
-            if (inflate_get_status($decoder) === ZLIB_STREAM_END) {
-                break;
-            }
-        }
-        if (inflate_get_status($decoder) !== ZLIB_STREAM_END || inflate_get_read_len($decoder) !== $length) {
-            throw new \LogicException('Flate appearance content must contain exactly one complete compressed stream.');
-        }
-        return $result;
     }
 
     /** @return array{int, int}|null Byte span includes the tag, BMC and matching EMC. */

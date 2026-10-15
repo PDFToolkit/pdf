@@ -287,8 +287,8 @@ final class ProtectedFormFillChangesTest extends TestCase
     {
         $fixture = new ProtectedRevisionFixture(DocMdpPermissions::FormFillingTemplatesAndSigning);
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('direct plain text');
-        $this->replace($fixture->revision, $fixture->text, ['V' => new IndirectReference(new TextString('indirect'))])->toRevision();
+        $this->expectExceptionMessage('text string or a bounded text stream');
+        $this->replace($fixture->revision, $fixture->text, ['V' => new IndirectReference(new DictionaryType($this->entry('Payload', new TextString('unrelated'))))])->toRevision();
     }
 
     public function testAnExtraAliasFromTheSameFormOwnerDoesNotAuthorizeSharedFieldChanges(): void
@@ -400,6 +400,96 @@ final class ProtectedFormFillChangesTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('FieldMDP');
         $this->replace($revision, $field, ['V' => new TextString('new'), 'RV' => new TextString('<body><p>new</p></body>')], $this->richTextFilling())->toRevision();
+    }
+
+    public function testFreshIndirectTextAndSubsequentExclusiveReplacement(): void
+    {
+        $field = new TextField($this->fieldName('text'));
+        $revision = $this->certified($field);
+        $text = new TextString('first');
+        $filled = $this->replace($revision, $field, ['V' => new IndirectReference($text)])->toRevision();
+        $record = $filled->binding($text);
+        $next = (new IncrementalUpdate($filled, new FileBody(new IndirectObject(new TextString('second'), $record->identifier))))->toRevision();
+        self::assertStringStartsWith($filled->bytes, $next->bytes);
+        self::assertSame('second', $next->binding($text)->snapshot->value);
+    }
+
+    public function testCompressedTextStreamIsDecodedForUnicodeLengthAndRetainsSignedBytes(): void
+    {
+        $field = new TextField($this->fieldName('text'), maximumLength: new IntegerType(2));
+        $revision = $this->certified($field);
+        $text = new TextString('é漢', new \PDF\Syntax\DataStructure\Utf8TextStringEncoding());
+        $stream = new \PDF\Document\Forms\FieldTextStream($text, new \PDF\Syntax\Filters\FlateDecode());
+        $filled = $this->replace($revision, $field, ['V' => new IndirectReference($stream)])->toRevision();
+        self::assertStringStartsWith($revision->bytes, $filled->bytes);
+        self::assertSame($text->value, gzuncompress($filled->binding($stream)->snapshot->encodedBytes));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('MaxLen');
+        $this->replace($filled, $field, ['V' => new IndirectReference(new \PDF\Document\Forms\FieldTextStream(new TextString('three')))])->toRevision();
+    }
+
+    public function testExistingTextStreamCanChangeOnlyForItsExclusiveValueOwner(): void
+    {
+        $stream = new \PDF\Document\Forms\FieldTextStream(new TextString('old'));
+        $field = new TextField($this->fieldName('text'), value: $stream);
+        $revision = $this->certified($field);
+        $record = $revision->binding($stream);
+        $filled = (new IncrementalUpdate($revision, new FileBody(new IndirectObject(new \PDF\Document\Forms\FieldTextStream(new TextString('new')), $record->identifier))))->toRevision();
+        self::assertSame('new', $filled->binding($stream)->snapshot->encodedBytes);
+    }
+
+    public function testPrivateAliasCannotAcquireMutableTextStreamOwnership(): void
+    {
+        $stream = new \PDF\Document\Forms\FieldTextStream(new TextString('old'));
+        $field = new TextField($this->fieldName('text'), value: $stream, entries: $this->entry('PrivateAlias', new IndirectReference($stream)));
+        $revision = $this->certified($field);
+        $record = $revision->binding($stream);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('unrelated shared reference');
+        (new IncrementalUpdate($revision, new FileBody(new IndirectObject(new \PDF\Document\Forms\FieldTextStream(new TextString('new')), $record->identifier))))->toRevision();
+    }
+
+    public function testChangingOnlyALockedValueStreamCannotEvadeFieldMdp(): void
+    {
+        $stream = new \PDF\Document\Forms\FieldTextStream(new TextString('old'));
+        $field = new TextField($this->fieldName('text'), value: $stream);
+        $revision = $this->certified($field, lock: new SignatureFieldLock(SignatureLockAction::All));
+        $record = $revision->binding($stream);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('FieldMDP');
+        (new IncrementalUpdate($revision, new FileBody(new IndirectObject(new \PDF\Document\Forms\FieldTextStream(new TextString('new')), $record->identifier))))->toRevision();
+    }
+
+    public function testRichTextSupportsPairedStreamValuesAndPdf20Utf8(): void
+    {
+        $field = $this->richField();
+        $revision = $this->certified($field);
+        $encoding = new \PDF\Syntax\DataStructure\Utf8TextStringEncoding();
+        $plain = new \PDF\Document\Forms\FieldTextStream(new TextString('漢', $encoding), new \PDF\Syntax\Filters\FlateDecode());
+        $rich = new \PDF\Document\Forms\FieldTextStream(new TextString('<body><p>漢</p></body>', $encoding));
+        $filled = $this->replace($revision, $field, ['V' => new IndirectReference($plain), 'RV' => new IndirectReference($rich)], $this->richTextFilling())->toRevision();
+        self::assertStringStartsWith($revision->bytes, $filled->bytes);
+        self::assertSame($rich->text->value, $filled->binding($rich)->snapshot->encodedBytes);
+    }
+
+    public function testTextStreamCannotIntroduceUnrelatedDependencies(): void
+    {
+        $field = new TextField($this->fieldName('text'));
+        $revision = $this->certified($field);
+        $stream = new StreamObject('new', new DictionaryType($this->entry('PrivatePayload', new IndirectReference(new StreamObject('unrelated')))));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('no external files, metadata');
+        $this->replace($revision, $field, ['V' => new IndirectReference($stream)])->toRevision();
+    }
+
+    public function testCompressedTextStreamExpansionIsBounded(): void
+    {
+        $field = new TextField($this->fieldName('text'));
+        $revision = $this->certified($field);
+        $stream = new \PDF\Document\Forms\FieldTextStream(new TextString(str_repeat('A', 1048577)), new \PDF\Syntax\Filters\FlateDecode());
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('oversized');
+        $this->replace($revision, $field, ['V' => new IndirectReference($stream)])->toRevision();
     }
 
     private function richField(): TextField

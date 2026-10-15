@@ -61,7 +61,7 @@ remplacement utilisent des identités neuves et des ressources historiques incha
   boutons radio concordent avec `AS` et les apparences Off/actif existantes ; le
   remplissage ne permet pas de remplacer leurs programmes d’apparence.
 - Les champs FileSelect stockent le chemin fourni comme texte ; aucun fichier
-  n’est ouvert ni téléchargé. Les champs enrichis exigent des chaînes directes
+  n’est ouvert ni téléchargé. Les champs enrichis exigent des valeurs texte
   `V`/`RV` cohérentes et un `RichTextFilling(new WtPdfXmlRichTextParser())`
   explicite par mise à jour. L’interpréteur XML borné vérifie l’équivalence des
   valeurs sans DTD, entités externes ni réseau. Chaque widget concerné exige
@@ -71,6 +71,14 @@ remplacement utilisent des identités neuves et des ressources historiques incha
   restent fixes. L’appelant fournit les instructions graphiques ; l’accord
   XML/valeur ne prouve pas leur équivalence visuelle. L’interpréteur n’est jamais
   activé implicitement.
+- `V`/`RV` texte acceptent aussi les chaînes indirectes et flux texte. Les octets
+  bruts ou Flate simple sont décodés avec une limite de 1 Mio encodé/décodé. Un
+  objet de valeur modifié appartient exclusivement à l’entrée exacte du champ ;
+  aucun partage via défaut, parent hérité, ressource ou alias privé ne donne un
+  droit d’écriture. Le garde détecte un changement de cible même si le dictionnaire
+  du champ reste identique, applique FieldMDP et compte `MaxLen` en Unicode selon
+  la version effective, y compris les valeurs UTF-8 avec BOM en PDF 2.0. Les flux
+  texte ne peuvent introduire fichiers externes, métadonnées ou dépendances étrangères.
 - Le remplacement d’apparence à texte variable non enrichi conserve la géométrie
   et chaque octet décodé hors de l’unique région `/Tx BMC`…`EMC` correspondant ;
   sans région existante, il l’ajoute à la fin. Les instructions de dessin/état
@@ -133,7 +141,7 @@ classifiée et sauvegarde générale sont refusés. UR est déprécié en PDF 2.
 ## Limites restantes et preuves
 
 L’instanciation de modèles de pages, la création/suppression/renommage généraux
-de champs, les valeurs texte indirectes et les flux texte, la régénération
+de champs, la régénération
 arbitraire d’apparences, les nouvelles ressources et la lecture/classification
 authentifiée de chaînes externes restent hors de ce périmètre natif. Intégrité
 mathématique, politique de modification, confiance du certificat, révocation et
@@ -159,13 +167,13 @@ intersections d’opération et de sauvegarde. `IncrementalSignaturePermissionsT
 conserve les attaques sur points d’entrée, sorties opaques et historiques fournis.
 
 `tools/validate_incremental_permissions.py` utilise pyHanko 0.37.0 non modifié,
-qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 105 refus natifs et 196
+qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 244
 PDF contrôlés indépendamment par runtime ; 32 combinaisons natives de formulaire
 et 32 remplissages indépendants ; quatre chaînes d’annotations P3 ; 198 pixels
 contrôlés (144 boutons, 48 annotations, six attaque d’apparence partagée). UR3
 apporte huit sources signées, trois remplissages autorisés et 11 fichiers CMS
 vérifiés indépendamment ; altérer un octet signé est détecté. Ces contrôles
-portent sur CMS/structure/rendu, pas 196 approbations de permissions ni une
+portent sur CMS/structure/rendu, pas 244 approbations de permissions ni une
 décision indépendante d’autorité de droits d’usage.
 
 La politique pyHanko inchangée confirme les 16 combinaisons `Tx`/`Ch`, mais renvoie
@@ -177,8 +185,8 @@ hybrides : sa matrice utilise Table/Stream, et les tests hybrides natifs restent
 distincts. Les rapports conservent ces différences, sans politique modifiée,
 récupération réseau ni racine de confiance PKI implicite.
 
-La matrice de texte étendue ajoute 16 remplissages natifs et 16 indépendants.
-pyHanko accepte les huit combinaisons FileSelect mais classe `OTHER` les huit
-combinaisons enrichies dans les deux implémentations. L’oracle examine le vrai
+La matrice de texte étendue ajoute 32 remplissages natifs et 32 indépendants.
+pyHanko accepte les huit combinaisons FileSelect et huit flux texte simples, mais
+classe `OTHER` les 16 combinaisons enrichies sous forme de chaînes/flux dans les deux implémentations. L’oracle examine le vrai
 `RV` du dictionnaire physique : le résumé normalisé des champs pypdf l’omet.
 Ces résultats ne revendiquent pas l’équivalence visuelle du texte enrichi.

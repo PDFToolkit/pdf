@@ -89,7 +89,9 @@
     "src/Document/Signatures/AuthenticatedUsageRights.php",
     "src/Document/Signatures/UsageRightsAuthority.php",
     "src/Document/Signatures/UsageRightsAuthorization.php",
-    "src/Document/Signatures/RichTextFilling.php"
+    "src/Document/Signatures/RichTextFilling.php",
+    "src/Document/Signatures/ProtectedTextValue.php",
+    "src/Document/Signatures/ProtectedStreamDecoder.php"
   ],
   "implemented": [
     "One common guard on every native incremental emission with exact native provenance, final-byte mathematical verification and complete frozen delta accounting.",
@@ -100,7 +102,8 @@
     "Native terminal signing and PDF2 DSS/document timestamp maintenance retain their separate complete delta proof; mixed fill/annotation and signature/maintenance updates are refused.",
     "Clear authenticated native UR3 version2.2 with explicit per-update granting authority, verified signature facts, actual-operation scope and saving intersection; restrictive PDF2 P=true only.",
     "Application FillField scope authorizes a persisted classified fill when the signed rights permit saving; signed FullSave as a saving condition does not also require application FullSave scope.",
-    "FileSelect filling as inert text; rich-text paired direct V/RV strings with an explicit bounded XML interpreter and fresh complete normal widget appearances."
+    "FileSelect filling as inert text; rich-text paired V/RV text values with an explicit bounded XML interpreter and fresh complete normal widget appearances.",
+    "Indirect text strings and bounded plain/Flate text streams with exact exclusive V/RV ownership, target-delta detection and effective-version Unicode MaxLen."
   ],
   "evidence": [
     "tests/IncrementalSignaturePermissionsTest.php",
@@ -117,7 +120,7 @@
   ],
   "remaining": [
     "Page-template instantiation and general field creation/deletion/renaming or reparenting.",
-    "Indirect text values, text streams, arbitrary appearance regeneration or new resource objects.",
+    "Arbitrary appearance regeneration or new resource objects.",
     "Complete graphics operand validation, rendered-value equivalence and human appearance/intent assessment.",
     "Annotation subtypes, relationships and dependencies outside the listed bounded markup scope.",
     "External PDF revision-history parsing, normalization and authentication adapters.",
@@ -153,8 +156,8 @@
     "qpdf": "12.4.2",
     "poppler": "22.12.0",
     "perRuntime": {
-      "nativeRefusals": 105,
-      "independentlyCheckedPdfs": 196,
+      "nativeRefusals": 113,
+      "independentlyCheckedPdfs": 244,
       "nativeFormCombinations": 32,
       "independentFormFills": 32,
       "p3AnnotationChains": 4,
@@ -170,8 +173,8 @@
         "independentlyVerifiedCmsFiles": 11,
         "tamperedSignedByteRejected": true
       },
-      "extendedTextCombinations": 16,
-      "independentExtendedTextFills": 16
+      "extendedTextCombinations": 32,
+      "independentExtendedTextFills": 32
     },
     "policy": "Unmodified pyHanko default; CMS mathematics, structure/rendering, modification policy and PKI trust remain separate.",
     "boundaries": [
@@ -181,7 +184,7 @@
       "Strict pyHanko cannot validate hybrid signatures; independent matrix uses Table/Stream, with native hybrid coverage separate.",
       "UR3 independent evidence validates actual CMS bytes and declarations, not a third-party granting-authority or PKI decision.",
       "The executable protected-form-fill example changes AP on a widget child without T; pyHanko reports OTHER. Its qpdf/rendering and CMS/ByteRange checks do not imply pyHanko DocMDP approval.",
-      "All eight FileSelect combinations agree with pyHanko; all eight rich-text combinations report OTHER in both native and independent updates. Physical V/RV and CMS are verified, not rendered rich-text equivalence."
+      "Eight FileSelect and eight plain text-stream combinations agree with pyHanko; 16 rich-text string/stream combinations report OTHER in both native and independent updates. Physical V/RV and CMS are verified, not rendered rich-text equivalence."
     ],
     "implicitPkiTrust": false,
     "fetching": false

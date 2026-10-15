@@ -133,6 +133,8 @@ $formFixture = static function (string $kind, DocMdpPermissions $permission, Cro
         'text' => new TextField($name, $readOnly ? new TextFieldFlags(CommonFieldFlag::ReadOnly) : null, new TextString('original')),
         'file-select' => new TextField($name, new TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::FileSelect), new TextString('original')),
         'richtext' => new TextField($name, new TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::RichText), new TextString('original'), entries: new Entry(new NameType('RV'), new TextString('<body><p>original</p></body>'))),
+        'text-stream' => new TextField($name, value: new \PDF\Document\Forms\FieldTextStream(new TextString('original'))),
+        'richtext-stream' => new TextField($name, new TextFieldFlags(\PDF\Document\Forms\TextFieldFlag::RichText), new \PDF\Document\Forms\FieldTextStream(new TextString('original')), entries: new Entry(new NameType('RV'), new IndirectReference(new \PDF\Document\Forms\FieldTextStream(new TextString('<body><p>original</p></body>'))))),
         'choice' => new ChoiceField($name, new ChoiceOptions(new ChoiceOption(new TextString('original')), new ChoiceOption(new TextString('changed'))), value: new ChoiceFieldValue(ChoiceValueDomain::ExportValues, new TextString('original'))),
         'checkbox' => new ButtonField($name, value: new NameType('Off')),
         'radio' => new ButtonField($name, new ButtonFieldFlags(ButtonFieldFlag::Radio), new NameType('Off')),
@@ -178,10 +180,14 @@ $formFixture = static function (string $kind, DocMdpPermissions $permission, Cro
     $prepared = (new SignatureWriter())->prepare(new FileStructure(new FileHeader($version), new FileBody($catalog), crossReferenceFormat: $format), $author->signature);
     $revision = $author->sign($prepared)->revision;
     $record = $revision->binding($field);
-    $value = in_array($kind, ['text', 'choice', 'file-select', 'richtext'], true) ? new TextString('changed') : new NameType($kind === 'radio' ? 'A' : 'Yes');
+    $value = in_array($kind, ['text', 'choice', 'file-select', 'richtext', 'text-stream', 'richtext-stream'], true) ? new TextString('changed') : new NameType($kind === 'radio' ? 'A' : 'Yes');
+    if (str_ends_with($kind, '-stream')) {
+        $value = new IndirectReference(new \PDF\Document\Forms\FieldTextStream(new TextString('changed'), new \PDF\Syntax\Filters\FlateDecode()));
+    }
     $replacement = $record->dictionary->with(new Entry(new NameType('V'), $value));
-    if ($kind === 'richtext') {
-        $replacement = $replacement->with(new Entry(new NameType('RV'), new TextString('<body><p><b>changed</b></p></body>')));
+    if (str_starts_with($kind, 'richtext')) {
+        $rich = new TextString('<body><p><b>changed</b></p></body>');
+        $replacement = $replacement->with(new Entry(new NameType('RV'), str_ends_with($kind, '-stream') ? new IndirectReference(new \PDF\Document\Forms\FieldTextStream($rich, new \PDF\Syntax\Filters\FlateDecode())) : $rich));
     }
     $objects = [new IndirectObject($replacement, $record->identifier)];
     if ($widgets !== []) {
@@ -219,14 +225,14 @@ $richTextFilling = new \PDF\Document\Signatures\RichTextFilling(new \PDF\Documen
 foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::FormsTemplatesSigningAndAnnotations] as $permission) {
     foreach ([CrossReferenceFormat::Table, CrossReferenceFormat::Stream] as $format) {
         foreach (['1.7', '2.0'] as $version) {
-            foreach (['richtext', 'file-select'] as $kind) {
+            foreach (['richtext', 'file-select', 'text-stream', 'richtext-stream'] as $kind) {
                 [$revision, $objects] = $formFixture($kind, $permission, $format, $version);
                 $stem = 'extended-p' . $permission->value . '-' . strtolower($format->name) . '-' . str_replace('.', '', $version) . '-' . $kind;
                 $revision->writeTo($output . '/' . $stem . '.pdf');
-                $filled = (new IncrementalUpdate($revision, new FileBody(...$objects), null, null, ...($kind === 'richtext' ? [$richTextFilling] : [])))->toRevision();
+                $filled = (new IncrementalUpdate($revision, new FileBody(...$objects), null, null, ...(str_starts_with($kind, 'richtext') ? [$richTextFilling] : [])))->toRevision();
                 $filled->writeTo($output . '/' . $stem . '-filled.pdf');
                 $extendedText[] = ['source' => $stem . '.pdf', 'filled' => $stem . '-filled.pdf', 'kind' => $kind, 'permission' => $permission->value, 'format' => $format->name, 'version' => $version];
-                if ($kind === 'richtext') {
+                if (str_starts_with($kind, 'richtext')) {
                     $refuse($stem . ':missing-xml-interpreter', new IncrementalUpdate($revision, new FileBody(...$objects)));
                 }
             }

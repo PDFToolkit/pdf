@@ -58,7 +58,7 @@ object identities and unchanged historical resources.
   widget `AS` and existing Off/on appearances; filling cannot replace those
   button appearance programs.
 - File-selection fields store the supplied path as ordinary text; no file is
-  opened or fetched. Rich-text fields require paired direct `V`/`RV` strings and
+  opened or fetched. Rich-text fields require paired `V`/`RV` text values and
   an explicit per-update `RichTextFilling(new WtPdfXmlRichTextParser())`. The
   bounded XML interpreter checks plain/rich equivalence without DTDs, external
   entities or network access. Every affected widget needs a fresh complete normal
@@ -67,6 +67,14 @@ object identities and unchanged historical resources.
   apply. Historical resources, widget geometry and all field locks remain fixed.
   The caller supplies appearance instructions; XML/value agreement does not prove
   their visual equivalence. The interpreter is never enabled implicitly.
+- Text `V`/`RV` may also use indirect strings or text streams. Plain or single
+  Flate bytes are decoded with a 1 MiB encoded/decoded limit. Modified value
+  objects must belong exclusively to the exact field entry; sharing through
+  defaults, inherited parents, resources or private aliases cannot grant write
+  access. The guard detects target changes even when the field dictionary is
+  unchanged, applies FieldMDP, and counts Unicode `MaxLen` with the effective PDF
+  version, including PDF 2.0 UTF-8 BOM values. Text streams cannot introduce
+  external-file declarations, metadata or unrelated dependencies.
 - Non-rich variable-text appearance replacement preserves geometry and every
   decoded byte outside one `/Tx BMC`…matching `EMC` region; if absent, append it.
   Drawing/state instructions own their `q`/`Q` isolation. Paths, pending clipping
@@ -125,8 +133,8 @@ deprecated in PDF 2.0.
 
 ## Remaining boundaries and evidence
 
-Page-template instantiation, general field creation/deletion/renaming, indirect
-text values and text streams, arbitrary appearance regeneration, new resource
+Page-template instantiation, general field creation/deletion/renaming,
+arbitrary appearance regeneration, new resource
 objects and authenticated reading/classification of external revision chains
 remain outside this native scope. Mathematical integrity, modification policy,
 certificate trust, revocation and human appearance review are separate. The core
@@ -150,12 +158,12 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The validation passes on PHP 8.3/8.4/8.5: 105 native refusals and 196
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 244
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
 annotation, six shared-appearance attack). UR3 contributes eight signed sources,
 three permitted fills and 11 independently verified CMS files; changing a signed
-byte is detected. These are CMS/structure/rendering checks, not 196 permission
+byte is detected. These are CMS/structure/rendering checks, not 244 permission
 approvals or an independent usage-rights authority decision.
 
 The unmodified pyHanko policy confirms the 16 `Tx`/`Ch` combinations, but reports
@@ -167,8 +175,8 @@ signatures, so its matrix uses Table/Stream while native hybrid tests remain
 separate. Reports retain these differences, with no policy patch, fetching or
 implicit PKI trust root.
 
-The extended text matrix adds 16 native and 16 independent fills. pyHanko
-accepts the eight FileSelect combinations but reports `OTHER` for the eight
-rich-text combinations in both implementations. The oracle checks actual `RV`
+The extended text matrix adds 32 native and 32 independent fills. pyHanko
+accepts the eight FileSelect and eight plain text-stream combinations but
+reports `OTHER` for the 16 rich-text string/stream combinations in both implementations. The oracle checks actual `RV`
 from the physical field dictionary because pypdf’s normalized field summary
 omits it. These results do not claim rendered rich-text equivalence.

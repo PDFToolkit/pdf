@@ -42,7 +42,10 @@ final class ProtectedFormFillChanges
             if ($old->qualifiedName !== $field->qualifiedName || count($old->widgets) !== count($field->widgets)) {
                 throw new \LogicException('Protected filling preserves names and widget ownership.');
             }
-            $changed = !$changes->sameDictionary($old->dictionary, $field->dictionary);
+            $textValues = new ProtectedTextValue();
+            $valueChanged = $textValues->changed($changes, $old->effective('V'), $field->effective('V'));
+            $richChanged = $textValues->changed($changes, $old->dictionary->get('RV'), $field->dictionary->get('RV'));
+            $changed = !$changes->sameDictionary($old->dictionary, $field->dictionary) || $valueChanged || $richChanged;
             foreach ($field->widgets as $index => $widget) {
                 $previous = $old->widgets[$index];
                 if ((string) $previous->identifier !== (string) $widget->identifier) {
@@ -95,14 +98,14 @@ final class ProtectedFormFillChanges
                 throw new \LogicException('Protected filling preserves field defaults, options, flags, actions and structure.');
             }
             $value = $field->effective('V');
-            if ($field->dictionary->get('V') instanceof IndirectReference || $value instanceof IndirectReference) {
+            if ($type->value !== 'Tx' && ($field->dictionary->get('V') instanceof IndirectReference || $value instanceof IndirectReference)) {
                 throw new \LogicException('Protected filling requires direct plain text, choice or button values.');
             }
             if ($value instanceof NullType) {
                 $value = null;
             }
             match ($type->value) {
-                'Tx' => $this->text($changes->current, $field, $value, $mask),
+                'Tx' => $this->text($changes, $field, $textValues->read($changes, $field, 'V'), $mask),
                 'Ch' => $this->choice($changes->current, $field, $value, $mask),
                 'Btn' => $this->button($changes->current, $field, $value, $mask),
             };
@@ -124,8 +127,7 @@ final class ProtectedFormFillChanges
                     }
                 }
                 if ($type->value !== 'Btn') {
-                    if ($rich && (!$changes->same($old->effective('V'), $field->effective('V'))
-                        || !$changes->same($old->dictionary->get('RV'), $field->dictionary->get('RV')))) {
+                    if ($rich && ($valueChanged || $richChanged)) {
                         $oldAppearance = $changes->prior->resolve($oldDictionary->get('AP'));
                         $appearance = $changes->current->resolve($dictionary->get('AP'));
                         if (!$appearance instanceof DictionaryType || $appearance->get('N') === null
@@ -142,17 +144,19 @@ final class ProtectedFormFillChanges
         return $count;
     }
 
-    private function text(FrozenSignatureGraph $graph, FrozenFormField $field, ?BasicType $value, int $flags): void
+    private function text(ProtectedRevisionChanges $changes, FrozenFormField $field, ?BasicType $value, int $flags): void
     {
+        $graph = $changes->current;
+        $version = (new EffectivePdfVersion($graph->revision->header, $graph->catalog))->value;
         if ($value !== null && !$value instanceof StringType) {
             throw new \LogicException('Protected text filling requires direct text values.');
         }
         if (($flags & TextFieldFlag::RichText->value) !== 0) {
-            $rich = $field->dictionary->get('RV');
+            $rich = (new ProtectedTextValue())->read($changes, $field, 'RV');
             if (!$value instanceof StringType || !$rich instanceof StringType || $this->richTextFilling === null) {
-                throw new \LogicException('Protected rich-text filling requires paired direct V/RV strings and an explicit XML interpreter.');
+                throw new \LogicException('Protected rich-text filling requires paired V/RV text values and an explicit XML interpreter.');
             }
-            $this->richTextFilling->validate($value, $rich);
+            $this->richTextFilling->validate($value, $rich, $version);
         } elseif ($field->dictionary->has('RV')) {
             throw new \LogicException('Protected plain text does not reinterpret an RV declaration.');
         }
@@ -164,7 +168,7 @@ final class ProtectedFormFillChanges
             throw new \LogicException('Protected comb text retains consistent length and flags.');
         }
         if ($value instanceof StringType && $maximum instanceof IntegerType
-            && preg_match_all('/./us', (new TextStringDecoder())->decode($value)) > $maximum->integer()) {
+            && preg_match_all('/./us', (new TextStringDecoder($version))->decode($value)) > $maximum->integer()) {
             throw new \LogicException('Protected text filling preserves MaxLen.');
         }
     }
