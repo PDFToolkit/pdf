@@ -97,6 +97,8 @@ final readonly class GeospatialGraphValidation
             $geospatial = $subtype instanceof NameType && $subtype->value === 'GEO';
             if ($geospatial) {
                 $this->measure($measure, $scope, $version, 2);
+            } elseif ($subtype === null || ($subtype instanceof NameType && $subtype->value === 'RL')) {
+                (new RectilinearMeasureGraphValidation())->validate($measure, $scope, $version);
             }
         }
         $pointData = $graph->entry($owner, 'PtData');
