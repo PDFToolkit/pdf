@@ -54,8 +54,11 @@ final readonly class WtPdfXmlRichTextParser implements WtPdfRichTextParser
         if (!$node instanceof \DOMElement || !in_array($node->namespaceURI, [null, '', 'http://www.w3.org/1999/xhtml'], true) || !in_array($node->localName, ['body', 'p', 'span', 'b', 'i', 'strong', 'em', 'sub', 'sup', 'br'], true)) {
             throw new WtPdfRichTextUnsupported('Unsupported rich-text node or namespace; equivalence cannot be inferred.');
         }
-        if ($node->hasAttribute('style') && preg_match('/(?:^|;)\s*(?:display|visibility|white-space|text-transform|content|direction|unicode-bidi)\s*:/i', $node->getAttribute('style')) === 1) {
-            throw new WtPdfRichTextUnsupported('Rich-text CSS with textual or visibility effects requires an explicit richer parser.');
+        if ($node->hasAttribute('style')) {
+            $style = $node->getAttribute('style');
+            if (str_contains($style, '\\') || str_contains($style, '/*') || str_contains($style, '*/') || preg_match('/\bvar\s*\(/i', $style) === 1 || preg_match('/(?:^|;)\s*(?:display|visibility|white-space|text-transform|content|direction|unicode-bidi)\s*:/i', $style) === 1) {
+                throw new WtPdfRichTextUnsupported('Escaped, commented, variable-dependent or text-affecting rich-text CSS requires an explicit richer parser.');
+            }
         }
         foreach ($node->attributes as $attribute) {
             if (str_starts_with(strtolower($attribute->nodeName), 'on') || in_array(strtolower($attribute->localName ?? $attribute->nodeName), ['src', 'href'], true)) {

@@ -69,6 +69,16 @@ final class WtPdfRichTextTest extends TestCase
         self::assertSame(\PDF\Document\Structure\WtPdfFindingStatus::AdditionalValidationRequired, $findings[0]->status);
     }
 
+    public function testCssEscapesCommentsAndVariablesNeverInferEquivalentVisibleText(): void
+    {
+        $checks = new WtPdfRichTextChecks(new WtPdfXmlRichTextParser());
+        foreach (['\\64isplay:none', 'dis/**/play:none', 'font-weight:var(--appearance)', 'font-weight:VAR (--appearance)'] as $style) {
+            $findings = $checks->inspect($this->field('<body><p><span style="' . $style . '">Text</span></p></body>', 'Text'));
+            self::assertCount(1, $findings);
+            self::assertSame(\PDF\Document\Structure\WtPdfFindingStatus::AdditionalValidationRequired, $findings[0]->status);
+        }
+    }
+
     private function field(string $xml, string $plain): DictionaryType
     {
         return new DictionaryType(new Entry(new NameType('FT'), new NameType('Tx')), new Entry(new NameType('RV'), new TextString($xml)), new Entry(new NameType('V'), new IndirectReference(new TextString($plain))));
