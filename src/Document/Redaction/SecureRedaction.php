@@ -56,6 +56,7 @@ final readonly class SecureRedaction
             $requests[spl_object_id($request->page)] = $request;
         }
         $processor = new RedactionContentProcessor($this->limits, new RedactionTextBounds($this->fontGeometry), $this->resourceSanitizer);
+        $processor->beginCollection();
         $form = $this->value($catalog->get('AcroForm'));
         $defaultResources = $form instanceof DictionaryType ? $this->value($form->get('DR')) : null;
         $processed = [];
@@ -63,6 +64,7 @@ final readonly class SecureRedaction
         // traversal removes those resources even from earlier, otherwise untouched pages.
         foreach ([false, true] as $final) {
             if ($final) {
+                $processor->completeTaintedClosure();
                 $processor->removed = 0;
             }
             foreach ($pages as $page) {

@@ -110,6 +110,27 @@ def main() -> None:
             assert pixels[public:public + 3] == b'\0\xff\0'
     report['transformed_rectangle_pixel_cases'] = 4
     report['poppler_pages'] += 8
+    run(arguments.php, str(root / 'tools/build_redaction_dependency_fixtures.php'), str(work))
+    dependency_source = work / 'dependencies-original.pdf'
+    dependency_result = work / 'dependencies-redacted.pdf'
+    for path in (dependency_source, dependency_result):
+        run(arguments.qpdf, '--check', str(path))
+        assert len(PdfReader(path, strict=True).pages) == 4
+    assert b'SOURCESECRET' in dependency_source.read_bytes()
+    assert b'DEPENDENT' in dependency_source.read_bytes()
+    assert b'SOURCESECRET' not in dependency_result.read_bytes()
+    assert b'DEPENDENT' not in dependency_result.read_bytes()
+    dependency_pdf = PdfReader(dependency_result, strict=True)
+    for index, page in enumerate(dependency_pdf.pages):
+        resources = page['/Resources'].get('/XObject', {})
+        if index in (0, 2):
+            assert set(resources) == {'/Public'}
+            assert resources['/Public'].get_object().get_data() == b'PUBLICIMG'
+        else:
+            assert not resources
+    run(arguments.pdftoppm, '-r', '72', str(dependency_result), str(work / 'dependencies-redacted'))
+    report['transitive_mask_resource_cases'] = 2
+    report['poppler_pages'] += 4
     (work / 'report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, indent=2))
 

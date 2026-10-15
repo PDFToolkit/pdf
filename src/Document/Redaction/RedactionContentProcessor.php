@@ -28,12 +28,28 @@ final class RedactionContentProcessor
     public int $removed = 0;
     private int $operations = 0;
     private int $payloadBytes = 0;
+    private bool $final = true;
     private readonly RedactionResourceCopy $resources;
+    /** @var \SplObjectStorage<BasicType, list<BasicType>> */
+    private \SplObjectStorage $parents;
+    /** @var \SplObjectStorage<BasicType, null> */
+    private \SplObjectStorage $registered;
 
     public function __construct(private readonly RedactionLimits $limits, private readonly RedactionTextBounds $text = new RedactionTextBounds(), ?RedactionResourceSanitizer $sanitizer = null)
     {
         $this->tainted = new \SplObjectStorage();
-        $this->resources = new RedactionResourceCopy($limits, $sanitizer);
+        $this->resources = new RedactionResourceCopy($limits, $sanitizer, $this->tainted);
+        $this->parents = new \SplObjectStorage();
+        $this->registered = new \SplObjectStorage();
+    }
+
+    /** The discovery pass produces no copied resource graph for publication. */
+    public function beginCollection(): void
+    {
+        if (count($this->registered) !== 0) {
+            throw new \LogicException('Resource discovery must begin before processing the source document.');
+        }
+        $this->final = false;
     }
 
     /** @param list<RedactionBounds> $regions */
@@ -42,6 +58,7 @@ final class RedactionContentProcessor
         if ($depth > $this->limits->depth) {
             throw new \OverflowException('Nested redaction Forms exceed their explicit depth budget.');
         }
+        $this->register($resources);
         $content->validate();
         $state = new RedactionGraphicsState($initial);
         $stack = [];
@@ -183,11 +200,13 @@ final class RedactionContentProcessor
                     && (!$inlineSpace instanceof NameType || !in_array($inlineSpace->value, ['DeviceGray', 'DeviceRGB', 'DeviceCMYK', 'G', 'RGB', 'CMYK'], true))) {
                     throw new \InvalidArgumentException('Retained inline images require normalized device-color pixel rows; opaque color-space data must be normalized first.');
                 }
-                $inlineDictionary = $this->resources->copy($operator->dictionary);
-                if (!$inlineDictionary instanceof DictionaryType) {
-                    throw new \LogicException('A normalized inline image requires a dictionary.');
+                if ($this->final) {
+                    $inlineDictionary = $this->resources->copy($operator->dictionary);
+                    if (!$inlineDictionary instanceof DictionaryType) {
+                        throw new \LogicException('A normalized inline image requires a dictionary.');
+                    }
+                    $operator = new InlineImage($inlineDictionary, $operator->data);
                 }
-                $operator = new InlineImage($inlineDictionary, $operator->data);
             }
             if ($symbol === 'Do') {
                 $name = $values[0] ?? null;
@@ -227,17 +246,19 @@ final class RedactionContentProcessor
                         throw new \InvalidArgumentException('A retained Form must have explicit typed instructions.');
                     }
                     $local = $this->value($dictionary->get('Resources'));
-                    $nested = $this->process($object->data, $local instanceof DictionaryType ? $local : $resources, [], $matrix, $depth + 1);
+                    $effective = $local instanceof DictionaryType ? $local : $resources;
+                    $this->dependency($object, $effective);
+                    $nested = $this->process($object->data, $effective, [], $matrix, $depth + 1);
                     $entries = [new Entry(new NameType('Type'), new NameType('XObject')), new Entry(new NameType('Subtype'), new NameType('Form')), new Entry(new NameType('BBox'), $this->bounds($dictionary->get('BBox'))->rectangle()), new Entry(new NameType('Resources'), $nested->resources)];
                     foreach (['Matrix', 'Group'] as $key) {
                         $value = $dictionary->get($key);
                         if ($value !== null) {
-                            $entries[] = new Entry(new NameType($key), $this->resources->copy($value));
+                            $entries[] = new Entry(new NameType($key), $this->final ? $this->resources->copy($value) : $value);
                         }
                     }
                     $usedXObjects[$name->value] = new StreamObject($nested->content, new DictionaryType(...$entries));
                 } else {
-                    $usedXObjects[$name->value] = $this->resources->copy($object);
+                    $usedXObjects[$name->value] = $this->final ? $this->resources->copy($object) : $object;
                 }
             }
             $output[] = $operator;
@@ -271,7 +292,7 @@ final class RedactionContentProcessor
             if ($font === null) {
                 throw new \InvalidArgumentException('A retained font selection has no local resource.');
             }
-            $fontEntries[] = new Entry(new NameType($name), $this->resources->font($font));
+            $fontEntries[] = new Entry(new NameType($name), $this->final ? $this->resources->font($font) : $font);
         }
         if ($fontEntries !== []) {
             $entries[] = new Entry(new NameType('Font'), new DictionaryType(...$fontEntries));
@@ -288,6 +309,78 @@ final class RedactionContentProcessor
         return new RedactionStream($result, new ResourceDictionary(...$entries));
     }
 
+    /** Complete every reverse resource dependency before any final page is rebuilt. */
+    public function completeTaintedClosure(): void
+    {
+        $queue = iterator_to_array($this->tainted, false);
+        $seen = new \SplObjectStorage();
+        while ($queue !== []) {
+            $item = array_pop($queue);
+            if ($seen->offsetExists($item)) {
+                continue;
+            }
+            $seen->attach($item);
+            if (count($seen) > $this->limits->objects) {
+                throw new \OverflowException('Dependent resource closure exceeds its explicit graph budget.');
+            }
+            if ($item instanceof StreamObject && !$this->tainted->offsetExists($item)) {
+                $subtype = $this->value($item->dictionary()->get('Subtype'));
+                if ($subtype instanceof NameType && in_array($subtype->value, ['Image', 'Form'], true)) {
+                    array_push($queue, ...$this->taint($item));
+                }
+            }
+            foreach ($this->parents->offsetExists($item) ? $this->parents[$item] : [] as $parent) {
+                if (++$this->operations > $this->limits->operations) {
+                    throw new \OverflowException('Dependent resource closure exceeds its explicit instruction budget.');
+                }
+                $queue[] = $parent;
+            }
+        }
+        $this->final = true;
+    }
+
+    private function register(BasicType $object): void
+    {
+        $queue = [[$object, 0]];
+        while ($queue !== []) {
+            [$item, $depth] = array_pop($queue);
+            if ($this->registered->offsetExists($item)) {
+                continue;
+            }
+            $this->registered->attach($item);
+            if (count($this->registered) > $this->limits->objects || $depth > $this->limits->depth) {
+                throw new \OverflowException('Redaction resource dependencies exceed their explicit graph budget.');
+            }
+            $children = [];
+            if ($item instanceof StreamObject) {
+                $children[] = $item->dictionary();
+            } elseif ($item instanceof IndirectReference) {
+                $children[] = $item->target();
+            } elseif ($item instanceof ArrayType) {
+                $children = $item->items;
+            } elseif ($item instanceof DictionaryType) {
+                foreach ($item->entries() as $entry) {
+                    $children[] = $entry->value;
+                }
+            } elseif (!$item instanceof NameType && !$item instanceof NumericType && !$item instanceof \PDF\Syntax\Object\StringType && !$item instanceof \PDF\Syntax\Object\BooleanType && !$item instanceof \PDF\Syntax\Object\NullType) {
+                throw new \InvalidArgumentException('A resource dependency is not normalized native PDF syntax.');
+            }
+            foreach ($children as $child) {
+                $this->dependency($item, $child);
+                $queue[] = [$child, $depth + 1];
+            }
+        }
+    }
+
+    private function dependency(BasicType $parent, BasicType $child): void
+    {
+        $parents = $this->parents->offsetExists($child) ? $this->parents[$child] : [];
+        if (!in_array($parent, $parents, true)) {
+            $parents[] = $parent;
+            $this->parents[$child] = $parents;
+        }
+    }
+
     /** @param list<RedactionBounds> $regions */
     private function hits(RedactionBounds $bounds, array $regions): bool
     {
@@ -300,10 +393,12 @@ final class RedactionContentProcessor
     }
 
     /** An affected Form/image cannot survive through a shared resource elsewhere in the fresh graph. */
-    private function taint(BasicType $object): void
+    /** @return list<BasicType> Newly affected image/Form resources. */
+    private function taint(BasicType $object): array
     {
         $queue = [$object];
         $seen = new \SplObjectStorage();
+        $added = [];
         while ($queue !== []) {
             $item = array_pop($queue);
             if ($seen->offsetExists($item)) {
@@ -316,7 +411,10 @@ final class RedactionContentProcessor
             if ($item instanceof StreamObject) {
                 $subtype = $this->value($item->dictionary()->get('Subtype'));
                 if ($subtype instanceof NameType && in_array($subtype->value, ['Image', 'Form'], true)) {
-                    $this->tainted->attach($item);
+                    if (!$this->tainted->offsetExists($item)) {
+                        $this->tainted->attach($item);
+                        $added[] = $item;
+                    }
                 }
                 $queue[] = $item->dictionary();
             } elseif ($item instanceof IndirectReference) {
@@ -329,6 +427,7 @@ final class RedactionContentProcessor
                 }
             }
         }
+        return $added;
     }
 
     public function bounds(?BasicType $value): RedactionBounds

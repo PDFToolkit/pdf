@@ -183,6 +183,43 @@ final class SecureRedactionTest extends TestCase
         self::assertSame(2, $result->removedPaintObjects);
     }
 
+    #[\PHPUnit\Framework\Attributes\DataProvider('maskDependencies')]
+    public function testTaintedMaskDependenciesAreRemovedBeforeAnEarlierPageIsRebuilt(string $key, bool $form, bool $inherited): void
+    {
+        $mask = new StreamObject('SOURCESECRET', $this->dictionary(['Type' => new NameType('XObject'), 'Subtype' => new NameType('Image'), 'Width' => new IntegerType($key === 'Mask' ? 96 : 12), 'Height' => new IntegerType(1), 'BitsPerComponent' => new IntegerType($key === 'Mask' ? 1 : 8), 'ColorSpace' => new NameType('DeviceGray'), 'ImageMask' => new \PDF\Syntax\Object\BooleanType($key === 'Mask')]));
+        $dependent = new StreamObject('DEPENDENT', $this->image('PUBLICIMG')->dictionary()->with(new Entry(new NameType($key), new IndirectReference($mask))));
+        $public = $this->image('PUBLICIMG');
+        $objects = ['Secret' => new IndirectReference($mask), 'Dependent' => new IndirectReference($dependent), 'Public' => new IndirectReference($public)];
+        if ($form) {
+            $entries = ['Type' => new NameType('XObject'), 'Subtype' => new NameType('Form'), 'BBox' => $this->box(0, 0, 1, 1)];
+            if (!$inherited) {
+                $entries['Resources'] = new ResourceDictionary(new Entry(new NameType('XObject'), $this->dictionary(['Dependent' => new IndirectReference($dependent)])));
+            }
+            $objects['Wrapper'] = new IndirectReference(new StreamObject(new ContentStreams(new InvokeXObject(new NameType('Dependent'))), $this->dictionary($entries)));
+        }
+        $resources = new ResourceDictionary(new Entry(new NameType('XObject'), $this->dictionary($objects)));
+        $first = new PageObject($this->box(0, 0, 200, 120), $resources, new StreamObject(new ContentStreams(...[...$this->imagePaint($form ? 'Wrapper' : 'Dependent', 100, 20), ...$this->imagePaint('Public', 150, 20), new AppendRectangle(new NumericType(5), new NumericType(5), new NumericType(3), new NumericType(3)), new FillPathNonzero()])));
+        $second = new PageObject($this->box(0, 0, 200, 120), $resources, new StreamObject(new ContentStreams(...$this->imagePaint('Secret', 20, 70))));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($first)->addKid($second));
+        $result = (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($second, $this->annotation())));
+        self::assertStringNotContainsString('SOURCESECRET', $result->toPdf());
+        self::assertStringNotContainsString('DEPENDENT', $result->toPdf());
+        self::assertStringNotContainsString('/Subtype /Form', $result->toPdf());
+        self::assertStringContainsString('5 5 3 3 re', $result->toPdf());
+        if (!$inherited) {
+            self::assertStringContainsString('PUBLICIMG', $result->toPdf());
+        }
+        self::assertGreaterThanOrEqual(2, $result->removedSharedResources);
+    }
+
+    public static function maskDependencies(): iterable
+    {
+        yield 'soft mask' => ['SMask', false, false];
+        yield 'explicit image mask' => ['Mask', false, false];
+        yield 'soft mask inside local Form' => ['SMask', true, false];
+        yield 'soft mask inside inherited-resource Form' => ['SMask', true, true];
+    }
+
     public function testTouchedFormAndItsReachableImageClosureCannotSurviveElsewhere(): void
     {
         $image = $this->image('SECRETIMG');

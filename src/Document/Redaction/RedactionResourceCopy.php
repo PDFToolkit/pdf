@@ -29,7 +29,8 @@ final class RedactionResourceCopy
     /** @var \SplObjectStorage<BasicType, null> */
     private \SplObjectStorage $sanitizedPrograms;
 
-    public function __construct(private readonly RedactionLimits $limits, private readonly ?RedactionResourceSanitizer $sanitizer = null)
+    /** @param ?\SplObjectStorage<BasicType, null> $excluded */
+    public function __construct(private readonly RedactionLimits $limits, private readonly ?RedactionResourceSanitizer $sanitizer = null, private readonly ?\SplObjectStorage $excluded = null)
     {
         $this->copies = new \SplObjectStorage();
         $this->active = new \SplObjectStorage();
@@ -86,6 +87,9 @@ final class RedactionResourceCopy
 
     public function copy(BasicType $object, int $depth = 0): BasicType
     {
+        if ($this->excluded?->offsetExists($object)) {
+            throw new \InvalidArgumentException('An affected original resource cannot be reintroduced through a retained dependency or cached copy.');
+        }
         if ($this->copies->offsetExists($object)) {
             return $this->copies[$object];
         }
