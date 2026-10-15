@@ -76,6 +76,7 @@ if (!is_dir($output) && !mkdir($output, 0777, true) && !is_dir($output)) {
 $rejected = [];
 $forms = [];
 $extendedText = [];
+$templateInstantiations = [];
 $annotations = [];
 $usageRights = [];
 $refuse = static function (string $name, IncrementalUpdate $update) use (&$rejected): void {
@@ -239,6 +240,31 @@ foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::
         }
     }
 }
+foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::FormsTemplatesSigningAndAnnotations] as $permission) {
+    foreach ([CrossReferenceFormat::Table, CrossReferenceFormat::Stream] as $format) {
+        foreach (['1.7', '2.0'] as $version) {
+            $author = new SignatureFieldSigning($backend, new PartialFieldName(new TextString('author')), new SignatureCapacity(8192), new SignatureSigningIntent(certification: $permission));
+            $box = new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200));
+            $template = new \PDF\Document\Forms\NamedPageTemplate($box, new ResourceDictionary(), new StreamObject('q 0 0 1 rg 20 20 40 40 re f Q'));
+            $page = new PageObject($box, new ResourceDictionary(), new StreamObject('q Q'));
+            $catalog = new DocumentCatalog(
+                (new PageTreeNode())->addKid($page),
+                new Entry(new NameType('AcroForm'), new IndirectReference(new AcroForm((new FieldTree())->addRoot($author->field)))),
+                new Entry(new NameType('Perms'), $author->certificationPermissions()),
+                new Entry(new NameType('Names'), new DictionaryType(new Entry(new NameType('Templates'), new \PDF\Syntax\DataStructure\NameTree(new \PDF\Syntax\DataStructure\NameTreeEntry(new TextString('Invoice'), new IndirectReference($template))))))
+            );
+            $author->bindCatalog(new IndirectReference($catalog));
+            $source = $author->sign((new SignatureWriter())->prepare(new FileStructure(new FileHeader($version), new FileBody($catalog), crossReferenceFormat: $format), $author->signature))->revision;
+            $stem = 'template-p' . $permission->value . '-' . strtolower($format->name) . '-' . str_replace('.', '', $version);
+            $source->writeTo($output . '/' . $stem . '.pdf');
+            $next = (new \PDF\Document\Signatures\PageTemplateInstantiation($source, new NameType('Invoice')))->update()->toRevision();
+            $next->writeTo($output . '/' . $stem . '-spawned.pdf');
+            $again = (new \PDF\Document\Signatures\PageTemplateInstantiation($next, new NameType('Invoice')))->update()->toRevision();
+            $again->writeTo($output . '/' . $stem . '-twice.pdf');
+            $templateInstantiations[] = ['stem' => $stem, 'permission' => $permission->value, 'format' => $format->name, 'version' => $version];
+        }
+    }
+}
 $appearance = static fn (string $color): StreamObject => new StreamObject('q ' . $color . ' rg 0 0 20 20 re f Q', new DictionaryType(
     new Entry(new NameType('Type'), new NameType('XObject')),
     new Entry(new NameType('Subtype'), new NameType('Form')),
@@ -302,7 +328,7 @@ $manual = new FileRevision($original->bytes, $original->header, $original->cross
 $refuse('manual-history', new IncrementalUpdate($manual, new FileBody()));
 $refuse('cloned-history', new IncrementalUpdate(clone $original, new FileBody()));
 $usage = new PendingSignature(new SignatureCapacity(8192), SignatureFormat::Pkcs7Detached, entries: new Entry(new NameType('Reference'), new SignatureReferences(new SignatureReference(new UsageRightsTransform(UsageRightsMode::ByteRange)))));
-$catalog = new DocumentCatalog(new PageTreeNode(), new Entry(new NameType('Perms'), new DictionaryType(new Entry(new NameType('UR3'), new IndirectReference($usage)))));
+$catalog = new DocumentCatalog((new PageTreeNode())->addKid(new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary())), new Entry(new NameType('Perms'), new DictionaryType(new Entry(new NameType('UR3'), new IndirectReference($usage)))));
 $signed = (new SignatureWriter())->prepare(new FileStructure(new FileHeader('2.0'), new FileBody($catalog)), $usage)->sign($locked->backend);
 $record = $signed->revision->binding($catalog);
 $refuse('UR:hidden-authority', new IncrementalUpdate($signed->revision, new FileBody(new IndirectObject($record->dictionary->without('Perms'), $record->identifier))));
@@ -398,4 +424,4 @@ foreach ([
             new IndirectObject($catalogRecord->dictionary->without('Perms'), $catalogRecord->identifier)]), null, null, $authorization));
     }
 }
-echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'extended_text_fills' => $extendedText, 'annotations' => $annotations, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";
+echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'extended_text_fills' => $extendedText, 'template_instantiations' => $templateInstantiations, 'annotations' => $annotations, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";

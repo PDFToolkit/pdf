@@ -163,7 +163,8 @@ rights or PKI trust. PDF 2.0 nonrestrictive UR keeps explicit authority and
 operation scope; restrictive UR follows its distinct FullSave rules.
 Legacy/encrypted UR remains unsupported. FileSelect filling and rich-text V/RV updates with an explicit
 XML interpreter are supported, with complete rich-text appearance renewal.
-Templates, new resources, external revision-chain
+Invisible template pages without annotations/fields can also be instantiated
+with their historical contents/resources. New resources, external revision-chain
 classification and mixed fill/signing/maintenance updates remain outside scope.
 See the [supported operations, migration and independent evidence](resources/signature-revisions/README.md).
 

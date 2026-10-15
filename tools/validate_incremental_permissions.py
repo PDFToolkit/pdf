@@ -35,10 +35,10 @@ def command(*arguments: str) -> str:
 
 
 def inspect(path: Path, qpdf: str, count: int = 1, forbidden: bool = False,
-            expected_permission: bool | None = True) -> dict:
+            expected_permission: bool | None = True, pages: int = 1) -> dict:
     command(qpdf, '--check', str(path))
     independent = PdfReader(path, strict=True)
-    assert len(independent.pages) == 1, path.name
+    assert len(independent.pages) == pages, path.name
     context = ValidationContext(trust_roots=[], other_certs=[], allow_fetching=False, revocation_mode='soft-fail')
     signatures = []
     with path.open('rb') as stream:
@@ -220,9 +220,9 @@ def change_locked_field(source: Path, target: Path) -> str:
     return selected
 
 
-def rendered_pixels(path: Path, pdftoppm: str, checks: list[tuple[int, int, tuple[int, int, int]]]) -> dict:
-    prefix = path.with_suffix('')
-    command(pdftoppm, '-r', '72', '-singlefile', str(path), str(prefix))
+def rendered_pixels(path: Path, pdftoppm: str, checks: list[tuple[int, int, tuple[int, int, int]]], page: int = 1) -> dict:
+    prefix = path.with_suffix('') if page == 1 else path.with_name(path.stem + '-page' + str(page))
+    command(pdftoppm, '-r', '72', '-f', str(page), '-l', str(page), '-singlefile', str(path), str(prefix))
     image = prefix.with_suffix('.ppm')
     data = image.read_bytes()
     header = re.match(rb'P6\s+(\d+)\s+(\d+)\s+255\s', data)
@@ -376,6 +376,35 @@ def inspect_usage_rights(work: Path, native: dict, qpdf: str, reports: dict) -> 
         'boundary': 'CMS mathematics and declared rights are checked independently. The granting identity and scope are explicit application policy, not pyHanko or PKI trust.'}
 
 
+def inspect_templates(work: Path, native: dict, qpdf: str, pdftoppm: str, reports: dict) -> list:
+    cases = native['template_instantiations']
+    assert {(c['permission'], c['format'], c['version']) for c in cases} == {
+        (p, x, v) for p in (2, 3) for x in ('Table', 'Stream') for v in ('1.7', '2.0')}
+    results = []
+    for item in cases:
+        source = work / (item['stem'] + '.pdf')
+        previous = source
+        for suffix, pages in [('', 1), ('-spawned', 2), ('-twice', 3)]:
+            path = work / (item['stem'] + suffix + '.pdf')
+            assert path.read_bytes().startswith(previous.read_bytes())
+            report = inspect(path, qpdf, expected_permission=True if pages == 1 else None, pages=pages)
+            reader = PdfReader(path, strict=True)
+            template = reader.trailer['/Root']['/Names']['/Templates']['/Names'][1].get_object()
+            assert template['/Type'] == '/Template' and '/Parent' not in template
+            for number, page in enumerate(reader.pages):
+                if number:
+                    assert page['/TemplateInstantiated'] == '/Invoice'
+                    assert page.get_contents().get_data() == template['/Contents'].get_data()
+                report.setdefault('templateRendering', []).append(rendered_pixels(path, pdftoppm,
+                    [(30, 30, (0, 0, 255) if number else (255, 255, 255)),
+                     (10, 10, (255, 255, 255))], page=number + 1))
+            reports[path.name] = report
+            previous = path
+        results.append({'stem': item['stem'], 'sourcePages': 1, 'instantiatedPages': 3,
+                        'native': reports[previous.name]['signatures']})
+    return results
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--php', required=True)
@@ -500,6 +529,7 @@ def main() -> None:
         reports[independent.name] = inspect(independent, args.qpdf, expected_permission=None)
         extended_text_results.append({'kind': item['kind'], 'native': reports[filled.name]['signatures'],
                                      'independent': reports[independent.name]['signatures']})
+    template_results = inspect_templates(work, native, args.qpdf, args.pdftoppm, reports)
     annotation_limits = inspect_annotations(work, native, args.qpdf, args.pdftoppm, reports)
     usage_rights = inspect_usage_rights(work, native, args.qpdf, reports)
     report = {'native_rejected': len(rejected), 'native_cases': sorted(rejected),
@@ -510,6 +540,7 @@ def main() -> None:
         'button_widget_oracle_limits': button_limits,
         'annotation_oracle_limits': annotation_limits,
         'extended_text_fills': extended_text_results,
+        'template_instantiations': template_results,
         'native_annotation_combinations': len(native['annotations']),
         'usage_rights': usage_rights,
         'hybrid_boundary': 'Native hybrid coverage is separate; unmodified strict pyHanko rejects hybrid signature validation.',
@@ -518,6 +549,7 @@ def main() -> None:
     print(json.dumps({'native_rejected': len(rejected), 'independent_adversarial_updates': 12,
         'native_form_fill_combinations': len(combinations), 'read_only_oracle_limits': read_only_limits,
         'extended_text_fill_combinations': len(extended),
+        'template_instantiation_combinations': len(template_results),
         'button_widget_oracle_limits': len(button_limits),
         'independent_button_pixel_checks': sum(item.get('buttonRendering', {}).get('pixelChecks', 0) for item in reports.values()),
         'native_annotation_combinations': len(native['annotations']),

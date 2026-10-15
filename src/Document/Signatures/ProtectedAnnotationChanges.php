@@ -19,12 +19,20 @@ final class ProtectedAnnotationChanges
     /** @var list<string> */
     private array $operations = [];
 
-    /** @return list<string> create/modify/delete, used to intersect authenticated usage rights. */
-    public function classify(ProtectedRevisionChanges $changes, SignaturePermissionHistory $history): array
+    /** @param list<string> $instantiatedPages
+     * @return list<string> create/modify/delete, used to intersect authenticated usage rights.
+     */
+    public function classify(ProtectedRevisionChanges $changes, SignaturePermissionHistory $history, array $instantiatedPages = []): array
     {
         $this->operations = [];
         $oldPages = $this->pages($changes->prior);
         $newPages = $this->pages($changes->current);
+        foreach ($instantiatedPages as $id) {
+            if (!isset($newPages[$id]) || isset($oldPages[$id]) || $newPages[$id]->has('Annots')) {
+                throw new \LogicException('Only proved fresh template pages without annotations are excluded from annotation comparison.');
+            }
+            unset($newPages[$id]);
+        }
         if (array_keys($oldPages) !== array_keys($newPages)) {
             throw new \LogicException('Protected annotation editing preserves the page tree and every page identity.');
         }

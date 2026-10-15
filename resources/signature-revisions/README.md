@@ -96,6 +96,19 @@ object identities and unchanged historical resources.
   relationships and arbitrary dependencies are outside this annotation scope.
   Detachment preserves the historical object bytes.
 
+`PageTemplateInstantiation($source, new NameType('Invoice'))->update()` appends
+an exact instance of an invisible page from the signed `Names/Templates` tree.
+Its page type becomes `Page`, its `Parent` points to the existing root and
+`TemplateInstantiated` records the exact name. Contents, resources and all other
+properties retain their historical values. The common guard independently proves
+the actual frozen delta, preserves existing page order and root inheritance,
+checks the added count and accounts for every new object. P1 refuses spawning;
+UR requires the specific `SpawnTemplate` operation and its saving permission.
+Pass a per-update usage-rights authorization to `update($authorization)` when
+required. This operation does not load an external template or execute a script.
+Current instances are inserted directly under the root and have no annotations
+or fields to clone; those ownership/renaming operations need separate proofs.
+
 The established single-signature workflow remains available under P2/P3 and
 permitted FieldMDP histories: an existing unsigned field, unchanged reservation
 or one new terminal signature field, with the complete restricted delta proof.
@@ -138,7 +151,8 @@ deprecated in PDF 2.0.
 
 ## Remaining boundaries and evidence
 
-Page-template instantiation, general field creation/deletion/renaming,
+Visible named-page instantiation, template annotation/field cloning and general
+field creation/deletion/renaming,
 arbitrary appearance regeneration, new resource
 objects and authenticated reading/classification of external revision chains
 remain outside this native scope. Mathematical integrity, modification policy,
@@ -163,12 +177,12 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 248
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 272
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
 annotation, six shared-appearance attack). UR3 contributes ten signed sources,
 five permitted fills and 15 independently verified CMS files; changing a signed
-byte is detected. These are CMS/structure/rendering checks, not 248 permission
+byte is detected. These are CMS/structure/rendering checks, not 272 permission
 approvals or an independent usage-rights authority decision.
 
 The unmodified pyHanko policy confirms the 16 `Tx`/`Ch` combinations, but reports
@@ -191,3 +205,11 @@ can no longer be saved by this guard. New restrictive grants must also sign
 `Document.FullSave`. Changing the original signed permission declaration would
 invalidate its signature; this correction does not rewrite it. This is an
 ISO-version distinction, not an EC3 annotation claim.
+
+Eight template combinations cover P2/P3, PDF 1.7/2.0 and Table/Stream xrefs,
+with two successive instances each. qpdf, pypdf and CMS verification pass for
+24 PDFs; Poppler checks 96 pixels across original and instantiated pages. The
+unmodified pyHanko policy reports `OTHER` for instantiated outputs; it does not
+independently approve their DocMDP classification. Native tests cover hybrid
+xrefs, false template names/content, orphan objects, reordering, inheritance,
+P1 and UR operation scope.

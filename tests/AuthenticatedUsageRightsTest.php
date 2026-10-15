@@ -246,6 +246,25 @@ final class AuthenticatedUsageRightsTest extends TestCase
         $this->fill($revision, $field, $this->authorization($revision, UsageRight::FillField))->toRevision();
     }
 
+    public function testTemplateSpawningRequiresItsOwnSignedRightAndApplicationScope(): void
+    {
+        [$revision] = $this->fixture([UsageRight::SpawnTemplate], template: true);
+        $operation = new \PDF\Document\Signatures\PageTemplateInstantiation($revision, new NameType('Invoice'));
+        $next = $operation->update($this->authorization($revision, UsageRight::SpawnTemplate))->toRevision();
+        self::assertSame(2, $next->binding($next->pageTreeIdentifier)->dictionary->get('Count')->integer());
+        try {
+            $operation->update($this->authorization($revision, UsageRight::FillField))->toRevision();
+            self::fail('FillIn scope does not grant SpawnTemplate.');
+        } catch (\LogicException $error) {
+            self::assertStringContainsString('explicit application scope', $error->getMessage());
+        }
+        [$restricted] = $this->fixture([UsageRight::FillField], template: true);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('signed usage rights');
+        (new \PDF\Document\Signatures\PageTemplateInstantiation($restricted, new NameType('Invoice')))
+            ->update($this->authorization($restricted, UsageRight::SpawnTemplate))->toRevision();
+    }
+
     public function testAnnotationRightsAreRequiredForEachActualOperation(): void
     {
         [$revision, , , , $page] = $this->fixture([UsageRight::CreateAnnotation, UsageRight::ModifyAnnotation, UsageRight::DeleteAnnotation]);
@@ -295,7 +314,8 @@ final class AuthenticatedUsageRightsTest extends TestCase
         ?\PDF\Document\Forms\SignatureFieldLock $lock = null,
         ?\PDF\Document\Signatures\Policies\DocMdpPermissions $certification = null,
         bool $omitVersion = false,
-        bool $explicitFalse = false
+        bool $explicitFalse = false,
+        bool $template = false
     ): array {
         $backend = (new ProtectedRevisionFixture())->backend;
         $transform = new UsageRightsTransform(UsageRightsMode::ByteRange, $restrict, null, ...$rights);
@@ -332,10 +352,16 @@ final class AuthenticatedUsageRightsTest extends TestCase
         $form = new AcroForm($tree);
         $content = new StreamObject('q Q');
         $page = new PageObject(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary(), $content);
+        $templates = [];
+        if ($template) {
+            $named = new \PDF\Document\Forms\NamedPageTemplate(new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(200), new IntegerType(200)), new ResourceDictionary(), new StreamObject('q Q'));
+            $templates[] = $this->entry('Names', new DictionaryType($this->entry('Templates', new \PDF\Syntax\DataStructure\NameTree(new \PDF\Syntax\DataStructure\NameTreeEntry(new TextString('Invoice'), new IndirectReference($named))))));
+        }
         $catalog = new DocumentCatalog(
             (new PageTreeNode())->addKid($page),
             $this->entry('AcroForm', new IndirectReference($form)),
-            $this->entry('Perms', new DictionaryType($this->entry('UR3', new IndirectReference($pending))))
+            $this->entry('Perms', new DictionaryType($this->entry('UR3', new IndirectReference($pending)))),
+            ...$templates
         );
         $author?->bindCatalog(new IndirectReference($catalog));
         $prepared = (new SignatureWriter())->prepare(new FileStructure(new FileHeader($version), new FileBody($catalog)), $pending);

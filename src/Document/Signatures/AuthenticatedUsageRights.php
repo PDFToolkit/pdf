@@ -86,7 +86,7 @@ final class AuthenticatedUsageRights
     }
 
     /** @param list<string> $annotations */
-    public function assertChanges(int $fields, array $annotations, bool $signing = false): void
+    public function assertChanges(int $fields, array $annotations, bool $signing = false, int $templates = 0): void
     {
         if ($this->policies === []) {
             return;
@@ -99,6 +99,9 @@ final class AuthenticatedUsageRights
                 'delete' => UsageRight::DeleteAnnotation,
                 default => throw new \LogicException('Usage-rights intersection requires a classified operation.'),
             };
+        }
+        if ($templates > 0) {
+            $required[] = UsageRight::SpawnTemplate;
         }
         if ($signing) {
             $required[] = UsageRight::ModifySignature;

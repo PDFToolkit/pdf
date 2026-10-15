@@ -13,7 +13,8 @@
         "12.8.2.2",
         "12.8.2.3",
         "12.8.2.4",
-        "12.8.4"
+        "12.8.4",
+        "12.7.6"
       ],
       "physicalPages": [
         440,
@@ -21,6 +22,7 @@
         442,
         443,
         444,
+        464,
         478,
         479,
         480,
@@ -92,7 +94,10 @@
     "src/Document/Signatures/RichTextFilling.php",
     "src/Document/Signatures/ProtectedTextValue.php",
     "src/Document/Signatures/ProtectedStreamDecoder.php",
-    "src/Document/Signatures/AuthenticatedUsageRightsPolicy.php"
+    "src/Document/Signatures/AuthenticatedUsageRightsPolicy.php",
+    "src/Document/Signatures/FrozenPageTemplates.php",
+    "src/Document/Signatures/ProtectedPageTemplateChanges.php",
+    "src/Document/Signatures/PageTemplateInstantiation.php"
   ],
   "implemented": [
     "One common guard on every native incremental emission with exact native provenance, final-byte mathematical verification and complete frozen delta accounting.",
@@ -104,7 +109,8 @@
     "Clear authenticated native UR3 version 2.2 including its default with explicit per-update granting authority, verified signature facts, actual-operation scope and saving intersection; signed-source-version interpretation of PDF2 restrictive and unrestricted semantics.",
     "Application FillField scope authorizes a persisted classified fill when the signed rights permit saving; signed FullSave as a saving condition does not also require application FullSave scope.",
     "FileSelect filling as inert text; rich-text paired V/RV text values with an explicit bounded XML interpreter and fresh complete normal widget appearances.",
-    "Indirect text strings and bounded plain/Flate text streams with exact exclusive V/RV ownership, target-delta detection and effective-version Unicode MaxLen."
+    "Indirect text strings and bounded plain/Flate text streams with exact exclusive V/RV ownership, target-delta detection and effective-version Unicode MaxLen.",
+    "Exact invisible named-template instances without annotations/fields, inserted under the unchanged root with historical contents/resources, fixed prior page order and inheritance, complete object accounting and UR SpawnTemplate intersection."
   ],
   "evidence": [
     "tests/IncrementalSignaturePermissionsTest.php",
@@ -117,10 +123,11 @@
     "tests/ProtectedAnnotationChangesTest.php",
     "tests/AuthenticatedUsageRightsTest.php",
     "tests/Support/ProtectedRevisionFixture.php",
-    "examples/protected-form-fill.php"
+    "examples/protected-form-fill.php",
+    "tests/ProtectedPageTemplatesTest.php"
   ],
   "remaining": [
-    "Page-template instantiation and general field creation/deletion/renaming or reparenting.",
+    "Visible named pages, template annotation/field cloning and general field creation/deletion/renaming or reparenting.",
     "Arbitrary appearance regeneration or new resource objects.",
     "Complete graphics operand validation, rendered-value equivalence and human appearance/intent assessment.",
     "Annotation subtypes, relationships and dependencies outside the listed bounded markup scope.",
@@ -157,7 +164,7 @@
     "poppler": "22.12.0",
     "perRuntime": {
       "nativeRefusals": 113,
-      "independentlyCheckedPdfs": 248,
+      "independentlyCheckedPdfs": 272,
       "nativeFormCombinations": 32,
       "independentFormFills": 32,
       "p3AnnotationChains": 4,
@@ -165,7 +172,8 @@
       "pixels": {
         "buttons": 144,
         "annotations": 48,
-        "sharedAppearanceAttack": 6
+        "sharedAppearanceAttack": 6,
+        "templates": 96
       },
       "ur3": {
         "signedSources": 10,
@@ -174,7 +182,8 @@
         "tamperedSignedByteRejected": true
       },
       "extendedTextCombinations": 32,
-      "independentExtendedTextFills": 32
+      "independentExtendedTextFills": 32,
+      "templateCombinations": 8
     },
     "policy": "Unmodified pyHanko default; CMS mathematics, structure/rendering, modification policy and PKI trust remain separate.",
     "boundaries": [
@@ -184,7 +193,8 @@
       "Strict pyHanko cannot validate hybrid signatures; independent matrix uses Table/Stream, with native hybrid coverage separate.",
       "UR3 independent evidence validates actual CMS bytes and declarations, not a third-party granting-authority or PKI decision.",
       "The executable protected-form-fill example changes AP on a widget child without T; pyHanko reports OTHER. Its qpdf/rendering and CMS/ByteRange checks do not imply pyHanko DocMDP approval.",
-      "Eight FileSelect and eight plain text-stream combinations agree with pyHanko; 16 rich-text string/stream combinations report OTHER in both native and independent updates. Physical V/RV and CMS are verified, not rendered rich-text equivalence."
+      "Eight FileSelect and eight plain text-stream combinations agree with pyHanko; 16 rich-text string/stream combinations report OTHER in both native and independent updates. Physical V/RV and CMS are verified, not rendered rich-text equivalence.",
+      "Instantiated template outputs have valid CMS and independently checked pages/pixels, but pyHanko reports OTHER rather than approving their modification policy."
     ],
     "implicitPkiTrust": false,
     "fetching": false

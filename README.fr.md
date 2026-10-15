@@ -143,8 +143,9 @@ validité mathématique seule n’accorde ni droits d’usage ni confiance PKI. 
 restrictif PDF 2.0 conserve autorité et sélection explicites ; UR restrictif suit
 ses règles FullSave distinctes. UR ancien et UR chiffré restent hors périmètre. FileSelect et les
 valeurs enrichies V/RV avec interpréteur XML explicite sont pris en charge, avec
-renouvellement complet de l’apparence enrichie. Les modèles, les nouvelles
-ressources, la classification de chaînes externes
+renouvellement complet de l’apparence enrichie. Les modèles invisibles sans
+annotations/champs peuvent aussi être instanciés avec leurs contenus/ressources
+historiques. Les nouvelles ressources, la classification de chaînes externes
 et les mises à jour mêlant remplissage, signature ou maintenance restent hors périmètre.
 Voir les [opérations prises en charge, migration et preuves indépendantes](resources/signature-revisions/README.fr.md).
 

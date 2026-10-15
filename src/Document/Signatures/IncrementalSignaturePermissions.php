@@ -141,13 +141,14 @@ final readonly class IncrementalSignaturePermissions
                 (new SignatureRevisionDelta())->validate($graph, null, null);
                 return;
             }
+            $templates = (new ProtectedPageTemplateChanges())->classify($changes, $history);
             $fields = (new ProtectedFormFillChanges($richTextFilling))->classify($changes, $history);
-            $annotations = (new ProtectedAnnotationChanges())->classify($changes, $history);
-            if ($fields === 0 && $annotations === []) {
+            $annotations = (new ProtectedAnnotationChanges())->classify($changes, $history, $templates);
+            if ($fields === 0 && $annotations === [] && $templates === []) {
                 throw new \LogicException('A protected revision requires a classified form-fill, annotation, signing or maintenance operation.');
             }
             $changes->finish();
-            $usage->assertChanges($fields, $annotations);
+            $usage->assertChanges($fields, $annotations, templates: count($templates));
             return;
         }
         $signature = $pending[0];

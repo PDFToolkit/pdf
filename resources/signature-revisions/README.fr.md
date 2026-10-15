@@ -102,6 +102,20 @@ remplacement utilisent des identités neuves et des ressources historiques incha
   Widgets, actions, nouvelles relations et dépendances arbitraires restent hors
   de ce périmètre. Le détachement conserve les octets de l’objet historique.
 
+`PageTemplateInstantiation($source, new NameType('Invoice'))->update()` ajoute
+une instance exacte d’une page invisible de l’arbre signé `Names/Templates`.
+Son type devient `Page`, son `Parent` désigne la racine existante et
+`TemplateInstantiated` conserve le nom exact. Contenu, ressources et toutes les
+autres propriétés gardent leurs valeurs historiques. Le garde commun prouve
+indépendamment les changements figés réels, conserve l’ordre des pages et
+l’héritage de la racine, vérifie le décompte ajouté et chaque nouvel objet.
+P1 refuse l’opération ; UR exige le droit spécifique `SpawnTemplate` et sa
+permission de sauvegarde. Passer l’autorisation par mise à jour à
+`update($authorization)` lorsque nécessaire. Aucun modèle externe n’est chargé
+et aucun script n’est exécuté. Les instances sont actuellement insérées sous la
+racine et ne contiennent ni annotations ni champs à cloner ; ces opérations de
+propriété/renommage nécessitent des preuves distinctes.
+
 Le parcours de signature unique reste disponible sous P2/P3 et les historiques
 FieldMDP permissifs : champ non signé existant, réservation inchangée ou nouveau
 champ terminal de signature, avec preuve complète et restreinte des changements.
@@ -146,8 +160,8 @@ classifiée et sauvegarde générale sont refusés. UR est déprécié en PDF 2.
 
 ## Limites restantes et preuves
 
-L’instanciation de modèles de pages, la création/suppression/renommage généraux
-de champs, la régénération
+L’instanciation de pages nommées visibles, le clonage des annotations/champs
+d’un modèle, la création/suppression/renommage généraux de champs, la régénération
 arbitraire d’apparences, les nouvelles ressources et la lecture/classification
 authentifiée de chaînes externes restent hors de ce périmètre natif. Intégrité
 mathématique, politique de modification, confiance du certificat, révocation et
@@ -173,13 +187,13 @@ intersections d’opération et de sauvegarde. `IncrementalSignaturePermissionsT
 conserve les attaques sur points d’entrée, sorties opaques et historiques fournis.
 
 `tools/validate_incremental_permissions.py` utilise pyHanko 0.37.0 non modifié,
-qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 248
+qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 272
 PDF contrôlés indépendamment par runtime ; 32 combinaisons natives de formulaire
 et 32 remplissages indépendants ; quatre chaînes d’annotations P3 ; 198 pixels
 contrôlés (144 boutons, 48 annotations, six attaque d’apparence partagée). UR3
 apporte dix sources signées, cinq remplissages autorisés et 15 fichiers CMS
 vérifiés indépendamment ; altérer un octet signé est détecté. Ces contrôles
-portent sur CMS/structure/rendu, pas 248 approbations de permissions ni une
+portent sur CMS/structure/rendu, pas 272 approbations de permissions ni une
 décision indépendante d’autorité de droits d’usage.
 
 La politique pyHanko inchangée confirme les 16 combinaisons `Tx`/`Ch`, mais renvoie
@@ -202,3 +216,11 @@ peut plus être sauvegardée par ce garde. Les nouvelles autorisations restricti
 doivent aussi signer `Document.FullSave`. Modifier la déclaration initiale
 invaliderait sa signature ; ce correctif ne la réécrit pas. Cette distinction
 vient des versions ISO, sans revendiquer une annotation EC3.
+
+Huit combinaisons de modèles couvrent P2/P3, PDF 1.7/2.0 et xref Table/Stream,
+avec deux instances successives chacune. qpdf, pypdf et la vérification CMS
+passent pour 24 PDF ; Poppler contrôle 96 pixels des pages initiales et ajoutées.
+La politique pyHanko non modifiée classe les sorties instanciées `OTHER` ; elle
+n’approuve pas indépendamment leur classification DocMDP. Les tests natifs
+couvrent xref hybride, faux noms/contenus de modèle, objets orphelins, ordre,
+héritage, P1 et sélection d’opération UR.
