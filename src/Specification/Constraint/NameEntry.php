@@ -16,7 +16,11 @@ final readonly class NameEntry implements DictionaryConstraint
     /** @param non-empty-list<string> $allowed */
     public function __construct(public string $key, array $allowed)
     {
-        $this->names = new NameAlternatives(...array_map(fn (string $name): NameType => new NameType($name), $allowed));
+        if ($key === '' || $allowed === []) {
+            throw new \InvalidArgumentException('A dictionary name constraint requires a key and at least one name.');
+        }
+        $names = array_map(fn (string $name): NameType => new NameType($name), $allowed);
+        $this->names = new NameAlternatives(array_shift($names), ...$names);
     }
 
     public function validate(DictionaryType $dictionary): void
