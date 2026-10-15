@@ -354,13 +354,15 @@ $usageFill = static function (FileRevision $revision, TextField $field, ?UsageRi
 };
 foreach ([
     ['ur3-p17', [UsageRight::FillField], true, '1.7', true],
-    ['ur3-p20', [UsageRight::FillField], true, '2.0', true],
+    ['ur3-p20', [UsageRight::FillField], true, '2.0', false],
     ['ur3-fullsave17', [UsageRight::FillField, UsageRight::FullSave], false, '1.7', true],
     ['ur3-nosave17', [UsageRight::FillField], false, '1.7', false],
     ['ur3-unrelated-save', [UsageRight::FillField, UsageRight::CreateAnnotation], false, '1.7', false],
     ['ur3-fullsave-only', [UsageRight::FullSave], true, '1.7', false],
     ['ur3-signature-only', [UsageRight::ModifySignature], true, '1.7', false],
-    ['ur3-false20', [UsageRight::FillField, UsageRight::FullSave], false, '2.0', false],
+    ['ur3-false20', [UsageRight::FillField, UsageRight::FullSave], false, '2.0', true],
+    ['ur3-unrestricted20', [], false, '2.0', true],
+    ['ur3-fullsave20', [UsageRight::FillField, UsageRight::FullSave], true, '2.0', true],
 ] as [$stem, $rights, $restrict, $version, $allowed]) {
     [$revision, $field, $catalog, $content] = $usageFixture($rights, $restrict, $version);
     $revision->writeTo($output . '/' . $stem . '.pdf');

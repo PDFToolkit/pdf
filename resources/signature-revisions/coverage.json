@@ -91,7 +91,8 @@
     "src/Document/Signatures/UsageRightsAuthorization.php",
     "src/Document/Signatures/RichTextFilling.php",
     "src/Document/Signatures/ProtectedTextValue.php",
-    "src/Document/Signatures/ProtectedStreamDecoder.php"
+    "src/Document/Signatures/ProtectedStreamDecoder.php",
+    "src/Document/Signatures/AuthenticatedUsageRightsPolicy.php"
   ],
   "implemented": [
     "One common guard on every native incremental emission with exact native provenance, final-byte mathematical verification and complete frozen delta accounting.",
@@ -100,7 +101,7 @@
     "Non-rich variable-text appearance replacement within one isolated Tx BMC/EMC region, or append when absent; frozen plain/Flate bytes, strict outside-byte preservation and bounded lexical/state proof.",
     "P3 bounded markup create/modify/detach for Text, FreeText, Line, Square, Circle, Polygon, PolyLine, Highlight, Underline, Squiggly, StrikeOut, Caret, Ink and Stamp; immutable page ownership, unrelated data and shared resources.",
     "Native terminal signing and PDF2 DSS/document timestamp maintenance retain their separate complete delta proof; mixed fill/annotation and signature/maintenance updates are refused.",
-    "Clear authenticated native UR3 version2.2 with explicit per-update granting authority, verified signature facts, actual-operation scope and saving intersection; restrictive PDF2 P=true only.",
+    "Clear authenticated native UR3 version 2.2 including its default with explicit per-update granting authority, verified signature facts, actual-operation scope and saving intersection; signed-source-version interpretation of PDF2 restrictive and unrestricted semantics.",
     "Application FillField scope authorizes a persisted classified fill when the signed rights permit saving; signed FullSave as a saving condition does not also require application FullSave scope.",
     "FileSelect filling as inert text; rich-text paired V/RV text values with an explicit bounded XML interpreter and fresh complete normal widget appearances.",
     "Indirect text strings and bounded plain/Flate text streams with exact exclusive V/RV ownership, target-delta detection and effective-version Unicode MaxLen."
@@ -124,7 +125,7 @@
     "Complete graphics operand validation, rendered-value equivalence and human appearance/intent assessment.",
     "Annotation subtypes, relationships and dependencies outside the listed bounded markup scope.",
     "External PDF revision-history parsing, normalization and authentication adapters.",
-    "Legacy UR digest adapters, encrypted UR/security-handler permission intersections and PDF2 unrestricted UR semantics.",
+    "Legacy UR digest adapters, encrypted UR/security-handler permission intersections.",
     "PKI path and revocation validation remain explicit application responsibilities."
   ],
   "limits": {
@@ -141,7 +142,6 @@
       "Legacy UR",
       "encrypted UR histories",
       "opaque or unverified signatures",
-      "PDF2 P=false or absent",
       "unclassified maintenance/general saves"
     ]
   },
@@ -157,7 +157,7 @@
     "poppler": "22.12.0",
     "perRuntime": {
       "nativeRefusals": 113,
-      "independentlyCheckedPdfs": 244,
+      "independentlyCheckedPdfs": 248,
       "nativeFormCombinations": 32,
       "independentFormFills": 32,
       "p3AnnotationChains": 4,
@@ -168,9 +168,9 @@
         "sharedAppearanceAttack": 6
       },
       "ur3": {
-        "signedSources": 8,
-        "permittedFills": 3,
-        "independentlyVerifiedCmsFiles": 11,
+        "signedSources": 10,
+        "permittedFills": 5,
+        "independentlyVerifiedCmsFiles": 15,
         "tamperedSignedByteRejected": true
       },
       "extendedTextCombinations": 32,

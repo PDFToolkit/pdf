@@ -51,13 +51,16 @@ final class AuthenticatedUsageRightsTest extends TestCase
     public static function saving(): iterable
     {
         yield 'restrictive ISO1 fill' => [[UsageRight::FillField], true, '1.7', true];
-        yield 'restrictive ISO2 fill' => [[UsageRight::FillField], true, '2.0', true];
+        yield 'restrictive ISO2 fill requires save' => [[UsageRight::FillField], true, '2.0', false];
+        yield 'restrictive ISO2 explicit save' => [[UsageRight::FillField, UsageRight::FullSave], true, '2.0', true];
         yield 'ISO1 explicit save' => [[UsageRight::FillField, UsageRight::FullSave], false, '1.7', true];
         yield 'ISO1 fill without save' => [[UsageRight::FillField], false, '1.7', false];
         yield 'unrelated annotation save' => [[UsageRight::FillField, UsageRight::CreateAnnotation], false, '1.7', false];
         yield 'FullSave without fill' => [[UsageRight::FullSave], true, '1.7', false];
         yield 'missing signed right' => [[UsageRight::ModifySignature], true, '1.7', false];
-        yield 'ISO2 P false is different' => [[UsageRight::FillField, UsageRight::FullSave], false, '2.0', false];
+        yield 'ISO2 P absent is unrestricted' => [[UsageRight::FillField, UsageRight::FullSave], false, '2.0', true];
+        yield 'ISO2 unrestricted without named grants' => [[], false, '2.0', true];
+        yield 'ISO2 restrictive without named fill' => [[UsageRight::FullSave], true, '2.0', false];
     }
 
     #[DataProvider('saving')]
@@ -205,6 +208,44 @@ final class AuthenticatedUsageRightsTest extends TestCase
         self::assertStringStartsWith($revision->bytes, $next->bytes);
     }
 
+    public function testDefaultTransformVersionAndExplicitFalseAreReadFromSignedBytes(): void
+    {
+        [$revision, $field] = $this->fixture([], false, '2.0', omitVersion: true, explicitFalse: true);
+        $next = $this->fill($revision, $field, $this->authorization($revision, UsageRight::FillField))->toRevision();
+        self::assertStringStartsWith($revision->bytes, $next->bytes);
+        self::assertSame('changed', $next->binding($field)->dictionary->get('V')->value);
+    }
+
+    public function testUnrestrictedPdf20StillRequiresPerUpdateAuthorityAndScope(): void
+    {
+        [$revision, $field] = $this->fixture([], false, '2.0');
+        try {
+            $this->fill($revision, $field)->toRevision();
+            self::fail('Unrestricted UR does not manufacture a granting authority.');
+        } catch (\LogicException $error) {
+            self::assertStringContainsString('explicit granting authority', $error->getMessage());
+        }
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('explicit application scope');
+        $this->fill($revision, $field, $this->authorization($revision, UsageRight::ModifyAnnotation))->toRevision();
+    }
+
+    public function testUnrestrictedPdf20DoesNotOverrideHistoricalDocMdp(): void
+    {
+        [$revision, $field] = $this->fixture([], false, '2.0', certification: \PDF\Document\Signatures\Policies\DocMdpPermissions::NoChanges);
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('P1');
+        $this->fill($revision, $field, $this->authorization($revision, UsageRight::FillField))->toRevision();
+    }
+
+    public function testUnrestrictedPdf20DoesNotOverrideHistoricalFieldMdp(): void
+    {
+        [$revision, $field] = $this->fixture([], false, '2.0', lock: new \PDF\Document\Forms\SignatureFieldLock(\PDF\Document\Forms\SignatureLockAction::All));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('FieldMDP');
+        $this->fill($revision, $field, $this->authorization($revision, UsageRight::FillField))->toRevision();
+    }
+
     public function testAnnotationRightsAreRequiredForEachActualOperation(): void
     {
         [$revision, , , , $page] = $this->fixture([UsageRight::CreateAnnotation, UsageRight::ModifyAnnotation, UsageRight::DeleteAnnotation]);
@@ -252,14 +293,27 @@ final class AuthenticatedUsageRightsTest extends TestCase
         string $version = '1.7',
         bool $opaque = false,
         ?\PDF\Document\Forms\SignatureFieldLock $lock = null,
-        ?\PDF\Document\Signatures\Policies\DocMdpPermissions $certification = null
+        ?\PDF\Document\Signatures\Policies\DocMdpPermissions $certification = null,
+        bool $omitVersion = false,
+        bool $explicitFalse = false
     ): array {
         $backend = (new ProtectedRevisionFixture())->backend;
         $transform = new UsageRightsTransform(UsageRightsMode::ByteRange, $restrict, null, ...$rights);
+        $reference = new SignatureReference($transform);
+        $parameters = new DictionaryType(...iterator_to_array($transform->entries(), false));
+        if ($omitVersion) {
+            $parameters = $parameters->without('V');
+        }
+        if ($explicitFalse) {
+            $parameters = $parameters->with($this->entry('P', new \PDF\Syntax\Object\BooleanType(false)));
+        }
+        $reference = ($omitVersion || $explicitFalse)
+            ? (new DictionaryType(...iterator_to_array($reference->entries(), false)))->with($this->entry('TransformParams', $parameters))
+            : $reference;
         $pending = new PendingSignature(
             new SignatureCapacity(8192),
             SignatureFormat::Pkcs7Detached,
-            entries: $this->entry('Reference', new SignatureReferences(new SignatureReference($transform)))
+            entries: $this->entry('Reference', new \PDF\Syntax\Object\ArrayType($reference))
         );
         $field = new TextField(new PartialFieldName(new TextString('value')), value: new TextString('original'));
         $font = require dirname(__DIR__) . '/examples/fixtures/pdf20-courier-font.php';

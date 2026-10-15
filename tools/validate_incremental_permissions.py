@@ -312,9 +312,9 @@ def inspect_annotations(work: Path, native: dict, qpdf: str, pdftoppm: str, repo
 
 def inspect_usage_rights(work: Path, native: dict, qpdf: str, reports: dict) -> dict:
     cases = native['usage_rights']
-    expected = {'ur3-p17': True, 'ur3-p20': True, 'ur3-fullsave17': True,
+    expected = {'ur3-p17': True, 'ur3-p20': False, 'ur3-fullsave17': True,
         'ur3-nosave17': False, 'ur3-unrelated-save': False, 'ur3-fullsave-only': False,
-        'ur3-signature-only': False, 'ur3-false20': False}
+        'ur3-signature-only': False, 'ur3-false20': True, 'ur3-unrestricted20': True, 'ur3-fullsave20': True}
     assert {item['stem']: item['allowed'] for item in cases} == expected
     context = ValidationContext(trust_roots=[], other_certs=[], allow_fetching=False, revocation_mode='soft-fail')
     checked = 0

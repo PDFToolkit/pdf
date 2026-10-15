@@ -106,7 +106,7 @@ or document-timestamp maintenance are refused.
 
 ## Explicit usage-rights authority
 
-Clear native UR3 histories with transform version `2.2` require a per-update
+Clear native UR3 histories with transform version `2.2` (including its default when absent) require a per-update
 `UsageRightsAuthorization`. `UsageRightsAuthority::permits()` receives the actual
 `VerifiedRevisionSignature`; its `facts` expose verified algorithms and the bound
 signing certificate. The application decides whether this identity may grant
@@ -125,10 +125,15 @@ signed `FullSave`; restrictive rights, annotation modification rights and actual
 signing retain their specified saving rules. Application `FillField` authorizes
 a persisted fill when signed policy permits saving: it does not additionally
 need application `FullSave` solely because the signed right supplies that saving
-condition. PDF 2.0 accepts only explicit restrictive `P=true` in this classifier;
-its different `P=false`/absent semantics are not treated as ISO 1.7 rules. Legacy
-`UR`, encrypted UR histories, opaque/unverified signatures, failed authority
-choices, unclassified maintenance and general-save requests are refused. UR is
+condition. PDF 2.0 `P=false`/absent permits ignoring the UR restrictions, while still
+requiring verified identity, explicit application scope and every historical
+DocMDP/FieldMDP rule. Restrictive PDF 2.0 `P=true` follows Table 258: unlike
+ISO 1.7, its form fills require signed `FullSave`; modifying annotations and
+signing keep their stated implicit saving conditions. The version is read from
+the signed source, never a later catalog upgrade. Unknown transform versions
+remain refused. Legacy `UR`, encrypted UR histories, opaque/unverified signatures,
+failed authority choices, unclassified maintenance and general-save requests
+are refused. UR is
 deprecated in PDF 2.0.
 
 ## Remaining boundaries and evidence
@@ -158,12 +163,12 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 244
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 248
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
-annotation, six shared-appearance attack). UR3 contributes eight signed sources,
-three permitted fills and 11 independently verified CMS files; changing a signed
-byte is detected. These are CMS/structure/rendering checks, not 244 permission
+annotation, six shared-appearance attack). UR3 contributes ten signed sources,
+five permitted fills and 15 independently verified CMS files; changing a signed
+byte is detected. These are CMS/structure/rendering checks, not 248 permission
 approvals or an independent usage-rights authority decision.
 
 The unmodified pyHanko policy confirms the 16 `Tx`/`Ch` combinations, but reports
@@ -180,3 +185,9 @@ accepts the eight FileSelect and eight plain text-stream combinations but
 reports `OTHER` for the 16 rich-text string/stream combinations in both implementations. The oracle checks actual `RV`
 from the physical field dictionary because pypdf’s normalized field summary
 omits it. These results do not claim rendered rich-text equivalence.
+
+Migration: an existing PDF 2.0 restrictive UR3 source that only grants `FillIn`
+can no longer be saved by this guard. New restrictive grants must also sign
+`Document.FullSave`. Changing the original signed permission declaration would
+invalidate its signature; this correction does not rewrite it. This is an
+ISO-version distinction, not an EC3 annotation claim.

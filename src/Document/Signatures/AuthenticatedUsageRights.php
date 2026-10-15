@@ -8,7 +8,6 @@ use PDF\Document\Signatures\Policies\UsageRight;
 use PDF\Document\Signatures\Policies\UsageRightsMode;
 use PDF\Document\Signatures\Policies\UsageRightsTransform;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
-use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\BooleanType;
 use PDF\Syntax\Object\DictionaryType;
@@ -19,7 +18,7 @@ use PDF\Syntax\Object\StringType;
 /** ISO1 PDF480–481 / ISO2 PDF589–591: authenticated UR3, explicit authority, exact operation intersection. */
 final class AuthenticatedUsageRights
 {
-    /** @var list<UsageRightsTransform> */
+    /** @var list<AuthenticatedUsageRightsPolicy> */
     private array $policies = [];
 
     public function __construct(private readonly ?UsageRightsAuthorization $authorization)
@@ -50,18 +49,12 @@ final class AuthenticatedUsageRights
             throw new \LogicException('The verified signature identity is not an authorized usage-rights granting identity.');
         }
         $version = $parameters->get('V');
-        if (!$version instanceof NameType || $version->value !== '2.2') {
-            throw new \LogicException('Native authenticated usage rights require the explicit UR3 transform version 2.2.');
+        if ($version !== null && (!$version instanceof NameType || $version->value !== '2.2')) {
+            throw new \LogicException('Native authenticated usage rights require UR3 transform version 2.2, including its specified default.');
         }
         $restrict = $parameters->get('P');
         if ($restrict !== null && !$restrict instanceof BooleanType) {
             throw new \LogicException('The usage-rights restriction flag is boolean.');
-        }
-        // PDF2 changes the meaning of P=false. Do not silently apply ISO1 saving
-        // semantics or turn an unrestricted declaration into authenticated power.
-        if ((new EffectivePdfVersion($source->revision->header, $source->catalog))->value === PdfVersion::PDF20
-            && !($restrict instanceof BooleanType && $restrict->value)) {
-            throw new \LogicException('PDF 2.0 unrestricted/deprecated UR declarations remain outside the native restrictive UR3 classifier.');
         }
         $rights = [];
         foreach ($parameters->entries() as $entry) {
@@ -86,7 +79,10 @@ final class AuthenticatedUsageRights
                 $rights[] = $right;
             }
         }
-        $this->policies[] = new UsageRightsTransform(UsageRightsMode::ByteRange, $restrict instanceof BooleanType && $restrict->value, null, ...$rights);
+        $this->policies[] = new AuthenticatedUsageRightsPolicy(
+            new UsageRightsTransform(UsageRightsMode::ByteRange, $restrict instanceof BooleanType && $restrict->value, null, ...$rights),
+            (new EffectivePdfVersion($source->revision->header, $source->catalog))->value
+        );
     }
 
     /** @param list<string> $annotations */
@@ -117,10 +113,7 @@ final class AuthenticatedUsageRights
                 }
                 // Check saving per operation: unrelated Annots.Create cannot make
                 // an otherwise non-saving Form.FillIn operation persistable.
-                $saving = new UsageRightsTransform(UsageRightsMode::ByteRange, $policy->restrictConsumers, null, ...[
-                    $right, ...($policy->allows(UsageRight::FullSave) ? [UsageRight::FullSave] : []),
-                ]);
-                if (!$saving->allowsSaving($right === UsageRight::ModifySignature)) {
+                if (!$policy->allowsSaving($right)) {
                     throw new \LogicException('The signed usage right does not authorize saving this classified operation.');
                 }
             }

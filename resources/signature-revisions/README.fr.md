@@ -112,7 +112,8 @@ d’annotations mélangés à une signature, un DSS ou un horodatage sont refus�
 
 ## Autorité explicite des droits d’usage
 
-Les historiques UR3 natifs non chiffrés, avec transformation version `2.2`,
+Les historiques UR3 natifs non chiffrés, avec transformation version `2.2`
+(y compris sa valeur par défaut lorsqu’elle est absente),
 exigent une `UsageRightsAuthorization` à chaque mise à jour.
 `UsageRightsAuthority::permits()` reçoit la véritable `VerifiedRevisionSignature` ;
 ses `facts` exposent les algorithmes vérifiés et le certificat signataire lié.
@@ -132,9 +133,14 @@ restrictif exige `FullSave` signé ; droits restrictifs, modifications d’annot
 et signature réelle conservent leurs règles de sauvegarde prévues. La sélection
 applicative `FillField` autorise un remplissage persisté si la politique signée
 permet sa sauvegarde : elle n’exige pas en plus `FullSave` côté application
-lorsque ce droit signé fournit seulement la condition de sauvegarde. PDF 2.0
-accepte uniquement `P=true` explicite et restrictif ; sa sémantique différente de
-`P=false`/absent n’est pas assimilée à ISO 1.7. Les historiques `UR` anciens, UR
+lorsque ce droit signé fournit seulement la condition de sauvegarde. En PDF 2.0,
+`P=false`/absent permet d’ignorer les restrictions UR, tout en exigeant identité
+vérifiée, sélection applicative explicite et chaque règle historique DocMDP/FieldMDP.
+`P=true` restrictif suit la table 258 : contrairement à ISO 1.7, le remplissage
+exige `FullSave` signé ; modifications d’annotations et signature gardent leurs
+conditions implicites de sauvegarde. La version provient de la source signée,
+jamais d’une élévation ultérieure du catalogue. Une version de transformation
+inconnue reste refusée. Les historiques `UR` anciens, UR
 chiffrés, signatures opaques/non vérifiées, refus d’autorité, maintenance non
 classifiée et sauvegarde générale sont refusés. UR est déprécié en PDF 2.0.
 
@@ -167,13 +173,13 @@ intersections d’opération et de sauvegarde. `IncrementalSignaturePermissionsT
 conserve les attaques sur points d’entrée, sorties opaques et historiques fournis.
 
 `tools/validate_incremental_permissions.py` utilise pyHanko 0.37.0 non modifié,
-qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 244
+qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 248
 PDF contrôlés indépendamment par runtime ; 32 combinaisons natives de formulaire
 et 32 remplissages indépendants ; quatre chaînes d’annotations P3 ; 198 pixels
 contrôlés (144 boutons, 48 annotations, six attaque d’apparence partagée). UR3
-apporte huit sources signées, trois remplissages autorisés et 11 fichiers CMS
+apporte dix sources signées, cinq remplissages autorisés et 15 fichiers CMS
 vérifiés indépendamment ; altérer un octet signé est détecté. Ces contrôles
-portent sur CMS/structure/rendu, pas 244 approbations de permissions ni une
+portent sur CMS/structure/rendu, pas 248 approbations de permissions ni une
 décision indépendante d’autorité de droits d’usage.
 
 La politique pyHanko inchangée confirme les 16 combinaisons `Tx`/`Ch`, mais renvoie
@@ -190,3 +196,9 @@ pyHanko accepte les huit combinaisons FileSelect et huit flux texte simples, mai
 classe `OTHER` les 16 combinaisons enrichies sous forme de chaînes/flux dans les deux implémentations. L’oracle examine le vrai
 `RV` du dictionnaire physique : le résumé normalisé des champs pypdf l’omet.
 Ces résultats ne revendiquent pas l’équivalence visuelle du texte enrichi.
+
+Migration : une source PDF 2.0 UR3 restrictive accordant seulement `FillIn` ne
+peut plus être sauvegardée par ce garde. Les nouvelles autorisations restrictives
+doivent aussi signer `Document.FullSave`. Modifier la déclaration initiale
+invaliderait sa signature ; ce correctif ne la réécrit pas. Cette distinction
+vient des versions ISO, sans revendiquer une annotation EC3.

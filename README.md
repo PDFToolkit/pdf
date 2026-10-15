@@ -159,8 +159,9 @@ Clear native UR3 histories require explicit per-update `UsageRightsAuthorization
 an application authority must recognize the verified signing identity, and each
 operation must satisfy signed rights, selected scope, saving conditions and all
 other historical restrictions. Mathematical validity alone grants no usage
-rights or PKI trust. Legacy/encrypted UR and PDF 2.0 `P=false`/absent declarations
-remain unsupported. FileSelect filling and rich-text V/RV updates with an explicit
+rights or PKI trust. PDF 2.0 nonrestrictive UR keeps explicit authority and
+operation scope; restrictive UR follows its distinct FullSave rules.
+Legacy/encrypted UR remains unsupported. FileSelect filling and rich-text V/RV updates with an explicit
 XML interpreter are supported, with complete rich-text appearance renewal.
 Templates, new resources, external revision-chain
 classification and mixed fill/signing/maintenance updates remain outside scope.
