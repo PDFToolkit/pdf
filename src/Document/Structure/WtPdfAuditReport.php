@@ -24,7 +24,13 @@ final readonly class WtPdfAuditReport
     /** @return list<WtPdfFinding> */
     public function pending(): array
     {
-        return array_values(array_filter($this->findings, static fn (WtPdfFinding $finding): bool => $finding->status !== WtPdfFindingStatus::Failed));
+        return array_values(array_filter($this->findings, static fn (WtPdfFinding $finding): bool => in_array($finding->status, [WtPdfFindingStatus::HumanReviewRequired, WtPdfFindingStatus::AdditionalValidationRequired], true)));
+    }
+
+    /** @return list<WtPdfFinding> */
+    public function recommendations(): array
+    {
+        return array_values(array_filter($this->findings, static fn (WtPdfFinding $finding): bool => $finding->status === WtPdfFindingStatus::Recommendation));
     }
 
     public function assertNoDetectedFailures(): void

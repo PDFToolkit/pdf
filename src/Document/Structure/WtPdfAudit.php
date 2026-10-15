@@ -12,11 +12,11 @@ use PDF\Syntax\Object\IndirectReference;
 /** Inspects a constructed PDF graph. It never adds declarations or certifies accessibility. */
 final readonly class WtPdfAudit
 {
-    public function __construct(private WtPdfStructureChecks $structure = new WtPdfStructureChecks(), private WtPdfGraphChecks $graph = new WtPdfGraphChecks(), private WtPdfFontUsageChecks $fonts = new WtPdfFontUsageChecks(), private WtPdfNavigationChecks $navigation = new WtPdfNavigationChecks())
+    public function __construct(private WtPdfStructureChecks $structure = new WtPdfStructureChecks(), private WtPdfGraphChecks $graph = new WtPdfGraphChecks(), private WtPdfFontUsageChecks $fonts = new WtPdfFontUsageChecks(), private WtPdfNavigationChecks $navigation = new WtPdfNavigationChecks(), private WtPdfDeprecatedChecks $deprecated = new WtPdfDeprecatedChecks())
     {
     }
 
-    public function inspect(DictionaryType $catalog, EffectivePdfVersion $version, WtPdfConformanceLevel $level): WtPdfAuditReport
+    public function inspect(DictionaryType $catalog, EffectivePdfVersion $version, WtPdfConformanceLevel $level, ?WtPdfDeprecatedFileContext $file = null): WtPdfAuditReport
     {
         $findings = [];
         if ($version->value !== PdfVersion::PDF20) {
@@ -58,6 +58,11 @@ final readonly class WtPdfAudit
             ['8.12–8.14', 48, 'Review perceived page numbers, navigation, script interaction, URI image-map alternatives and descriptions of embedded content.'],
         ] as [$clause, $page, $message]) {
             $findings[] = new WtPdfFinding($clause, $page, WtPdfFindingStatus::HumanReviewRequired, $message);
+        }
+        try {
+            array_push($findings, ...$this->deprecated->inspect($catalog, $file));
+        } catch (\InvalidArgumentException|\LogicException $error) {
+            $findings[] = new WtPdfFinding('6.2', 10, WtPdfFindingStatus::AdditionalValidationRequired, 'Deprecated-feature inspection is incomplete: ' . $error->getMessage());
         }
         return new WtPdfAuditReport($level, ...$findings);
     }
