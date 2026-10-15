@@ -77,6 +77,8 @@ jobs:
           python tools/validate_public_key_security.py --php php --pdf-version 2.0
       - name: Verify native source mechanisms with independent oracles
         run: python tools/validate_source_mechanisms.py /tmp/pdf-examples --php php --qpdf qpdf
+      - name: Verify destructive redaction bytes, graph closure and rendered pixels
+        run: python tools/validate_secure_redaction.py --php php --qpdf qpdf --work-dir /tmp/pdf17-redaction
       - name: Verify PDF 2.0 metadata, declarations and encrypted payloads independently
         run: python tools/validate_pdf20_metadata.py --php php --qpdf qpdf --work-dir /tmp/pdf20-metadata
       - name: Verify modern encryption, signatures and PDF MAC independently

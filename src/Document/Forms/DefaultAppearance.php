@@ -17,6 +17,8 @@ final class DefaultAppearance extends LiteralString
 {
     /** @var list<NameType> */
     private readonly array $fonts;
+    /** @var list<Operator> */
+    public readonly array $operators;
 
     public function __construct(Operator ...$operators)
     {
@@ -43,6 +45,7 @@ final class DefaultAppearance extends LiteralString
             throw new \InvalidArgumentException('A default appearance requires a Tf operator.');
         }
         $this->fonts = $fonts;
+        $this->operators = array_values($operators);
         parent::__construct(implode("\n", $bytes));
     }
 

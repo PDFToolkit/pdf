@@ -1,0 +1,28 @@
+{
+  "document": "pdf_reference1-7_addendum_redaction.pdf",
+  "path": "resources/reference-documents/pdf_reference1-7_addendum_redaction.pdf",
+  "sha256": "49ffc2f192b2211f847c6d702077b6f729b594875595bd77f55214029f9d9a58",
+  "physical_pdf_pages": 4,
+  "source_pages": [2, 3, 4],
+  "scope": "Conservative destructive application on explicit normalized PDF object graphs; strict rejection of unsupported semantics and opaque retained resources",
+  "implemented": [
+    "Identity-bound region selection with Rect/QuadPoints precedence and conservative hulls",
+    "Native path/CTM/control-hull/stroke intersection and actual paint-instruction removal",
+    "Whole BT/ET removal by default; optional actual-program geometry capability, never declared FontBBox as proof",
+    "Whole image/Form payload removal and closure of affected shared rendering resources across all pages",
+    "RO precedence and origin alignment; IC transparent default; normalized OverlayText with explicit font encoding/widths, Q and Repeat",
+    "Fresh minimal catalog/page graph without prior revisions, metadata, annotations, semantic alternatives, XFA/forms, attachments, actions or outlines",
+    "Render-resource pruning/whitelisting, unused-font and ToUnicode removal, strict normalized pixel rows",
+    "Explicit external-format sanitizer capability for retained font programs and encoded/profiled images",
+    "Instruction/graph/depth/byte/repetition processing limits and failure before output for unsupported semantics"
+  ],
+  "boundaries": [
+    "No universal arbitrary-PDF editing, implicit external I/O, incremental redaction, string-secret search or steganography detection",
+    "Opaque page/Form streams, unknown/unnormalized graphics state, patterns/shadings, optional visibility, external XObjects and unsafe clipping require normalization or another processor",
+    "The core does not supply an external font-program sanitizer, verified glyph-outline parser, image codec sanitizer or complex text shaper",
+    "Without verified font geometry all text objects on selected pages are conservatively removed; affected images and Forms are indivisible",
+    "Logical structure, original Unicode extraction and interactive forms are intentionally discarded, so no accessibility certification follows"
+  ],
+  "implementation": ["src/Document/Redaction/SecureRedaction.php", "src/Document/Redaction/RedactionContentProcessor.php", "src/Document/Redaction/RedactionResourceCopy.php", "src/Document/Redaction/RedactionOverlayText.php"],
+  "evidence": ["tests/SecureRedactionTest.php", "examples/pdf17-secure-redaction.php", "tools/validate_secure_redaction.py"]
+}
