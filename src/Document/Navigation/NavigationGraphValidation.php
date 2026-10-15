@@ -473,6 +473,7 @@ final readonly class NavigationGraphValidation
                     if (!$actionType instanceof NameType) {
                         throw new \InvalidArgumentException('An active action requires its S name.');
                     }
+                    (new RemoteActionGraphValidation($this->limits))->validate($dictionary, $actionType->value, $graph, $version);
                     if ($actionType->value === 'GoTo') {
                         $target = $graph->entry($dictionary, 'D');
                         if ($target === null) {
