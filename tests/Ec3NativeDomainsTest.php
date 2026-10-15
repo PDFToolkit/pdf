@@ -39,7 +39,7 @@ final class Ec3NativeDomainsTest extends TestCase
     }
 
     #[DataProvider('pdf20Weights')]
-    public function testPdf20FontWeightsUseTheFullNumericRange(int|float $weight): void
+    public function testPdf20FontWeightsUseTheFullIntegerRange(int|float $weight): void
     {
         $descriptor = $this->descriptor($weight);
         $descriptor->validateVersion($this->version('2.0'));
@@ -52,7 +52,7 @@ final class Ec3NativeDomainsTest extends TestCase
 
     public static function pdf20Weights(): iterable
     {
-        foreach ([1, 99.5, 450, 900.5, 1000] as $weight) {
+        foreach ([1, 99, 450, 901, 1000] as $weight) {
             yield [$weight];
         }
     }
@@ -61,13 +61,13 @@ final class Ec3NativeDomainsTest extends TestCase
     public function testWeightsOutsidePdf20DomainAreRejected(int|float $weight): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('EC3 #474');
+        $this->expectExceptionMessage('EC3 #152/#474');
         $this->descriptor($weight);
     }
 
     public static function invalidWeights(): iterable
     {
-        foreach ([0, -1, 1000.5] as $weight) {
+        foreach ([0, -1, 1000.5, 450.5] as $weight) {
             yield [$weight];
         }
     }
@@ -79,6 +79,15 @@ final class Ec3NativeDomainsTest extends TestCase
             $descriptor->validateVersion($this->version('1.7'));
             self::assertSame($weight, $descriptor->get('FontWeight')->value);
         }
+    }
+
+    public function testPdf20RequiresAnExplicitIntegerWeightObject(): void
+    {
+        $descriptor = $this->descriptor(700.0);
+        $descriptor->validateVersion($this->version('1.7'));
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('IntegerType (EC3 #152)');
+        $descriptor->validateVersion($this->version('2.0'));
     }
 
     public function testDeveloperUrlIsRequiredByEffectivePdf20Only(): void
@@ -127,7 +136,7 @@ final class Ec3NativeDomainsTest extends TestCase
 
     private function descriptor(int|float $weight): FontDescriptor
     {
-        return new FontDescriptor(null, new NameType('Shapes'), new FontDescriptorFlags(4), null, new NumericType(0), null, null, null, null, new Entry(new NameType('FontWeight'), new NumericType($weight)));
+        return new FontDescriptor(null, new NameType('Shapes'), new FontDescriptorFlags(4), null, new NumericType(0), null, null, null, null, new Entry(new NameType('FontWeight'), is_int($weight) ? new IntegerType($weight) : new NumericType($weight)));
     }
 
     private function version(string $value): EffectivePdfVersion

@@ -8,7 +8,7 @@ namespace PDF\Specification\Iso32000_2\Dictionary\DocMDPTransformParametersDicti
 
 use PDF\Specification\Iso32000_2\Definition\DocMDPTransformParametersDictionaryTable257Definition;
 use PDF\Syntax\Object\IndirectReference;
-use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\IntegerType;
 
 /** ISO 32000-2:2020 EC3, table 257, /P. */
 final class PEntry extends \PDF\Specification\SchemaEntry
@@ -16,7 +16,7 @@ final class PEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '257';
     public const string KEY = 'P';
 
-    public function __construct(NumericType|IndirectReference $value)
+    public function __construct(IntegerType|IndirectReference $value)
     {
         parent::__construct((new DocMDPTransformParametersDictionaryTable257Definition())->entry('P'), $value);
     }

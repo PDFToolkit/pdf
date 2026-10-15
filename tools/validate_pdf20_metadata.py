@@ -115,7 +115,7 @@ def main() -> None:
         assert len(domains.pages) == root["/Pages"]["/Count"] == 1
         assert len(root["/Pages"]["/Kids"]) == 1
         assert "/Contents" not in domains.pages[0] and "/Resources" in domains.pages[0]
-        assert domains.pages[0]["/Resources"]["/Font"]["/F1"]["/FontDescriptor"]["/FontWeight"] == 450.5
+        assert domains.pages[0]["/Resources"]["/Font"]["/F1"]["/FontDescriptor"]["/FontWeight"] == 450
         radio = root["/OCProperties"]["/D"]["/RBGroups"]
         assert len(radio) == 1 and len(radio[0]) == 2
         assert all(isinstance(item, IndirectObject) for item in radio[0])
@@ -142,7 +142,7 @@ def main() -> None:
     run(arguments.qpdf, "--check", str(decrypted_path))
     decrypted = PdfReader(decrypted_path)
     assert not decrypted.is_encrypted and "after password authentication" in decrypted.pages[0].extract_text()
-    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, continuous font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted one-payload wrapper", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths)}}
+    proof = {"status": "passed", "checks": ["namespace-aware XML and RDF bags", "bilingual title", "distinct document, DPartRoot and marked-content metadata; DPart Metadata forbidden", "DPart reciprocal links and UTF-8 name DPM", "EC3 flat DPart children and page order under all three xref formats", "EC3 nonempty pages, integer font weight, radio arrays and required extension URL", "calibrated colour and exact BPC state", "discoverable AF identity/MIME/source date", "unencrypted one-payload wrapper", "independent AES-256 R6 decryption"], "examples": {path.name: {"bytes": path.stat().st_size, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in (metadata_path, wrapper_path, *branch_paths, *domain_paths)}}
     (output / "metadata-validation.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(proof, indent=2))
 

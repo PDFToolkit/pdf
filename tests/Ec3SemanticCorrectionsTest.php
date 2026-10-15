@@ -77,8 +77,9 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         }
         yield 'radio inner collection empty' => ['99', ['RBGroups' => [[]]], 'nonempty inner arrays'];
         yield 'radio group must be indirect' => ['99', ['RBGroups' => [[new DictionaryType()]]], 'indirect dictionary references'];
+        yield 'font weight must be integer' => ['120', ['FontWeight' => 450.5], 'requires an integer'];
         yield 'font weight too low' => ['120', ['FontWeight' => 0], 'numeric domain'];
-        yield 'font weight too high' => ['120', ['FontWeight' => 1000.5], 'numeric domain'];
+        yield 'font weight too high' => ['120', ['FontWeight' => 1001], 'numeric domain'];
         yield 'empty rich media configuration list' => ['341', ['Configurations' => []], 'at least 1'];
         yield 'direct script file specification' => ['335', ['Scripts' => [new DictionaryType()]], 'indirect dictionary references'];
         yield 'empty page-tree children' => ['30', ['Kids' => []], 'at least 1'];
@@ -120,7 +121,7 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         $this->validate('341', $this->dictionary(['Configurations' => [new IndirectReference(new DictionaryType())]]));
         $this->validate('335', $this->dictionary(['Scripts' => []]));
         $this->validate('30', $this->dictionary(['Kids' => [new IndirectReference(new DictionaryType())], 'Count' => 1]));
-        foreach ([1, 450.5, 1000] as $weight) {
+        foreach ([1, 450, 1000] as $weight) {
             $this->validate('120', $this->dictionary(['FontWeight' => $weight]));
         }
         self::assertTrue(true);
@@ -195,6 +196,22 @@ final class Ec3SemanticCorrectionsTest extends TestCase
         $scripts = new \PDF\Specification\Iso32000_2\Dictionary\RichMediaActivationDictionaryTable335\ScriptsEntry(new ArrayType());
         $activation = new \PDF\Specification\Iso32000_2\Dictionary\RichMediaActivationDictionaryTable335($scripts);
         self::assertStringContainsString('/Scripts []', $activation->toPdf(new SerializationContext()));
+    }
+
+    public function testCorrectedIntegerColumnsStayDistinctFromRealObjects(): void
+    {
+        $catalogue = new Catalogue();
+        foreach (['120' => 'FontWeight', '257' => 'P', '380' => 'GlyphOrientationVertical'] as $table => $key) {
+            $type = $catalogue->dictionary((string) $table)->entry($key)->type;
+            $type->validate(new IntegerType($key === 'P' ? 2 : 90));
+            try {
+                $type->validate(new NumericType($key === 'P' ? 2.0 : 90.0));
+                self::fail('EC3 #152 must reject a real object for ' . $key);
+            } catch (\InvalidArgumentException $error) {
+                self::assertStringContainsString('Expected PDF type integer', $error->getMessage());
+            }
+        }
+        $catalogue->dictionary('380')->entry('GlyphOrientationVertical')->type->validate(new NameType('Auto'));
     }
 
     private function dictionary(array $values): DictionaryType

@@ -37,7 +37,7 @@ Les éléments conservés sont :
   rattachées à l’empreinte de la source canonique ;
 - `extraction-review.json` : grilles abîmées relues, casse des clés, clauses
   exactes, tableaux communs, noms uniques et alternatives fermées ;
-- `reviewed-overrides.json` : les 64 entrées de résumés/corrections du projet, réparties dans 13 tableaux et leurs
+- `reviewed-overrides.json` : les 66 entrées de résumés/corrections du projet, réparties dans 15 tableaux et leurs
   contraintes EC3 sélectionnées, avec conservation de leurs noms publics ;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json` :
   inventaires compilés reproductibles et correspondance des classes.
@@ -75,7 +75,7 @@ renvois, les chemins de polygones et les options de choix.
 composées ; une entrée de catalogue seule ne prouve pas une implémentation sémantique.
 
 Les [revues EC3 natives](ec3-semantic-reviews.json) conservent les identités exactes
-des annotations et leurs chaînes de réponses d’approbation pour 41 annotations distinctes couvrant 23 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
+des annotations et leurs chaînes de réponses d’approbation pour 44 annotations distinctes couvrant 24 problèmes. Le `Path` d’un polygone ignore les `Vertices` présents, malgré
 l’ancienne formulation contradictoire de la grille. `ChoiceField` sélectionne
 explicitement `ChoiceIndexSemantics::Pdf20Ec3` pour les indices corrigés de PDF 2.0 :
 `/I` peut accompagner un choix unique, des valeurs d’export identiques avec des
@@ -102,7 +102,7 @@ restriction MIME corrigée.
 EC3 #271 refuse les nœuds d’arbre de pages vides des documents PDF 2.0 effectifs,
 y compris après promotion du catalogue. Un document blanc requiert donc une
 page blanche explicite avec Resources (#81). #225 autorise RBGroups vide mais
-refuse les collections internes vides. #474 accepte tout FontWeight numérique
+refuse les collections internes vides. #474 accepte tout FontWeight entier
 de 1 à 1000 en PDF 2.0 ; PDF 1.x conserve les valeurs historiques par pas de 100.
 #732 impose une URL directe d’extension ; son unicité reste une recommandation.
 Configurations du tableau 341 devient obligatoire et non vide (#166) ; PV du
@@ -146,3 +146,7 @@ et dans la couverture du lot. Un objet de schéma ne certifie pas le rendu,
 l’accessibilité, la confiance PKI, la sémantique ou la conformité PDF 2.0 complète.
 
 [La migration EC3 des parties documentaires](../document-parts/README.fr.md) couvre les enfants plats, le XMP de DPartRoot et les noms DPM UTF-8.
+
+EC3 #152 exige des valeurs `IntegerType` explicites pour FontWeight en PDF 2.0
+(avec #474), P de DocMDP et les valeurs numériques de GlyphOrientationVertical.
+Les poids fractionnaires sont refusés. La construction PDF 1.x reste distincte.

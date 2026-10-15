@@ -8,7 +8,7 @@ namespace PDF\Specification\Iso32000_2\Dictionary\FontDescriptorsTable120;
 
 use PDF\Specification\Iso32000_2\Definition\FontDescriptorsTable120Definition;
 use PDF\Syntax\Object\IndirectReference;
-use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\IntegerType;
 
 /** ISO 32000-2:2020 EC3, table 120, /FontWeight. */
 final class FontWeightEntry extends \PDF\Specification\SchemaEntry
@@ -16,7 +16,7 @@ final class FontWeightEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '120';
     public const string KEY = 'FontWeight';
 
-    public function __construct(NumericType|IndirectReference $value)
+    public function __construct(IntegerType|IndirectReference $value)
     {
         parent::__construct((new FontDescriptorsTable120Definition())->entry('FontWeight'), $value);
     }

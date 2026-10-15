@@ -13,6 +13,7 @@ use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NumericType;
+use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\StringType;
 use PDF\Syntax\Object\DictionaryType;
 
@@ -60,8 +61,8 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
             }
             $key = $entry->key()->value;
             $value = $entry->value;
-            if ($key === 'FontWeight' && (!$value instanceof NumericType || ($value->value < 1 || $value->value > 1000))) {
-                throw new \InvalidArgumentException('FontWeight is a number between 1 and 1000 inclusive (EC3 #474).');
+            if ($key === 'FontWeight' && (!$value instanceof NumericType || ($value->value < 1 || $value->value > 1000 || floor($value->value) != $value->value))) {
+                throw new \InvalidArgumentException('FontWeight is an integral value between 1 and 1000 inclusive (EC3 #152/#474).');
             }
             if ($key === 'FontStretch' && (!$value instanceof NameType || FontStretch::tryFrom($value->value) === null)) {
                 throw new \InvalidArgumentException('FontStretch selects a Table 122 stretch name.');
@@ -141,6 +142,9 @@ final class FontDescriptor extends ManagedFontDictionary implements VersionedCom
     public function validateVersion(EffectivePdfVersion $version): void
     {
         $weight = $this->get('FontWeight');
+        if ($weight !== null && $version->value === PdfVersion::PDF20 && !$weight instanceof IntegerType) {
+            throw new \LogicException('PDF 2.0 FontWeight requires IntegerType (EC3 #152).');
+        }
         if ($weight instanceof NumericType && $version->value !== PdfVersion::PDF20
             && !in_array($weight->value, [100, 200, 300, 400, 500, 600, 700, 800, 900], false)) {
             throw new \LogicException('FontWeight outside the traditional 100-step weights requires PDF 2.0 (EC3 #474).');

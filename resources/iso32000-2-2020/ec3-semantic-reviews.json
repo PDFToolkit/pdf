@@ -827,7 +827,7 @@
         "Completed"
       ],
       "effective_approval": "Completed",
-      "implemented_scope": "Native FontDescriptor and PDF 2.0 schema admit every finite numeric FontWeight from 1 through 1000 inclusive. Native effective-version validation keeps 100-step historical PDF 1.x weights. Recommended 100-step weights are not treated as mandatory inPDF 2.0.",
+      "implemented_scope": "Native FontDescriptor and PDF 2.0 schema admit integer FontWeight values from 1 through 1000 inclusive, combined with the type correction #152. Effective-version validation keeps 100-step historical PDF 1.x weights. Recommended 100-step weights are not mandatory in PDF 2.0.",
       "implementation": [
         "src/Document/Fonts/FontDescriptor.php",
         "src/Specification/Constraint/NumberEntry.php"
@@ -918,6 +918,72 @@
       "implementation": [
         "src/Specification/Iso32000_2/Definition/RichMediaContentDictionaryTable341Definition.php",
         "src/Specification/Constraint/DictionaryReferenceArray.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 152,
+      "physical_pdf_page": 359,
+      "annotation_name": "dc2108a7-afa3-4568-8bc5-3866ebdc67ea",
+      "approval_chain": [
+        "329884c4-5782-4a73-b327-6775b0bc28e3"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "FontWeight is an integer in the inclusive range 1..1000 when combined with #474. Native effective PDF 2.0 requires an explicit IntegerType; legacy PDF 1.x preserves accepted real-typed traditional weights.",
+      "implementation": [
+        "src/Document/Fonts/FontDescriptor.php",
+        "src/Specification/Iso32000_2/Definition/FontDescriptorsTable120Definition.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 152,
+      "physical_pdf_page": 589,
+      "annotation_name": "68b8ba03-0b04-427e-9500-1f3cad0144cf",
+      "approval_chain": [
+        "c7d3ca44-4659-449a-acaa-9ca4f2fa5ae2"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "DocMDP P is typed integer in the PDF 2.0 schema. Native DocMdpTransform already creates IntegerType permission levels from its closed enum.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/DocMDPTransformParametersDictionaryTable257Definition.php",
+        "src/Document/Signatures/Policies/DocMdpTransform.php"
+      ],
+      "validation": [
+        "tests/Ec3NativeDomainsTest.php",
+        "tests/Ec3SemanticCorrectionsTest.php",
+        "tools/validate_pdf20_metadata.py"
+      ]
+    },
+    {
+      "issue": 152,
+      "physical_pdf_page": 802,
+      "annotation_name": "cc6aaa11-050c-4148-92f1-a15151c2a8ee",
+      "approval_chain": [
+        "302827a5-203d-40d9-80d9-54ccd25c9c10"
+      ],
+      "approval_states": [
+        "Completed"
+      ],
+      "effective_approval": "Completed",
+      "implemented_scope": "GlyphOrientationVertical has PDF 2.0 type integer or name. The existing native StandardStructureAttributes domain enforces /Auto or allowed 90-degree rotations. ISO1 schema remains a separate number-or-name interpretation.",
+      "implementation": [
+        "src/Specification/Iso32000_2/Definition/StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable380Definition.php",
+        "src/Document/Structure/StandardStructureAttributes.php"
       ],
       "validation": [
         "tests/Ec3NativeDomainsTest.php",

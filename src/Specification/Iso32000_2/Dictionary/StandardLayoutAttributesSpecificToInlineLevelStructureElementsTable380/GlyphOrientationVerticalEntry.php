@@ -8,8 +8,8 @@ namespace PDF\Specification\Iso32000_2\Dictionary\StandardLayoutAttributesSpecif
 
 use PDF\Specification\Iso32000_2\Definition\StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable380Definition;
 use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
-use PDF\Syntax\Object\NumericType;
 
 /** ISO 32000-2:2020 EC3, table 380, /GlyphOrientationVertical. */
 final class GlyphOrientationVerticalEntry extends \PDF\Specification\SchemaEntry
@@ -17,7 +17,7 @@ final class GlyphOrientationVerticalEntry extends \PDF\Specification\SchemaEntry
     public const string TABLE = '380';
     public const string KEY = 'GlyphOrientationVertical';
 
-    public function __construct(NumericType|NameType|IndirectReference $value)
+    public function __construct(IntegerType|NameType|IndirectReference $value)
     {
         parent::__construct((new StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable380Definition())->entry('GlyphOrientationVertical'), $value);
     }

@@ -1019,8 +1019,8 @@
       "entries": [
         {
           "name": "FontWeight",
-          "type": "number",
-          "description": "Optional numeric font weight in the inclusive range 1 to 1000. Values 100, 200, 300, 400, 500, 600, 700, 800 and 900 are recommended. Normal weight is 400 and bold is 700; interpretation varies between fonts.",
+          "type": "integer",
+          "description": "Optional integer font weight in the inclusive range 1 to 1000. Values 100, 200, 300, 400, 500, 600, 700, 800 and 900 are recommended. Normal weight is 400 and bold is 700; interpretation varies between fonts.",
           "qualifier": "Optional; PDF 1.5",
           "required": false,
           "conditional": false,
@@ -1033,13 +1033,13 @@
           "fixed_name": null,
           "pdf_page": 359,
           "errata": {
-            "id": "ec3-474-fontweight",
+            "id": "ec3-152-fontweight",
             "pdf_page": 359,
             "review_status": "Completed",
-            "issue_number": 474,
-            "annotation_name": "68e86e6a-6eb7-43a2-8d4a94648edd0ff5"
+            "issue_number": 152,
+            "annotation_name": "dc2108a7-afa3-4568-8bc5-3866ebdc67ea"
           },
-          "description_origin": "normative-source",
+          "description_origin": "project-authored",
           "description_language": "en"
         }
       ]
@@ -1200,6 +1200,81 @@
             "review_status": "Completed",
             "issue_number": 271,
             "annotation_name": "5f43e269-831c-48df-b3f4-902cba8e952f"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "257",
+      "name": "DocMDPTransformParametersDictionaryTable257",
+      "title": "Entries in the DocMDP transform parameters dictionary",
+      "section": "12.8.2.2.2",
+      "pdf_pages": [
+        589
+      ],
+      "entries": [
+        {
+          "name": "P",
+          "type": "integer",
+          "description": "Optional integer permission level: 1 forbids changes; 2 allows form filling, page-template instantiation and signing; 3 additionally allows annotation changes. Default: 2. DSS/document-timestamp maintenance is exempt as specified in the source.",
+          "qualifier": "Optional",
+          "required": false,
+          "conditional": false,
+          "inheritable": false,
+          "introduced_in": null,
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 589,
+          "errata": {
+            "id": "ec3-152-p",
+            "pdf_page": 589,
+            "review_status": "Completed",
+            "issue_number": 152,
+            "annotation_name": "68b8ba03-0b04-427e-9500-1f3cad0144cf"
+          },
+          "description_origin": "normative-source",
+          "description_language": "en"
+        }
+      ]
+    },
+    {
+      "id": "380",
+      "name": "StandardLayoutAttributesSpecificToInlineLevelStructureElementsTable380",
+      "title": "Standard layout attributes specific to inline-level structure elements",
+      "section": "14.8.5.4.4",
+      "pdf_pages": [
+        799,
+        800,
+        801,
+        802
+      ],
+      "entries": [
+        {
+          "name": "GlyphOrientationVertical",
+          "type": "integer or name",
+          "description": "Optional inheritable vertical glyph orientation: /Auto or an integer multiple of 90 degrees from -180 through 360. Default: /Auto. This affects glyph alignment and width as specified in Table 380.",
+          "qualifier": "Optional; inheritable; PDF 1.5",
+          "required": false,
+          "conditional": false,
+          "inheritable": true,
+          "introduced_in": "1.5",
+          "deprecated_in": null,
+          "direct": false,
+          "indirect": false,
+          "array_elements_direct": false,
+          "fixed_name": null,
+          "pdf_page": 802,
+          "errata": {
+            "id": "ec3-152-glyphorientationvertical",
+            "pdf_page": 802,
+            "review_status": "Completed",
+            "issue_number": 152,
+            "annotation_name": "cc6aaa11-050c-4148-92f1-a15151c2a8ee"
           },
           "description_origin": "normative-source",
           "description_language": "en"

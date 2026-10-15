@@ -45,7 +45,7 @@ $format = match ($argv[2] ?? 'table') {
     default => throw new InvalidArgumentException('Unknown cross-reference format.'),
 };
 $rectangle = new Rectangle(new IntegerType(0), new IntegerType(0), new IntegerType(100), new IntegerType(100));
-$descriptor = new FontDescriptor(null, new NameType('ExampleFont'), new FontDescriptorFlags(32), $rectangle, new NumericType(0), new NumericType(700), new NumericType(-200), new NumericType(700), new NumericType(80), new Entry(new NameType('FontWeight'), new NumericType(450.5)));
+$descriptor = new FontDescriptor(null, new NameType('ExampleFont'), new FontDescriptorFlags(32), $rectangle, new NumericType(0), new NumericType(700), new NumericType(-200), new NumericType(700), new NumericType(80), new Entry(new NameType('FontWeight'), new IntegerType(450)));
 $font = new Type1Font(new NameType('ExampleFont'), new SimpleFontMetrics(new SimpleWidths(new IntegerType(65), new NumericType(600)), $descriptor));
 $resources = new ResourceDictionary(new Font(new DictionaryType(new Entry(new NameType('F1'), new IndirectReference($font)))));
 $pages = (new PageTreeNode())->addKid(new PageObject($rectangle, $resources));

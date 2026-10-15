@@ -9370,8 +9370,8 @@
       },
       {
         "name": "FontWeight",
-        "type": "number",
-        "description": "Optional numeric font weight in the inclusive range 1 to 1000. Values 100, 200, 300, 400, 500, 600, 700, 800 and 900 are recommended. Normal weight is 400 and bold is 700; interpretation varies between fonts.",
+        "type": "integer",
+        "description": "Optional integer font weight in the inclusive range 1 to 1000. Values 100, 200, 300, 400, 500, 600, 700, 800 and 900 are recommended. Normal weight is 400 and bold is 700; interpretation varies between fonts.",
         "qualifier": "Optional; PDF 1.5",
         "required": false,
         "conditional": false,
@@ -9384,11 +9384,11 @@
         "fixed_name": null,
         "pdf_page": 359,
         "errata": {
-          "id": "ec3-474-fontweight",
+          "id": "ec3-152-fontweight",
           "pdf_page": 359,
           "review_status": "Completed",
-          "issue_number": 474,
-          "annotation_name": "68e86e6a-6eb7-43a2-8d4a94648edd0ff5"
+          "issue_number": 152,
+          "annotation_name": "dc2108a7-afa3-4568-8bc5-3866ebdc67ea"
         },
         "description_origin": "project-authored",
         "description_language": "en"
@@ -21786,8 +21786,8 @@
       },
       {
         "name": "P",
-        "type": "number",
-        "description": "(Optional) The access permissions granted for this document. Changes to a PDF that are incremental updates which include only the data necessary to add DSS’s 12.8.4.3, \"Document Security Store (DSS)\" and/or document timestamps 12.8.5, \"Document timestamp (DTS) dictionary\" to the document shall not be considered as changes to the document as defined in the choices below. Valid values shall be: 1 No changes to the document shall be permitted; any change to the document shall invalidate the signature. 2 Permitted changes shall be filling in forms, instantiating page templates, and signing; other changes shall invalidate the signature. 3 Permitted changes shall be the same as for 2, as well as annotation creation, deletion, and modification; other changes shall invalidate the signature. Default value: 2.",
+        "type": "integer",
+        "description": "Optional integer permission level: 1 forbids changes; 2 allows form filling, page-template instantiation and signing; 3 additionally allows annotation changes. Default: 2. DSS/document-timestamp maintenance is exempt as specified in the source.",
         "qualifier": "Optional",
         "required": false,
         "conditional": false,
@@ -21799,8 +21799,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 589,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-152-p",
+          "pdf_page": 589,
+          "review_status": "Completed",
+          "issue_number": 152,
+          "annotation_name": "68b8ba03-0b04-427e-9500-1f3cad0144cf"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       },
       {
@@ -33872,8 +33878,8 @@
       },
       {
         "name": "GlyphOrientationVertical",
-        "type": "number or name",
-        "description": "(Optional; inheritable; PDF 1.5) Specifies the orientation of glyphs when the inline-progression direction is top to bottom or bottom to top. Valid values are: angle A number representing the clockwise rotation in degrees of the top of the glyphs relative to the top of the reference area. Shall be a multiple of 90 degrees between -180 and +360. Auto Specifies a default orientation for text, depending on whether it is fullwidth (as wide as it is high). Fullwidth Latin and fullwidth ideographic text (excluding ideographic punctuation) shall be set with an angle of 0. Ideographic punctuation and other ideographic characters having alternate horizontal and vertical forms shall use the vertical form of the glyph. Non-fullwidth text shall be set with an angle of 90. Default value: Auto. NOTE 3 This attribute is used most commonly to differentiate between the preferred orientation of alphabetic (non-ideographic) text in vertically written Japanese documents (Auto or 90) and the orientation of the ideographic characters and/or alphabetic (non- ideographic) text in western signage and advertising (90). This attribute shall affect both the alignment and width of the glyphs. If a glyph is perpendicular to the vertical baseline, its horizontal alignment point shall be aligned with the alignment baseline for the script to which the glyph belongs. The width of the glyph area shall be determined from the horizontal width font characteristic for the glyph.",
+        "type": "integer or name",
+        "description": "Optional inheritable vertical glyph orientation: /Auto or an integer multiple of 90 degrees from -180 through 360. Default: /Auto. This affects glyph alignment and width as specified in Table 380.",
         "qualifier": "Optional; inheritable; PDF 1.5",
         "required": false,
         "conditional": false,
@@ -33885,8 +33891,14 @@
         "array_elements_direct": false,
         "fixed_name": null,
         "pdf_page": 802,
-        "errata": null,
-        "description_origin": "normative-source",
+        "errata": {
+          "id": "ec3-152-glyphorientationvertical",
+          "pdf_page": 802,
+          "review_status": "Completed",
+          "issue_number": 152,
+          "annotation_name": "cc6aaa11-050c-4148-92f1-a15151c2a8ee"
+        },
+        "description_origin": "project-authored",
         "description_language": "en"
       }
     ],

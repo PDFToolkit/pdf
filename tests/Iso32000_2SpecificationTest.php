@@ -268,8 +268,8 @@ final class Iso32000_2SpecificationTest extends TestCase
             }
             $variables += count($table['variable_entries']);
         }
-        self::assertSame(64, $authored);
-        self::assertSame(1647, $normative);
+        self::assertSame(66, $authored);
+        self::assertSame(1645, $normative);
         self::assertSame(7, $variables);
     }
 

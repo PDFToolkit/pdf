@@ -1356,7 +1356,8 @@
       "arguments": {
         "key": "FontWeight",
         "minimum": 1,
-        "maximum": 1000
+        "maximum": 1000,
+        "integer": true
       }
     },
     {

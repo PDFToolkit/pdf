@@ -35,7 +35,7 @@ The retained inputs are:
   to the canonical source fingerprint;
 - `extraction-review.json`: reviewed broken grids, capitalization hints, exact
   clauses, common table relationships, singleton names and closed name alternatives;
-- `reviewed-overrides.json`: 64 authored summary/overlay entries across 13 tables and selected EC3
+- `reviewed-overrides.json`: 66 authored summary/overlay entries across 15 tables and selected EC3
   constraints, retaining their public class names;
 - `dictionaries.json`, `tables.json`, `classes.json`, `generated-files.json`:
   reproducible compiled inventories and concrete class mapping.
@@ -70,7 +70,7 @@ and serialization execute these immutable composed rules; a catalogue entry alon
 does not establish a semantic implementation.
 
 The [native EC3 reviews](ec3-semantic-reviews.json) retain exact annotation names
-and approval reply chains for 41 distinct annotations across 23 issues. A polygon `Path` ignores
+and approval reply chains for 44 distinct annotations across 24 issues. A polygon `Path` ignores
 accompanying `Vertices`, including the obsolete contradictory grid wording.
 `ChoiceField` explicitly selects `ChoiceIndexSemantics::Pdf20Ec3` for the corrected
 PDF 2.0 index rules: `/I` may accompany a single selection, duplicate export values
@@ -93,7 +93,7 @@ a catalog upgrade to PDF 2.0 activates the corrected MIME restriction.
 EC3 #271 rejects empty page-tree nodes in effective PDF 2.0 documents, including
 catalog upgrades. A blank document therefore needs one explicit blank page with
 Resources (#81). #225 allows empty outer RBGroups but rejects empty inner
-collections. #474 accepts every numeric FontWeight from 1 through 1000 in PDF 2.0;
+collections. #474 accepts every integer FontWeight from 1 through 1000 in PDF 2.0;
 PDF 1.x retains the historical 100-step values. #732 requires a direct developer
 extension URL; URL uniqueness remains a recommendation. Table 341 Configurations
 is required and nonempty (#166); Table 322 PV and Table 335 Scripts are available
@@ -133,3 +133,7 @@ A schema object does not certify rendering, accessibility, PKI trust, content
 semantics or complete PDF 2.0 conformance.
 
 [Document-part EC3 migration](../document-parts/README.md) covers flat children, DPartRoot XMP and UTF-8 DPM names.
+
+EC3 #152 requires explicit `IntegerType` values for PDF 2.0 FontWeight (combined
+with #474), DocMDP P and numeric GlyphOrientationVertical values. Fractional font
+weights are rejected. Existing PDF 1.x descriptor construction remains separate.
