@@ -35,9 +35,23 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
     public readonly ?SignatureTimeStampSeed $timeStamp;
     public readonly bool $addRevocation;
 
-    public function __construct(public readonly SignatureSeedFlags $flags = new SignatureSeedFlags(), Entry ...$entries)
+    public readonly SignatureSeedSemantics $semantics;
+
+    public function __construct(public readonly SignatureSeedFlags $flags = new SignatureSeedFlags(), Entry|SignatureSeedSemantics ...$entries)
     {
-        $dictionary = new DictionaryType(...$entries);
+        $selected = null;
+        $values = [];
+        foreach ($entries as $entry) {
+            if ($entry instanceof Entry) {
+                $values[] = $entry;
+            } elseif ($selected !== null) {
+                throw new \InvalidArgumentException('A signature seed selects one explicit normative edition.');
+            } else {
+                $selected = $entry;
+            }
+        }
+        $this->semantics = $selected ?? SignatureSeedSemantics::Pdf17;
+        $dictionary = new DictionaryType(...$values);
         if ($dictionary->has('Type') || $dictionary->has('Ff')) {
             throw new \InvalidArgumentException('Seed Type/Ff are constructor-owned.');
         }
@@ -80,7 +94,13 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
             if (!$version instanceof NumericType || $version->value < 0) {
                 throw new \InvalidArgumentException('Seed V is a nonnegative real parser capability.');
             }
-            $dictionary = $dictionary->with(new Entry(new NameType('V'), new RealType($version->value)));
+            if ($this->semantics === SignatureSeedSemantics::Pdf20) {
+                if (!$version instanceof IntegerType) {
+                    throw new \InvalidArgumentException('PDF 2.0 seed V is an integer parser capability.');
+                }
+            } else {
+                $dictionary = $dictionary->with(new Entry(new NameType('V'), new RealType($version->value)));
+            }
         }
         $choices = [];
         foreach (['Reasons', 'LegalAttestation'] as $key) {
@@ -128,7 +148,7 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
         if ($appearance !== null && !$appearance instanceof TextString) {
             throw new \InvalidArgumentException('AppearanceFilter is the text name of an explicit signature appearance.');
         }
-        parent::__construct(new SignatureFieldSeedValueDictionaryTable8_83Definition(), new Entry(new NameType('Type'), new NameType('SV')), new Entry(new NameType('Ff'), $flags), ...iterator_to_array($dictionary->entries()));
+        parent::__construct($this->semantics === SignatureSeedSemantics::Pdf20 ? new \PDF\Specification\Iso32000_2\Definition\SignatureFieldSeedValueDictionaryTable237Definition() : new SignatureFieldSeedValueDictionaryTable8_83Definition(), new Entry(new NameType('Type'), new NameType('SV')), new Entry(new NameType('Ff'), $flags), ...iterator_to_array($dictionary->entries()));
     }
 
     /** Table234: the first supported preferred encoding must be selected, even for optional preferences. */
@@ -168,12 +188,8 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
         if ($version instanceof NumericType && $this->flags->requires(SignatureSeedFlag::ParserCapability) && $choice->capabilities->seedParserCapability->value < $version->value) {
             throw new \InvalidArgumentException('The selected handler cannot recognize the required seed parser version.');
         }
-        // Table234 describes DSA/SHA1 within the DigestMethod entry; an absent entry adds no restriction.
-        if ($this->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $choice->digest !== SignatureDigestMethod::SHA1) {
-            throw new \InvalidArgumentException('ISO seed digest rules require SHA1 for DSA credentials.');
-        }
-        if ($certificate->keyAlgorithm() !== SignatureKeyAlgorithm::DSA && $this->digests !== null && $this->flags->requires(SignatureSeedFlag::DigestMethod) && !in_array($choice->digest, $this->digests, true)) {
-            throw new \InvalidArgumentException('The selected RSA digest violates the required DigestMethod seed.');
+        if (!$this->acceptsDigest($choice->digest, $certificate)) {
+            throw new \InvalidArgumentException('The selected digest violates the required DigestMethod seed or its historical DSA rule.');
         }
         if ($choice->format === SignatureFormat::X509RsaSha1 && $certificate->keyAlgorithm() !== SignatureKeyAlgorithm::RSA) {
             throw new \InvalidArgumentException('The PKCS#1 x509.rsa_sha1 format requires RSA credentials.');
@@ -202,6 +218,19 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
         }
         $this->assertEvidenceChoice($choice);
         $this->certificate?->validateFacts($certificate, $urlUsage);
+    }
+
+    /** Mechanism capability and actual output verification remain mandatory after seed negotiation. */
+    public function acceptsDigest(SignatureDigestMethod $digest, SignatureCertificateFacts $certificate): bool
+    {
+        if ($this->semantics === SignatureSeedSemantics::Pdf20 && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::EdDSA) {
+            // EC3 #158: Ed25519 and Ed448 have intrinsic digests; the actual curve is verified against output.
+            return in_array($digest, [SignatureDigestMethod::SHA512, SignatureDigestMethod::SHAKE256], true);
+        }
+        if ($this->semantics === SignatureSeedSemantics::Pdf17 && $this->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA) {
+            return $digest === SignatureDigestMethod::SHA1;
+        }
+        return $this->digests === null || !$this->flags->requires(SignatureSeedFlag::DigestMethod) || in_array($digest, $this->digests, true);
     }
 
     public function validateEvidence(SignatureSigningChoice $choice, SignatureValue $value, SignatureCertificateFacts $certificate, SignatureSigningEvidence $evidence): void
@@ -259,6 +288,9 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
                 \PDF\Document\Extensions\IsoTechnicalSpecification::HashAlgorithms->validate($catalog);
             }
         }
+        if ($this->semantics === SignatureSeedSemantics::Pdf20) {
+            return;
+        }
         $version = $this->get('V');
         if (!$this->has('LockDocument') && !$this->has('AppearanceFilter') && ($this->flags->integer() & 384) === 0 && (!$version instanceof NumericType || $version->value < 3)) {
             return;
@@ -274,6 +306,12 @@ final class SignatureSeedValue extends ImmutableSignatureDictionary implements C
 
     public function validateVersion(EffectivePdfVersion $version): void
     {
+        if ($this->semantics === SignatureSeedSemantics::Pdf20) {
+            $version->require(PdfVersion::PDF20, 'PDF 2.0 signature seed semantics');
+        }
+        if ($version->value === PdfVersion::PDF20 && $this->has('V') && !$this->get('V') instanceof IntegerType) {
+            throw new \InvalidArgumentException('The effective PDF 2.0 seed V is an integer parser capability.');
+        }
         foreach ($this->digests ?? [] as $digest) {
             if (in_array($digest, [SignatureDigestMethod::SHA3_256, SignatureDigestMethod::SHA3_384, SignatureDigestMethod::SHA3_512, SignatureDigestMethod::SHAKE256], true)) {
                 $version->require(PdfVersion::PDF20, 'ISO/TS 32001 signature seed digests');

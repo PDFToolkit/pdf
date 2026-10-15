@@ -73,6 +73,9 @@ def validate_signature(record: dict) -> None:
     else:
         public.verify(signature, signed_bytes)
     macs = [attribute for attribute in signer["unsigned_attrs"] if attribute["type"].dotted == "1.0.32004.1.2"]
+    if not record.get('mac', True):
+        assert not macs
+        return
     mac, = macs
     token, = mac["values"]
     validate_token(token.dump(), b"K" * 32, b"S" * 32, data, signature)
@@ -135,11 +138,31 @@ def main() -> None:
             tampered += attacks
         for signature in manifest["signatures"]:
             validate_signature(signature)
+        for record in manifest['seed_signatures']:
+            source = directory / record['file']
+            if options.qpdf:
+                subprocess.run([options.qpdf, '--check', str(source)], check=True, capture_output=True)
+            from pypdf import PdfReader
+            reader = PdfReader(source, strict=True)
+            field = reader.trailer['/Root']['/AcroForm']['/Fields'][0].get_object()
+            seed = field['/SV']
+            assert seed['/V'] == 3 and type(seed['/V']).__name__ == 'NumberObject'
+            assert seed['/DigestMethod'] == ['/SHA256']
+            signature = field['/V']
+            ranges = signature['/ByteRange']
+            raw = source.read_bytes()
+            assert ranges[0] == 0 and ranges[2] + ranges[3] == len(raw)
+            covered = raw[:ranges[1]] + raw[ranges[2]:]
+            assert covered == base64.b64decode(record['bytes'])
+            physical = signature['/Contents'].original_bytes
+            assert physical.startswith(base64.b64decode(record['cms']))
+            assert not any(physical[len(base64.b64decode(record['cms'])):])
+            validate_signature(record)
         for token in manifest["tokens"]:
             validate_token(base64.b64decode(token["cms"]), b"K" * 32, b"S" * 32, b"document")
             validate_token(base64.b64decode(token["signedCms"]), b"K" * 32, b"S" * 32, b"document", b"signature")
         print(f"Verified {len(manifest['pdfs'])} real password/public-key PDFs, {prefixes} historical/fallback revisions with both password access levels or recipient credentials, "
-              f"{tampered} tampering rejections, {len(manifest['signatures'])} independent curve/digest CMS signatures and six MAC digests.")
+              f"{tampered} tampering rejections, {len(manifest['signatures'])} independent curve/digest CMS signatures, {len(manifest['seed_signatures'])} actual PDF2 EdDSA seed signatures and six MAC digests.")
 
 
 if __name__ == "__main__":

@@ -274,3 +274,9 @@ cryptographic and permission-word checks, not independent UR policy approval.
 Explicit `ButtonFieldSemantics::Pdf20` on `ButtonField` allows radio normal appearances containing only the on state: `Off` is optional. `AS` still agrees with `V`. Checkboxes retain their mandatory `Off` appearance. This semantics requires effective PDF 2.0, including a catalog upgrade. It also permits retaining pushbutton `V`/`DV` without assigning them new behaviour. Historical semantics remains the default.
 
 `TextField` accepts an explicit physical `NullType`; inherited-value resolution treats null as an absent entry. Twelve additional independent PDFs exercise radio transitions A → B → Off under P2/P3, CMS integrity, unchanged appearance references and 24 rendered pixels. pyHanko’s difference-policy opinion is recorded separately.
+
+## PDF 2.0 signature seed semantics
+
+Choose `SignatureSeedSemantics::Pdf20` explicitly when constructing `SignatureSeedValue` for PDF 2.0. `V` is an `IntegerType`; capability 3 covers the PDF 2.0 entries. PDF 2.0 `LockDocument`, `AppearanceFilter` and capability 3 do not require an Adobe extension declaration. The historical default retains the Adobe real-valued `V` and declaration checks. Frozen signing derives the edition again from the actual header/catalog, so a declared construction policy cannot bypass the effective PDF version.
+
+EC3 #158 ignores the seed digest list for intrinsic EdDSA mechanisms. The backend still supplies its supported digest and proves the actual certificate, curve, digest and CMS bytes; a single available RSA digest is not an intrinsic-mechanism exemption. PDF 2.0 DSA uses the listed digest constraints, while the historical DSA/SHA1 seed rule remains specific to PDF 1.7. The crypto oracle checks six complete Ed25519/Ed448 PDFs with conflicting mandatory SHA256 seeds and integer `V`, covering all three cross-reference formats.

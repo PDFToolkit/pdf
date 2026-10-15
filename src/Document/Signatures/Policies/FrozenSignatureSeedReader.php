@@ -69,6 +69,8 @@ final readonly class FrozenSignatureSeedReader
             }
             $entries[] = new Entry($entry->key, $value);
         }
+        $version = new \PDF\Syntax\FileStructure\EffectivePdfVersion($this->graph->revision->header, $this->graph->catalog);
+        $entries[] = $version->value === \PDF\Syntax\FileStructure\PdfVersion::PDF20 ? SignatureSeedSemantics::Pdf20 : SignatureSeedSemantics::Pdf17;
         return new SignatureSeedValue(new SignatureSeedFlags(...$flags), ...$entries);
     }
 

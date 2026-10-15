@@ -6,11 +6,7 @@ namespace PDF\Document\Signatures;
 
 use PDF\Document\Signatures\Policies\SignatureCertificateFacts;
 use PDF\Document\Signatures\Policies\SignatureDigestMethod;
-use PDF\Document\Signatures\Policies\SignatureKeyAlgorithm;
-use PDF\Document\Signatures\Policies\SignatureSeedFlag;
 use PDF\Document\Signatures\Policies\SignatureSeedValue;
-use PDF\Syntax\Object\ArrayType;
-use PDF\Syntax\Object\NameType;
 
 /** Negotiate only methods the actual selected backend can emit; Table234 constrains RSA and DSA differently. */
 final readonly class SignatureDigestSelection
@@ -25,20 +21,9 @@ final readonly class SignatureDigestSelection
             throw new \LogicException('The selected backend cannot emit the requested signature digest.');
         }
         $candidates = $requested === null ? $supported : [$requested];
-        $methods = $seed?->get('DigestMethod');
-        $required = $seed !== null && $seed->flags->requires(SignatureSeedFlag::DigestMethod) && $methods instanceof ArrayType;
         foreach ($candidates as $candidate) {
-            if ($seed !== null && $seed->has('DigestMethod') && $certificate->keyAlgorithm() === SignatureKeyAlgorithm::DSA && $candidate !== SignatureDigestMethod::SHA1) {
+            if ($seed !== null && !$seed->acceptsDigest($candidate, $certificate)) {
                 continue;
-            }
-            if ($required && $certificate->keyAlgorithm() !== SignatureKeyAlgorithm::DSA) {
-                $accepted = false;
-                foreach ($methods->items as $method) {
-                    $accepted = $accepted || ($method instanceof NameType && $method->value === $candidate->value);
-                }
-                if (!$accepted) {
-                    continue;
-                }
             }
             return $candidate;
         }

@@ -137,5 +137,14 @@ foreach ([SignatureDigestMethod::SHA256, SignatureDigestMethod::SHA384, Signatur
     $mac = new PdfMacTokenComposer(new FileEncryptionKey(str_repeat('K', 32)), str_repeat('S', 32), $random, $digest);
     $manifest['tokens'][] = ['digest' => $digest->hashName(), 'cms' => base64_encode($mac->token('document')), 'signedCms' => base64_encode($mac->token('document', 'signature'))];
 }
+$manifest['seed_signatures'] = [];
+foreach (['Ed25519', 'Ed448'] as $name) {
+    foreach (CrossReferenceFormat::cases() as $format) {
+        $fixture = new \PDF\Tests\Support\SignatureSeedEc3Fixture($name, $format);
+        $filename = 'seed-' . $name . '-' . $format->name . '.pdf';
+        $fixture->signed->revision->writeTo($output . '/' . $filename);
+        $manifest['seed_signatures'][] = ['file' => $filename, 'curve' => $name, 'digest' => $fixture->operation->choice->digest->hashName(), 'bytes' => base64_encode($fixture->prepared->coveredBytes()), 'cms' => base64_encode($fixture->signed->value->bytes), 'certificate' => $fixture->certificate, 'mac' => false];
+    }
+}
 file_put_contents($output . '/manifest.json', json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR) . "\n");
 echo count($manifest['pdfs']) . ' PDFs, ' . count($manifest['signatures']) . ' curve/digest signatures and six MAC digests generated.' . PHP_EOL;
