@@ -163,6 +163,11 @@
         46
       ],
       "mechanisms": "Explicit bounded DTD-free XML rich-text backend compares paragraph/span text, Unicode/entity decoding and line endings to inherited V; unsupported richer textual semantics stay pending."
+    },
+    {
+      "clauses": "8.4.5.5.1, 8.4.5.9",
+      "pages": [33, 35],
+      "mechanisms": "Managed Type3 byte encodings select actual CharProcs. Rendered glyph programs, auxiliary fonts, nested Forms and local/inherited resources share the enclosing operation/text/depth budgets. Undefined and explicit .notdef codes are detected. ISO2 Type3 modes3/7 suppress glyph rendering; generic font programs remain external."
     }
   ],
   "additional_validation_required": [
@@ -171,7 +176,7 @@
     "Opaque content, generic XMP and external predefined CMap mappings require independent parsing/validation; the audit does not silently infer their semantics.",
     "MathML presentation grammar and semantic suitability require external MathML validation. Core namespace recognition is not a MathML validator.",
     "Language correctness and changes, semantic table-header applicability/completeness, omitted continued-list relationships, perceived page-label correspondence require explicit human or external evidence. Rich-text cases beyond the explicitly selected native XML backend require an explicit richer parser.",
-    "Font usage follows typed page, nested Form, annotation-appearance and selected tiling-pattern content; selected Type3 CharProc auxiliary font usage still requires independent inspection. Opaque/generic maps and font programs are never assumed validated."
+    "Font usage follows typed page, nested Form, annotation-appearance, selected tiling-pattern and managed selected Type3 glyph content. Generic Type3 dictionaries, opaque maps and font programs still require independent parsing. The independent oracle discloses Poppler's observed Type3 Tr7 rendering difference rather than claiming those pixels confirm ISO2 suppression."
   ],
   "human_review_required": [
     "Real-content/artifact classification, logical reading order, grouping intent and semantic structure-type choice",
@@ -187,7 +192,9 @@
     "tests/StructureDestinationTest.php",
     "examples/pdf20-structure-destinations.php",
     "tools/validate_pdf20_structure_destinations.py",
-    "tests/WtPdfRichTextTest.php"
+    "tests/WtPdfRichTextTest.php",
+    "tests/WtPdfType3UsageTest.php",
+    "tools/validate_wtpdf_type3_usage.py"
   ],
   "requirement_inventory": "resources/wtpdf-1.0/requirements.json"
 }

@@ -1981,15 +1981,18 @@
       ],
       "aspect": "Rendered fonts require an embedded program",
       "status": "executed",
-      "justification": "Actual typed text-showing operations distinguish Tr3 from rendered text; Type3 is intrinsically embedded.",
+      "justification": "Actual typed text-showing operations distinguish Tr3 from rendered text. Managed Type3 CharProcs are intrinsically embedded; selected glyph programs are recursively checked for auxiliary fonts, with their actual resources and shared work budgets. Type3 modes3/7 do not render those descriptions under ISO2 9.3.6.",
       "implementation_or_boundary": [
         "src/Document/Structure/WtPdfFontUsageChecks.php",
-        "src/Document/Structure/WtPdfGraphChecks.php"
+        "src/Document/Structure/WtPdfGraphChecks.php",
+        "src/Document/Fonts/Type3GlyphSelection.php"
       ],
       "evidence": [
         "tests/WtPdfAuditTest.php",
         "tests/WtPdfRequirementsTest.php",
-        "tests/StructureNamespaceTest.php"
+        "tests/StructureNamespaceTest.php",
+        "tests/WtPdfType3UsageTest.php",
+        "tools/validate_wtpdf_type3_usage.py"
       ]
     },
     {
@@ -2124,17 +2127,19 @@
       "physical_pdf_pages": [
         35
       ],
-      "aspect": "No native Type0 .notdef CID/GID use",
+      "aspect": "No native Type0 .notdef CID/GID or managed Type3 undefined glyph use",
       "status": "executed",
-      "justification": "Native decoding rejects unmapped codes, CID zero and zero/absent glyph indices in typed maps regardless of Tr.",
+      "justification": "Native decoding rejects unmapped codes, CID zero and zero/absent glyph indices in typed maps regardless of Tr. Managed Type3 byte encodings reject shown undefined codes and explicit .notdef names without inventing a default glyph.",
       "implementation_or_boundary": [
         "src/Document/Structure/WtPdfFontUsageChecks.php",
-        "src/Document/Structure/WtPdfGraphChecks.php"
+        "src/Document/Structure/WtPdfGraphChecks.php",
+        "src/Document/Fonts/Type3GlyphSelection.php"
       ],
       "evidence": [
         "tests/WtPdfAuditTest.php",
         "tests/WtPdfRequirementsTest.php",
-        "tests/StructureNamespaceTest.php"
+        "tests/StructureNamespaceTest.php",
+        "tests/WtPdfType3UsageTest.php"
       ]
     },
     {
