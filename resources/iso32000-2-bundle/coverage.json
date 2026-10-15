@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "release": "0.7.0",
+  "release": "0.9.0",
   "source_manifest": "resources/iso32000-2-bundle/sources.json",
   "interpretation": "Per-document implementation and evidence. Source retention, object definitions, native algorithms, graph validation and conformance are distinct. No aggregate conformance percentage is asserted.",
   "documents": [
@@ -17,7 +17,8 @@
         "src/Document/Geospatial",
         "src/Document/Signatures/DocumentTimestampGraphValidation.php",
         "src/Document/Navigation/StructureDestination.php",
-        "src/Document/Fonts/Pdf20FontGraphValidation.php"
+        "src/Document/Fonts/Pdf20FontGraphValidation.php",
+        "resources/graph-semantics/coverage.json"
       ],
       "validation": [
         "tests/Iso32000_2SpecificationTest.php",
@@ -101,6 +102,7 @@
       "status": "native-pdf-mac-and-revision-integration",
       "implementation": [
         "src/Security/PdfMacTokenComposer.php",
+        "src/Security/PdfMacTokenVerifier.php",
         "src/Security/PdfMacSignatureAttachment.php",
         "src/Serialization/FileWriter.php",
         "src/Serialization/IncrementalWriter.php",
@@ -109,6 +111,9 @@
       "validation": [
         "tests/Iso32000CryptographyTest.php",
         "tests/PdfMacWriterTest.php",
+        "tests/PdfMacTokenVerifierTest.php",
+        "tests/PdfMacAlgorithmIdentifierTest.php",
+        "tests/Revision5MacPermissionsTest.php",
         "tools/validate_iso32000_crypto.py"
       ],
       "limits": [
@@ -160,11 +165,17 @@
       "implementation": [
         "src/Document/Structure/WtPdfAudit.php",
         "src/Document/Structure/WtPdfFontUsageChecks.php",
+        "src/Document/Fonts/Type3GlyphSelection.php",
+        "src/Document/Structure/WtPdfDeprecatedChecks.php",
+        "resources/wtpdf-1.0/deprecations/coverage.json",
         "resources/wtpdf-1.0/coverage.json",
         "resources/wtpdf-1.0/requirements.json"
       ],
       "validation": [
         "tests/WtPdfAuditTest.php",
+        "tests/WtPdfType3UsageTest.php",
+        "tests/WtPdfDeprecatedFeaturesTest.php",
+        "tools/validate_wtpdf_type3_usage.py",
         "tools/validate_pdf20_tagging.py",
         "examples/pdf20-tagged-namespaces.php",
         "tests/WtPdfRequirementsTest.php",
@@ -172,7 +183,7 @@
         "tools/check_wtpdf_requirements.py"
       ],
       "limits": [
-        "Detected failures, human review and additional validation are separate report states.",
+      "Detected failures, SHOULD recommendations, human review and additional validation are separate report states.",
         "Role appropriateness, reading order, alternative descriptions, form context and faithful meaning need human evidence.",
         "Exhaustive font-program checks, licence rights, some metrics and external grammars require additional validation.",
         "No WTPDF or PDF/UA-2 certification is asserted by assertNoDetectedFailures()."
