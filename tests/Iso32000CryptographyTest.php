@@ -26,6 +26,7 @@ use PDF\Security\PasswordAccess;
 use PDF\Security\Pdf20Permissions;
 use PDF\Security\PdfMacSignatureAttachment;
 use PDF\Security\PdfMacTokenComposer;
+use PDF\Security\PdfMacTokenVerifier;
 use PDF\Security\PreparedPassword;
 use PDF\Security\RandomSource;
 use PDF\Security\Shake256;
@@ -112,7 +113,7 @@ final class Iso32000CryptographyTest extends TestCase
     {
         $key = new FileEncryptionKey(str_repeat('K', 32));
         $composer = new PdfMacTokenComposer($key, str_repeat('S', 32), new SystemRandomSource(), $digest);
-        $verifier = new PdfMacTokenComposer($key, str_repeat('S', 32), new SystemRandomSource());
+        $verifier = new PdfMacTokenVerifier($key, str_repeat('S', 32));
         $token = $composer->token('document');
         self::assertSame($composer->tokenLength(), strlen($token));
         $verifier->verify($token, 'document');
@@ -174,6 +175,7 @@ final class Iso32000CryptographyTest extends TestCase
         $attachment = new PdfMacSignatureAttachment();
         $attached = $attachment->attach($signature, $input->coveredBytes, $mac);
         $attachment->verify($attached, $input->coveredBytes, $mac);
+        $attachment->verify($attached, $input->coveredBytes, new PdfMacTokenVerifier(new FileEncryptionKey(str_repeat('K', 32)), str_repeat('S', 32)));
         self::assertSame($attachment->signatureValue($signature), $attachment->signatureValue($attached));
         self::assertSame($digest, $backend->verify(new SignatureVerificationInput($input->coveredBytes, $attached, $input->format, $input->certificate))->algorithms->digest);
         $this->expectException(\InvalidArgumentException::class);

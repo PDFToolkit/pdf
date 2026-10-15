@@ -40,7 +40,7 @@ final readonly class PdfMacSignatureAttachment
         return $signer[$index]->value;
     }
 
-    public function verify(SignatureValue $signature, string $coveredBytes, PdfMacTokenComposer $composer): void
+    public function verify(SignatureValue $signature, string $coveredBytes, PdfMacTokenComposer|PdfMacTokenVerifier $composer): void
     {
         [, , $signer, $index] = $this->parts($signature);
         $attrs = isset($signer[$index + 1]) ? $signer[$index + 1]->requireTag(161)->children() : [];
