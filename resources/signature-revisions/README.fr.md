@@ -186,13 +186,13 @@ intersections d’opération et de sauvegarde. `IncrementalSignaturePermissionsT
 conserve les attaques sur points d’entrée, sorties opaques et historiques fournis.
 
 `tools/validate_incremental_permissions.py` utilise pyHanko 0.37.0 non modifié,
-qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 272
+qpdf et Poppler. Le candidat passe sous PHP 8.3/8.4/8.5 : 113 refus natifs et 284
 PDF contrôlés indépendamment par runtime ; 32 combinaisons natives de formulaire
 et 32 remplissages indépendants ; quatre chaînes d’annotations P3 ; 198 pixels
 contrôlés (144 boutons, 48 annotations, six attaque d’apparence partagée). UR3
 apporte dix sources signées, cinq remplissages autorisés et 15 fichiers CMS
 vérifiés indépendamment ; altérer un octet signé est détecté. Ces contrôles
-portent sur CMS/structure/rendu, pas 272 approbations de permissions ni une
+portent sur CMS/structure/rendu, pas 284 approbations de permissions ni une
 décision indépendante d’autorité de droits d’usage.
 
 La politique pyHanko inchangée confirme les 16 combinaisons `Tx`/`Ch`, mais renvoie
@@ -284,3 +284,9 @@ gestionnaires couverts ; pypdf et qpdf vérifient R5 historique, que pyHanko ne 
 le cache d’objets déchiffrés car les signatures UR sont hors de l’arbre des champs.
 Ces preuves portent sur les octets, la cryptographie et les mots de permissions,
 pas sur une approbation indépendante de la politique UR.
+
+## Boutons et valeurs nulles — EC3
+
+`ButtonFieldSemantics::Pdf20`, fourni explicitement à `ButtonField`, autorise les boutons radio dont l’apparence normale ne contient que l’état actif : `Off` devient facultatif. L’état `AS` reste cohérent avec `V`. Les cases à cocher conservent leur apparence `Off` obligatoire. Cette sémantique exige la version effective PDF 2.0, y compris après une mise à niveau du catalogue. Elle permet aussi de conserver `V`/`DV` dans les boutons poussoirs sans leur attribuer un nouveau comportement. La sémantique historique reste celle par défaut.
+
+Un `TextField` accepte `NullType` comme valeur physique explicite ; la résolution des valeurs héritées traite null comme une entrée absente. Douze PDF indépendants supplémentaires vérifient les transitions radio A → B → Off sous P2/P3, l’intégrité CMS, les références d’apparence inchangées et 24 pixels rendus. L’avis de modification de pyHanko est consigné séparément.

@@ -11,6 +11,7 @@ use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\IntegerType;
 use PDF\Syntax\Object\NameType;
+use PDF\Syntax\Object\NullType;
 
 /** A document-scoped field-tree builder (ISO 12.7.3, PDF pp.440–443). */
 abstract class Field extends SchemaDictionary
@@ -77,18 +78,19 @@ abstract class Field extends SchemaDictionary
     public function effective(string $key): ?BasicType
     {
         $local = parent::get($key);
-        if ($local !== null) {
+        if ($local !== null && !$local instanceof NullType) {
             return $local;
         }
         if ($this->definition()->has($key) && $this->definition()->entry($key)->requirement->inheritable) {
             for ($ancestor = $this->parentField; $ancestor !== null; $ancestor = $ancestor->parent()) {
                 $value = $ancestor->get($key);
-                if ($value !== null) {
+                if ($value !== null && !$value instanceof NullType) {
                     return $value;
                 }
             }
         }
-        return $this->owningTree?->defaultValue($key);
+        $default = $this->owningTree?->defaultValue($key);
+        return $default instanceof NullType ? null : $default;
     }
 
     public function flags(): int

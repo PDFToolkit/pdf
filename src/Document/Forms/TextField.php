@@ -13,11 +13,12 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StringType;
 use PDF\Syntax\Object\StreamObject;
 use PDF\Syntax\Object\IndirectReference;
+use PDF\Syntax\Object\NullType;
 
 /** Text-field construction and intrinsic flag/value constraints, ISO pp.450–452. */
 class TextField extends TerminalField
 {
-    public function __construct(?PartialFieldName $name = null, ?TextFieldFlags $flags = null, TextString|FieldTextStream|null $value = null, ?IntegerType $maximumLength = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, Entry ...$entries)
+    public function __construct(?PartialFieldName $name = null, ?TextFieldFlags $flags = null, TextString|FieldTextStream|NullType|null $value = null, ?IntegerType $maximumLength = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, Entry ...$entries)
     {
         $managed = [];
         if ($value !== null) {

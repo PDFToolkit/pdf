@@ -177,12 +177,12 @@ FieldMDP histories; it checks operation and saving intersections.
 caller-supplied-history attacks.
 
 `tools/validate_incremental_permissions.py` runs unmodified pyHanko 0.37.0, qpdf
-and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 272
+and Poppler. The validation passes on PHP 8.3/8.4/8.5: 113 native refusals and 284
 independently checked PDFs per runtime; 32 native form combinations and 32
 independent fills; four P3 annotation chains; 198 pixel checks (144 button, 48
 annotation, six shared-appearance attack). UR3 contributes ten signed sources,
 five permitted fills and 15 independently verified CMS files; changing a signed
-byte is detected. These are CMS/structure/rendering checks, not 272 permission
+byte is detected. These are CMS/structure/rendering checks, not 284 permission
 approvals or an independent usage-rights authority decision.
 
 The unmodified pyHanko policy confirms the 16 `Tx`/`Ch` combinations, but reports
@@ -268,3 +268,9 @@ supported handlers; pypdf and qpdf cover historical R5, which pyHanko does not
 authenticate in this matrix. Physical `Contents` is read before decrypted-object
 caching because UR signatures sit outside the form tree. These are byte,
 cryptographic and permission-word checks, not independent UR policy approval.
+
+## Buttons and null values — EC3
+
+Explicit `ButtonFieldSemantics::Pdf20` on `ButtonField` allows radio normal appearances containing only the on state: `Off` is optional. `AS` still agrees with `V`. Checkboxes retain their mandatory `Off` appearance. This semantics requires effective PDF 2.0, including a catalog upgrade. It also permits retaining pushbutton `V`/`DV` without assigning them new behaviour. Historical semantics remains the default.
+
+`TextField` accepts an explicit physical `NullType`; inherited-value resolution treats null as an absent entry. Twelve additional independent PDFs exercise radio transitions A → B → Off under P2/P3, CMS integrity, unchanged appearance references and 24 rendered pixels. pyHanko’s difference-policy opinion is recorded separately.

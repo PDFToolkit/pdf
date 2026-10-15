@@ -405,6 +405,41 @@ def inspect_templates(work: Path, native: dict, qpdf: str, pdftoppm: str, report
     return results
 
 
+def inspect_radio_optional_off(work: Path, native: dict, qpdf: str, pdftoppm: str, reports: dict) -> list:
+    cases = native['radio_optional_off']
+    assert {(c['permission'], c['format']) for c in cases} == {(p, x) for p in (2, 3) for x in ('Table', 'Stream')}
+    results = []
+    for item in cases:
+        previous = work / (item['stem'] + '.pdf')
+        original_appearances = None
+        for suffix, selection in [('', 'A'), ('-selected', 'B'), ('-cleared', 'Off')]:
+            path = work / (item['stem'] + suffix + '.pdf')
+            assert path.read_bytes().startswith(previous.read_bytes())
+            report = inspect(path, qpdf, expected_permission=True if not suffix else None)
+            fields = PdfReader(path, strict=True).get_fields()
+            field = fields['radio']
+            assert field['/V'] == '/' + selection
+            appearances = []
+            for index, ref in enumerate(field['/Kids']):
+                widget = ref.get_object()
+                on = ('A', 'B')[index]
+                assert widget['/AS'] == '/' + (on if selection == on else 'Off')
+                normal = widget['/AP']['/N']
+                assert list(normal.keys()) == ['/' + on] and '/Off' not in normal
+                stream = normal.raw_get('/' + on)
+                appearances.append((ref.idnum, ref.generation, stream.idnum, stream.generation, stream.get_object().get_data()))
+            if original_appearances is None:
+                original_appearances = appearances
+            assert appearances == original_appearances
+            report['radioRendering'] = rendered_pixels(path, pdftoppm,
+                [(40, 40, (255, 0, 0) if selection == 'A' else (255, 255, 255)),
+                 (100, 40, (0, 0, 255) if selection == 'B' else (255, 255, 255))])
+            reports[path.name] = report
+            previous = path
+        results.append({'stem': item['stem'], 'native': reports[previous.name]['signatures']})
+    return results
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--php', required=True)
@@ -530,6 +565,7 @@ def main() -> None:
         extended_text_results.append({'kind': item['kind'], 'native': reports[filled.name]['signatures'],
                                      'independent': reports[independent.name]['signatures']})
     template_results = inspect_templates(work, native, args.qpdf, args.pdftoppm, reports)
+    radio_off = inspect_radio_optional_off(work, native, args.qpdf, args.pdftoppm, reports)
     annotation_limits = inspect_annotations(work, native, args.qpdf, args.pdftoppm, reports)
     usage_rights = inspect_usage_rights(work, native, args.qpdf, reports)
     report = {'native_rejected': len(rejected), 'native_cases': sorted(rejected),
@@ -541,6 +577,7 @@ def main() -> None:
         'annotation_oracle_limits': annotation_limits,
         'extended_text_fills': extended_text_results,
         'template_instantiations': template_results,
+        'radio_optional_off': radio_off,
         'native_annotation_combinations': len(native['annotations']),
         'usage_rights': usage_rights,
         'hybrid_boundary': 'Native hybrid coverage is separate; unmodified strict pyHanko rejects hybrid signature validation.',
@@ -550,6 +587,7 @@ def main() -> None:
         'native_form_fill_combinations': len(combinations), 'read_only_oracle_limits': read_only_limits,
         'extended_text_fill_combinations': len(extended),
         'template_instantiation_combinations': len(template_results),
+        'radio_optional_off_combinations': len(radio_off),
         'button_widget_oracle_limits': len(button_limits),
         'independent_button_pixel_checks': sum(item.get('buttonRendering', {}).get('pixelChecks', 0) for item in reports.values()),
         'native_annotation_combinations': len(native['annotations']),

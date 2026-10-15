@@ -249,6 +249,7 @@ final class ProtectedFormFillChanges
         }
         $selected = $value instanceof NameType ? $value->value : 'Off';
         $radio = ($flags & ButtonFieldFlag::Radio->value) !== 0;
+        $optionalOff = $radio && (new EffectivePdfVersion($graph->revision->header, $graph->catalog))->value === PdfVersion::PDF20;
         $unison = ($flags & ButtonFieldFlag::RadiosInUnison->value) !== 0;
         if (!$radio && ($flags & (ButtonFieldFlag::NoToggleToOff->value | ButtonFieldFlag::RadiosInUnison->value)) !== 0) {
             throw new \LogicException('Protected checkbox flags cannot enable radio-only behaviours.');
@@ -259,9 +260,10 @@ final class ProtectedFormFillChanges
             $appearance = $graph->resolve($dictionary->get('AP'));
             $normal = $appearance instanceof DictionaryType ? $graph->resolve($appearance->get('N')) : null;
             $state = $dictionary->get('AS');
-            if (!$normal instanceof DictionaryType || !$normal->has('Off') || count(iterator_to_array($normal->entries(), false)) !== 2
-                || !$state instanceof NameType || !$normal->has($state->value)) {
-                throw new \LogicException('Protected button widgets select an existing Off/on appearance.');
+            if (!$normal instanceof DictionaryType || (!$optionalOff && !$normal->has('Off'))
+                || count(iterator_to_array($normal->entries(), false)) !== ($normal->has('Off') ? 2 : 1)
+                || !$state instanceof NameType || (!$normal->has($state->value) && !($optionalOff && $state->value === 'Off'))) {
+                throw new \LogicException('Protected buttons retain their on appearance and the edition-specific Off requirement.');
             }
             if ($field->effective('Opt') !== null && !$normal->has((string) $index)) {
                 throw new \LogicException('Protected button export options preserve indexed appearance states.');

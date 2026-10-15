@@ -424,4 +424,16 @@ foreach ([
             new IndirectObject($catalogRecord->dictionary->without('Perms'), $catalogRecord->identifier)]), null, null, $authorization));
     }
 }
-echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'extended_text_fills' => $extendedText, 'template_instantiations' => $templateInstantiations, 'annotations' => $annotations, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";
+$radioOff = [];
+foreach ([DocMdpPermissions::FormFillingTemplatesAndSigning, DocMdpPermissions::FormsTemplatesSigningAndAnnotations] as $permission) {
+    foreach ([CrossReferenceFormat::Table, CrossReferenceFormat::Stream] as $format) {
+        $fixture = new \PDF\Tests\Support\RadioOffFixture($permission, $format);
+        $stem = 'radio-optional-off-' . $permission->value . '-' . $format->name;
+        $fixture->revision->writeTo($output . '/' . $stem . '.pdf');
+        $selected = $fixture->select('B');
+        $selected->writeTo($output . '/' . $stem . '-selected.pdf');
+        $fixture->select('Off', $selected)->writeTo($output . '/' . $stem . '-cleared.pdf');
+        $radioOff[] = ['stem' => $stem, 'permission' => $permission->value, 'format' => $format->name];
+    }
+}
+echo json_encode(['rejected' => $rejected, 'form_fills' => $forms, 'extended_text_fills' => $extendedText, 'template_instantiations' => $templateInstantiations, 'annotations' => $annotations, 'radio_optional_off' => $radioOff, 'usage_rights' => $usageRights], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES) . "\n";

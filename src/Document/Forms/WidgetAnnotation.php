@@ -94,7 +94,8 @@ final class WidgetAnnotation extends SchemaDictionary
             throw new \InvalidArgumentException('Any state dictionary in N, R or D requires an AS appearance state.');
         }
         if ($this->appearance?->normal instanceof AppearanceStates) {
-            if ($this->state === null || !$this->appearance->normal->has($this->state)) {
+            $absentOff = $this->state?->value === 'Off' && $this->parentField instanceof ButtonField && $this->parentField->allowsAbsentOffAppearance();
+            if ($this->state === null || (!$this->appearance->normal->has($this->state) && !$absentOff)) {
                 throw new \InvalidArgumentException('A stateful appearance needs an AS selecting an existing normal state.');
             }
         }

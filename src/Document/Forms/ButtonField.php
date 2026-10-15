@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PDF\Document\Forms;
 
+use PDF\Document\VersionedComponent;
+use PDF\Syntax\FileStructure\EffectivePdfVersion;
+use PDF\Syntax\FileStructure\PdfVersion;
 use PDF\Specification\Definition\CheckBoxAndRadioButtonFieldsTable227Definition;
 use PDF\Syntax\Object\ArrayType;
 use PDF\Syntax\Object\DictionaryObject\Entry;
@@ -11,12 +14,26 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\DataStructure\TextString;
 
 /** Check boxes, radio groups and pushbuttons, ISO 12.7.4.2, PDF pp.447–450. */
-final class ButtonField extends TerminalField
+final class ButtonField extends TerminalField implements VersionedComponent
 {
-    public function __construct(?PartialFieldName $name = null, ?ButtonFieldFlags $flags = null, ?NameType $value = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, Entry ...$entries)
+    public readonly ButtonFieldSemantics $semantics;
+
+    public function __construct(?PartialFieldName $name = null, ?ButtonFieldFlags $flags = null, ?NameType $value = null, FieldTypeDeclaration $declaration = FieldTypeDeclaration::Explicit, Entry|ButtonFieldSemantics ...$entries)
     {
+        $selected = null;
+        $values = [];
+        foreach ($entries as $entry) {
+            if ($entry instanceof Entry) {
+                $values[] = $entry;
+            } elseif ($selected !== null) {
+                throw new \InvalidArgumentException('A button selects one explicit normative edition.');
+            } else {
+                $selected = $entry;
+            }
+        }
+        $this->semantics = $selected ?? ButtonFieldSemantics::Pdf17;
         $managed = $value === null ? [] : [new Entry(new NameType('V'), $value)];
-        parent::__construct(new CheckBoxAndRadioButtonFieldsTable227Definition(), $name, FieldType::Button, $declaration, $flags, ...[...$managed, ...$entries]);
+        parent::__construct(new CheckBoxAndRadioButtonFieldsTable227Definition(), $name, FieldType::Button, $declaration, $flags, ...[...$managed, ...$values]);
     }
 
     public function validate(): void
@@ -35,11 +52,11 @@ final class ButtonField extends TerminalField
         }
         $value = $this->effective('V');
         $default = $this->effective('DV');
-        if ($push && ($value !== null || $default !== null)) {
+        if ($push && $this->semantics === ButtonFieldSemantics::Pdf17 && ($value !== null || $default !== null)) {
             throw new \InvalidArgumentException('A pushbutton does not retain a field value or default value.');
         }
         foreach ([$value, $default] as $item) {
-            if ($item !== null && !$item instanceof NameType) {
+            if (!$push && $item !== null && !$item instanceof NameType) {
                 throw new \InvalidArgumentException('A check box or radio value must be a name.');
             }
         }
@@ -57,8 +74,9 @@ final class ButtonField extends TerminalField
             if ($normal === null && $this->tree()?->needAppearances->value === true) {
                 continue;
             }
-            if (!$normal instanceof AppearanceStates || !$normal->has('Off') || count($normal) !== 2) {
-                throw new \InvalidArgumentException('Each check box/radio widget has exactly Off and one named on appearance.');
+            $optionalOff = $this->allowsAbsentOffAppearance();
+            if (!$normal instanceof AppearanceStates || (!$optionalOff && !$normal->has('Off')) || count($normal) !== ($normal->has('Off') ? 2 : 1)) {
+                throw new \InvalidArgumentException('Each button widget has one named on appearance; Off is optional only for PDF 2.0 radios.');
             }
             if ($options !== null && !$normal->has((string) $index)) {
                 throw new \InvalidArgumentException('With button Opt, each AP on-state name equals its zero-based widget index.');
@@ -98,6 +116,18 @@ final class ButtonField extends TerminalField
                     throw new \InvalidArgumentException('Button export values are text strings.');
                 }
             }
+        }
+    }
+
+    public function allowsAbsentOffAppearance(): bool
+    {
+        return $this->semantics === ButtonFieldSemantics::Pdf20 && ($this->flags() & ButtonFieldFlag::Radio->value) !== 0;
+    }
+
+    public function validateVersion(EffectivePdfVersion $version): void
+    {
+        if ($this->semantics === ButtonFieldSemantics::Pdf20) {
+            $version->require(PdfVersion::PDF20, 'PDF 2.0 button semantics');
         }
     }
 }
