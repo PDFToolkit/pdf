@@ -23,7 +23,9 @@ unless **both** rectangle dimensions collapse to a point (`Rect[0]==Rect[2]`
 and `Rect[1]==Rect[3]`), or the subtype is `Popup`, `Projection` or `Link`.
 A horizontal or vertical line alone is not exempt. Reversing rectangle corners
 does not change the test. Popup ownership and its prohibition on AP remain the
-separate markup rules.
+separate markup rules. Projection has an additional specific condition:
+if either its width or its height is zero, AP is prohibited (§12.5.6.24, physical
+page520). A nondegenerate Projection may supply AP.
 
 Header/catalog version precedence applies. Upgrading a PDF1.7 catalog to PDF2
 therefore checks annotations retained from earlier revisions. A writer must
@@ -66,7 +68,7 @@ fixtures now supply explicit valid appearances without dropping their assertions
 python tools/validate_annotation_appearances.py --php php --qpdf qpdf --pdftoppm pdftoppm --work-dir /path/to/output
 ```
 
-The oracle writes eight PDFs, checks nine native rejections, reads the actual
+The oracle writes eight PDFs, checks eleven native rejections, reads the actual
 AP/AS/Form objects with pypdf, checks qpdf syntax and compares 28 Poppler pixels.
 The unmatched-state case is inspected structurally without claiming a particular
 viewer fallback image. It does not test rollover interaction, invent missing

@@ -141,6 +141,31 @@ final class AnnotationAppearanceGraphTest extends TestCase
         self::assertStringNotContainsString('/AP ', $this->file($this->annotation()->with($this->e('Subtype', new NameType($subtype))))->toPdf());
     }
 
+    /** @return iterable<string,array{list<int>}> */
+    public static function collapsedProjections(): iterable
+    {
+        yield 'width zero' => [[4, 1, 4, 20]];
+        yield 'height zero' => [[1, 4, 20, 4]];
+        yield 'both zero' => [[4, 1, 4, 1]];
+        yield 'reversed width zero' => [[4, 20, 4, 1]];
+        yield 'reversed height zero' => [[20, 4, 1, 4]];
+    }
+
+    /** @param list<int> $coordinates */
+    #[DataProvider('collapsedProjections')]
+    public function testProjectionWithEitherCollapsedDimensionForbidsEvenAValidAp(array $coordinates): void
+    {
+        $annotation = $this->annotation($this->e('AP', $this->ap()))->with($this->e('Subtype', new NameType('Projection')))->with($this->e('Rect', $this->box($coordinates)));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('zero width or height shall not have AP');
+        $this->file($annotation)->toRevision();
+    }
+
+    public function testNondegenerateProjectionMaySupplyAnAppearance(): void
+    {
+        self::assertStringContainsString('/AP ', $this->file($this->annotation($this->e('AP', $this->ap()))->with($this->e('Subtype', new NameType('Projection'))))->toPdf());
+    }
+
     public function testAnAssociatedPopupHasNoAppearanceWhileItsMarkupParentHasOne(): void
     {
         $popup = $this->annotation()->with($this->e('Subtype', new NameType('Popup')));

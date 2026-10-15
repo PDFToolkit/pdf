@@ -8,7 +8,8 @@
     "clauses": [
       "12.5.2",
       "12.5.5",
-      "8.10.2"
+      "8.10.2",
+      "12.5.6.24"
     ],
     "tables": [
       "166",
@@ -20,7 +21,8 @@
       489,
       490,
       491,
-      287
+      287,
+      520
     ],
     "reviewedEc3Issues": [
       22,
@@ -30,6 +32,7 @@
   },
   "implemented": [
     "Actual page annotations in an effective native/frozen PDF2 graph require AP, except simultaneous zero width and height, Popup, Projection or Link.",
+    "Projection annotations with either zero width or zero height prohibit AP, even though a nondegenerate Projection may provide one (12.5.6.24, physical page520).",
     "AP is a dictionary with N; N/R/D are actual Form XObject streams or state dictionaries. Null optional entries retain absence semantics.",
     "Any N/R/D state dictionary requires a name AS; an unmatched AS remains representable under the consumer fallback expressly permitted on physical page491.",
     "Appearance streams have Form subtype, optional Type XObject, optional FormType1, numeric BBox and optional numeric Matrix; their graph context remains the actual current or retained revision.",
@@ -53,7 +56,7 @@
   ],
   "oracle": {
     "pdfsPerRuntime": 8,
-    "nativeRejections": 9,
+    "nativeRejections": 11,
     "pixelChecks": 28,
     "processors": [
       "qpdf",

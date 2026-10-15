@@ -6,9 +6,9 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [0.9.1] - 2026-10-15
 
-- Reject actual PDF 2.0 page annotations without the required AP, preserving point-rectangle and Popup/Projection/Link exceptions and PDF 1.7 optional behavior. Check AP.N, Form stream geometry and required state names in effective native/frozen graphs; preserve the specified fallback for an unmatched AS.
+- Reject actual PDF 2.0 page annotations without the required AP, preserving point-rectangle and Popup/Projection/Link exceptions and PDF 1.7 optional behavior. Check AP.N, Form stream geometry and required state names in effective native/frozen graphs; preserve the specified fallback for an unmatched AS. Projection annotations with either collapsed dimension prohibit AP (§12.5.6.24, physical page520).
 - Record completed EC3 #22/#124 chains and the conditional AP metadata. Six exact reviews are now verified; the 197 intrinsic rules remain separate. No implicit appearance or universal conformance claim is added.
-- Add independent AP evidence: eight PDFs, nine native rejections and 28 rendered pixels, including a repaired PDF1.7-to-PDF2 catalog upgrade. Existing positive annotation/geospatial fixtures supply explicit appearances without dropping assertions.
+- Add independent AP evidence: eight PDFs, eleven native rejections and 28 rendered pixels, including a repaired PDF1.7-to-PDF2 catalog upgrade. Existing positive annotation/geospatial fixtures supply explicit appearances without dropping assertions.
 
 ## [0.9.0] - 2026-10-15
 

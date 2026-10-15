@@ -18,7 +18,7 @@ use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\StreamObject;
 
-/** ISO2 Table166/170, physical pp483/490–491; EC3 #22/#124 and Form Table93 p287. */
+/** ISO2 Table166/170 pp483/490–491, Projection p520; EC3 #22/#124 and Form Table93 p287. */
 final readonly class AnnotationAppearanceGraphValidation
 {
     public function __construct(private NavigationLimits $limits = new NavigationLimits())
@@ -53,6 +53,10 @@ final readonly class AnnotationAppearanceGraphValidation
                 throw new \InvalidArgumentException('PDF 2.0 annotations require AP except for point rectangles, Popup, Projection and Link.');
             }
             return;
+        }
+        if ($subtype instanceof NameType && $subtype->value === 'Projection'
+            && ($rectangle[0] == $rectangle[2] || $rectangle[1] == $rectangle[3])) {
+            throw new \InvalidArgumentException('A Projection annotation with zero width or height shall not have AP (ISO2 12.5.6.24).');
         }
         $scope = $appearance instanceof IndirectReference ? $graph : $graph->forDirectValue($appearance);
         if (!$scope->resolve($appearance) instanceof DictionaryType || ($dictionary = $scope->dictionary($appearance)) === null) {

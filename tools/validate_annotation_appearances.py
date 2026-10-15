@@ -46,7 +46,7 @@ def main():
         command.append(args.bootstrap.resolve())
     run(*command)
     native = json.loads((work / 'native.json').read_text(encoding='utf-8'))
-    assert len(native['rejected']) == 9 and all(native['rejected'].values())
+    assert len(native['rejected']) == 11 and all(native['rejected'].values())
     checks = []
     pixel_checks = 0
     for case in native['files']:

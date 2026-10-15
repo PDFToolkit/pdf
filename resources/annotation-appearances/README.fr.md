@@ -23,7 +23,9 @@ exige AP sauf si **les deux** dimensions du rectangle se réduisent à un point
 (`Rect[0]==Rect[2]` et `Rect[1]==Rect[3]`), ou si le sous-type est `Popup`,
 `Projection` ou `Link`. Une ligne horizontale ou verticale seule n’est pas
 exemptée. Inverser les coins ne change pas le contrôle. L’association des popups
-et leur interdiction d’AP restent les règles distinctes du markup.
+et leur interdiction d’AP restent les règles distinctes du markup. Projection
+possède une condition supplémentaire : AP est interdit si sa largeur ou sa hauteur
+est nulle (§12.5.6.24, page physique 520). Une Projection non dégénérée peut fournir AP.
 
 La priorité entre version d’en-tête et de catalogue s’applique. Passer un
 catalogue PDF1.7 à PDF2 vérifie donc les annotations conservées des révisions
@@ -70,7 +72,7 @@ leurs assertions.
 python tools/validate_annotation_appearances.py --php php --qpdf qpdf --pdftoppm pdftoppm --work-dir /path/to/output
 ```
 
-L’oracle écrit huit PDF, vérifie neuf refus natifs, lit les véritables objets
+L’oracle écrit huit PDF, vérifie onze refus natifs, lit les véritables objets
 AP/AS/Form avec pypdf, contrôle la syntaxe avec qpdf et compare 28 pixels Poppler.
 Le cas d’état inconnu est inspecté structurellement sans promettre une image de
 repli particulière au visualiseur. Il ne teste pas les interactions de survol,

@@ -94,6 +94,8 @@ $invalid = [
     'missing-state' => appearanceAnnotation(appearanceEntry('AP', $states)),
     'scalar-state' => appearanceAnnotation(appearanceEntry('AP', $states), appearanceEntry('AS', new IntegerType(1))),
     'nonstream-state' => appearanceAnnotation(appearanceEntry('AP', new DictionaryType(appearanceEntry('N', new DictionaryType(appearanceEntry('On', new IntegerType(1)))))), appearanceEntry('AS', new NameType('On'))),
+    'projection-zero-width-with-ap' => appearanceAnnotation(appearanceEntry('AP', $normal))->with(appearanceEntry('Subtype', new NameType('Projection')))->with(appearanceEntry('Rect', appearanceBox([20, 20, 20, 70]))),
+    'projection-zero-height-with-ap' => appearanceAnnotation(appearanceEntry('AP', $normal))->with(appearanceEntry('Subtype', new NameType('Projection')))->with(appearanceEntry('Rect', appearanceBox([80, 20, 20, 20]))),
 ];
 foreach ($invalid as $name => $annotation) {
     try {

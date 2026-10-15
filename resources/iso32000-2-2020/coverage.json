@@ -3485,19 +3485,21 @@
           483,
           489,
           490,
-          491
+          491,
+          520
         ],
         "clauses": [
           "8.10.2",
           "12.5.2",
-          "12.5.5"
+          "12.5.5",
+          "12.5.6.24"
         ],
         "errata": [
           22,
           124
         ]
       },
-      "implemented_scope": "Effective page annotation AP requirement, simultaneous zero-width/zero-height and Popup/Projection/Link exceptions, AP.N and named-state relationships, native Form stream types and geometry, including retained snapshot upgrades. Unmatched AS retains the explicit processor fallback.",
+      "implemented_scope": "Effective page annotation AP requirement, simultaneous zero-width/zero-height and Popup/Projection/Link exceptions, AP.N and named-state relationships, native Form stream types and geometry, including retained snapshot upgrades. Unmatched AS retains the explicit processor fallback. A Projection with either collapsed dimension forbids AP.",
       "implementation_files": [
         "src/Document/Annotations/AnnotationAppearanceGraphValidation.php"
       ],
