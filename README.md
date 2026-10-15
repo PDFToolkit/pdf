@@ -86,16 +86,36 @@ The edition-specific base inventory contains 440 tables, 306 dictionary definiti
 and 1,709 entry objects. Its complete inventory does not establish every semantic
 or conditional requirement of the standard.
 
+## Executable constraints and applied redaction
+
+Version 0.8 adds 197 intrinsic rules executed by specification dictionaries,
+the exact EC3 #246/#403/#444/#468 corrections and a ledger of all 65 Adobe
+corrections. Sources, dispositions, evidence and remaining boundaries are
+recorded beside the [Adobe references](resources/adobe-references/README.md)
+and [semantic rules](resources/iso32000-2-2020/README.md).
+
+[Applied redaction](resources/redaction/README.md) removes affected instructions
+and resources from a normalized native graph, then writes a fresh file. Opaque
+unnormalized cases are rejected; regions are not merely covered. An explicit
+WTPDF XML backend also checks plain/rich-text value equivalence. These additions
+do not establish universal conformance or accessibility certification.
+
+`ChoiceField` now accepts `ChoiceIndexSemantics` before variadic entries.
+Historical behaviour remains `Pdf17`; `Pdf20Ec3` selects corrected PDF 2.0
+indices. Calls passing positional `Entry` values must supply that argument
+before them. `AnnotationAppearanceTransform` executes the corrected
+`Matrix × A` appearance-placement algorithm.
+
 ## Installation
 
-Core **0.7** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.8** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.7.0'
+composer require 'roukmoute/pdf:^0.8.0'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -113,12 +133,12 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
 
-Each module has a stable **0.1.8** release on Packagist, compatible with core
-series 0.2, 0.3, 0.4, 0.5, 0.6 and 0.7 and PHP 8.3 or newer. Composer automatically installs
+Image and font converters are available as **0.1.9**, and the reader as
+**0.3.1**; these releases accept core 0.8 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.8'
+composer require 'pdftoolkit/pdf-images:^0.1.9'
 ```
 
 The module installs the core using its stable constraint. The
@@ -145,8 +165,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.7.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.7 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.8.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.8 series expected by modules.
 Development dependencies use stable 0.1 modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.

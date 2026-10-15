@@ -4,6 +4,16 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-15
+
+- Add 197 executable intrinsic rules across 66 tables and exact EC3 #246/#403/#444/#468 corrections checked against their approved annotations.
+- Apply destructive redaction to normalized native graphs: remove affected content/shared resources, rebuild a fresh file, compose RO/IC/OverlayText replacements and reject unnormalized opaque formats.
+- Explicitly check WTPDF rich/plain field value equivalence with a bounded XML parser, without DTDs or global parser state.
+- Correct appearance placement to Matrix × A and reject empty Contents arrays in the writer.
+- Record all 65 Adobe corrections and explicit conformance boundaries in English and French.
+- Migration: ChoiceField receives ChoiceIndexSemantics before variadic Entry values; select Pdf20Ec3 for corrected PDF 2.0 rules. PHP 8.3–8.5; stable image/font0.1.9 and reader0.3.1 development modules.
+
+
 ## [0.7.1] - 2026-10-14
 
 - Group all eighteen original specification PDFs under

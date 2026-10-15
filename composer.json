@@ -1,7 +1,7 @@
 {
     "name": "roukmoute/pdf",
     "type": "library",
-    "description": "Explicit PDF 1.7 and PDF 2.0 objects and writing, with modern signatures, AES-GCM, PDF MAC, metadata and tagged-structure validation",
+    "description": "Explicit PDF 1.7/2.0 objects and writing with executable specification rules, conservative redaction, signatures, encryption and tagged-structure validation",
     "keywords": [
         "pdf",
         "pdf-1.7",
@@ -30,14 +30,15 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
-        "pdftoolkit/pdf-fonts": "^0.1.8",
-        "pdftoolkit/pdf-images": "^0.1.8",
-        "pdftoolkit/pdf-reader": "^0.1.9",
+        "pdftoolkit/pdf-fonts": "^0.1.9",
+        "pdftoolkit/pdf-images": "^0.1.9",
+        "pdftoolkit/pdf-reader": "^0.3.1",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
     "suggest": {
-        "ext-openssl": "Required only for explicitly selected AES and CMS encryption or signature backends."
+        "ext-openssl": "Required only for explicitly selected AES and CMS encryption or signature backends.",
+        "ext-dom": "Required only for the explicitly selected WtPdfXmlRichTextParser backend."
     },
     "license": "MIT",
     "authors": [
@@ -80,7 +81,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.7.x-dev"
+            "dev-master": "0.8.x-dev"
         }
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bbaac6df85223f79cd861a28aa95dd7a",
+    "content-hash": "0bd980938996b47b94f8362f08511a7f",
     "packages": [],
     "packages-dev": [
         {
@@ -691,23 +691,23 @@
         },
         {
             "name": "pdftoolkit/pdf-fonts",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-fonts.git",
-                "reference": "1f552bd99e56682f8932ce9880a6b27d5d80cc0b"
+                "reference": "284d73eb628f42020ba0b67baa7c9e7a3559156a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-fonts/zipball/1f552bd99e56682f8932ce9880a6b27d5d80cc0b",
-                "reference": "1f552bd99e56682f8932ce9880a6b27d5d80cc0b",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-fonts/zipball/284d73eb628f42020ba0b67baa7c9e7a3559156a",
+                "reference": "284d73eb628f42020ba0b67baa7c9e7a3559156a",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-iconv": "*",
                 "php": "^8.3",
-                "roukmoute/pdf": "^0.2 || ^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7"
+                "roukmoute/pdf": "^0.2 || ^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7 || ^0.8"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
@@ -748,27 +748,27 @@
                 "issues": "https://github.com/PDFToolkit/pdf-fonts/issues",
                 "source": "https://github.com/PDFToolkit/pdf-fonts"
             },
-            "time": "2026-10-14T13:58:03+00:00"
+            "time": "2026-10-15T06:53:30+00:00"
         },
         {
             "name": "pdftoolkit/pdf-images",
-            "version": "v0.1.8",
+            "version": "v0.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-images.git",
-                "reference": "959eefebb970170a55dc46f89d5540858d5b215f"
+                "reference": "3b40de60b0e3aba776142af79d146899dab2c7eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-images/zipball/959eefebb970170a55dc46f89d5540858d5b215f",
-                "reference": "959eefebb970170a55dc46f89d5540858d5b215f",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-images/zipball/3b40de60b0e3aba776142af79d146899dab2c7eb",
+                "reference": "3b40de60b0e3aba776142af79d146899dab2c7eb",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-zlib": "*",
                 "php": "^8.3",
-                "roukmoute/pdf": "^0.2 || ^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7"
+                "roukmoute/pdf": "^0.2 || ^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7 || ^0.8"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
@@ -809,37 +809,40 @@
                 "issues": "https://github.com/PDFToolkit/pdf-images/issues",
                 "source": "https://github.com/PDFToolkit/pdf-images"
             },
-            "time": "2026-10-14T13:57:59+00:00"
+            "time": "2026-10-15T06:53:20+00:00"
         },
         {
             "name": "pdftoolkit/pdf-reader",
-            "version": "v0.1.9",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PDFToolkit/pdf-reader.git",
-                "reference": "81267233e03d8f8ed488ed155d4ecd26d0df0f39"
+                "reference": "7284c010180f25caaff451654957563d3ae85ad5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/81267233e03d8f8ed488ed155d4ecd26d0df0f39",
-                "reference": "81267233e03d8f8ed488ed155d4ecd26d0df0f39",
+                "url": "https://api.github.com/repos/PDFToolkit/pdf-reader/zipball/7284c010180f25caaff451654957563d3ae85ad5",
+                "reference": "7284c010180f25caaff451654957563d3ae85ad5",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
                 "ext-zlib": "*",
                 "php": "^8.3",
-                "roukmoute/pdf": "^0.2 || ^0.3 || ^0.4 || ^0.5 || ^0.6 || ^0.7"
+                "roukmoute/pdf": "^0.7.1 || ^0.8"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.0",
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^12.0"
             },
+            "suggest": {
+                "ext-openssl": "Required only when explicitly selecting native AES password authentication."
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1.x-dev"
+                    "dev-master": "0.3.x-dev"
                 }
             },
             "autoload": {
@@ -857,13 +860,14 @@
                     "email": "contact@roukmoute.fr"
                 }
             ],
-            "description": "An explicit, bounded PDF 1.0-1.7 object reader for PHP 8.3+",
+            "description": "An explicit, bounded PDF 1.0-2.0 object reader for PHP 8.3+",
             "homepage": "https://pdftoolkit.github.io/modules/reader/",
             "keywords": [
                 "iso-32000-1",
                 "object-model",
                 "pdf",
                 "pdf-1.7",
+                "pdf-2.0",
                 "php",
                 "reader"
             ],
@@ -872,7 +876,7 @@
                 "issues": "https://github.com/PDFToolkit/pdf-reader/issues",
                 "source": "https://github.com/PDFToolkit/pdf-reader"
             },
-            "time": "2026-10-14T16:50:10+00:00"
+            "time": "2026-10-15T07:49:17+00:00"
         },
         {
             "name": "phar-io/manifest",

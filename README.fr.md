@@ -59,12 +59,33 @@ L’inventaire de base propre à l’édition contient 440 tableaux, 306 défini
 dictionnaire et 1 709 objets d’entrée. Cet inventaire complet n’établit pas toutes
 les exigences sémantiques ou conditionnelles de la norme.
 
+## Contraintes exécutables et caviardage
+
+La version 0.8 ajoute 197 règles intrinsèques exécutées par les dictionnaires
+de spécification, les corrections EC3 #246/#403/#444/#468 et un registre des
+65 corrections Adobe. Les sources, dispositions, preuves et limites sont
+consultables dans les [références Adobe](resources/adobe-references/README.fr.md)
+et les [règles sémantiques](resources/iso32000-2-2020/README.fr.md).
+
+Le [caviardage destructif](resources/redaction/README.fr.md) retire les instructions
+et ressources concernées d’un graphe natif normalisé, puis écrit un fichier neuf.
+Les cas opaques non normalisés sont refusés ; les régions ne sont pas simplement
+recouvertes. Un backend XML WTPDF explicite vérifie aussi l’équivalence des valeurs
+texte et rich text. Aucun de ces ajouts ne constitue une certification générale
+de conformité ou d’accessibilité.
+
+`ChoiceField` accepte maintenant `ChoiceIndexSemantics` avant les entrées
+variadiques. Le comportement historique reste `Pdf17` ; `Pdf20Ec3` sélectionne
+les indices corrigés PDF 2.0. Les appels avec des `Entry` positionnelles doivent
+passer explicitement cet argument avant celles-ci. `AnnotationAppearanceTransform`
+exécute l’algorithme corrigé de placement des apparences `Matrix × A`.
+
 ## Installation
 
-Le core **0.7** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
+Le core **0.8** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.7.0'
+composer require 'roukmoute/pdf:^0.8.0'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
@@ -81,10 +102,10 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Analyser un TrueType statique et préparer ses métriques et correspondances pour les objets de police du core. |
 
-Chaque module dispose d'une version stable **0.1.8** sur Packagist, compatible avec les séries 0.2, 0.3, 0.4, 0.5, 0.6 et 0.7 du core et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Les convertisseurs images et polices sont disponibles en **0.1.9**, le lecteur en **0.3.1** ; ces versions acceptent le core 0.8 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.8'
+composer require 'pdftoolkit/pdf-images:^0.1.9'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/fr/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.
@@ -103,8 +124,8 @@ php examples/object-stream.php object-stream.pdf
 Le code de production dépend uniquement de PHP et de ces trois extensions. PHPUnit 12, PHPStan, PHP-CS-Fixer et les modules utilisés par les exemples sont des dépendances de développement verrouillées dans `composer.lock`. Leur présence dans ce checkout n'ajoute aucune dépendance de production aux applications utilisant le core. La CI exécute les tests et valide les PDF d'exemple sous PHP 8.3, 8.4 et 8.5. Les tests échouent aussi sur les dépréciations et avertissements PHP. Le [changelog](CHANGELOG.fr.md) décrit chaque version publiée.
 
 Pour valider ce checkout, y compris depuis son tag, définir
-`COMPOSER_ROOT_VERSION=0.7.x-dev` avant `composer install`. Cette variable identifie
-le core courant comme appartenant à la série 0.7 attendue par les modules. Les
+`COMPOSER_ROOT_VERSION=0.8.x-dev` avant `composer install`. Cette variable identifie
+le core courant comme appartenant à la série 0.8 attendue par les modules. Les
 dépendances de développement utilisent les modules stables 0.1, dont les versions
 et les sources exactes sont verrouillées dans `composer.lock`. Les CI définissent
 également cette variable pour les branches, les tags et les pull requests.

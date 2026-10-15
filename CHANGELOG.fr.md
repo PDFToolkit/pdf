@@ -4,6 +4,16 @@
 
 ## [Non publié]
 
+## [0.8.0] - 2026-10-15
+
+- Ajouter 197 règles intrinsèques exécutables sur 66 tableaux et les corrections EC3 #246/#403/#444/#468 vérifiées contre leurs annotations approuvées.
+- Appliquer le caviardage destructif aux graphes natifs normalisés : suppression des contenus et ressources partagées concernés, reconstruction d’un fichier neuf, remplacement RO/IC/OverlayText et refus des formats opaques non normalisés.
+- Vérifier explicitement l’équivalence rich text/texte des formulaires WTPDF avec un parseur XML borné, sans DTD ni état global.
+- Corriger le placement des apparences Matrix × A et interdire les tableaux Contents vides dans le writer.
+- Documenter les 65 corrections Adobe et maintenir les limites de conformité explicites, en français et en anglais.
+- Migration : ChoiceField reçoit ChoiceIndexSemantics avant les Entry variadiques ; sélectionner Pdf20Ec3 pour les règles PDF 2.0 corrigées. PHP 8.3–8.5 ; modules de développement stables images/polices0.1.9 et lecteur0.3.1.
+
+
 ## [0.7.1] - 2026-10-14
 
 - Regrouper les dix-huit PDF de spécification originaux sous
