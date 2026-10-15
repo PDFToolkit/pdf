@@ -90,7 +90,10 @@ final class RedactionContentProcessor
                 }
                 $coordinates = array_map(fn (BasicType $value): float => $this->number($value), $values);
                 if ($symbol === 're') {
-                    $coordinates = [$coordinates[0], $coordinates[1], $coordinates[0] + $coordinates[2], $coordinates[1] + $coordinates[3]];
+                    [$x, $y, $width, $height] = $coordinates;
+                    // Opposite corners alone do not bound a rectangle after a
+                    // rotation or shear; all four constructed corners participate.
+                    $coordinates = [$x, $y, $x + $width, $y, $x + $width, $y + $height, $x, $y + $height];
                 }
                 foreach (array_chunk($coordinates, 2) as [$x, $y]) {
                     $bound = (new RedactionBounds($x, $y, $x, $y))->transformed($state->matrix);

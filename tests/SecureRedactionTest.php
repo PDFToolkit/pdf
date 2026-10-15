@@ -47,6 +47,47 @@ use PHPUnit\Framework\TestCase;
 
 final class SecureRedactionTest extends TestCase
 {
+    #[\PHPUnit\Framework\Attributes\DataProvider('transformedRectangles')]
+    public function testEveryConstructedRectangleCornerParticipatesInTransformedRedaction(array $matrix, array $rectangle, array $region): void
+    {
+        $content = new ContentStreams(
+            new ConcatenateMatrix(new Matrix(...array_map(static fn (int|float $value): NumericType => new NumericType($value), $matrix))),
+            new AppendRectangle(...array_map(static fn (int $value): NumericType => new NumericType($value), $rectangle)),
+            new FillPathNonzero(),
+        );
+        $page = new PageObject($this->box(0, 0, 200, 120), new ResourceDictionary(), new StreamObject($content));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $annotation = new RedactionAnnotation($this->dictionary(['Subtype' => new NameType('Redact'), 'Rect' => $this->box(...$region)]));
+        $result = (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $annotation)));
+        self::assertSame(1, $result->removedPaintObjects);
+        self::assertStringNotContainsString(' re', $result->toPdf());
+        self::assertStringContainsString(' re', (string) $content);
+    }
+
+    public static function transformedRectangles(): iterable
+    {
+        yield 'diamond shear' => [[1, 1, -1, 1, 50, 20], [0, 0, 20, 20], [59, 39, 61, 41]];
+        yield '45 degree rotation' => [[0.70710678, 0.70710678, -0.70710678, 0.70710678, 80, 20], [0, 0, 20, 20], [89, 33, 91, 35]];
+        yield 'negative rectangle width' => [[1, 1, -1, 1, 50, 20], [20, 0, -20, 20], [49, 29, 51, 31]];
+        yield 'anisotropic shear' => [[2, 1, -3, 4, 80, 10], [0, 0, 20, 10], [108, 29, 110, 31]];
+    }
+
+    public function testTransformedClippingRectangleCannotRetainRedactedGeometry(): void
+    {
+        $content = new ContentStreams(
+            new ConcatenateMatrix(new Matrix(new NumericType(1), new NumericType(1), new NumericType(-1), new NumericType(1), new NumericType(50), new NumericType(20))),
+            new AppendRectangle(new NumericType(0), new NumericType(0), new NumericType(20), new NumericType(20)),
+            new \PDF\Syntax\ContentStreamsResources\Operators\ClipPathNonzero(),
+            new \PDF\Syntax\ContentStreamsResources\Operators\EndPath(),
+        );
+        $page = new PageObject($this->box(0, 0, 200, 120), new ResourceDictionary(), new StreamObject($content));
+        $catalog = new DocumentCatalog((new PageTreeNode())->addKid($page));
+        $annotation = new RedactionAnnotation($this->dictionary(['Subtype' => new NameType('Redact'), 'Rect' => $this->box(59, 39, 61, 41)]));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('retaining its original geometry');
+        (new SecureRedaction())->apply($catalog, new RedactionPlan(new RedactionPageRequest($page, $annotation)));
+    }
+
     public function testRemovesSourceTextAndItsSemanticMetadataInsteadOfCoveringIt(): void
     {
         $content = new ContentStreams(...[

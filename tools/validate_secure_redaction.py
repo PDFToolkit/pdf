@@ -93,6 +93,23 @@ def main() -> None:
     report['poppler_pages'] = 4
     report['outside_vectors_preserved'] = True
     report['replacement_ctm_isolated'] = True
+    run(arguments.php, str(root / 'tools/build_redaction_transform_fixtures.php'), str(work))
+    probes = [(60, 40), (90, 34), (50, 30), (109, 30)]
+    for name in ('original', 'redacted'):
+        path = work / f'transforms-{name}.pdf'
+        run(arguments.qpdf, '--check', str(path))
+        assert len(PdfReader(path, strict=True).pages) == 4
+        run(arguments.pdftoppm, '-r', '72', str(path), str(work / f'transforms-{name}'))
+    for number, (x, y) in enumerate(probes, 1):
+        for name, expected in [('original', b'\0\0\0'), ('redacted', b'\xff\xff\xff')]:
+            width, height, pixels = ppm(work / f'transforms-{name}-{number}.ppm')
+            assert (width, height) == (200, 120)
+            offset = ((height - 1 - y) * width + x) * 3
+            assert pixels[offset:offset + 3] == expected, (name, number, 'transformed rectangle')
+            public = ((height - 1 - 15) * width + 155) * 3
+            assert pixels[public:public + 3] == b'\0\xff\0'
+    report['transformed_rectangle_pixel_cases'] = 4
+    report['poppler_pages'] += 8
     (work / 'report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report, indent=2))
 
