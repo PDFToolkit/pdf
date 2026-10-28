@@ -521,9 +521,10 @@ final class DocumentGraphValidation
                 }
             }
             $rotation = $inherited['Rotate'] ?? null;
-            if ($rotation !== null && (!$rotation instanceof NumericType || fmod($rotation->value, 90) != 0)) {
+            if ($rotation !== null && (!$rotation instanceof IntegerType || $rotation->integer() % 90 !== 0)) {
                 throw new \LogicException('Effective page rotation must be an integer multiple of90.');
             }
+            (new PageAttributesGraphValidation())->validate($dictionary, $graph, $version);
             $contents = $graph->entry($dictionary, 'Contents');
             if ($contents !== null) {
                 $this->validateMarkedContentStreams($contents, $inherited['Resources'], $graph, $version);
