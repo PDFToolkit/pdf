@@ -11,9 +11,18 @@
         "12.5.6.14",
         "12.6.4.3",
         "12.6.4.4",
-        "12.9"
+        "12.9",
+        "7.7.3.3",
+        "12.3.3",
+        "12.6.4",
+        "12.7.5"
       ],
       "physicalPdfPages": [
+        85,
+        86,
+        87,
+        376,
+        377,
         390,
         391,
         399,
@@ -24,6 +33,20 @@
         427,
         428,
         429,
+        430,
+        431,
+        432,
+        433,
+        434,
+        435,
+        436,
+        437,
+        459,
+        460,
+        461,
+        462,
+        463,
+        464,
         489,
         490,
         491
@@ -39,9 +62,19 @@
         "12.5.6.14",
         "12.6.4.3",
         "12.6.4.4",
-        "12.9.1"
+        "12.9.1",
+        "7.7.3.3",
+        "12.3.3",
+        "12.6.4",
+        "12.7.6",
+        "13.7.2"
       ],
       "physicalPdfPages": [
+        120,
+        121,
+        122,
+        460,
+        461,
         482,
         483,
         494,
@@ -52,10 +85,39 @@
         528,
         529,
         530,
+        531,
+        532,
+        533,
+        534,
+        535,
+        536,
+        537,
+        538,
+        539,
+        540,
+        541,
+        542,
+        543,
+        567,
+        568,
+        569,
+        570,
+        571,
         612,
         613,
         614,
-        615
+        615,
+        716,
+        717,
+        718,
+        719,
+        720,
+        721,
+        722,
+        723,
+        724,
+        725,
+        726
       ]
     }
   ],
@@ -83,6 +145,44 @@
       ],
       "test": "tests/RectilinearMeasureValidationTest.php",
       "scope": "Normalized RL measure arrays, required units/format members, fractional denominator and origin/CYX relationships. Foreign Measure subtypes remain opaque; no universal positive-C or power-of-ten constraint is invented."
+    },
+    "effectivePageAttributes": {
+      "classes": [
+        "PageAttributesGraphValidation",
+        "DocumentGraphValidation"
+      ],
+      "test": "tests/PageAttributesGraphTest.php",
+      "oracle": "tools/validate_page_outlines.py",
+      "scope": "Effective inherited integer quarter-turn Rotate; actual page production rectangles, positive UserUnit, edition-dependent Tabs; native and frozen incremental graphs."
+    },
+    "effectiveOutlines": {
+      "classes": [
+        "OutlineGraphValidation"
+      ],
+      "test": "tests/OutlineGraphTest.php",
+      "oracle": "tools/validate_page_outlines.py",
+      "scope": "Actual catalog root; bounded reciprocal links and ownership, visible descendant Counts, C/F values, Dest/A exclusion, indirect SE. Frozen historical builders cannot alter old graph meaning."
+    },
+    "activeActions": {
+      "classes": [
+        "ActionDictionaryRules",
+        "ActionDictionaryValues",
+        "TransitionDictionaryRules",
+        "NavigationGraphValidation"
+      ],
+      "test": "tests/ActionDictionaryRulesTest.php",
+      "oracle": "tools/validate_action_contracts.py",
+      "scope": "Required entries and intrinsic value/version/flag contracts of standard active actions, actual annotation targets, registered OCG state operands, actual DPart tree targets, RichMedia target instances and script-only trigger locations. Unknown extension actions remain opaque. No action or external resource is executed."
+    },
+    "richMediaContracts": {
+      "classes": [
+        "RichMediaGraphValidation",
+        "RichMediaDictionaryRules",
+        "RichMediaAssetName"
+      ],
+      "test": "tests/RichMediaEc3GraphTest.php",
+      "oracle": "tools/validate_pdf20_metadata.py",
+      "scope": "Required instance type; optional configuration type and unique decoded names; named asset relative-URI/F/UF identity; activation/deactivation, animation and window domains. Unnamed primary assets remain permitted by EC3 #58; unknown animation names retain their normative fallback."
     }
   },
   "validation": {
@@ -95,7 +195,29 @@
     ]
   },
   "boundaries": [
-    "These graph checks are separate from the 197 intrinsic dictionary rules and the six approved EC3 semantic corrections, including #22/#124 in resources/annotation-appearances/coverage.json.",
-    "They do not implement every conditional annotation/action/measurement requirement, execute actions, open external resources, render appearances or establish complete ISO conformance."
-  ]
+    "Handwritten effective-graph checks are distinct from generated dictionary schemas and from source annotation inventories. Neither their counts nor the presence of a catalogue entry proves global ISO conformity.",
+    "These checks do not execute actions/scripts/media, validate external target files or codecs, or establish semantic accessibility. Some further native action payload and target-name relationships remain separate mechanisms; see the source-linked audit."
+  ],
+  "developmentValidation": {
+    "status": "targeted-development-evidence-not-release-qualification",
+    "pageOutlineOracle": {
+      "pdfs": 12,
+      "checks": 738
+    },
+    "actionOracle": {
+      "pdfs": 12,
+      "checks": 300
+    },
+    "qualification": "Run the current unit tests, static analysis and all CI oracles on the exact release candidate for PHP 8.3/8.4/8.5.",
+    "targetedCombined": {
+      "tests": 256,
+      "assertions": 403,
+      "runtimes": [
+        "PHP8.3.29",
+        "PHP8.4",
+        "PHP8.5"
+      ],
+      "includes": "Page/outline/actions/RichMedia/calculator focused test classes"
+    }
+  }
 }

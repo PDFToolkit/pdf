@@ -89,6 +89,12 @@ jobs:
         run: python tools/validate_source_mechanisms.py /tmp/pdf-examples --php php --qpdf qpdf
       - name: Verify destructive redaction bytes, graph closure and rendered pixels
         run: python tools/validate_secure_redaction.py --php php --qpdf qpdf --work-dir /tmp/pdf17-redaction
+      - name: Verify effective page attributes and outline counts independently
+        run: python tools/validate_page_outlines.py --php php
+      - name: Verify active action contracts and incremental targets independently
+        run: python tools/validate_action_contracts.py --php php
+      - name: Evaluate emitted Type4 calculator streams with Ghostscript
+        run: python tools/validate_calculator_functions.py --php php --ghostscript gs
       - name: Verify PDF 2.0 metadata, declarations and encrypted payloads independently
         run: python tools/validate_pdf20_metadata.py --php php --qpdf qpdf --work-dir /tmp/pdf20-metadata
       - name: Verify modern encryption, signatures and PDF MAC independently
