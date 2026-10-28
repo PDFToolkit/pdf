@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "document": "PDF32000_2008.pdf",
+      "path": "resources/reference-documents/PDF32000_2008.pdf",
+      "sha256": "2dc784890e65da6c324d46ece182fb4705b751e49587b1bbe9c3225c25fed4d3",
+      "physicalPdfPages": [
+        106,
+        107
+      ],
+      "clauses": [
+        "7.10.5"
+      ]
+    },
+    {
+      "document": "ISO_32000-2_sponsored_EC3.pdf",
+      "path": "resources/reference-documents/ISO_32000-2_sponsored_EC3.pdf",
+      "sha256": "90f4b666d46405dd62630a98d514158b4de5304b749523c4081680ac4fe2e230",
+      "physicalPdfPages": [
+        146,
+        147,
+        863,
+        864
+      ],
+      "clauses": [
+        "7.10.5",
+        "Annex B"
+      ]
+    },
+    {
+      "document": "PostScript Language Reference, Third Edition",
+      "url": "https://www.adobe.com/jp/print/postscript/pdfs/PLRM.pdf",
+      "physicalPdfPages": [
+        553,
+        666
+      ],
+      "printedPages": [
+        539,
+        652
+      ],
+      "clauses": [
+        "bitshift",
+        "round"
+      ],
+      "relationship": "Operator details referenced normatively by ISO 32000-2 Annex B; external primary reference, not a nineteenth retained PDF."
+    }
+  ],
+  "executed": {
+    "classes": [
+      "PostScriptCalculatorFunction",
+      "Calculator\\ProgramCompiler",
+      "Calculator\\Program",
+      "Calculator\\Literal",
+      "Calculator\\Conditional",
+      "Calculator\\StackShapeValidation",
+      "Calculator\\Evaluator",
+      "Calculator\\Evaluation",
+      "Calculator\\CalculatorStack",
+      "Calculator\\OperatorExecution",
+      "Calculator\\CalculatorLimits"
+    ],
+    "tests": [
+      "tests/CalculatorEvaluationTest.php",
+      "tests/FunctionsTest.php"
+    ],
+    "oracle": "tools/validate_calculator_functions.py",
+    "operatorCount": 42,
+    "scope": [
+      "Frozen typed grammar and source work budget; braces only as conditional bodies, at most255 levels.",
+      "Conservative straight-line type/stack checks; data-dependent branch/copy/index/roll shapes are deferred, never rejected merely because intermediate shapes differ.",
+      "Explicit evaluation with per-invocation stack/work/depth bounds, typed operands, Domain input clipping and Range output clipping, exactly n numeric finite results.",
+      "No file, network, PostScript interpreter, renderer or global registry in production."
+    ]
+  },
+  "validation": {
+    "status": "development-evidence-not-release-qualification",
+    "ghostscript": "10.05.1",
+    "pdfs": 44,
+    "evaluations": 50,
+    "checks": 341,
+    "unitTests": 85,
+    "unitAssertions": 186
+  },
+  "boundaries": [
+    "Finite examples do not prove function validity over its entire Domain. Runtime exceptions remain explicit for input-dependent errors.",
+    "Integer word size follows the PHP build; 64-bit operation is tested. Real arithmetic uses finite PHP binary64, with explicit overflow/domain failures; this is not a bit-identical emulation of every PDF processor.",
+    "Ghostscript signed right shifts of negative integers differ from the zero-fill rule of PLRM p539. Positive shifts are cross-checked by the independent engine; negative64-bit shifts are checked directly against the normative bit rule.",
+    "Generic imported or pre-encoded FunctionType4 streams are not parsed by this typed constructor. External PDF import belongs to an explicit Reader bridge."
+  ]
+}

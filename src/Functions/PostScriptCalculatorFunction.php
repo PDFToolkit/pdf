@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace PDF\Functions;
 
 use PDF\Functions\Calculator\Procedure;
+use PDF\Functions\Calculator\CalculatorLimits;
+use PDF\Functions\Calculator\Program;
+use PDF\Functions\Calculator\ProgramCompiler;
+use PDF\Functions\Calculator\StackShapeValidation;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IntegerType;
@@ -14,9 +18,13 @@ use PDF\Syntax\Object\StreamObject;
 /** FunctionType 4 stream containing a typed, braced calculator program. */
 final class PostScriptCalculatorFunction extends StreamObject implements FunctionObject
 {
-    public function __construct(private readonly Domain $inputDomain, private readonly Range $outputRange, public readonly Procedure $procedure)
+    public readonly Program $program;
+
+    public function __construct(private readonly Domain $inputDomain, private readonly Range $outputRange, public readonly Procedure $procedure, CalculatorLimits $limits = new CalculatorLimits())
     {
-        parent::__construct($procedure->toPostScript(), new DictionaryType(
+        $this->program = (new ProgramCompiler($limits))->compile($procedure);
+        (new StackShapeValidation())->validate($this->program, $inputDomain->dimensions(), $outputRange->dimensions());
+        parent::__construct($this->program->toPostScript(), new DictionaryType(
             new Entry(new NameType('FunctionType'), new IntegerType(4)),
             new Entry(new NameType('Domain'), $inputDomain),
             new Entry(new NameType('Range'), $outputRange),
