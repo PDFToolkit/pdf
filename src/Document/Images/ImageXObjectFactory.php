@@ -29,7 +29,11 @@ final readonly class ImageXObjectFactory
 
     public function create(SampledImage|DCTImage $image, Entry ...$entries): StreamObject
     {
+        $intent = $image instanceof SampledImage ? $image->intent : null;
         foreach ($entries as $entry) {
+            if ($entry->key->value === 'Intent') {
+                $intent = null;
+            }
             if (in_array($entry->key->value, [
                 'Type', 'Subtype', 'Width', 'Height', 'ColorSpace', 'BitsPerComponent',
                 'Decode', 'SMask', 'Mask', 'ImageMask', 'SMaskInData',
@@ -37,7 +41,7 @@ final readonly class ImageXObjectFactory
                 throw new \InvalidArgumentException('Image composition manages /' . $entry->key->value . '.');
             }
         }
-        $options = new ImageOptions(extensions: array_values($entries));
+        $options = new ImageOptions(intent: $intent, extensions: array_values($entries));
         if ($image instanceof SampledImage) {
             $alpha = $image->alpha === null ? null : new SoftMaskImage($image->alpha, null, null, new ImageOptions(), $this->sampleCompression);
             return new ImageXObject($image->samples, null, null, $alpha, $options, $this->sampleCompression);

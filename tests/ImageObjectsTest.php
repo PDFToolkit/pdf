@@ -11,6 +11,7 @@ use PDF\Document\Images\ImageSamples;
 use PDF\Document\Images\ImageXObjectFactory;
 use PDF\Document\Images\SampledImage;
 use PDF\Document\Images\SampleLayout;
+use PDF\Graphics\GraphicsState\RenderingIntent;
 use PDF\Serialization\SerializationContext;
 use PDF\Syntax\Object\DictionaryObject\Entry;
 use PDF\Syntax\Object\IndirectReference;
@@ -22,6 +23,27 @@ use PHPUnit\Framework\TestCase;
 
 final class ImageObjectsTest extends TestCase
 {
+    public function testImportedRenderingIntentCanBeExplicitlyOverriddenWithoutChangingSamples(): void
+    {
+        $samples = new ImageSamples(new ImageDimensions(1, 1), new SampleLayout(DeviceColorSpace::RGB), "\xff\0\0");
+        $alpha = new ImageSamples($samples->dimensions, new SampleLayout(DeviceColorSpace::Gray), "\x80");
+        $factory = new ImageXObjectFactory();
+        $image = new SampledImage($samples, $alpha, RenderingIntent::Perceptual);
+        $imported = $factory->create($image);
+        self::assertEquals(new NameType('Perceptual'), $imported->dictionary()->get('Intent'));
+        $override = $factory->create($image, new Entry(new NameType('Intent'), new NameType('RelativeColorimetric')));
+        self::assertEquals(new NameType('RelativeColorimetric'), $override->dictionary()->get('Intent'));
+        self::assertSame(1, substr_count($override->toPdf(new SerializationContext()), '/Intent '));
+        self::assertSame($samples->bytes, gzuncompress($override->bytes(new SerializationContext())));
+        $reference = $imported->dictionary()->get('SMask');
+        self::assertInstanceOf(IndirectReference::class, $reference);
+        $mask = $reference->target();
+        self::assertInstanceOf(StreamObject::class, $mask);
+        self::assertFalse($mask->dictionary()->has('Intent'));
+        self::assertSame($alpha->bytes, gzuncompress($mask->bytes(new SerializationContext())));
+        self::assertFalse($factory->create(new SampledImage($samples))->dictionary()->has('Intent'));
+    }
+
     public function testRawSamplesAndMaskProduceIndependentPdfImageStreams(): void
     {
         $dimensions = new ImageDimensions(2, 1);
