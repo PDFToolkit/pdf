@@ -31,12 +31,12 @@ $format = match ($argv[2] ?? 'table') {
     'hybrid' => CrossReferenceFormat::Hybrid,
     default => throw new InvalidArgumentException('Unknown cross-reference format.'),
 };
-$script = new F\FileSpecification(new LiteralString('empty.js'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('// Deliberately empty script.', new NameType('application/javascript'))))));
+$script = new F\FileSpecification(new LiteralString('empty.js'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('// Deliberately empty script.', new NameType('application/javascript')))), additionalNames: new F\FileSpecificationName(F\EmbeddedFileKey::UnicodeFile, new \PDF\Syntax\DataStructure\TextString('empty.js'))));
 $assets = new NameTree(new NameTreeEntry(new LiteralString('empty.js'), new IndirectReference($script)));
 $primary = new F\FileSpecification(new LiteralString('primary.bin'), new F\FileSpecificationOptions(embedded: new F\EmbeddedFileBindings(new F\EmbeddedFileBinding(F\EmbeddedFileKey::File, new F\EmbeddedFileStream('Explicit opaque primary asset.', new NameType('application/octet-stream'))))));
 $annotations = [];
 foreach ([1, 2] as $number) {
-    $instance = new DictionaryType(new Entry(new NameType('Type'), new NameType('RichMediaInstance')), new Entry(new NameType('Asset'), new IndirectReference($primary)));
+    $instance = new DictionaryType(new Entry(new NameType('Type'), new NameType('RichMediaInstance')), new Entry(new NameType('Subtype'), new NameType('Video')), new Entry(new NameType('Asset'), new IndirectReference($primary)));
     $configuration = new DictionaryType(new Entry(new NameType('Type'), new NameType('RichMediaConfiguration')), new Entry(new NameType('Name'), new LiteralString('Configuration ' . $number)), new Entry(new NameType('Instances'), new ArrayType(new IndirectReference($instance))));
     $content = new DictionaryType(new Entry(new NameType('Configurations'), new ArrayType(new IndirectReference($configuration))), new Entry(new NameType('Assets'), new IndirectReference($assets)));
     $activation = new DictionaryType(new Entry(new NameType('Scripts'), new ArrayType(new IndirectReference($script))), new Entry(new NameType('Configuration'), new IndirectReference($configuration)));

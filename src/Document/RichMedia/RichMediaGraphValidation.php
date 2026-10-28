@@ -9,6 +9,7 @@ use PDF\Document\DocumentGraphContext;
 use PDF\Document\Files\FileSpecificationRules;
 use PDF\Document\Files\EmbeddedFileMediaType;
 use PDF\Document\Navigation\NavigationLimits;
+use PDF\Syntax\DataStructure\TextStringDecoder;
 use PDF\Syntax\FileStructure\BasicType;
 use PDF\Syntax\FileStructure\EffectivePdfVersion;
 use PDF\Syntax\FileStructure\PdfVersion;
@@ -17,6 +18,7 @@ use PDF\Syntax\Object\DictionaryType;
 use PDF\Syntax\Object\IndirectReference;
 use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\StreamObject;
+use PDF\Syntax\Object\StringType;
 
 /** EC3 #156 (p.153), #58/#59/#145/#163/#166 (pp.716–726): effective annotation-owned relationships. */
 final readonly class RichMediaGraphValidation
@@ -41,20 +43,41 @@ final readonly class RichMediaGraphValidation
             if ($content === null) {
                 throw new \LogicException('A required RichMediaContent was checked.');
             }
+            $rules = new RichMediaDictionaryRules();
+            $rules->validate($content, 'Content', $scope);
+            if ($settings !== null) {
+                $rules->validate($settings, 'Settings', $scope);
+            }
             $configurations = $this->references($content, 'Configurations', $scope, true);
             $views = $this->references($content, 'Views', $scope);
             $assetsEntry = $scope->entry($content, 'Assets');
             $assets = $assetsEntry === null ? [] : $scope->nameTree($assetsEntry);
-            foreach ($assets as $asset) {
+            foreach ($assets as $name => $asset) {
                 $file = $this->file($asset, $scope);
+                $encoded = hex2bin((string) $name);
+                if ($encoded === false) {
+                    throw new \LogicException('The graph name-tree index contains hexadecimal byte keys.');
+                }
+                (new RichMediaAssetName($encoded))->validate($file, $scope);
                 if ($scope->entry($file, 'EF') === null) {
                     throw new \InvalidArgumentException('RichMedia Assets name-tree entries require embedded file specifications.');
                 }
             }
+            $names = [];
             foreach ($configurations as $configuration) {
                 $dictionary = $scope->dictionary($configuration) ?? throw new \LogicException('A configuration reference was checked.');
+                $rules->validate($dictionary, 'Configuration', $scope);
+                $name = $this->value($dictionary, 'Name', $scope);
+                if ($name instanceof StringType) {
+                    $text = (new TextStringDecoder(PdfVersion::PDF20))->decode($name);
+                    if (isset($names[$text]) && !$scope->sameObject($names[$text], $configuration)) {
+                        throw new \InvalidArgumentException('RichMedia configuration names must be unique within their annotation content.');
+                    }
+                    $names[$text] = $configuration;
+                }
                 foreach ($this->references($dictionary, 'Instances', $scope) as $instance) {
                     $dictionary = $scope->dictionary($instance) ?? throw new \LogicException('An instance reference was checked.');
+                    $rules->validate($dictionary, 'Instance', $scope);
                     $asset = $scope->entry($dictionary, 'Asset');
                     if ($asset === null) {
                         throw new \InvalidArgumentException('RichMediaInstance requires its Asset file specification.');

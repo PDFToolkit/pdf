@@ -142,12 +142,14 @@ def main() -> None:
             content = annotation["/RichMediaContent"]
             activation = annotation["/RichMediaSettings"]["/Activation"]
             assets = content["/Assets"]["/Names"]
+            assert assets[0] == assets[1].get_object()["/F"] == assets[1].get_object()["/UF"] == "empty.js"
             assert activation["/Scripts"][0] == assets[1]
             assert activation.raw_get("/Configuration") == content["/Configurations"][0]
             script = assets[1].get_object()["/EF"]["/F"]
             assert script.get_data() == b"// Deliberately empty script."
             assert script["/Subtype"] == "/application/javascript"
             primary_reference = content["/Configurations"][0].get_object()["/Instances"][0].get_object().raw_get("/Asset")
+            assert content["/Configurations"][0].get_object()["/Instances"][0].get_object()["/Subtype"] == "/Video"
             assert primary_reference != assets[1]
             primary = primary_reference.get_object()["/EF"]["/F"]
             assert primary["/Subtype"] == "/application/octet-stream"
