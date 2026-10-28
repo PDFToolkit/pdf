@@ -4,6 +4,16 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-28
+
+- Validate effective inherited page Rotate/UserUnit/Tabs/production-box contracts and outline links/counts/styles across native revisions.
+- Validate required entries, flags, target ownership and version gates for the twenty standard action families, including JavaScript-only trigger locations. Preserve unknown extension actions; never execute them.
+- Validate RichMedia assets, instances, configurations, animation and activation-window parameters while retaining standard fallback behavior.
+- Compile immutable Type 4 calculator programs and evaluate all 42 operators with explicit work/stack/depth budgets, numeric domains and ranges. Reject invalid syntax and proven straight-line type/stack violations; runtime-dependent branches remain explicit.
+- Accept inverted DCT samples in four-component ICC spaces and preserve imported image rendering intents with explicit author overrides.
+- Add independent page/outline/action PDF checks and Ghostscript calculator comparisons, source/page dispositions, and English/French migration documentation. Generated catalogue counts do not establish full ISO conformity.
+- Require stable published development modules: Fonts 0.2.0, Images 0.1.13 and Reader 0.6.1; keep the core free of optional production dependencies. PHP remains 8.3+ on 64-bit platforms.
+
 ## [0.11.0] - 2026-10-15
 
 - Add explicit PDF2 structure-attribute semantics for contextual Placement defaults, including Figure in P versus Sect, inherited line-height boundaries and required Width/Height. Keep historical PDF1.7 defaults and require explicit values for ambiguous contexts; independent output checks cover all three xref formats.

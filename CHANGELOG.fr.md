@@ -4,6 +4,16 @@
 
 ## [Non publié]
 
+## [0.12.0] - 2026-10-28
+
+- Valider les contrats effectifs hérités Rotate/UserUnit/Tabs/boîtes de production et les liens/comptes/styles des plans entre révisions natives.
+- Valider entrées requises, drapeaux, propriété des cibles et versions des vingt familles d’actions standard, y compris les déclencheurs réservés à JavaScript. Conserver les extensions inconnues ; ne jamais exécuter les actions.
+- Valider ressources, instances, configurations, animations et fenêtres d’activation RichMedia en conservant les comportements de repli définis par la norme.
+- Compiler des programmes calculatrices Type 4 immuables et évaluer les 42 opérateurs avec budgets explicites de travail/pile/profondeur, domaines et intervalles numériques. Refuser syntaxe invalide et violations linéaires prouvées de types/pile ; les branches dépendant des entrées restent explicites.
+- Accepter les échantillons DCT inversés dans les espaces ICC à quatre composantes et préserver les intentions de rendu importées, avec priorité aux choix explicites de l’auteur.
+- Ajouter contrôles PDF indépendants pages/plans/actions, comparaisons calculatrices Ghostscript, dispositions sourcées par page et migrations FR/EN. Les comptes du catalogue généré ne prouvent pas une conformité ISO complète.
+- Exiger les modules de développement stables publiés Fonts 0.2.0, Images 0.1.13 et Reader 0.6.1 ; conserver le core sans dépendance optionnelle de production. PHP reste 8.3+ sur plateforme 64 bits.
+
 ## [0.11.0] - 2026-10-15
 
 - Ajouter une sémantique explicite des attributs de structure PDF2 pour Placement contextuel : Figure dans P ou Sect, limites d’héritage de LineHeight et Width/Height requis. Conserver les défauts PDF1.7 historiques et exiger une valeur explicite pour les contextes ambigus ; les contrôles indépendants couvrent les trois formats xref.

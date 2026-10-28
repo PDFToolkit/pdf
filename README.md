@@ -46,7 +46,7 @@ is retained unchanged in this repository and excluded from Composer archives.
 Its edition, physical pages and fingerprint are recorded in a separate catalogue. PDF/A,
 PDF/X and PDF/UA profiles require their own conformance mechanisms.
 
-Version 0.11 extends signed updates and certificate/password UR3 authentication with reviewed EC3 corrections. See the [migration notes and boundaries](docs/migration-0.11.md).
+Version 0.12 strengthens page, outline, action and RichMedia contracts, adds bounded Type 4 calculator evaluation and preserves imported image rendering intents. See the [migration notes and boundaries](docs/migration-0.12.md).
 
 ## PDF 2.0 companion specifications
 
@@ -191,14 +191,14 @@ still require an explicit sanitizer; see the [redaction boundaries](resources/re
 
 ## Installation
 
-Core **0.11** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
+Core **0.12** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
 [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.11'
+composer require 'roukmoute/pdf:^0.12'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -214,14 +214,13 @@ To follow development after this series, replace the stable constraint with
 | --- | --- |
 | [`pdftoolkit/pdf-reader`](https://packagist.org/packages/pdftoolkit/pdf-reader) | Read objects and revisions from an external PDF, validate pages and inheritance, inspect their streams. |
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
-| [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Parse a static TrueType font and prepare metrics and mappings for core font objects. |
+| [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Lay out OpenType glyphs and embed static TrueType or CFF fonts using core font objects. |
 
-Image and font converters are available as **0.1.12**, and the reader as
-**0.6.0**; these releases accept core 0.11 and PHP 8.3 or newer. Composer automatically installs
+Images **0.1.13**, Fonts **0.2.0** and Reader **0.6.1** accept core 0.12 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.12'
+composer require 'pdftoolkit/pdf-images:^0.1.13'
 ```
 
 The module installs the core using its stable constraint. The
@@ -248,8 +247,8 @@ PDFs under PHP 8.3, 8.4 and 8.5. Tests also fail on PHP deprecations and warning
 The [changelog](CHANGELOG.md) describes every published version.
 
 To validate this checkout, including from its tag, set
-`COMPOSER_ROOT_VERSION=0.11.x-dev` before `composer install`. This variable
-identifies the current core as part of the 0.11 series expected by modules.
+`COMPOSER_ROOT_VERSION=0.12.x-dev` before `composer install`. This variable
+identifies the current core as part of the 0.12 series expected by modules.
 Development dependencies use stable published modules whose exact versions and sources
 are locked in `composer.lock`. CI also sets this variable for branches, tags
 and pull requests.
