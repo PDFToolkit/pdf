@@ -4,6 +4,11 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-10-28
+
+- Update the locked development modules to published Images 0.2, Reader 0.7 and optional PHP Codecs 0.1 for examples and independent documentation validation. Core production dependencies and APIs remain unchanged.
+- Keep the installation and compatibility documentation in English and French aligned with these stable module releases.
+
 ## [0.12.0] - 2026-10-28
 
 - Validate effective inherited page Rotate/UserUnit/Tabs/production-box contracts and outline links/counts/styles across native revisions.

@@ -195,10 +195,10 @@ après cette série, remplacer la contrainte stable par `dev-master`.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Mettre en forme des glyphes OpenType et incorporer des polices TrueType ou CFF statiques dans les objets du core. |
 
-Images **0.1.13**, Fonts **0.2.0** et Reader **0.6.1** acceptent le core 0.12 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Images **0.2.0**, Fonts **0.2.0** et Reader **0.7.0** acceptent le core 0.12 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.13'
+composer require 'pdftoolkit/pdf-images:^0.2'
 ```
 
 Le module installe le core avec sa contrainte stable. Le [guide des packages](https://pdftoolkit.github.io/fr/guides/modules.html) explique leur frontière, les installations et le fonctionnement du lecteur. Conserver le `composer.lock` de l'application pour fixer les versions et les commits utilisés.

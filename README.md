@@ -216,11 +216,11 @@ To follow development after this series, replace the stable constraint with
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Lay out OpenType glyphs and embed static TrueType or CFF fonts using core font objects. |
 
-Images **0.1.13**, Fonts **0.2.0** and Reader **0.6.1** accept core 0.12 and PHP 8.3 or newer. Composer automatically installs
+Images **0.2.0**, Fonts **0.2.0** and Reader **0.7.0** accept core 0.12 and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh
-composer require 'pdftoolkit/pdf-images:^0.1.13'
+composer require 'pdftoolkit/pdf-images:^0.2'
 ```
 
 The module installs the core using its stable constraint. The

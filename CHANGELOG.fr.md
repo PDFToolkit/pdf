@@ -4,6 +4,11 @@
 
 ## [Non publié]
 
+## [0.12.1] - 2026-10-28
+
+- Mettre à jour les modules de développement verrouillés vers les versions publiées Images 0.2, Reader 0.7 et Codecs PHP optionnels 0.1 pour les exemples et la validation indépendante de la documentation. Les dépendances de production et les API du core restent inchangées.
+- Aligner la documentation d’installation et de compatibilité en français et en anglais avec ces versions stables.
+
 ## [0.12.0] - 2026-10-28
 
 - Valider les contrats effectifs hérités Rotate/UserUnit/Tabs/boîtes de production et les liens/comptes/styles des plans entre révisions natives.

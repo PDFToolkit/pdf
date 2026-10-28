@@ -30,9 +30,10 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
+        "pdftoolkit/pdf-codecs": "^0.1",
         "pdftoolkit/pdf-fonts": "^0.2",
-        "pdftoolkit/pdf-images": "^0.1.13",
-        "pdftoolkit/pdf-reader": "^0.6.1",
+        "pdftoolkit/pdf-images": "^0.2",
+        "pdftoolkit/pdf-reader": "^0.7",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0"
     },
