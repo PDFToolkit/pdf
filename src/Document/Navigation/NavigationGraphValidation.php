@@ -17,6 +17,7 @@ use PDF\Syntax\Object\NameType;
 use PDF\Syntax\Object\NumericType;
 use PDF\Syntax\Object\NullType;
 use PDF\Syntax\Object\StringType;
+use PDF\Syntax\Object\StreamObject;
 
 /** Active catalogue relationships, also when every native declaration has become a snapshot. */
 final readonly class NavigationGraphValidation
@@ -27,6 +28,7 @@ final readonly class NavigationGraphValidation
 
     public function validate(DocumentGraphContext $graph, ?EffectivePdfVersion $version = null): void
     {
+        (new OutlineGraphValidation($this->limits))->validate($graph, $version);
         $pages = new NavigationPageIndex($graph, $this->limits);
         $destinations = new NamedDestinationIndex($graph, $pages, $this->limits);
         if ($destinations->hasLegacy) {
@@ -338,37 +340,10 @@ final readonly class NavigationGraphValidation
             return;
         }
         $dictionary = $graph->dictionary($reference);
-        if ($dictionary === null) {
+        if ($dictionary === null || $graph->resolve($reference) instanceof \PDF\Syntax\Object\StreamObject) {
             throw new \InvalidArgumentException('Page Trans resolves to a transition dictionary.');
         }
-        $options = [];
-        foreach (['Type', 'S', 'Dm', 'M', 'Di', 'SS', 'B'] as $key) {
-            $value = $graph->entry($dictionary, $key);
-            $options[$key] = $value === null ? null : $graph->resolve($value);
-        }
-        if ($options['Type'] !== null && (!$options['Type'] instanceof NameType || $options['Type']->value !== 'Trans')) {
-            throw new \InvalidArgumentException('A transition Type, when present, is Trans.');
-        }
-        $style = $options['S'] === null ? TransitionStyle::Replace : ($options['S'] instanceof NameType ? TransitionStyle::tryFrom($options['S']->value) : null);
-        $dimension = $options['Dm'] instanceof NameType ? TransitionDimension::tryFrom($options['Dm']->value) : null;
-        $motion = $options['M'] instanceof NameType ? TransitionMotion::tryFrom($options['M']->value) : null;
-        $direction = null;
-        foreach (TransitionDirection::cases() as $case) {
-            $encoded = $case->toObject();
-            if (($options['Di'] instanceof IntegerType && $encoded instanceof IntegerType && $options['Di']->value === $encoded->value)
-                || ($options['Di'] instanceof NameType && $encoded instanceof NameType && $options['Di']->value === $encoded->value)) {
-                $direction = $case;
-            }
-        }
-        if ($style === null || ($options['Dm'] !== null && $dimension === null) || ($options['M'] !== null && $motion === null)
-            || ($options['Di'] !== null && $direction === null) || ($options['SS'] !== null && !$options['SS'] instanceof NumericType)
-            || ($options['B'] !== null && !$options['B'] instanceof BooleanType)) {
-            throw new \InvalidArgumentException('An effective transition contains an invalid style or parameter type.');
-        }
-        $transition = new Transition($style, $this->duration($graph, $dictionary, 'D'), $dimension, $motion, $direction, $options['SS'], $options['B']);
-        if ($version !== null) {
-            $transition->validateVersion($version);
-        }
+        (new TransitionDictionaryRules())->validate($dictionary, $graph, $version);
     }
 
     private function actionLeaves(DocumentGraphContext $graph, NavigationPageIndex $pages, NamedDestinationIndex $destinations, BasicType $root, int $pageIndex): bool
@@ -387,7 +362,8 @@ final readonly class NavigationGraphValidation
             }
             $seen[$key] = true;
             $action = $graph->dictionary($reference);
-            $subtype = $action?->get('S');
+            $subtype = $action === null ? null : $graph->entry($action, 'S');
+            $subtype = $subtype === null ? null : $graph->resolve($subtype);
             if (!$action instanceof DictionaryType || !$subtype instanceof NameType) {
                 throw new \InvalidArgumentException('A presentation action requires its dictionary and S name.');
             }
@@ -412,7 +388,9 @@ final readonly class NavigationGraphValidation
                     return true;
                 }
             }
-            if ($subtype->value === 'Named' && ($name = $action->get('N')) instanceof NameType) {
+            $named = $graph->entry($action, 'N');
+            $name = $named === null ? null : $graph->resolve($named);
+            if ($subtype->value === 'Named' && $name instanceof NameType) {
                 $target = match ($name->value) {
                     'FirstPage' => 0,
                     'LastPage' => count($pages->pages) - 1,
@@ -440,6 +418,16 @@ final readonly class NavigationGraphValidation
     private function declaredDestinations(DocumentGraphContext $graph, NavigationPageIndex $pages, NamedDestinationIndex $destinations, ?EffectivePdfVersion $version): void
     {
         $pending = [[$graph->catalog, 'other']];
+        $actionRules = new ActionDictionaryRules($graph, $version, $this->limits);
+        $names = $graph->entry($graph->catalog, 'Names');
+        $names = $names === null ? null : $graph->dictionary($names);
+        $scripts = $names === null ? null : $graph->entry($names, 'JavaScript');
+        if ($scripts !== null) {
+            $version?->require(PdfVersion::PDF13, 'Document JavaScript name tree');
+            foreach ($graph->nameTree($scripts) as $script) {
+                $pending[] = [$script, 'script'];
+            }
+        }
         $seen = [];
         $structureResolver = null;
         while ($pending !== []) {
@@ -461,18 +449,26 @@ final readonly class NavigationGraphValidation
                 $annotation = $kind === 'annotation' || ($type instanceof NameType && $type->value === 'Annot');
                 $outline = $this->isOutlineItem($graph, $pages, $dictionary);
                 $node = $kind === 'node' || ($type instanceof NameType && $type->value === 'NavNode');
-                $action = in_array($kind, ['action', 'open'], true) || ($type instanceof NameType && $type->value === 'Action');
-                $field = $dictionary->get('FT') instanceof NameType;
+                $action = in_array($kind, ['action', 'open', 'script'], true) || ($type instanceof NameType && $type->value === 'Action');
+                $field = $kind === 'field' || $dictionary->get('FT') instanceof NameType;
                 $targets = [];
                 if ($action) {
+                    if ($graph->resolve($value) instanceof StreamObject) {
+                        throw new \InvalidArgumentException('An active action must be a dictionary, not a stream.');
+                    }
                     $this->objectType($graph, $dictionary, 'Action');
                     if ($graph->entry($dictionary, 'Next') !== null) {
                         $version?->require(PdfVersion::PDF12, 'Next action chain');
                     }
-                    $actionType = $dictionary->get('S');
+                    $actionType = $graph->entry($dictionary, 'S');
+                    $actionType = $actionType === null ? null : $graph->resolve($actionType);
                     if (!$actionType instanceof NameType) {
                         throw new \InvalidArgumentException('An active action requires its S name.');
                     }
+                    if ($kind === 'script' && $actionType->value !== 'JavaScript') {
+                        throw new \InvalidArgumentException('This document or field trigger requires a JavaScript action.');
+                    }
+                    $actionRules->validate($dictionary, $actionType->value);
                     (new RemoteActionGraphValidation($this->limits))->validate($dictionary, $actionType->value, $graph, $version);
                     if ($actionType->value === 'GoTo') {
                         $target = $graph->entry($dictionary, 'D');
@@ -522,9 +518,19 @@ final readonly class NavigationGraphValidation
                     }
                 }
                 foreach ($dictionary->entries() as $entry) {
+                    if ($entry->key->value === 'AA' && ($catalog || $page || $annotation || $field)) {
+                        $version?->require($catalog ? PdfVersion::PDF14 : PdfVersion::PDF12, 'Additional actions');
+                    }
                     $childKind = match (true) {
+                        $kind === 'documentAdditional' => 'script',
+                        $kind === 'fieldAdditional' => in_array($entry->key->value, ['K', 'F', 'V', 'C'], true) ? 'script' : 'action',
                         $kind === 'additional' => 'action',
                         $catalog && $entry->key->value === 'OpenAction' => 'open',
+                        $catalog && $entry->key->value === 'AcroForm' => 'form',
+                        $kind === 'form' && $entry->key->value === 'Fields' => 'fields',
+                        $field && $entry->key->value === 'Kids' => 'fields',
+                        $catalog && $entry->key->value === 'AA' => 'documentAdditional',
+                        $field && $entry->key->value === 'AA' => 'fieldAdditional',
                         ($catalog || $page || $annotation || $field) && $entry->key->value === 'AA' => 'additional',
                         ($annotation || $outline || $field) && $entry->key->value === 'A' => 'action',
                         $action && $entry->key->value === 'Next' => 'action',
@@ -538,15 +544,19 @@ final readonly class NavigationGraphValidation
                     }
                 }
             } elseif (($array = $graph->resolve($value)) instanceof ArrayType) {
+                if (in_array($kind, ['script', 'additional', 'documentAdditional', 'fieldAdditional', 'node', 'field', 'form'], true)) {
+                    throw new \InvalidArgumentException('An active navigation relationship requires a dictionary, not an array.');
+                }
                 $childKind = match ($kind) {
                     'annotations' => 'annotation',
+                    'fields' => 'field',
                     'action' => 'action',
                     default => 'other',
                 };
                 foreach ($array->items as $item) {
                     $pending[] = [$item, $childKind];
                 }
-            } elseif (in_array($kind, ['action', 'additional', 'node'], true)) {
+            } elseif (in_array($kind, ['action', 'open', 'script', 'additional', 'documentAdditional', 'fieldAdditional', 'node'], true)) {
                 throw new \InvalidArgumentException('An active navigation relationship requires its dictionary.');
             }
         }
