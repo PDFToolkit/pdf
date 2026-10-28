@@ -70,6 +70,22 @@ final class ImageObjectsTest extends TestCase
         self::assertEquals(new IntegerType(0), $stream->filters[0]->parameters()?->get('ColorTransform'));
     }
 
+    public function testInvertedIccCmykPreservesItsProfileAndDecodeRanges(): void
+    {
+        $profile = new \PDF\Graphics\ColourSpaces\ICCProfile('opaque CMYK profile bytes', new IntegerType(4));
+        $space = new \PDF\Graphics\ColourSpaces\ICCBased($profile);
+        $image = new DCTImage('opaque YCCK bytes', new ImageDimensions(1, 1), new SampleLayout($space), 1, true);
+        $stream = (new ImageXObjectFactory())->create($image);
+        $context = new SerializationContext();
+        $context->prepare($stream);
+        self::assertSame($space, $image->layout->space());
+        self::assertSame('opaque YCCK bytes', $stream->bytes($context));
+        self::assertStringContainsString('/Decode [1 0 1 0 1 0 1 0]', $stream->toPdf($context));
+        self::assertStringContainsString('/ColorSpace [/ICCBased ', $stream->toPdf($context));
+        self::assertCount(2, $context->objects());
+        self::assertEquals(new IntegerType(1), $stream->filters[0]->parameters()?->get('ColorTransform'));
+    }
+
     /** @return iterable<string, array{string}> */
     public static function managedEntries(): iterable
     {

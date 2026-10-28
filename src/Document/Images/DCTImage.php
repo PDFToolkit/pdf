@@ -23,7 +23,8 @@ final readonly class DCTImage
         if ($layout->bitsPerComponent !== 8) {
             throw new \InvalidArgumentException('DCTDecode delivers eight-bit component samples.');
         }
-        if ($invertedComponents && $layout->space()->family() !== \PDF\Graphics\ColourSpaces\ColourSpaceFamily::DeviceCMYK) {
+        if ($invertedComponents && !($layout->space()->family() === \PDF\Graphics\ColourSpaces\ColourSpaceFamily::DeviceCMYK
+            || $layout->space()->family() === \PDF\Graphics\ColourSpaces\ColourSpaceFamily::ICCBased && $layout->components() === 4)) {
             throw new \InvalidArgumentException('Inverted DCT components require a CMYK colour space.');
         }
     }
