@@ -1,5 +1,5 @@
 {
-    "name": "roukmoute/pdf",
+    "name": "pdftoolkit/pdf",
     "type": "library",
     "description": "Explicit PDF 1.7/2.0 objects and writing with executable specification rules, conservative redaction, signatures, encryption and tagged-structure validation",
     "keywords": [
@@ -27,6 +27,9 @@
         "ext-iconv": "*",
         "ext-zlib": "*",
         "php-64bit": "*"
+    },
+    "replace": {
+        "roukmoute/pdf": "self.version"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
