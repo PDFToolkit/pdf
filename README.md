@@ -194,11 +194,11 @@ still require an explicit sanitizer; see the [redaction boundaries](resources/re
 Core **0.12** requires 64-bit PHP 8.3 or newer and the `ctype`, `iconv` and `zlib`
 extensions. AES and CMS backends are optional and require `openssl`. The explicit
 Ed25519/Ed448 provider additionally receives a local OpenSSL executable.
-[roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) is available on
+[pdftoolkit/pdf](https://packagist.org/packages/pdftoolkit/pdf) is available on
 Packagist:
 
 ```sh
-composer require 'roukmoute/pdf:^0.12'
+composer require 'pdftoolkit/pdf:^0.12.2'
 ```
 
 API changes are recorded in the [changelog](CHANGELOG.md) and
@@ -207,6 +207,23 @@ the [PDF 2.0 guide](https://pdftoolkit.github.io/guides/pdf-2-0.html) describes
 the foundational constructions; the bundle guide covers 0.7.
 To follow development after this series, replace the stable constraint with
 `dev-master`.
+
+### Package name migration
+
+Since 0.12.2, the Composer package is `pdftoolkit/pdf`. The PHP namespace remains
+`PDF\` and its API is unchanged. To migrate an application that directly
+requires the former name:
+
+```sh
+composer remove roukmoute/pdf --no-update
+composer require 'pdftoolkit/pdf:^0.12.2' --with-all-dependencies
+```
+
+Review and commit the resulting lock file. The new package replaces the old name
+at `self.version`, so compatible older module constraints can resolve to one core
+installation. It does not impersonate older exact versions: a constraint pinned
+to `0.12.1`, for example, must be updated. Previously published tags and lock
+files retain their original package identity.
 
 ## Optional modules
 

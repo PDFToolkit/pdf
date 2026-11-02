@@ -71,7 +71,7 @@ $targetPage = new PageObject($mediaBox, $resources, new StreamObject(new Content
 // to its ISO definition. It is not a convenience API.
 $externalAction = new URIActionTable206(
     new SEntry(new NameType('URI')),
-    new URIEntry(new LiteralString('https://github.com/roukmoute/pdf')),
+    new URIEntry(new LiteralString('https://github.com/PDFToolkit/pdf')),
 );
 $externalLink = new LinkAnnotationTable173(
     new TypeEntry(new NameType('Annot')),

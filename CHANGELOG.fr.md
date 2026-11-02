@@ -4,6 +4,13 @@
 
 ## [Non publié]
 
+## [0.12.2] - 2026-11-02
+
+- Publier le cœur sous son nom Composer canonique `pdftoolkit/pdf`, sans changement des espaces de noms PHP ni des API PDF. Remplacer `roukmoute/pdf` uniquement à `self.version` pour éviter deux installations du cœur tout en acceptant les contraintes historiques compatibles des modules.
+- Documenter la migration et l’installation en français et en anglais ; actualiser le lien de l’exemple exécutable vers le dépôt PDFToolkit. Préserver les tags publiés et les identités historiques des packages.
+- Conserver les versions publiées des modules de développement pendant la migration du nom. Aucune dépendance optionnelle d’exécution n’est ajoutée.
+
+
 ## [0.12.1] - 2026-10-28
 
 - Mettre à jour les modules de développement verrouillés vers les versions publiées Images 0.2, Reader 0.7 et Codecs PHP optionnels 0.1 pour les exemples et la validation indépendante de la documentation. Les dépendances de production et les API du core restent inchangées.

@@ -1,4 +1,4 @@
-# Releasing roukmoute/pdf
+# Releasing pdftoolkit/pdf
 
 This repository contains the PDF core. Its versions are independent of the other PDFToolkit packages.
 

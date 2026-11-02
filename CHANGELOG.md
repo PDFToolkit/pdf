@@ -4,6 +4,13 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-11-02
+
+- Publish the core under its canonical Composer name `pdftoolkit/pdf`, with unchanged PHP namespaces and PDF APIs. Replace `roukmoute/pdf` only at `self.version` to prevent duplicate core installations while accepting compatible historical module requirements.
+- Document application migration and installation in English and French; update the executable link example to the PDFToolkit repository. Preserve published tags and historical package identities.
+- Retain the published development-module versions while bootstrapping the name migration. No optional runtime dependency is introduced.
+
+
 ## [0.12.1] - 2026-10-28
 
 - Update the locked development modules to published Images 0.2, Reader 0.7 and optional PHP Codecs 0.1 for examples and independent documentation validation. Core production dependencies and APIs remain unchanged.

@@ -175,10 +175,10 @@ incorporés opaques nécessitent toujours un assainisseur explicite ; voir les
 
 ## Installation
 
-Le core **0.12** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [roukmoute/pdf](https://packagist.org/packages/roukmoute/pdf) est disponible sur Packagist :
+Le core **0.12** nécessite PHP 8.3 ou supérieur, en 64 bits et les extensions `ctype`, `iconv` et `zlib`. Les backends AES et CMS sont optionnels et nécessitent `openssl`. Le fournisseur Ed25519/Ed448 reçoit aussi un exécutable OpenSSL local explicite. Le package [pdftoolkit/pdf](https://packagist.org/packages/pdftoolkit/pdf) est disponible sur Packagist :
 
 ```sh
-composer require 'roukmoute/pdf:^0.12'
+composer require 'pdftoolkit/pdf:^0.12.2'
 ```
 
 Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
@@ -186,6 +186,24 @@ Les modifications d'API figurent dans le [changelog](CHANGELOG.fr.md) et le
 le [guide PDF 2.0](https://pdftoolkit.github.io/fr/guides/pdf-2-0.html) décrit
 les fondations ; le guide du bundle couvre les ajouts 0.7. Pour suivre les développements
 après cette série, remplacer la contrainte stable par `dev-master`.
+
+### Migration du nom du package
+
+Depuis 0.12.2, le package Composer se nomme `pdftoolkit/pdf`. L’espace de noms
+PHP reste `PDF\` et son API ne change pas. Pour migrer une application qui
+exige directement l’ancien nom :
+
+```sh
+composer remove roukmoute/pdf --no-update
+composer require 'pdftoolkit/pdf:^0.12.2' --with-all-dependencies
+```
+
+Relire puis versionner le fichier de verrouillage obtenu. Le nouveau package
+remplace l’ancien nom à `self.version` : les contraintes compatibles des anciens
+modules peuvent ainsi utiliser une seule installation du cœur. Il ne se présente
+pas comme une ancienne version exacte : une contrainte fixée à `0.12.1`, par
+exemple, doit être actualisée. Les tags et verrous déjà publiés conservent leur
+identité d’origine.
 
 ## Modules optionnels
 
