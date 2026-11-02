@@ -213,7 +213,7 @@ identité d’origine.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspecter des fichiers JPEG et décoder des fichiers PNG en objets image du core. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Mettre en forme des glyphes OpenType et incorporer des polices TrueType ou CFF statiques dans les objets du core. |
 
-Images **0.2.0**, Fonts **0.2.0** et Reader **0.7.0** acceptent le core 0.12 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
+Images **0.2.2**, Fonts **0.2.1** et Reader **0.8.1** exigent le cœur canonique 0.12.2 ou supérieur dans la série 0.12 et PHP 8.3 ou supérieur. Composer installe automatiquement le core requis par le module choisi. Par exemple, pour importer des fichiers image :
 
 ```sh
 composer require 'pdftoolkit/pdf-images:^0.2'

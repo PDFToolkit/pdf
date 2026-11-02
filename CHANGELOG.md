@@ -4,6 +4,11 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.12.3] - 2026-11-02
+
+- Stabilize development dependencies on published Reader 0.8.1, Images 0.2.2 and Fonts 0.2.1 using the canonical `pdftoolkit/pdf` requirement.
+- Keep the core free of production package dependencies and preserve all PHP namespaces and PDF mechanisms.
+
 ## [0.12.2] - 2026-11-02
 
 - Publish the core under its canonical Composer name `pdftoolkit/pdf`, with unchanged PHP namespaces and PDF APIs. Replace `roukmoute/pdf` only at `self.version` to prevent duplicate core installations while accepting compatible historical module requirements.

@@ -233,7 +233,7 @@ files retain their original package identity.
 | [`pdftoolkit/pdf-images`](https://packagist.org/packages/pdftoolkit/pdf-images) | Inspect JPEG files and decode PNG files into core image objects. |
 | [`pdftoolkit/pdf-fonts`](https://packagist.org/packages/pdftoolkit/pdf-fonts) | Lay out OpenType glyphs and embed static TrueType or CFF fonts using core font objects. |
 
-Images **0.2.0**, Fonts **0.2.0** and Reader **0.7.0** accept core 0.12 and PHP 8.3 or newer. Composer automatically installs
+Images **0.2.2**, Fonts **0.2.1** and Reader **0.8.1** require canonical core 0.12.2 or newer in the 0.12 series and PHP 8.3 or newer. Composer automatically installs
 the core required by the selected module. For example, to import image files:
 
 ```sh

@@ -4,6 +4,11 @@
 
 ## [Non publié]
 
+## [0.12.3] - 2026-11-02
+
+- Stabiliser les dépendances de développement sur Reader 0.8.1, Images 0.2.2 et Fonts 0.2.1 publiés avec la dépendance canonique `pdftoolkit/pdf`.
+- Conserver un cœur sans dépendances de production à d’autres packages, avec les mêmes espaces de noms PHP et mécanismes PDF.
+
 ## [0.12.2] - 2026-11-02
 
 - Publier le cœur sous son nom Composer canonique `pdftoolkit/pdf`, sans changement des espaces de noms PHP ni des API PDF. Remplacer `roukmoute/pdf` uniquement à `self.version` pour éviter deux installations du cœur tout en acceptant les contraintes historiques compatibles des modules.
