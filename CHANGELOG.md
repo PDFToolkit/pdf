@@ -4,6 +4,11 @@ English | [Français](CHANGELOG.fr.md)
 
 ## [Unreleased]
 
+## [0.12.4] - 2026-11-09
+
+- Update the locked development dependency `symfony/filesystem` to 7.4.23, addressing [GHSA-6prc-h956-hxjq](https://github.com/symfony/symfony/security/advisories/GHSA-6prc-h956-hxjq) in the code-style toolchain.
+- Preserve production code, public APIs, PHP requirements and every other locked package version and source reference.
+
 ## [0.12.3] - 2026-11-02
 
 - Stabilize development dependencies on published Reader 0.8.1, Images 0.2.2 and Fonts 0.2.1 using the canonical `pdftoolkit/pdf` requirement.
